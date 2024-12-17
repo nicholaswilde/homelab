@@ -1,0 +1,72 @@
+---
+version: '3'
+
+vars:
+  IMAGE: squidfunk/mkdocs-material
+  PORT: 8000
+
+tasks:
+  build:
+    desc: Build documentation using Docker and mkdocs-material
+    cmds:
+      - >-
+        docker run --rm -it -v ${PWD}:/docs --platform linux/amd64
+        {{ .IMAGE }} build -f ./mkdocs.yml
+
+  update:
+    desc: Update docker container
+    cmds:
+      - >-
+        docker pull {{ .IMAGE }}
+
+  up:
+    desc: Start server
+    cmds:
+      - task: serve
+
+  serve:
+    desc: >-
+      Start development server on http://0.0.0.0:{{ .PORT }} using
+      Docker and mkdocs-material
+    cmds:
+      - >-
+        docker run --rm -it -p {{ .PORT }}:{{ .PORT}} -v ${PWD}:/docs
+        --platform linux/amd64 {{ .IMAGE }} serve
+        --dev-addr 0.0.0.0:{{ .PORT }} -f ./mkdocs.yml
+    deps:
+      - build
+
+  linkcheck:
+    desc: Run markdown-link-check
+    cmds:
+      - ./scripts/linkcheck.sh
+    ignore_error: true
+
+  lint:
+    desc: Lint the project
+    deps:
+      - yamllint
+      - markdownlint
+      - linkcheck
+    ignore_error: true
+
+  markdownlint:
+    desc: Run markdownlint-cli
+    cmds:
+      - >-
+        docker run --rm -it -v ${PWD}:/markdown:ro
+        06kellyjac/markdownlint-cli .
+    ignore_error: true
+
+  yamllint:
+    desc: Run yamllint
+    cmds:
+      - >-
+        docker run --rm -it -v ${PWD}:${PWD} -w ${PWD}
+        programmerassistant/yamllint yamllint .
+    ignore_error: true
+
+  default:
+    cmds:
+      - task -l
+    silent: true
