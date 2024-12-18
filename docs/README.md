@@ -6,7 +6,7 @@ A repo for my homelab setup
 
 ---
 
-## :book:&nbsp; Documentation
+## :book: Documentation
 
 Documentation can be found [here][1].
 
@@ -16,13 +16,13 @@ Documentation can be found [here][1].
 
 ---
 
-## ​:balance_scale:​&nbsp;​ License
+## ​:balance_scale: ​License
 
 ​[​Apache License 2.0](../LICENSE)
 
 ---
 
-## ​:pencil:​&nbsp;​ Author
+## ​:pencil:​ Author
 
 ​This project was started in 2024 by [​Nicholas Wilde​][2].
 
