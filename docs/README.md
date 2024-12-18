@@ -22,7 +22,7 @@ Documentation can be found [here][1].
 
 ---
 
-## ​:pencil:​ Author
+## :pencil:​ Author
 
 ​This project was started in 2024 by [​Nicholas Wilde​][2].
 
