@@ -26,5 +26,5 @@ Documentation can be found [here][1].
 
 ​This project was started in 2024 by [​Nicholas Wilde​][2].
 
-[1]: https://nicholaswilde.io/notes/
+[1]: https://nicholaswilde.io/homelab/
 [2]: https://github.com/nicholaswilde/
