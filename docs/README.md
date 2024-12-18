@@ -18,6 +18,8 @@ Documentation can be found [here][1].
 
 ## ​:balance_scale: ​License
 
+## :balance_scale:
+
 ​[​Apache License 2.0](../LICENSE)
 
 ---
