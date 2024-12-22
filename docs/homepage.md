@@ -19,6 +19,10 @@ tags:
     bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/homepage.sh)"
     ```
 
+## :gear: Config
+
+Make symlinks to repo.
+
 ## :link: References
 
 - <>
