@@ -7,6 +7,7 @@ tags:
 
 ## Install
 
+``` title="Install on Proxmox"
 === "AMD64"
 
     ```shell
