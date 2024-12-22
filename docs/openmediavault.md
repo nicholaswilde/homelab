@@ -4,6 +4,13 @@ tags:
 ---
 # :simple-openmediavault: OpenMediaVault
 
+## Install
+
+- Download ISO into Proxmox
+- Create new VM
+- Mount existing USB drive.
+- Install omv into VM.
+
 ## Access
 
 Port: `80`
