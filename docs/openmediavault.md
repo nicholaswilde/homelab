@@ -46,7 +46,12 @@ network:
       dhcp6: no
       link-local: []
 ```
- 
+
+- Method: `Static`
+- Address: `192.168.2.19`
+- Netmask: `255.255.0.0`
+- Gateway: `192.168.0.0`
+
 ## :link: References
 
 - https://www.youtube.com/watch?v=Bce7VT3kJ4g
