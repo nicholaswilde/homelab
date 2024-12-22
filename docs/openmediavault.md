@@ -4,33 +4,31 @@ tags:
 ---
 # :simple-openmediavault: OpenMediaVault
 
-## Install
+## :material-content-save-plus: Install
 
 - Download ISO into Proxmox
 - Create new VM
 - Mount existing USB drive.
 - Install omv into VM.
 
-## Access
+## :fontawesome-solid-universal-access: Access
 
-Port: `80`
+- Port: `80`
+- Username: `admin`
+- Password: `openmediavault`
 
-Username: `admin`
-
-Password: `openmediavault`
-
-
-## Reinstall
+## :material-content-save-cog: Reinstall
 
 [Recover drive][1]
 
 Mounted after reinstall and not before.
 
+remount
+
 ```shell
 omv-firstaid
 ```
-
-remount 
+ 
 ## :link: References
 
 - https://www.youtube.com/watch?v=Bce7VT3kJ4g
