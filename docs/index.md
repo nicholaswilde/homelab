@@ -10,6 +10,12 @@ A repo for my homelab setup
 
 I just want to document and share my homelab setup and experiences.
 
+My current setup is Proxmox installed on an AMD64 desktop computer, old AMD64 laptop, and a Raspberry Pi 4 8GB.
+
+I also have an Intel NUC running Ubuntu server with Home Assistant and add ons in  Docker containers.
+
+I also have a Raspberry Pi Zero W running and NTP server.
+
 ## ​:scales: License
 
 ​[​Apache License 2.0](../LICENSE)
