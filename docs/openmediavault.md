@@ -29,6 +29,23 @@ remount
 ```shell
 omv-firstaid
 ```
+
+## Static IP
+
+```yaml
+# /etc/netplan/20-openmediavault-ens18.yaml 
+network:
+  ethernets:
+    ens18:
+      match:
+        macaddress: bc:24:11:16:73:c0
+      dhcp4: yes
+      dhcp4-overrides:
+        use-dns: true
+        use-domains: true
+      dhcp6: no
+      link-local: []
+```
  
 ## :link: References
 
