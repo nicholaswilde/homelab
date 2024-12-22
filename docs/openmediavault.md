@@ -1,4 +1,8 @@
-# OpenMediaVault
+---
+tags:
+  - vm
+---
+# :simple-openmediavault: OpenMediaVault
 
 ## Access
 
