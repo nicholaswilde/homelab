@@ -15,8 +15,9 @@ edit_uri: "edit/main/docs/"
 # Page tree
 nav:
   - Home: index.md
+  - Homepage: homepage.md
   - OpenMediaVault: openmediavault.md
-
+  
 extra:
   social:
     - icon: fontawesome/solid/house
