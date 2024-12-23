@@ -4,7 +4,7 @@ tags:
 ---
 # Apt-Cacher NG
 
-```ini "/etc/apt-cacher-ng/acng.conf"
+```ini title="/etc/apt-cacher-ng/acng.conf"
 CacheDir: /mnt/storage/aptcache
 ```
 
