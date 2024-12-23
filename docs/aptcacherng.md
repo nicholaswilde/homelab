@@ -14,3 +14,7 @@ systemctl restart apt-cacher-ng.service
 systemctl status apt-cacher-ng.service
 journalctl -xeu apt-cacher-ng.service
 ```
+
+```
+http://aptcache.l.nicholaswilde.io:3142/acng-report.html
+```
