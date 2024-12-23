@@ -15,6 +15,7 @@ edit_uri: "edit/main/docs/"
 # Page tree
 nav:
   - Home: index.md
+  - Apt-Cacher NG: aptcacherng.md
   - Homepage: homepage.md
   - OpenMediaVault: openmediavault.md
   - Raspberry Pi 2: rpi2.md
