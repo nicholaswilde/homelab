@@ -2,10 +2,10 @@
 tags:
   - lxc
 ---
-# Apt Cacher NG
+# Apt-Cacher NG
 
-```ini
-
+```ini "/etc/apt-cacher-ng/acng.conf"
+CacheDir: /mnt/storage/aptcache
 ```
 
 ```shell
