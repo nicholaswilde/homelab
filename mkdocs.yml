@@ -20,6 +20,8 @@ nav:
   - OpenMediaVault: openmediavault.md
   - Raspberry Pi 2: rpi2.md
   - Raspberry Pi 4: rpi4.md
+  - Setup:
+    - Micro: setup/micro.md
   
 extra:
   social:
