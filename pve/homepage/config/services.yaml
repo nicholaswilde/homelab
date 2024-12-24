@@ -1,0 +1,90 @@
+---
+- NUC-01:
+    - Home Assistant:
+        href: http://ha.l.nicholaswilde.io:8123/
+        icon: si-homeassistant
+    - Portainer:
+        icon: si-portainer
+        href: https://portainer.nicholaswilde.io
+    - Node-RED:
+        icon: si-nodered
+        href: https://nodered.nicholaswilde.io/
+    - Z-Wave JS UI:
+        icon: sh-z-wave-js-ui.png
+        href: http://192.168.1.143:8091/
+    - VS Code:
+        icon: sh-visual-studio-code.png
+        href: https://code.nicholaswilde.io/
+    - Uptime Kuma:
+        icon: si-uptimekuma
+        href: https://up.nicholaswilde.io/
+    - ESPHome:
+        icon: si-esphome
+        href: https://esphome.nicholaswilde.io/
+- ARM64:
+    - Proxmox Arm64:
+        icon: si-proxmox
+        href: https://pve02.l.nicholaswilde.io:8006
+    - Chronograph:
+        icon: https://www.influxdata.com/wp-content/uploads/production-hl-1.svg
+        href: http://chronograph.l.nicholaswilde.io:8888
+    - Grafana:
+        icon: si-grafana
+        href: http://grafana.l.nicholaswilde.io:3000/
+    - Prometheus:
+        icon: si-prometheus
+        href: http://prometheus.l.nicholaswilde.io:9090/
+    - InfluxDB:
+        icon: si-influxdb
+        href: http://influxdb.l.nicholaswilde.io:8086/
+    - Password Generator:
+        icon: mdi-form-textbox-password
+        href: http://passgen.l.nicholaswilde.io/
+    - AdGuard01:
+        icon: si-adguard
+        href: http://adguard01.l.nicholaswilde.io/
+    - adguardhome-sync:
+        icon: si-adguard
+        href: http://adguard-sync.l.nicholaswilde.io:8080/
+- AMD:
+    - Proxmox 01:
+        icon: si-proxmox
+        href: https://pve01.l.nicholaswilde.io:8006
+    - qBittorrent:
+        icon: si-qbittorrent
+        href: http://qbittorrent.l.nicholaswilde.io:8090/
+    - Authentik:
+        icon: si-authentik
+        href: http://authentik.l.nicholaswilde.io:9000/
+    - MySpeed:
+        icon: si-speedtest
+        href: http://myspeed.l.nicholaswilde.io:5216/
+    - Change Detection:
+        icon: sh-changedetection.png
+        href: http://cd.l.nicholaswilde.io:5000/
+    - Apt-Cacher NG:
+        icon: mdi-package-variant
+        href: http://aptcache.l.nicholaswilde.io:3142/acng-report.html
+    - OpenMediaVault:
+        icon: si-openmediavault
+        href: http://omv.l.nicholaswilde.io
+- Other:
+    - UniFi:
+        icon: si-ubiquiti
+        href: https://unifi.l.nicholaswilde.io
+    - AdGuard 2:
+        icon: si-adguard
+        href: http://adguard02.l.nicholaswilde.io/
+- Laptop:
+    - Proxmox:
+        icon: si-proxmox
+        href: https://pve00.l.nicholaswilde.io/
+    - Proxmox Backup:
+        icon: si-proxmox
+        href: https://pbs.nicholaswilde.io:8007/
+    - Traefik:
+        icon: si-traefikproxy
+        href: http://traefik.nicholaswilde.io:8080/
+    - netboot.xyz:
+        icon: sh-netboot-xyz-light.png
+        href: http://192.168.1.194:3000/

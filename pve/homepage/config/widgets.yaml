@@ -1,0 +1,12 @@
+---
+- resources:
+    cpu: true
+    memory: true
+    disk: /
+
+- search:
+    provider: google
+    target: _self
+    focus: false
+    showSearchSuggestions: true
+

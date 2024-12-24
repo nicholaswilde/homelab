@@ -1,0 +1,44 @@
+---
+- Developer:
+    - Repositories:
+        - icon: si-github
+          href: https://github.com/nicholaswilde?tab=repositories
+    - Stars:
+        - icon: mdi-star
+          href: https://github.com/nicholaswilde?tab=stars
+    - Proxmox VE Helper-Scripts:
+        - icon: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/frontend/public/logo.png
+          href: https://community-scripts.github.io/ProxmoxVE/
+    - Proxmox VE Helper-Scripts Arm64:
+        - icon: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/frontend/public/logo.png
+          href: https://pimox-scripts.com/scripts
+    - Notes:
+        - icon: si-materialformkdocs
+          href: https://nicholaswilde.io/notes/
+    - Cloudflare:
+        - icon: si-cloudflare
+          href: https://cloudflare.com
+- Icons & Emoji:
+    - Simple Icons:
+        - icon: si-simpleicons
+          href: https://simpleicons.org/
+    - Material Design Icons:
+        - icon: si-materialdesignicons
+          href: https://pictogrammers.com/library/mdi/
+    - Self Hosted Icons:
+        - icon: sh-selfh-st-light.png
+          href: https://selfh.st/icons/
+    - Selfh.st Icons Source:
+        - icon: si-github
+          href: https://github.com/selfhst/icons/tree/main/png
+    - Emoji Search:
+        - icon: si-materialformkdocs
+          href: https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/
+    - Emojipedia:
+        # - icon: https://blog.emojipedia.org/content/images/2017/08/emojipedia300.png
+        - icon: mdi-emoticon
+          href: https://emojipedia.org/
+    - EmojiDB:
+        # - icon: https://cdn.glitch.me/4733404f-fac7-44c0-9994-ad38268ee641%2Fopen-file-folder_1f4c2.png
+        - icon: mdi-folder-open
+          href: https://emojidb.org/
