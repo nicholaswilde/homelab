@@ -50,6 +50,9 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io:8006
+    - Gitea:
+        icon: si-gitea
+        href: http://gitea.l.nicholaswilde.io:3000/
     - qBittorrent:
         icon: si-qbittorrent
         href: http://qbittorrent.l.nicholaswilde.io:8090/
