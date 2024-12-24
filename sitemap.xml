@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://nicholaswilde.io/homelab/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/aptcacherng/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/homepage/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/openmediavault/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/rpi2/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/rpi4/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/setup/autofs/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://nicholaswilde.io/homelab/setup/micro/</loc>
+         <lastmod>2024-12-24</lastmod>
+    </url>
+</urlset>
