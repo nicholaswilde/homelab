@@ -50,6 +50,9 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io:8006
+    - Aria2:
+        icon: mdi-download
+        href: http://aria2.l.nicholaswilde.io:6880
     - Gitea:
         icon: si-gitea
         href: http://gitea.l.nicholaswilde.io:3000/
