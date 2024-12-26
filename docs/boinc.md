@@ -23,6 +23,17 @@ tags:
 /etc/boinc-client/
 ```
 
+## Usage
+
+Get key from [here][1].
+
+```shell
+(
+  boinccmd --project_attach https://sech.me/boinc/Amicable/ <key> && \
+  boinccmd --get_project_status
+)
+```
+
 ## Troubleshooting
 
 If gui_rpc_auth.cfg is blank, create a backup and restart service.
@@ -43,3 +54,5 @@ cat /etc/boinc-client/gui_rpc_auth.cfg
 ## :link: References
 
 - <https://boinc.berkeley.edu/wiki/Installing_BOINC_on_Debian_or_Ubuntu>
+
+[1]: <https://sech.me/boinc/Amicable/weak_auth.php>
