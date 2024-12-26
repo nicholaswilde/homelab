@@ -4,6 +4,16 @@ tags:
 ---
 # Gridcoin
 
+## Installation
+
+```shell
+(
+  add-apt-repository ppa:gridcoin/gridcoin-stable && \
+  apt update && \
+  apt install -y gridcoinresearch
+)
+```
+
 ## :gear: Config
 
 Get rpcuser and rpcpassword by running.
