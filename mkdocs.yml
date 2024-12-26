@@ -17,6 +17,7 @@ nav:
   - Home: index.md
   - Apt-Cacher NG: aptcacherng.md
   - BOINC: boinc.md
+  - ChangeDetection: changedetection.md
   - Gridcoin: gridcoin.md
   - Homepage: homepage.md
   - OpenMediaVault: openmediavault.md
