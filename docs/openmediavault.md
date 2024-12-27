@@ -8,6 +8,18 @@ tags:
 ## :hammer_and_wrench: Installation
 
 - [Download][2] ISO into Proxmox
+
+```shell title="pve"
+(
+  cd /var/lib/vz/template/iso && \
+  wget $(curl -s https://sourceforge.net/projects/openmediavault/rss?path=/iso | \
+  grep -oP '<link>https://sourceforge.net/projects/openmediavault/files/iso/[^<]+</link>' | \
+  head -n 1 | \
+  sed 's/<link>//; s/<\/link>//'| \
+  sed 's/\/download$//')
+)
+```
+
 - Create new VM
 
 !!! example "General"
