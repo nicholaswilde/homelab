@@ -31,6 +31,7 @@ Get key from [here][1].
 (
   boinccmd --project_attach https://sech.me/boinc/Amicable/ <key> && \
   boinccmd --get_project_status
+  boinccmd --get_task_summary
 )
 ```
 

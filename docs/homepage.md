@@ -5,9 +5,14 @@ tags:
 ---
 # :simple-homepage: Homepage
 
-## Install
+## :inbox_tray: Installation
 
-``` title="Install on Proxmox"
+!!! example ""
+
+    :material-console-network: Default Port: `3000`
+    
+    :material-information-outline: Configuration (bookmarks.yaml, services.yaml, widgets.yaml) path: `/opt/homepage/config/`
+
 === "AMD64"
 
     ```shell
@@ -26,4 +31,5 @@ Make symlinks to repo.
 
 ## :link: References
 
-- <>
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
+- <https://pimox-scripts.com/scripts?id=Homepage>
