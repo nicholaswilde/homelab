@@ -63,7 +63,7 @@ function get_sync_status(){
 
 function check_status(){
   # Check if "in_sync" is true
-  if [ "$in_sync" = false ]; then
+  if [ "$in_sync" = true ]; then
     # Send email notification using apprise
     message="Wallet is in sync"
     apprise -t "sync_check" -b "${message}" "${EMAIL_ADDRESS}"
