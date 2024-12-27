@@ -5,28 +5,62 @@ tags:
 ---
 # :simple-openmediavault: OpenMediaVault
 
-## :material-content-save-plus: Install
+## :hammer_and_wrench: Installation
 
-- Download ISO into Proxmox
+- [Download][2] ISO into Proxmox
 - Create new VM
-- Mount existing USB drive.
+
+!!! example "General"
+
+    Name: `omv`
+    
+    Start at boot: :white_check_mark:
+
+!!! example "OS"
+
+    ISO image: `*.iso`
+
+!!! example "Disks"
+
+    Bus/Device: `SATA`
+
+    Disk size (GiB): `16`
+
+!!! example "CPU"
+
+    Cores: `2`
+
+!!! example "Memory"
+
+    Memory (MiB): `4096`
+
+- Look for disk
+
+```shell
+lsblk
+```
+
 - Install omv into VM.
 
 ## :fontawesome-solid-universal-access: Default Access
 
-- Port: `80`
-- Username: `admin`
-- Password: `openmediavault`
+!!! example ""
+
+    :material-console-network: Port: `80`
+
+    :fontawesome-solid-user: Username: `admin`
+
+    :material-key: Password: `openmediavault`
 
 ### :key: Change Password
 
 Top right person icon -> Change Password
 
-### New User
+### :fontawesome-solid-user-plus: New User
 
-Users -> Users
+!!! example "Users -> Users"
 
-- Groups: `openmediavault-admin,users`
+    :fontawesome-solid-user-group: Groups: `openmediavault-admin,users`
 
 ## :material-content-save-cog: Reinstall
 
@@ -40,68 +74,63 @@ remount
 omv-firstaid
 ```
 
-## Static IP
+## :material-check-network: Static IP
 
-### GUI
+### :octicons-browser-24: GUI
 
-Network -> Interfaces -> ens18
+!!! example "Network -> Interfaces -> ens18"
 
-- Method: `Static`
-- Address: `192.168.2.19`
-- Netmask: `255.255.0.0`
-- Gateway: `192.168.0.0`
+    Method: `Static`
 
-```yaml "Dynamic"
-# /etc/netplan/20-openmediavault-ens18.yaml 
-network:
-  ethernets:
-    ens18:
-      match:
-        macaddress: bc:24:11:16:73:c0
-      dhcp4: yes
-      dhcp4-overrides:
-        use-dns: true
-        use-domains: true
-      dhcp6: no
-      link-local: []
-```
+    Address: `192.168.2.19`
 
-## NFS
+    Netmask: `255.255.0.0`
 
-### Server
+    Gateway: `192.168.0.0`
 
-- Client: `192.168.2.0/24`
-- Permission: `Read/Write`
-- Extra options: `subtree_check,insecure,no_root_squash`
+## :simple-googlecloudstorage: NFS
 
-### Client
+!!! example "Server"
+
+    Client: `192.168.2.0/24`
+
+    Permission: `Read/Write`
+
+    Extra options: `subtree_check,insecure,no_root_squash`
+
+### :material-laptop: Client
 
 ```shell
 apt install autofs
 ```
 
-```ini
-# /etc/auto.master
+```ini title="/etc/auto.master"
 +auto.master
 /mnt /etc/auto.nfs --ghost --timeout=60
 ```
 
-```ini
-# /etc/auto.nfs
+```shell
+echo "/mnt /etc/auto.nfs --ghost --timeout=60" | tee -a /etc/auto.master
+```
+
+```ini title="/etc/auto.nfs"
 storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
 ```
 
-Test
-
 ```shell
+echo "storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage" | tee /etc/auto.nfs
+```
+
+
+```shell title="Test"
 showmount -e 192.168.2.19
 ```
 
-Mount
-
-```shell
-systemctl restart autofs.service
-systemctl status autofs.service
+```shell title="Mount"
+(
+  systemctl restart autofs.service && \
+  systemctl status autofs.service
+)
 ```
 
 
@@ -110,3 +139,4 @@ systemctl status autofs.service
 - https://www.youtube.com/watch?v=Bce7VT3kJ4g
 
 [1]: <https://www.reddit.com/r/OpenMediaVault/s/vgdGfywcij>
+[2]: <https://www.openmediavault.org/?page_id=77>
