@@ -2,9 +2,9 @@
 tags:
   - vm
 ---
-# BOINC
+# ![boinc](https://boinc.berkeley.edu/logo/boinc32.bmp){ width="32" } BOINC
 
-## :material-content-save-plus: Installation
+## :hammer_and_wrench: Installation
 
 ```shell
 (
@@ -23,7 +23,7 @@ tags:
 /etc/boinc-client/
 ```
 
-## Usage
+## :pencil: Usage
 
 Get key from [here][1].
 
@@ -35,9 +35,9 @@ Get key from [here][1].
 )
 ```
 
-## Troubleshooting
+## :stethoscope: Troubleshooting
 
-If gui_rpc_auth.cfg is blank, create a backup and restart service.
+If `gui_rpc_auth.cfg` is blank, create a backup and restart service.
 
 ```shell
 cat /etc/boinc-client/gui_rpc_auth.cfg
