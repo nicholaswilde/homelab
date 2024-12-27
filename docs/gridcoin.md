@@ -4,7 +4,7 @@ tags:
 ---
 # :simple-bitcoin: Gridcoin
 
-## :material-hammer-wrench: Installation
+## :hammer_and_wrench: Installation
 
 ```shell
 (
@@ -14,7 +14,7 @@ tags:
 )
 ```
 
-## :material-cog: Config
+## :gear: Config
 
 Get rpcuser and rpcpassword by running.
 

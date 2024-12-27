@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-homepage: Homepage
 
-## :inbox_tray: Installation
+## :hammer_and_wrench: Installation
 
 !!! example ""
 
