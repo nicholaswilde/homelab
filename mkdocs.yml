@@ -16,6 +16,7 @@ edit_uri: "edit/main/docs/"
 nav:
   - Home: index.md
   - Apt-Cacher NG: aptcacherng.md
+  - aria2: aria2.md
   - BOINC: boinc.md
   - ChangeDetection: changedetection.md
   - Gridcoin: gridcoin.md
