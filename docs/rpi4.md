@@ -3,4 +3,4 @@ tags:
   - proxmox
   - rpi
 ---
-# Raspberry Pi 4 8GB
+# :simple-raspberrypi: Raspberry Pi 4 8GB

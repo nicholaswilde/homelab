@@ -2,4 +2,4 @@
 tags:
   - rpi
 ---
-# Raspberry Pi 2
+# :simple-raspberrypi: Raspberry Pi 2

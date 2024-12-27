@@ -2,4 +2,4 @@
 tags:
   - rpi
 ---
-# Raspberry Pi Zero W
+# :simple-raspberrypi: Raspberry Pi Zero W
