@@ -2,9 +2,9 @@
 tags:
   - vm
 ---
-# Gridcoin
+# :simple-bitcoin: Gridcoin
 
-## Installation
+## :material-hammer-wrench: Installation
 
 ```shell
 (
@@ -14,7 +14,7 @@ tags:
 )
 ```
 
-## :gear: Config
+## :material-cog: Config
 
 Get rpcuser and rpcpassword by running.
 
@@ -63,7 +63,7 @@ WantedBy=multi-user.target
 )
 ```
 
-## Usage
+## :pencil: Usage
 
 ```shell
 gridcoinresearchd getmininginfo
