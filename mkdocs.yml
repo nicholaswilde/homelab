@@ -15,6 +15,7 @@ edit_uri: "edit/main/docs/"
 # Page tree
 nav:
   - Home: index.md
+  - AdGuard Home: adguard.md
   - Apt-Cacher NG: aptcacherng.md
   - aria2: aria2.md
   - BOINC: boinc.md
