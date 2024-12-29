@@ -36,6 +36,17 @@ apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmai
 mailto://email:passkey@gmail.com
 ```
 
+## Update
+
+```shell
+(
+  echo 'bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"' | tee -a ~/.bash_aliases && \
+  source ~/.bashrc && \
+  update
+)
+```
+
+
 ## :link: References
 
 - <https://github.com/caronc/apprise>
