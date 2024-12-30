@@ -84,7 +84,7 @@
 - Laptop:
     - Proxmox:
         icon: si-proxmox
-        href: https://pve00.l.nicholaswilde.io/
+        href: https://pve00.l.nicholaswilde.io:8006/
     - Proxmox Backup:
         icon: si-proxmox
         href: https://pbs.nicholaswilde.io:8007/
