@@ -30,6 +30,7 @@ nav:
   - Setup:
     - Autofs: setup/autofs.md
     - Micro: setup/micro.md
+    - SOPS: setup/sops.md
   
 extra:
   social:
