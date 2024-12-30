@@ -11,7 +11,7 @@
         href: https://nodered.nicholaswilde.io/
     - Z-Wave JS UI:
         icon: sh-z-wave-js-ui.png
-        href: http://192.168.1.143:8091/
+        href: zwave.l.nicholaswilde.io:8091/
     - VS Code:
         icon: sh-visual-studio-code.png
         href: https://code.nicholaswilde.io/
