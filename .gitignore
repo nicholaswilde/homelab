@@ -2,3 +2,4 @@ site/
 *.swp
 **/AdGuardHome.yaml
 **/adguardhome-sync.yaml
+**/.env
