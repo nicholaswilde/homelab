@@ -24,7 +24,7 @@
 - ARM64:
     - Proxmox Arm64:
         icon: si-proxmox
-        href: https://pve02.l.nicholaswilde.io:8006
+        href: https://pve02.l.nicholaswilde.io
     - Chronograph:
         icon: https://www.influxdata.com/wp-content/uploads/production-hl-1.svg
         href: http://chronograph.l.nicholaswilde.io:8888
@@ -46,10 +46,13 @@
     - adguardhome-sync:
         icon: si-adguard
         href: http://adguard-sync.l.nicholaswilde.io:8080/
+    - Traefik:
+        icon: si-traefikproxy
+        href: http://traefik.l.nicholaswilde.io/
 - AMD:
     - Proxmox 01:
         icon: si-proxmox
-        href: https://pve01.l.nicholaswilde.io:8006
+        href: https://pve01.l.nicholaswilde.io
     - Aria2:
         icon: mdi-download
         href: http://aria2.l.nicholaswilde.io:6880
@@ -84,13 +87,10 @@
 - Laptop:
     - Proxmox:
         icon: si-proxmox
-        href: https://pve00.l.nicholaswilde.io:8006/
+        href: https://pve00.l.nicholaswilde.io
     - Proxmox Backup:
         icon: si-proxmox
         href: https://pbs.nicholaswilde.io:8007/
-    - Traefik:
-        icon: si-traefikproxy
-        href: http://traefik.nicholaswilde.io:8080/
     - netboot.xyz:
         icon: sh-netboot-xyz-light.png
         href: http://192.168.1.194:3000/
