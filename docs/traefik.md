@@ -1,6 +1,6 @@
 # :simple-traefikproxy: Traefik
 
-## Config
+## :gear: Config
 
 ### Service
 
