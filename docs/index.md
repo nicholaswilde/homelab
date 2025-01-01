@@ -22,7 +22,7 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 !!! note
 
-    I tend to use [tteck's][2] [ProxmoxVE Helper Scripts][3] to create LXCs and not run in Docker containers to reduce resources.
+    I tend to use [tteck's][2] [ProxmoxVE Helper Scripts][3] and [Proxmox arm64 Install Scripts][4] to create LXCs and not run in Docker containers to reduce resources.
 
 ## ​:scales: License
 
@@ -35,3 +35,4 @@ I also have a Raspberry Pi Zero W running and NTP server.
 [1]: <https://github.com/nicholaswilde/>
 [2]: <https://github.com/tteck>
 [3]: <https://github.com/community-scripts/ProxmoxVE>
+[4]: <https://pimox-scripts.com/>
