@@ -34,5 +34,5 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 [1]: <https://github.com/nicholaswilde/>
 [2]: <https://github.com/tteck>
-[3]: <https://github.com/community-scripts/ProxmoxVE>
+[3]: <https://community-scripts.github.io/ProxmoxVE/>
 [4]: <https://pimox-scripts.com/>
