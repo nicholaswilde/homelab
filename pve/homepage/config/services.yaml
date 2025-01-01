@@ -1,33 +1,33 @@
 ---
 - NUC-01:
     - Home Assistant:
-        href: http://ha.l.nicholaswilde.io:8123/
         icon: si-homeassistant
+        href: http://ha.l.nicholaswilde.io:8123/
     - Portainer:
         icon: si-portainer
-        href: https://portainer.nicholaswilde.io
+        href: https://portainer.l.nicholaswilde.io/
     - Node-RED:
         icon: si-nodered
-        href: https://nodered.nicholaswilde.io/
+        href: https://nodered.l.nicholaswilde.io/
     - Z-Wave JS UI:
         icon: sh-z-wave-js-ui.png
-        href: zwave.l.nicholaswilde.io:8091/
+        href: https://zwave.l.nicholaswilde.io/
     - VS Code:
         icon: sh-visual-studio-code.png
-        href: https://code.nicholaswilde.io/
+        href: https://code.l.nicholaswilde.io/
     - Uptime Kuma:
         icon: si-uptimekuma
-        href: https://up.nicholaswilde.io/
+        href: https://up.l.nicholaswilde.io/
     - ESPHome:
         icon: si-esphome
-        href: https://esphome.nicholaswilde.io/
+        href: https://esphome.l.nicholaswilde.io/
 - ARM64:
     - Proxmox Arm64:
         icon: si-proxmox
         href: https://pve02.l.nicholaswilde.io
     - Chronograph:
         icon: https://www.influxdata.com/wp-content/uploads/production-hl-1.svg
-        href: http://chronograph.l.nicholaswilde.io:8888
+        href: https://chronograph.l.nicholaswilde.io/
     - Grafana:
         icon: si-grafana
         href: https://grafana.l.nicholaswilde.io/
@@ -58,7 +58,7 @@
         href: https://aria2.l.nicholaswilde.io
     - Gitea:
         icon: si-gitea
-        href: http://gitea.l.nicholaswilde.io:3000/
+        href: https://gitea.l.nicholaswilde.io/
     - qBittorrent:
         icon: si-qbittorrent
         href: https://qbittorrent.l.nicholaswilde.io/
