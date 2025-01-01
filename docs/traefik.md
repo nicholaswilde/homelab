@@ -2,6 +2,10 @@
 
 ## :gear: Config
 
+!!! note
+
+    Paths in config file should be absolute.
+
 ### :handshake: Service
 
 ```shell
