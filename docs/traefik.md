@@ -1,4 +1,8 @@
-# <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/traefik.svg" width="48" height="50"> Traefik
+# :simple-traefik: Traefik
+
+## Config
+
+### Service
 
 ```shell
 /etc/systemd/system/traefik.service
