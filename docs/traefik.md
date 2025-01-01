@@ -2,7 +2,7 @@
 
 ## :gear: Config
 
-### Service
+### :handshake: Service
 
 ```shell
 /etc/systemd/system/traefik.service
