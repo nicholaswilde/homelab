@@ -8,7 +8,7 @@
 /etc/systemd/system/traefik.service
 ```
 
-## Logs
+## :file_folder: Logs
 
 ```shell
 tail -n10 /var/log/traefik/traefik.log
