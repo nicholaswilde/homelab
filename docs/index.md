@@ -22,7 +22,7 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 !!! note
 
-    I tend to use tteck's scripts to create LXCs and not run in Docker containers to reduce resources.
+    I tend to use [tteck's][2] [ProxmoxVE Helper Scripts][3] to create LXCs and not run in Docker containers to reduce resources.
 
 ## ​:scales: License
 
@@ -33,3 +33,5 @@ I also have a Raspberry Pi Zero W running and NTP server.
 ​This project was started in 2024 by [​Nicholas Wilde​][1].
 
 [1]: <https://github.com/nicholaswilde/>
+[2]: <https://github.com/tteck>
+[3]: <>
