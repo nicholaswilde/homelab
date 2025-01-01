@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    unifi:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`unifi.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: unifi
+  
+#endregion
+#region services
+  services:
+    unifi:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.148/"
+        passHostHeader: true
+#endregion

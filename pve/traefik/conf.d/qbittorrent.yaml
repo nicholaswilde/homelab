@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    qbittorrent:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`qbittorrent.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: qbittorrent
+  
+#endregion
+#region services
+  services:
+    qbittorrent:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.57:8090"
+        passHostHeader: true
+#endregion

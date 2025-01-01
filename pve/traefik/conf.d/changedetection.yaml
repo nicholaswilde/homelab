@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    changedetection:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`cd.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: changedetection
+  
+#endregion
+#region services
+  services:
+    changedetection:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.162:5000"
+        passHostHeader: true
+#endregion

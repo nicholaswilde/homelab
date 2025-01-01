@@ -1,0 +1,12 @@
+[Unit]
+Description=Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience
+
+[Service]
+Type=notify
+EnvironmentFile=/root/git/nicholaswilde/homelab/pve/traefik/.env
+ExecStart=/usr/bin/traefik --configFile=/root/git/nicholaswilde/homelab/pve/traefik/traefik.yaml
+Restart=on-failure
+ExecReload=/bin/kill -USR1 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

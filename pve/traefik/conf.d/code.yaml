@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    code:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`code.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: code
+  
+#endregion
+#region services
+  services:
+    code:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.143:8443"
+        passHostHeader: true
+#endregion

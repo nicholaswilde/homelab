@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    aptcache:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`aptcache.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: aptcache
+  
+#endregion
+#region services
+  services:
+    aptcache:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.40:3142"
+        passHostHeader: true
+#endregion

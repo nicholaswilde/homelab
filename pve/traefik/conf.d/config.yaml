@@ -1,0 +1,34 @@
+---
+http:
+  routers:
+    traefik:
+      entrypoints:
+        - web
+      rule: Host(`traefik.l.nicholaswilde.io`)
+      middlewares: traefik-https-redirect
+      service: api@internal
+    traefik-secure:
+      entrypoints:
+        - websecure
+      rule: Host(`traefik.l.nicholaswilde.io`)
+      # middlewares: traefik-auth
+      tls:
+        certresolver: cloudflare
+        domains:
+          - main: l.nicholaswilde.io
+            sans: 
+              - '*.l.nicholaswilde.io'
+      service: api@internal
+  
+  middlewares:
+    # traefik-auth:
+      # basicAuth:
+        # users: ${TRAEFIK_DASHBOARD_CREDENTIALS}
+    traefik-https-redirect:
+      redirectScheme:
+        scheme: https
+    sslheader:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    

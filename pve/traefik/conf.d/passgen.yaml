@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    passgen:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`passgen.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: passgen
+  
+#endregion
+#region services
+  services:
+    passgen:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.144"
+        passHostHeader: true
+#endregion

@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    grafana:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`grafana.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: grafana
+  
+#endregion
+#region services
+  services:
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.237:3000"
+        passHostHeader: true
+#endregion

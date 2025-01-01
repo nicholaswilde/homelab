@@ -3,3 +3,4 @@ site/
 **/AdGuardHome.yaml
 **/adguardhome-sync.yaml
 **/.env
+**/acme.json

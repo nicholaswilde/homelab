@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    zwave:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`zwave.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: zwave
+  
+#endregion
+#region services
+  services:
+    zwave:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.143:8091"
+        passHostHeader: true
+#endregion

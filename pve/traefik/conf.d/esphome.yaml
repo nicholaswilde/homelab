@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    esphome:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`esphome.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: esphome
+  
+#endregion
+#region services
+  services:
+    esphome:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.143:6052"
+        passHostHeader: true
+#endregion

@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    prometheus:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`prometheus.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: prometheus
+  
+#endregion
+#region services
+  services:
+    prometheus:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.96:9090"
+        passHostHeader: true
+#endregion

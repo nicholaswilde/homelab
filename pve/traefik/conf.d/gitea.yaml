@@ -1,0 +1,23 @@
+---
+http:
+ #region routers 
+  routers:
+    gitea:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`gitea.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: gitea
+  
+#endregion
+#region services
+  services:
+    gitea:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.20:3000"
+        passHostHeader: true
+#endregion
