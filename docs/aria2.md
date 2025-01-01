@@ -29,6 +29,10 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefik: Traefik
+
+WIP
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=aria2>
