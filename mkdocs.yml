@@ -4,7 +4,7 @@ site_name: Homelab
 site_description: My notes on various things
 site_author: Nicholas Wilde
 site_url: https://nicholaswilde.io/homelab
-copyright: Copyright &copy; 2024 Nicholas Wilde
+copyright: Copyright &copy; 2025 Nicholas Wilde
 dev_addr: '0.0.0.0:8000'
 
 # Repository
