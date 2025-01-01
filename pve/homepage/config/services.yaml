@@ -30,50 +30,50 @@
         href: http://chronograph.l.nicholaswilde.io:8888
     - Grafana:
         icon: si-grafana
-        href: http://grafana.l.nicholaswilde.io:3000/
+        href: https://grafana.l.nicholaswilde.io/
     - Prometheus:
         icon: si-prometheus
-        href: http://prometheus.l.nicholaswilde.io:9090/
+        href: https://prometheus.l.nicholaswilde.io/
     - InfluxDB:
         icon: si-influxdb
         href: http://influxdb.l.nicholaswilde.io:8086/
     - Password Generator:
         icon: mdi-form-textbox-password
-        href: http://passgen.l.nicholaswilde.io/
+        href: https://passgen.l.nicholaswilde.io/
     - AdGuard01:
         icon: si-adguard
         href: http://adguard01.l.nicholaswilde.io/
     - adguardhome-sync:
         icon: si-adguard
-        href: http://adguard-sync.l.nicholaswilde.io:8080/
+        href: https://adguard-sync.l.nicholaswilde.io/
     - Traefik:
         icon: si-traefikproxy
-        href: http://traefik.l.nicholaswilde.io/
+        href: https://traefik.l.nicholaswilde.io/
 - AMD:
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io
     - Aria2:
         icon: mdi-download
-        href: http://aria2.l.nicholaswilde.io:6880
+        href: https://aria2.l.nicholaswilde.io
     - Gitea:
         icon: si-gitea
         href: http://gitea.l.nicholaswilde.io:3000/
     - qBittorrent:
         icon: si-qbittorrent
-        href: http://qbittorrent.l.nicholaswilde.io:8090/
+        href: https://qbittorrent.l.nicholaswilde.io/
     - Authentik:
         icon: si-authentik
         href: http://authentik.l.nicholaswilde.io:9000/
     - MySpeed:
         icon: si-speedtest
-        href: http://myspeed.l.nicholaswilde.io:5216/
+        href: https://myspeed.l.nicholaswilde.io
     - Change Detection:
         icon: sh-changedetection.png
-        href: http://cd.l.nicholaswilde.io:5000/
+        href: https://cd.l.nicholaswilde.io/
     - Apt-Cacher NG:
         icon: mdi-package-variant
-        href: http://aptcache.l.nicholaswilde.io:3142/acng-report.html
+        href: https://aptcache.l.nicholaswilde.io/acng-report.html
     - OpenMediaVault:
         icon: si-openmediavault
         href: http://omv.l.nicholaswilde.io

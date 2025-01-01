@@ -8,7 +8,7 @@
           href: https://github.com/nicholaswilde?tab=stars
     - Proxmox VE Helper-Scripts:
         - icon: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/frontend/public/logo.png
-          href: https://community-scripts.github.io/ProxmoxVE/
+          href: https://community-scripts.github.io/ProxmoxVE/scripts
     - Proxmox VE Helper-Scripts Arm64:
         - icon: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/frontend/public/logo.png
           href: https://pimox-scripts.com/scripts
