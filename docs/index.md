@@ -20,6 +20,10 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
     All commands run on LXCs are being run as `root` and so `sudo` is not required.
 
+!!! note
+
+    I tend to use tteck's scripts to create LXCs and not run in Docker containers to reduce resources.
+
 ## ​:scales: License
 
 ​[​Apache License 2.0](../LICENSE)
