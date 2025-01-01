@@ -1,4 +1,4 @@
-# :simple-traefik: Traefik
+# :simple-traefikproxy: Traefik
 
 ## Config
 
