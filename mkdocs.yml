@@ -28,6 +28,7 @@ nav:
   - Raspberry Pi Zero W: rpi0.md
   - Raspberry Pi 2: rpi2.md
   - Raspberry Pi 4: rpi4.md
+  - Traefik: traefik.md
   - Setup:
     - Autofs: setup/autofs.md
     - Micro: setup/micro.md
