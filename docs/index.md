@@ -16,6 +16,10 @@ I also have an Intel NUC running Ubuntu server with Home Assistant and add ons i
 
 I also have a Raspberry Pi Zero W running and NTP server.
 
+!!! note
+
+    All commands run on LXCs are being run as `root` and so `sudo` is not required.
+
 ## ​:scales: License
 
 ​[​Apache License 2.0](../LICENSE)
