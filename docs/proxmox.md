@@ -56,7 +56,7 @@ tags:
 
 WIP
 
-## simple-authentik: Authentik
+## :simple-authentik: Authentik
 
 WIP
 
