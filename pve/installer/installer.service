@@ -1,0 +1,13 @@
+[Unit]
+Description=Quickly install pre-compiled binaries from Github releases
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/installer
+Restart=on-failure
+ExecReload=/bin/kill -USR1 $MAINPID
+StandardOutput=append:/var/log/installer.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
