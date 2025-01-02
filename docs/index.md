@@ -24,6 +24,10 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
     I tend to use [tteck's][2] [ProxmoxVE Helper Scripts][3] and [Proxmox arm64 Install Scripts][4] to create LXCs and not run in Docker containers to reduce resources.
 
+## Maintenance
+
+My homelab is setup and maintained using [Ansible][5], which is documented [here][6].
+
 ## ​:scales: License
 
 ​[​Apache License 2.0](../LICENSE)
@@ -36,3 +40,5 @@ I also have a Raspberry Pi Zero W running and NTP server.
 [2]: <https://github.com/tteck>
 [3]: <https://community-scripts.github.io/ProxmoxVE/>
 [4]: <https://pimox-scripts.com/>
+[5]: <>
+[6]: <https://github.com/nicholaswilde/homelab-playbooks>
