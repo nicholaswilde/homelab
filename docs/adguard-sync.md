@@ -7,7 +7,7 @@ tags:
 
 [AdGuard Home Sync][1] is used to sync settings between my [AdGuard Home][2] instances.
 
-It is installed only on the primary instance and is scheduled to run ince a day.
+It is installed only on the primary instance and is scheduled to run once a day, which is scheduled in the config file.
 
 ## :hammer_and_wrench: Installation
 
