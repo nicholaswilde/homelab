@@ -40,5 +40,5 @@ My homelab is setup and maintained using [Ansible][5], which is documented [here
 [2]: <https://github.com/tteck>
 [3]: <https://community-scripts.github.io/ProxmoxVE/>
 [4]: <https://pimox-scripts.com/>
-[5]: <>
+[5]: <https://www.redhat.com/en/ansible-collaborative>
 [6]: <https://github.com/nicholaswilde/homelab-playbooks>
