@@ -22,7 +22,7 @@
         icon: si-esphome
         href: https://esphome.l.nicholaswilde.io/
 - ARM64:
-    - Proxmox Arm64:
+    - Proxmox 02:
         icon: si-proxmox
         href: https://pve02.l.nicholaswilde.io
     - Chronograph:
@@ -81,7 +81,7 @@
     - UniFi:
         icon: si-ubiquiti
         href: https://unifi.l.nicholaswilde.io
-    - AdGuard 2:
+    - AdGuard02:
         icon: si-adguard
         href: http://adguard02.l.nicholaswilde.io/
 - Laptop:

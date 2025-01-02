@@ -1,5 +1,8 @@
 ---
 - Developer:
+    - Homelab:
+        - icon: mdi-home
+          href: https://nicholaswilde.io/homelab
     - Repositories:
         - icon: si-github
           href: https://github.com/nicholaswilde?tab=repositories
