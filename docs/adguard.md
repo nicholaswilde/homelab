@@ -7,7 +7,7 @@ tags:
 
 [AdGuard Home][1] (AGH) is used to filter ads and as my DNS rewites (assign hostnames to IP addresses).
 
-I have two instances of AGH running: one as an LXC and one on a Raspberry Pi 2.
+I have two instances of AGH running: one as an LXC and one on a bare metal Raspberry Pi 2.
 
 Syncing between the instances are done using [AdGuard Home Sync][2]
 
