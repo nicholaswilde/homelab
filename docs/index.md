@@ -4,7 +4,7 @@
 [![task](https://img.shields.io/badge/Task-Enabled-brightgreen?style=for-the-badge&logo=task&logoColor=white)](https://taskfile.dev/#/)
 [![ci](https://img.shields.io/github/actions/workflow/status/nicholaswilde/homelab/ci.yaml?label=ci&style=for-the-badge&branch=main)](https://github.com/nicholaswilde/homelab/actions/workflows/ci.yaml)
 
-A repo for my homelab setup
+A repo for my [homelab][7] setup>
 
 ## :frame_with_picture: Background
 
@@ -42,3 +42,4 @@ My homelab is setup and maintained using [Ansible][5], which is documented [here
 [4]: <https://pimox-scripts.com/>
 [5]: <https://www.redhat.com/en/ansible-collaborative>
 [6]: <https://github.com/nicholaswilde/homelab-playbooks>
+[7]: <https://linuxhandbook.com/homelab/>
