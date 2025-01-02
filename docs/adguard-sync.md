@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-adguard: Adguard Home Sync
 
-[AdGuard Home Sync][1] is used to sync settings between my AdGuard Home instances.
+[AdGuard Home Sync][1] is used to sync settings between my [AdGuard Home][2] instances.
 
 It is installed only on the primary instance and is scheduled to run ince a day.
 
@@ -48,3 +48,6 @@ WantedBy = multi-user.target
 ## :link: References
 
 - <https://github.com/bakito/adguardhome-sync>
+
+[1]: <https://github.com/bakito/adguardhome-sync>
+[2]: <./adguard.md>
