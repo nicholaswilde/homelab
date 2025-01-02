@@ -33,7 +33,8 @@ nav:
     - Autofs: setup/autofs.md
     - Micro: setup/micro.md
     - SOPS: setup/sops.md
-  
+    - Tags: setup/tags.md
+
 extra:
   social:
     - icon: fontawesome/solid/house
