@@ -21,14 +21,18 @@ nav:
   - aria2: aria2.md
   - BOINC: boinc.md
   - ChangeDetection: changedetection.md
+  - Gitea: gitea.md
   - Gridcoin: gridcoin.md
   - Homepage: homepage.md
+  - MySpeed: myspeed.md
   - OpenMediaVault: openmediavault.md
   - Proxmox: proxmox.md
+  - qBittorrent: qbittorrent.md
   - Raspberry Pi Zero W: rpi0.md
   - Raspberry Pi 2: rpi2.md
   - Raspberry Pi 4: rpi4.md
   - Traefik: traefik.md
+  - Unbound: unbound.md
   - Setup:
     - Autofs: setup/autofs.md
     - Micro: setup/micro.md
