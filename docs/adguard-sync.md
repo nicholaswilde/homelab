@@ -3,7 +3,11 @@ tags:
   - lxc
   - proxmox
 ---
-# :simple-adguard: AdguardHome sync
+# :simple-adguard: Adguard Home Sync
+
+[AdGuard Home Sync][1] is used to sync settings between my AdGuard Home instances.
+
+It is installed only on the primary instance and is scheduled to run ince a day.
 
 ## :hammer_and_wrench: Installation
 
