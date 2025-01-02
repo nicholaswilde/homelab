@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    installer:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`installer.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: installer  
+#endregion
+#region services
+  services:
+    installer:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.26:3000"
+        passHostHeader: true
+#endregion
