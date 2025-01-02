@@ -9,6 +9,10 @@ tags:
 
 ## Installation
 
+!!! example ""
+
+    :material-console-network: Default Port: `3000`
+
 ```shell
 (
   cd /usr/local/bin && \
