@@ -24,6 +24,7 @@ nav:
   - Gitea: gitea.md
   - Gridcoin: gridcoin.md
   - Homepage: homepage.md
+  - Installer: installer.md
   - MySpeed: myspeed.md
   - OpenMediaVault: openmediavault.md
   - Proxmox: proxmox.md
