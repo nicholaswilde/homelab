@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-adguard: AdGuard Home
 
-AdGuard Home (AGH) is used to filter ads and as my DNS rewites (assign hostnames to IP addresses).
+[AdGuard Home][1] (AGH) is used to filter ads and as my DNS rewites (assign hostnames to IP addresses).
 
 I have two instances of AGH running: one as an LXC and one on a Raspberry Pi 2.
 
@@ -44,4 +44,5 @@ rewrites:
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=adguard>
 - <https://pimox-scripts.com/scripts?id=adguard>
 
-- [2]: <./adguard-sync.md>
+[1]: <https://adguard.com/en/adguard-home/overview.html>
+[2]: <./adguard-sync.md>
