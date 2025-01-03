@@ -17,8 +17,12 @@ It is installed only on the primary instance and is scheduled to run once a day,
     
     :material-information-outline: Configuration path: `/opt/adguardhome-sync`
 
-```shell title="Download and decompress to tmp dir"
-bash -c "$(wget -qLO - https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/download.sh)"
+```shell title="Install or Update"
+(
+  [ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync && \
+  cd /opt/adguardhome-sync && \
+  curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash
+)
 ```
 
 ## :gear: Config
