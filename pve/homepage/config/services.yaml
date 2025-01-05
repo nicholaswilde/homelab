@@ -25,9 +25,6 @@
     - Proxmox 02:
         icon: si-proxmox
         href: https://pve02.l.nicholaswilde.io
-    - Chronograph:
-        icon: https://www.influxdata.com/wp-content/uploads/production-hl-1.svg
-        href: https://chronograph.l.nicholaswilde.io/
     - Grafana:
         icon: si-grafana
         href: https://grafana.l.nicholaswilde.io/
@@ -36,7 +33,7 @@
         href: https://prometheus.l.nicholaswilde.io/
     - InfluxDB:
         icon: si-influxdb
-        href: http://influxdb.l.nicholaswilde.io:8086/
+        href: https://influxdb.l.nicholaswilde.io/
     - Password Generator:
         icon: mdi-form-textbox-password
         href: https://passgen.l.nicholaswilde.io/
@@ -53,6 +50,12 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io
+    - Immich:
+        icon: si-immich
+        href: https://photos.l.nicholaswilde.io
+    - Vaultwarden:
+        icon: si-bitwarden
+        href: https://vault.l.nicholaswilde.io
     - Aria2:
         icon: mdi-download
         href: https://aria2.l.nicholaswilde.io
