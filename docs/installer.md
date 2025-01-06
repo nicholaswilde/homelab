@@ -3,30 +3,27 @@ tags:
   - lxc
   - proxmox
 ---
-# Installer
+# :inbox_tray: Installer
 
 [Installer][1] is used to quickly install pre-compiled binaries from Github releases.
 
-## Installation
+## :hammer_and_wrench: Installation
 
 !!! example ""
 
     :material-console-network: Default Port: `3000`
 
 ```shell
-(
-  cd /usr/local/bin && \
-  curl -s https://i.jpillora.com/installer | bash
-)
+curl -s https://i.jpillora.com/installer! | bash
 ```
 
-## Config
+## :gear: Config
 
-```shell
+```shell title="Install location"
 /usr/local/bin/installer
 ```
 
-```shell title="/etc/systemd/system/installer.service"
+```ini title="/etc/systemd/system/installer.service"
 [Unit]
 Description=Quickly install pre-compiled binaries from Github releases
 
@@ -42,40 +39,40 @@ StandardError=inherit
 WantedBy=multi-user.target
 ```
 
-## Usage
+## :pencil: Usage
 
-```sh
-# install <user>/<repo> from github
+```sh title="install user/repo from github"
 curl https://i.jpillora.com/<user>/<repo>@<release>! | bash
 ```
 
-```sh
-# search web for github repo <query>
+```sh title="search web for github repo query"
 curl https://i.jpillora.com/<query>! | bash
 ```
 
-*Or you can use* `wget -qO- <url> | bash`
+*Or you can use* `wget -qO- url | bash`
 
 **Path API**
 
-* `user` Github user (defaults to @jpillora, customisable if you [host your own](#host-your-own), searches the web to pick most relevant `user` when `repo` not found)
-* `repo` Github repository belonging to `user` (**required**)
-* `release` Github release name (defaults to the **latest** release)
-* `!` When provided, downloads binary directly into `/usr/local/bin/` (defaults to working directory)
+- `user` Github user (defaults to @jpillora, customisable if you host your own, searches the web to pick most relevant `user` when `repo` not found)
+- `repo` Github repository belonging to `user` (**required**)
+- `release` Github release name (defaults to the **latest** release)
+- `!` When provided, downloads binary directly into `/usr/local/bin/` (defaults to working directory)
 
 **Query Params**
 
-* `?type=` Force the return type to be one of: `script` or `homebrew`
-    * `type` is normally detected via `User-Agent` header
-    * `type=homebrew` is **not** working at the moment – see [Homebrew](#homebrew)
-* `?insecure=1` Force `curl`/`wget` to skip certificate checks
-* `?as=` Force the binary to be named as this parameter value
+- `?type=` Force the return type to be one of: `script` or `homebrew`
+    - `type` is normally detected via `User-Agent` header
+    - `type=homebrew` is **not** working at the moment – see [Homebrew](#homebrew)
+- `?insecure=1` Force `curl`/`wget` to skip certificate checks
+- `?as=` Force the binary to be named as this parameter value
 
-## Security
+## :shield: Security
 
-:warning: Although I promise [my instance of `installer`](https://i.jpillora.com/) is simply a copy of this repo - you're right to be wary of piping shell scripts from unknown servers, so you can host your own server [here](#host-your-own) or just leave off `| bash` and checkout the script yourself.
+:warning: Although I promise [my instance of `installer`](https://i.jpillora.com/) is simply a copy of this repo -
+you're right to be wary of piping shell scripts from unknown servers, so you can host your own server or just leave
+off `| bash` and checkout the script yourself.
 
-## Examples
+## :bulb: Examples
 
 * https://i.jpillora.com/serve
 * https://i.jpillora.com/cloud-torrent
