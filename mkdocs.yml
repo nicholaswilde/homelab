@@ -19,14 +19,17 @@ nav:
   - Adguard Home Sync: adguard-sync.md
   - Apt-Cacher NG: aptcacherng.md
   - aria2: aria2.md
+  - authentik: authentik.md
   - BOINC: boinc.md
   - ChangeDetection: changedetection.md
   - Gitea: gitea.md
   - Gridcoin: gridcoin.md
   - Homepage: homepage.md
+  - InfluxDB: influxdb.md
   - Installer: installer.md
   - MySpeed: myspeed.md
   - OpenMediaVault: openmediavault.md
+  - Prometheus: prometheus.md
   - Proxmox: proxmox.md
   - qBittorrent: qbittorrent.md
   - Raspberry Pi Zero W: rpi0.md

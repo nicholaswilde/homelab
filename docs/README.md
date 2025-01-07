@@ -24,6 +24,20 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 ---
 
+## :gear: Development
+
+New pages for this site can be created using [jinja2][3] and the `.template.md.tmpl` file.
+
+```shell title="Install"
+pipx install jinja2-cli
+```
+
+```shell title="Create new page"
+jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/new-app > new-app.md
+```
+
+---
+
 ## :balance_scale: License
 
 ​[​Apache License 2.0](../LICENSE)
@@ -34,5 +48,6 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 ​This project was started in 2024 by [​Nicholas Wilde​][2].
 
-[1]: https://nicholaswilde.io/homelab/
-[2]: https://github.com/nicholaswilde/
+[1]: <https://nicholaswilde.io/homelab/>
+[2]: <https://github.com/nicholaswilde/>
+[2]: <https://pypi.org/project/Jinja2/>

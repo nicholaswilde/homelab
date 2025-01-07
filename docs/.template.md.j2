@@ -1,0 +1,36 @@
+---
+tags:
+  - lxc
+  - vm
+  - proxmox
+---
+# :simple-{{ app_name | lower }}: {{ app_name }}
+
+## :hammer_and_wrench: Installation
+
+!!! example ""
+
+    :material-console-network: Default Port: `{{ app_port }}`
+{% if config_path is defined %}    
+    :material-information-outline: Configuration path: `{{ config_path }}`
+{% endif %}
+=== "AMD64"
+
+    ```shell
+    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
+    ```
+
+=== "ARM64"
+
+    ```shell
+    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+    ```
+
+## :gear: Config
+
+Make symlinks to repo.
+
+## :link: References
+
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ app_name | lower }}>
+- <https://pimox-scripts.com/scripts?id={{ app_name }}>
