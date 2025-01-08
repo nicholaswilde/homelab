@@ -29,7 +29,7 @@ tags:
 
 Make symlinks to repo.
 
-## :simple-traefik: Traefik
+## :simple-traefikproxy: Traefik
 
 WIP
 
