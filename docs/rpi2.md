@@ -1,6 +1,7 @@
 ---
 tags:
   - rpi
+  - bare-metal
 ---
 # :simple-raspberrypi: Raspberry Pi 2
 
