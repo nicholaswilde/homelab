@@ -1,6 +1,7 @@
 ---
 tags:
   - lxc
+  - proxmox
 ---
 # :material-cached: Apt-Cacher NG
 
