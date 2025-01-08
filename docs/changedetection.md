@@ -1,6 +1,7 @@
 ---
 tags:
   - lxc
+  - proxmox
 ---
 # ![title](https://raw.githubusercontent.com/selfhst/icons/400886b4f5cd552ef373e4550cb0be7344402cce/svg/changedetection.svg){ width="32" } Change Detection
 
