@@ -1,6 +1,7 @@
 ---
 tags:
   - vm
+  - proxmox
 ---
 # :simple-bitcoin: Gridcoin
 
