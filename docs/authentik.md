@@ -1,7 +1,6 @@
 ---
 tags:
   - lxc
-  - vm
   - proxmox
 ---
 # :simple-authentik: authentik
