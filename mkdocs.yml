@@ -17,24 +17,24 @@ nav:
   - Home: index.md
   - Apps:
       - Adguard Home Sync: apps/adguard-sync.md
-      - AdGuard Home: adguard.md
-      - Apt-Cacher NG: aptcacherng.md
-      - aria2: aria2.md
-      - authentik: authentik.md
-      - BOINC: boinc.md
-      - ChangeDetection: changedetection.md
-      - Gitea: gitea.md
-      - Gridcoin: gridcoin.md
-      - Homepage: homepage.md
-      - InfluxDB: influxdb.md
-      - Installer: installer.md
-      - MySpeed: myspeed.md
-      - OpenMediaVault: openmediavault.md
-      - Prometheus: prometheus.md
-      - Proxmox: proxmox.md
-      - qBittorrent: qbittorrent.md
-      - Traefik: traefik.md
-      - Unbound: unbound.md
+      - AdGuard Home: apps/adguard.md
+      - Apt-Cacher NG: apps/aptcacherng.md
+      - aria2: apps/aria2.md
+      - authentik: apps/authentik.md
+      - BOINC: apps/boinc.md
+      - ChangeDetection: apps/changedetection.md
+      - Gitea: apps/gitea.md
+      - Gridcoin: apps/gridcoin.md
+      - Homepage: apps/homepage.md
+      - InfluxDB: apps/influxdb.md
+      - Installer: apps/installer.md
+      - MySpeed: apps/myspeed.md
+      - OpenMediaVault: apps/openmediavault.md
+      - Prometheus: apps/prometheus.md
+      - Proxmox: apps/proxmox.md
+      - qBittorrent: apps/qbittorrent.md
+      - Traefik: apps/traefik.md
+      - Unbound: apps/unbound.md
   - Hardware:
       - Raspberry Pi Zero W: hardware/rpi0.md
       - Raspberry Pi 2: hardware/rpi2.md
