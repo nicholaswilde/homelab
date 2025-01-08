@@ -33,6 +33,18 @@ I also have a Raspberry Pi Zero W running an NTP server.
 
 My homelab is setup and maintained using [Ansible][5], which is documented [here][6].
 
+## :gear: Development
+
+New pages for this site can be created using [jinja2][3] and the `.template.md.tmpl` file.
+
+```shell title="Install"
+pipx install jinja2-cli
+```
+
+```shell title="Create new page"
+jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/new-app > new-app.md
+```
+
 ## ​:scales: License
 
 ​[​Apache License 2.0](../LICENSE)
