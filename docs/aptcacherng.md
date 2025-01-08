@@ -5,7 +5,7 @@ tags:
 ---
 # :material-cached: Apt-Cacher NG
 
-Apt-Cacher NG is used as a cache system for the debian based apt management system.
+[Apt-Cacher NG][1] is used as a cache system for the debian based apt management system.
 
 ## :hammer_and_wrench: Installation
 
@@ -57,3 +57,5 @@ http://aptcache.l.nicholaswilde.io:3142/acng-report.html
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=apt-cacher-ng>
 - <https://pimox-scripts.com/scripts?id=Apt-Cacher-NG>
+
+[1]: <https://www.unix-ag.uni-kl.de/~bloch/acng/>
