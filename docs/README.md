@@ -50,4 +50,4 @@ jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/
 
 [1]: <https://nicholaswilde.io/homelab/>
 [2]: <https://github.com/nicholaswilde/>
-[2]: <https://pypi.org/project/Jinja2/>
+[3]: <https://pypi.org/project/Jinja2/>
