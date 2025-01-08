@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-gitea: Gitea
 
-[Gitea][1] is used to have local git repos.
+[Gitea][1] is used to have local git repos. I typically use it as a backup (mirror) of my GitHub repos.
 
 ## :hammer_and_wrench: Installation
 
