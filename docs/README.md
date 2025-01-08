@@ -24,9 +24,9 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 ---
 
-## :gear: Development
+## :construction: Development
 
-New pages for this site can be created using [jinja2][3] and the `.template.md.tmpl` file.
+New pages for this site can be created using [jinja2][3] and the `.template.md.j2` file.
 
 ```shell title="Install"
 pipx install jinja2-cli

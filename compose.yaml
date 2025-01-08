@@ -1,0 +1,6 @@
+---
+include:
+  - docker-apps/redis/compose.yaml
+# services:
+#   redis:
+#     image: "redis:alpine"

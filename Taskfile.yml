@@ -5,6 +5,12 @@ vars:
   IMAGE: squidfunk/mkdocs-material
   PORT: 8000
 
+includes:
+  traefik:
+    taskfile: ./pve/traefik/Taskfile.yml
+  docs:
+    taskfile: ./docs/Taskfile.yml
+
 tasks:
   build:
     desc: Build documentation using Docker and mkdocs-material
