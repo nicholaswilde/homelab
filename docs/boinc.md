@@ -1,6 +1,7 @@
 ---
 tags:
   - vm
+  - proxmox
 ---
 # ![boinc](https://boinc.berkeley.edu/logo/boinc32.bmp){ width="32" } BOINC
 
