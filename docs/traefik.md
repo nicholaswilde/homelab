@@ -1,3 +1,8 @@
+---
+tags:
+  - proxmox
+  - lxc
+---
 # :simple-traefikproxy: Traefik
 
 ## :gear: Config
