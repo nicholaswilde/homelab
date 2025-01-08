@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-traefikproxy: Traefik
 
-Traefik is used as my reverse proxy.
+[Traefik][1] is used as my reverse proxy.
 
 ## :gear: Config
 
@@ -24,3 +24,4 @@ Traefik is used as my reverse proxy.
 ```shell
 tail -n10 /var/log/traefik/traefik.log
 ```
+[1]: <https://traefik.io/traefik/>
