@@ -5,6 +5,8 @@ tags:
 ---
 # :simple-traefikproxy: Traefik
 
+Traefik is used as my reverse proxy.
+
 ## :gear: Config
 
 !!! note
