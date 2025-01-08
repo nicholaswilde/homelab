@@ -5,6 +5,8 @@ tags:
 ---
 # :material-cached: Apt-Cacher NG
 
+Apt-Cacher NG is used as a cache system for the debian based apt management system.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
