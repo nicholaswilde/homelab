@@ -26,7 +26,7 @@ I also have a Raspberry Pi Zero W running an NTP server.
 
 !!! info
 
-    Feature or applications that I come across on the Internet and have not yet been incorporated into my homelab are tracked
+    Features or applications that I come across on the Internet and have not yet been incorporated into my homelab are tracked
     in the [repository issues][8].
 
 ## :hammer_and_wrench: Setup & Maintenance
