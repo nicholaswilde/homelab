@@ -5,11 +5,11 @@ tags:
 ---
 # :simple-homepage: Homepage
 
-Homepage is my landing page for my most frequented sites as well as my internal web pages.
+Homepage is my landing 🛬 page for my most frequented sites as well as my internal web pages.
 
 I don't show service statistics to keep things a bit cleaner and simple.
 
-I make this my 🏠 button as well as my new tab in Chrome so that it launches every time I launch Chrome, open a new tab, or click the home 🏠 button.
+I make this my 🏠 button as well as my new tab in Chrome so that it launches every time I launch Chrome, open a new tab, or click the home 🏠 button. I use the [New Tab Redirect][2] extension to redirect my new tab to Homepage.
 
 ## :hammer_and_wrench: Installation
 
@@ -39,3 +39,5 @@ Make symlinks to repo.
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
 - <https://pimox-scripts.com/scripts?id=Homepage>
+
+[2]: <https://chromewebstore.google.com/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna>
