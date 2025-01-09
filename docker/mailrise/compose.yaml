@@ -1,0 +1,11 @@
+---
+services:
+  mailrise:
+    image: yoryan/mailrise:latest
+    container_name: mailrise
+    restart: unless-stopped
+    ports:
+      - "8025:8025"  # Map container port 8025 to host port 8025
+    volumes:
+      - ./mailrise.yaml:/etc/mailrise.conf  # Mount your config file
+    command: -vvv /etc/mailrise.conf

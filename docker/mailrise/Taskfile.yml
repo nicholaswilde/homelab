@@ -1,0 +1,21 @@
+---
+version: '3'
+
+env:
+  APP_NAME: '{{ .APP_NAME }}'
+
+tasks:
+  up:
+    desc: Docker Up
+    cmds:
+      - docker compose up
+
+  foo:
+    desc: new
+    cmds:
+      - jinja2 -D app_name=${APP_NAME} .template.md.j2
+
+  default:
+    cmds:
+      - task -l
+    silent: true

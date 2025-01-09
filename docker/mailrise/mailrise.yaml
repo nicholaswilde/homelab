@@ -1,0 +1,14 @@
+---
+configs:
+  email:
+    urls:
+      - mailto://email@gmail.com
+    mailrise:
+      title_template: "Urgent: ${body}"
+      body_template: "${body}"
+      body_format: text
+
+# smtp:
+#   auth:
+#     basic:
+#       username: password
