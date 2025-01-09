@@ -5,6 +5,12 @@ tags:
 ---
 # :simple-homepage: Homepage
 
+Homepage is my landing page for my most frequented sites as well as my internal web pages.
+
+I don't show service statistics to keep things a bit cleaner and simple.
+
+I make this my 🏠 button as well as my new tab in Chrome so that it launches every time I launch Chrome, open a new tab, or click the home 🏠 button.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
