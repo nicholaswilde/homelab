@@ -5,7 +5,7 @@ tags:
 ---
 # ![unbound][1]{ width="32" } Unbound
 
-[Unbound][2] is used as a recursive DNS resolver.
+[Unbound][2] is used as a recursive DNS resolver and cacher.
 
 ## :hammer_and_wrench: Installation
 
