@@ -60,6 +60,10 @@ WIP
 
 WIP
 
+## :material-harddisk-plus: Resize VM Disks
+
+WIP
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
