@@ -42,7 +42,7 @@ pipx install jinja2-cli
 ```
 
 ```shell title="Create new page"
-jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/new-app > new-app.md
+jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > new-app.md
 ```
 
 ## ​:scales: License
