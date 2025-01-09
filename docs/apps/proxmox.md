@@ -4,6 +4,10 @@ tags:
 ---
 # :simple-proxmox: Proxmox
 
+[Proxmox][1] is the hypervisor that I am using on most of my hardware.
+
+I am using it over Portainer and kubernetes for ease of use and feature set.
+
 ## :hammer_and_wrench: Post Installation
 
 !!! example ""
@@ -68,3 +72,5 @@ WIP
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
 - <https://pimox-scripts.com/scripts?id=Homepage>
+
+- [1]: <https://www.proxmox.com/en/>
