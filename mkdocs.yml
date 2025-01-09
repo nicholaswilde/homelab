@@ -25,7 +25,7 @@ nav:
       - ChangeDetection: apps/changedetection.md
       - Gitea: apps/gitea.md
       - Gridcoin: apps/gridcoin.md
-      - Homepage: apps/homepage.md
+      - homepage: apps/homepage.md
       - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
       - MySpeed: apps/myspeed.md
