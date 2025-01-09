@@ -4,7 +4,7 @@ tags:
 ---
 # :key: SOPS
 
-## Installation
+## :hammer_and_wrench: Installation
 
 ```shell
 brew install sops
