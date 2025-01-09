@@ -4,6 +4,10 @@ tags:
 ---
 # :fontawesome-solid-hard-drive: Autofs
 
+## :hammer_and_wrench: Installation
+
+WIP
+
 ## :material-laptop: Client
 
 ```shell
