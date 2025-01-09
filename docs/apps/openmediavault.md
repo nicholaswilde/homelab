@@ -5,6 +5,8 @@ tags:
 ---
 # :simple-openmediavault: OpenMediaVault
 
+[OpenMediaVault][3] is my NAS that serves both NFS and SAMBA shares to my network. It runs on VM on the system that is directly connected to my external hard drive.
+
 ## :hammer_and_wrench: Installation
 
 - [Download][2] ISO into Proxmox
@@ -152,3 +154,4 @@ showmount -e 192.168.2.19
 
 [1]: <https://www.reddit.com/r/OpenMediaVault/s/vgdGfywcij>
 [2]: <https://www.openmediavault.org/?page_id=77>
+[3]: <https://www.openmediavault.org/>
