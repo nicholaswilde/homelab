@@ -4,6 +4,12 @@ tags:
 ---
 # :simple-microeditor: Micro
 
+## :hammer_and_wrench: Installation
+
+WIP
+
+## :gear: Config
+
 ```shell
 # Ctrl + e
 set colorscheme twilight
