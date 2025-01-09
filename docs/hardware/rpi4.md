@@ -183,7 +183,7 @@ Bridge Ports: eth0
 
 Where `eth0` is the current existing network interface
 
-## Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Version' value from '' to '10.0' Error][5]
+## [Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Version' value from '' to '10.0' Error][5]
 
 ``` shell
 apt-get --allow-releaseinfo-change update
