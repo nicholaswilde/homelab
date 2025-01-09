@@ -98,6 +98,7 @@ theme:
 plugins:
   - search
   - tags
+      tags_hierarchy: true
   - minify:
       minify_html: true
 
