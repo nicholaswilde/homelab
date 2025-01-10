@@ -2,7 +2,7 @@
 tags:
  - setup
 ---
-# :key: Task
+# :simple-task: Task
 
 [Task][1] is used to help automate tasks, such as `make`.
 
