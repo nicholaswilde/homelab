@@ -6,7 +6,9 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-WIP
+```shell
+apt install micro
+```
 
 ## :gear: Config
 
