@@ -1,20 +1,39 @@
 ---
 version: '3'
 
-env:
-  APP_NAME: '{{ .APP_NAME }}'
+includes:
+  lib:
+    taskfile: ../Taskfile.yml
+    flatten: true
 
 tasks:
+  # update-d:
+  #   desc: Update running containers
+  #   dir: .
+  #   cmds:
+  #     - task -t ../Taskfile.yml update-d
+  #     # - docker compose up --force-recreate --build -d
+  #     # - docker image prune -a -f
+
+  update:
+    desc: Update running containers
+    cmds:
+      - docker compose up --force-recreate --build
+      - docker image prune -a -f
   up:
     desc: Docker Up
     cmds:
       - docker compose up
-
-  foo:
-    desc: new
+  upgrade:
+    desc: upgrade
     cmds:
-      - jinja2 -D app_name=${APP_NAME} .template.md.j2
-
+      - git pull origin
+      - task: update
+  upgrade-d:
+    desc: upgrade
+    cmds:
+      - git pull origin
+      - task: update
   default:
     cmds:
       - task -l

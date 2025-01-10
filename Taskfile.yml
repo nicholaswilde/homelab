@@ -8,8 +8,13 @@ vars:
 includes:
   traefik:
     taskfile: ./pve/traefik/Taskfile.yml
+    dir: ./pve/traefik
   docs:
     taskfile: ./docs/Taskfile.yml
+    dir: ./docs
+  mailrise:
+    taskfile: ./docker/mailrise/Taskfile.yml
+    dir: ./docker/mailrise
 
 tasks:
   build:

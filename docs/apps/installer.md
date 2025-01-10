@@ -62,15 +62,9 @@ curl https://i.jpillora.com/<query>! | bash
 
 - `?type=` Force the return type to be one of: `script` or `homebrew`
     - `type` is normally detected via `User-Agent` header
-    - `type=homebrew` is **not** working at the moment – see [Homebrew](#homebrew)
+    - `type=homebrew` is **not** working at the moment
 - `?insecure=1` Force `curl`/`wget` to skip certificate checks
 - `?as=` Force the binary to be named as this parameter value
-
-## :shield: Security
-
-:warning: Although I promise [my instance of `installer`](https://i.jpillora.com/) is simply a copy of this repo -
-you're right to be wary of piping shell scripts from unknown servers, so you can host your own server or just leave
-off `| bash` and checkout the script yourself.
 
 ## :bulb: Examples
 

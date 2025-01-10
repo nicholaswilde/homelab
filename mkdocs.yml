@@ -98,7 +98,6 @@ theme:
 plugins:
   - search
   - tags:
-      tags_hierarchy: true
       tags_file: setup/tags.md
   - minify:
       minify_html: true

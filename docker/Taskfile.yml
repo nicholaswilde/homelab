@@ -1,0 +1,9 @@
+---
+version: '3'
+
+tasks:
+  update-d:
+    # desc: Update running containers
+    cmds:
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f

@@ -47,7 +47,7 @@ jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/op
 
 ## ​:scales: License
 
-​[​Apache License 2.0](../LICENSE)
+​[​Apache License 2.0](./LICENSE)
 
 ## ​:pencil:​Author
 

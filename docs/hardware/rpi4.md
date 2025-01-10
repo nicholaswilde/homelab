@@ -204,6 +204,6 @@ apt-get --allow-releaseinfo-change update
 
 [1]: <https://www.raspberrypi.com/products/raspberry-pi-4-model-b/>
 [3]: <https://www.raspberrypi.com/software/operating-systems/>
-[2]: <./proxmox.md>
+[2]: <../apps/proxmox.md>
 [4]: <https://community-scripts.github.io/ProxmoxVE/>
 [5]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
