@@ -45,6 +45,7 @@ nav:
       - Autofs: setup/autofs.md
       - Micro: setup/micro.md
       - SOPS: setup/sops.md
+      - Task: setup/task.md
       - Tags: setup/tags.md
 
 extra:
