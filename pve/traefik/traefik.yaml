@@ -20,6 +20,8 @@ entryPoints:
         certResolver: cloudflare
   traefik:
     address: ':8080'
+  mailsecure:
+    address: ':465'
 
 certificatesResolvers:
   cloudflare:

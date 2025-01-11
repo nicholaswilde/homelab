@@ -2,6 +2,18 @@
 version: '3'
 
 tasks:
+  watch:
+    desc: Watch the log file
+    cmds:
+      - tail -f /var/log/traefik/traefik.log
+  restart:
+    desc: Restart Traefik
+    cmds:
+      - service traefik restart
+  status:
+    desc: View the Traefik service status
+    cmds:
+      - service traefik status
   foo:
     desc: foo
     cmds:
