@@ -56,6 +56,24 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
     bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
     ```
 
+## :material-harddisk-plus: Datacenter NFS Volumes
+
+!!! example ""
+
+    GUI: `Datacenter -> Storage -> Add -> NFS`
+
+!!! example "pve-backups"
+
+    ID: `pve-backups`
+    Server: `omve.l.nicholaswilde.io`
+    Export: `/export/pve-backups`
+
+!!! example "pve-shared"
+
+    ID: `pve-shared`
+    Server: `omve.l.nicholaswilde.io`
+    Export: `/export/pve-shared`
+
 ## :material-ip-network: Static IP
 
 WIP
