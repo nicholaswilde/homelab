@@ -7,23 +7,37 @@ includes:
     flatten: true
 
 tasks:
-  # update-d:
-  #   desc: Update running containers
-  #   dir: .
-  #   cmds:
-  #     - task -t ../Taskfile.yml update-d
-  #     # - docker compose up --force-recreate --build -d
-  #     # - docker image prune -a -f
-
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+  test-remote:
+    desc: Send a test email to remote address
+    cmds:
+      - 'swaks --to email@mailrise.xyz --server smtp.l.nicholaswilde.io:8025 --body "this is the body" --header "Subject: subject"'
+  test:
+    desc: Send a test email
+    cmds:
+      - "swaks --to email@mailrise.xyz --server localhost --port 8025"
   update:
     desc: Update running containers
     cmds:
       - docker compose up --force-recreate --build
       - docker image prune -a -f
+  # update-d:
+    # desc: Update running containers
+    # cmds:
+      # - docker compose up --force-recreate --build -d
+      # - docker image prune -a -f
+
   up:
     desc: Docker Up
     cmds:
       - docker compose up
+  up-d:
+    desc: Docker Up in background
+    cmds:
+      - docker compose up -d
   upgrade:
     desc: upgrade
     cmds:
@@ -33,7 +47,7 @@ tasks:
     desc: upgrade
     cmds:
       - git pull origin
-      - task: update
+      - task: update-d
   default:
     cmds:
       - task -l

@@ -2,9 +2,9 @@
 configs:
   email:
     urls:
-      - mailto://email@gmail.com
+      - !env_var EMAIL_URL
     mailrise:
-      title_template: "Urgent: ${body}"
+      title_template: "${subject}"
       body_template: "${body}"
       body_format: text
 
