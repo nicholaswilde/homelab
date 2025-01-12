@@ -20,8 +20,8 @@ entryPoints:
         certResolver: cloudflare
   traefik:
     address: ':8080'
-  mailsecure:
-    address: ':465'
+  # mailsecure:
+    # address: ':465'
 
 certificatesResolvers:
   cloudflare:
@@ -54,7 +54,7 @@ api:
 log:
   filePath: /var/log/traefik/traefik.log
   format: common
-  level: DEBUG
+  level: INFO
 
 accessLog:
   filePath: /var/log/traefik/traefik-access.log
