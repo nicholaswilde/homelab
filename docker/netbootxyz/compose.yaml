@@ -1,0 +1,17 @@
+---
+services:
+  netbootxyz:
+    image: ghcr.io/netbootxyz/netbootxyz:0.7.3-nbxyz3
+    container_name: netbootxyz
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # Web configuration interface port
+      - "69:69/udp"   # TFTP port
+      - "8080:80"    # Optional, maps to NGINX_PORT
+    environment:
+      - MENU_VERSION=2.0.76  # Optional
+      - NGINX_PORT=80        # Optional
+      - WEB_APP_PORT=3000    # Optional
+    volumes:
+      - ./config:/config  # Optional
+      - ./assets:/assets  # Optional
