@@ -88,9 +88,9 @@
         icon: si-adguard
         href: http://adguard02.l.nicholaswilde.io/
 - Laptop:
-    - Proxmox:
+    - Proxmox 03:
         icon: si-proxmox
-        href: https://pve00.l.nicholaswilde.io
+        href: https://pve03.l.nicholaswilde.io
     - Proxmox Backup:
         icon: si-proxmox
         href: https://pbs.nicholaswilde.io:8007/
