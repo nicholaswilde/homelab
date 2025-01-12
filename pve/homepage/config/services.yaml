@@ -46,6 +46,9 @@
     - Traefik:
         icon: si-traefikproxy
         href: https://traefik.l.nicholaswilde.io/
+    - netboot.xyz:
+        icon: sh-netboot-xyz-light.png
+        href: https://netboot.l.nicholaswilde.io/
 - AMD:
     - Proxmox 01:
         icon: si-proxmox
@@ -94,6 +97,3 @@
     - Proxmox Backup:
         icon: si-proxmox
         href: https://pbs.nicholaswilde.io:8007/
-    - netboot.xyz:
-        icon: sh-netboot-xyz-light.png
-        href: http://192.168.1.194:3000/
