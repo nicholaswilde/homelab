@@ -4,7 +4,11 @@ tags:
 ---
 # :key: SOPS
 
-SOPS is used to encrypt and decrypt secrets in my homelab.
+[SOPS][1] is used to encrypt and decrypt secrets in my homelab.
+
+Typically, my secrets are kept in `.env` files that are read as environmental variables and then used my configs.
+
+Age is my preferred encryption of choice.
 
 ## :hammer_and_wrench: Installation
 
@@ -18,3 +22,5 @@ brew install sops
 [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
 lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/age/keys.txt
 ```
+
+[1]: <https://getsops.io/>
