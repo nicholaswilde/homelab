@@ -66,7 +66,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
     ID: `pve-backups`
 
-    Server: `omve.l.nicholaswilde.io`
+    Server: `omv.l.nicholaswilde.io`
     
     Export: `/export/pve-backups`
 
@@ -74,7 +74,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
     ID: `pve-shared`
 
-    Server: `omve.l.nicholaswilde.io`
+    Server: `omv.l.nicholaswilde.io`
 
     Export: `/export/pve-shared`
 
