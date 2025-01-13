@@ -7,6 +7,8 @@ tags:
 
 [Installer][1] is used to quickly install pre-compiled binaries from Github releases.
 
+For setup apps that have are not supported by apt package manager, such as task,  this method is used to install and update them. It makes it easier to install and update the apps without having to manually download them or install a another package system in the container, such as npm, pip, or homebrew.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
