@@ -8,7 +8,7 @@ tags:
 
 Typically, my secrets are kept in `.env` files that are read as environmental variables and then used my configs.
 
-Age is my preferred encryption of choice.
+[age][2] is my encryption of choice.
 
 ## :hammer_and_wrench: Installation
 
@@ -24,3 +24,4 @@ lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/a
 ```
 
 [1]: <https://getsops.io/>
+[2]: <https://github.com/FiloSottile/age>
