@@ -18,7 +18,7 @@ brew install sops
 
 ## :gear: Config
 
-```shell
+```shell title="keys"
 [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
 lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/age/keys.txt
 ```
