@@ -4,6 +4,8 @@ tags:
 ---
 # :key: SOPS
 
+SOPS is used to encrypt and decrypt secrets in my homelab.
+
 ## :hammer_and_wrench: Installation
 
 ```shell
