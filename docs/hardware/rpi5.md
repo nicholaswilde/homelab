@@ -1,7 +1,7 @@
 ---
 tags:
   - rpi
-  - bare-metal
+  - proxmox
 ---
 # :simple-raspberrypi: Raspberry Pi 5 16GB
 
@@ -21,5 +21,5 @@ See [Raspberry Pi 4 8GB][4].
 
 [1]: <../apps/adguard.md>
 [2]: <https://www.raspberrypi.com/software/>
-[3]: <https://www.raspberrypi.com/products/raspberry-pi-2-model-b/>
+[3]: <https://www.raspberrypi.com/products/raspberry-pi-5/>
 [4]: <./rpi4.md>
