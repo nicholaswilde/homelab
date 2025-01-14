@@ -11,6 +11,10 @@ tasks:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
+  decrypt:
+    desc: Decript .env using SOPS
+    cmds:
+     - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   test-remote:
     desc: Send a test email to remote address
     cmds:

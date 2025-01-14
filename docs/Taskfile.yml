@@ -5,10 +5,10 @@ env:
   APP_NAME: '{{ .APP_NAME }}'
 
 tasks:
-  foo:
-    desc: new
+  new:
+    desc: Create a new file
     cmds:
-      - jinja2 -D app_name=${APP_NAME} .template.md.j2
+      - jinja2 -D app_name={{shellQuote .APP_NAME }} .template.md.j2
 
   default:
     cmds:

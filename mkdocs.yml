@@ -38,6 +38,7 @@ nav:
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
   - Hardware:
+      - Intel NUC: hardware/nuc.md
       - Raspberry Pi Zero W: hardware/rpi0.md
       - Raspberry Pi 2: hardware/rpi2.md
       - Raspberry Pi 4: hardware/rpi4.md
