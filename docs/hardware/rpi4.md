@@ -21,7 +21,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxrox][2] server.
   apt full-upgrade && \
   apt install ifupdown2 && \
   apt install proxmox-ve postfix open-iscsi && \
-  sudo sed -i 's/^#?\s*PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+  sed -i 's/^#?\s*PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 }
 ```
 
