@@ -11,7 +11,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 !!! example ""
 
-    OS: [Rasbperry Pi OS (Legacy) Lite][2]
+    OS: [Rasbperry Pi OS Lite (64-bit)][2]
 
 ## :simple-proxmox: Proxmox
 
