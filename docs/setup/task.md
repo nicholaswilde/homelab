@@ -9,7 +9,7 @@ tags:
 ## :hammer_and_wrench: Installation
 
 ```shell
-curl https://installer.l.nicholaswilde.io/go-task/task | bash
+curl https://installer.l.nicholaswilde.io/go-task/task! | bash
 ```
 
 ## :gear: Config
