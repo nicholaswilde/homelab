@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-raspberrypi: Raspberry Pi 4 8GB
 
-I use my [Raspberry Pi 4 8GB][1] as another [Proxrox][2] server.
+I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 ### :clipboard: TL;DR
 
