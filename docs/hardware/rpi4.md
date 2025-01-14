@@ -31,6 +31,8 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
     OS: [Raspberry Pi OS Lite (64-bit)][3]
 
+    RAM: `8GB`
+
 ## :simple-proxmox: Proxmox
 
 ```shell
