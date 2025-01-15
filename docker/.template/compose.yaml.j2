@@ -1,0 +1,11 @@
+---
+
+services:
+  {{ APP_NAME | lower }}:
+    container_name: {{ APP_NAME | lower }}
+    image: ghcr.io/{{ USER_NAME }}/{{ APP_NAME | lower }}:1.0.0
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    restart: always
