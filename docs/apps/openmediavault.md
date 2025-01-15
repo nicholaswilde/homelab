@@ -118,23 +118,32 @@ omv-firstaid
 apt install autofs
 ```
 
-```ini title="/etc/auto.master"
-+auto.master
-/mnt /etc/auto.nfs --ghost --timeout=60
-```
+=== "Automated"
 
-```shell
-echo "/mnt /etc/auto.nfs --ghost --timeout=60" | tee -a /etc/auto.master
-```
+    ```shell
+    echo "/mnt /etc/auto.nfs --ghost --timeout=60" | tee -a /etc/auto.master
+    ```
 
-```ini title="/etc/auto.nfs"
-storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
-```
+=== "Manual"
 
-```shell
-echo "storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage" | tee /etc/auto.nfs
-```
+    ```ini title="/etc/auto.master"
+    +auto.master
+    /mnt /etc/auto.nfs --ghost --timeout=60
+    ```
 
+
+
+=== "Automated"
+
+    ```shell
+    echo "storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage" | tee /etc/auto.nfs
+    ```
+
+=== "Manual"
+
+    ```ini title="/etc/auto.nfs"
+    storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
+    ```
 
 ```shell title="Test"
 showmount -e 192.168.2.19
