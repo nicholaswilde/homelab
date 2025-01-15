@@ -118,6 +118,8 @@ omv-firstaid
 apt install autofs
 ```
 
+#### /etc/auto.master
+
 === "Automated"
 
     ```shell
@@ -131,7 +133,7 @@ apt install autofs
     /mnt /etc/auto.nfs --ghost --timeout=60
     ```
 
-
+#### /etc/auto.nfs
 
 === "Automated"
 
