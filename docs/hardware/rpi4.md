@@ -85,9 +85,17 @@ kernel=kernel8.img # to end of line
 
 Is the container summary memory usage and swap usage always shows `0`?
 
-```shell title="/boot/firmware/cmdline.txt"
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-```
+=== "Automatic"
+
+    ```shell
+    sed -i '1s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' cmdline.txt
+    ```
+
+=== "Manual"
+
+    ```shell title="/boot/firmware/cmdline.txt"
+    cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+    ```
 
 Unmount SD card, plug into the Raspberry Pi and boot
 
