@@ -25,6 +25,16 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 }
 ```
 
+## :fontawesome-solid-user-plus: Generate User Before Boot
+
+```shell
+echo 'mypassword' | openssl passwd -6 -stdin | sudo tee -a /boot/userconf.txt
+# /boot/userconf.txt
+user:password-hash
+# Enable ssh
+touch /boot/ssh
+```
+
 ## :gear: Config
 
 !!! example ""
