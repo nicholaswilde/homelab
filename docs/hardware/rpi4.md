@@ -206,7 +206,7 @@ Finally, you can connect to the admin web interface (`https://youripaddress:8006
 
 #### Missing `vmbr0`
 
-Create vmbr0 network interface in GUI
+Create `vmbr0` network interface in GUI
 
 ```
 <node> -> Network -> Create
