@@ -83,9 +83,9 @@ kernel=kernel8.img # to end of line
 
 #### :material-memory: CT Notes
 
-Is the container summary memory usage and swap usage always shows 0?
+Is the container summary memory usage and swap usage always shows `0`?
 
-```shell title=""/boot/firmware/cmdline.txt"
+```shell title="/boot/firmware/cmdline.txt"
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
 
@@ -95,7 +95,7 @@ Unmount SD card, plug into the Raspberry Pi and boot
 
 Log into the Raspberry Pi using SSH.
 
-Switch to root user. Default password is blank for Raspberry Pi OS.
+Switch to `root` user. Default password is blank for Raspberry Pi OS.
 
 ```shell
 sudo su root
