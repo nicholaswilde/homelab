@@ -25,16 +25,6 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 }
 ```
 
-## :fontawesome-solid-user-plus: Generate User Before Boot
-
-```shell
-echo 'mypassword' | openssl passwd -6 -stdin | sudo tee -a /boot/userconf.txt
-# /boot/userconf.txt
-user:password-hash
-# Enable ssh
-touch /boot/ssh
-```
-
 ## :gear: Config
 
 !!! example ""
@@ -45,19 +35,65 @@ touch /boot/ssh
 
 ## :simple-proxmox: Proxmox
 
-```shell
-sudo apt install ca-certificates curl gnupg lsb-release ntp htop zip unzip gnupg apt-transport-https ca-certificates net-tools ncdu apache2-utils ssh-import-id git build-essential
+### Setup [Raspberry Pi OS][3].
+
+```shell title="Create a tmp dir"
+cd "$(mktemp -d)"
 ```
 
-```shell
+```shell title="Download image"
+wget https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz -O 2024-11-19-raspios-bookworm-arm64-lite.img.xz
+```
+
+```shell title="Extract image"
+xz -d 2024-11-19-raspios-bookworm-arm64-lite.img.xz
+```
+
+```shell title="Write image to SD card"
+dd if=2024-11-19-raspios-bookworm-arm64-lite.img /dev/mmcblk0 status=progress
+```
+
+
+```shell title="Mount boot partition"
 (
-  adduser nicholas &&
-  usermod -G adm,cdrom,lpadmin,sudoers,sambashare,dip,plugdev user123 &&
-  su nicholas
+  [ -d /media/sd ] || mkdir /media/sd
+  sudo mount -a /dev/mmcblk0p1 /media/sd
 )
 ```
 
-Install [Raspberry Pi OS][3].
+```shell title="Change to boot partition"
+cd /media/sd
+```
+
+```shell title="/boot/userconf.txt"
+echo 'nicholas:' "$(openssl passwd -6)" | sed 's/ //g' | sudo tee -a userconf.txt
+```
+
+```shell title="Enable ssh /boot/ssh"
+touch ssh
+```
+
+#### :page_facing_up: Kernel Page Size
+
+You should use the Kernel with 4K pagesize
+
+```shell title="/boot/firmware/config.txt"
+kernel=kernel8.img # to end of line
+```
+
+#### :material-memory: CT Notes
+
+Is the container summary memory usage and swap usage always shows 0?
+
+```shell title=""/boot/firmware/cmdline.txt"
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+```
+
+Unmount SD card, plug into the Raspberry Pi and boot
+
+### Proxmox Installation
+
+Log into the Raspberry Pi using SSH.
 
 Switch to root user. Default password is blank for Raspberry Pi OS.
 
@@ -84,6 +120,10 @@ Make sure that you have configured one of the following addresses in `/etc/hosts
 !!! note
 
     This also means removing the address `127.0.1.1` that might be present as default.
+
+```shell title="Get IP address"
+hostname -I | awk '{print $1}'
+```
 
 For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`, then your `/etc/hosts` file could look like:
 
@@ -161,23 +201,6 @@ PermitRootLogin yes
 
 Finally, you can connect to the admin web interface (`https://youripaddress:8006`).
 
-#### :page_facing_up: Kernel Page Size
-
-You should use the Kernel with 4K pagesize
-
-```shell
-# /boot/firmware/config.txt
-kernel=kernel8.img # to end of line
-```
-
-#### :material-memory: CT Notes
-
-Is the container summary memory usage and swap usage always shows 0?
-
-```shell
-# /boot/firmware/cmdline.txt
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-```
 
 ### :material-network: Network
 

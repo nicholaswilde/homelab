@@ -43,12 +43,13 @@ nav:
       - Raspberry Pi 2: hardware/rpi2.md
       - Raspberry Pi 4: hardware/rpi4.md
       - Raspberry Pi 5: hardware/rpi5.md
-  - Setup:
-      - Autofs: setup/autofs.md
-      - Micro: setup/micro.md
-      - SOPS: setup/sops.md
-      - Task: setup/task.md
-      - Tags: setup/tags.md
+  - Tools:
+      - Autofs: tools/autofs.md
+      - Micro: tools/micro.md
+      - SOPS: tools/sops.md
+      - Task: tools/task.md
+  - Reference:
+      - Tags: reference/tags.md
 
 extra:
   social:
@@ -101,7 +102,7 @@ theme:
 plugins:
   - search
   - tags:
-      tags_file: setup/tags.md
+      tags_file: reference/tags.md
   - minify:
       minify_html: true
 
