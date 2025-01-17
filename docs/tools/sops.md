@@ -1,6 +1,6 @@
 ---
 tags:
- - setup
+ - tool
 ---
 # :key: SOPS
 
