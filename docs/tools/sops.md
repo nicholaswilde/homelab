@@ -18,9 +18,22 @@ brew install sops
 
 ## :gear: Config
 
-```shell title="keys"
+### Keys
+
+=== "SCP"
+
+    ```shell
+    (
+      [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
+      scp nicholas@192.168.2.250/home/nicholas/.config/sops/age/keys.txt ~/.config/sops/age/
+    )
+    ```
+
+=== "LastPass"
+
+```shell
 (
-  [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age && \
+  [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
   lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/age/keys.txt
 )
 ```
