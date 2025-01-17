@@ -39,7 +39,7 @@ apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmai
 mailto://email:passkey@gmail.com
 ```
 
-## Update
+## :material-update: Update
 
 ```shell
 (

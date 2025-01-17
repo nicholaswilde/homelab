@@ -4,9 +4,14 @@ tags:
 ---
 # :fontawesome-solid-hard-drive: Autofs
 
+[Autofs][1] is used to automatically connect to my NFS storage on my
+containers/VMs so that they can share storage.
+
 ## :hammer_and_wrench: Installation
 
-WIP
+```shell
+apt install autofs
+```
 
 ## :material-laptop: Client
 
@@ -19,3 +24,7 @@ WIP
   service autofs status
 )
 ```
+
+## :link: References
+
+[1]: https://help.ubuntu.com/community/Autofs

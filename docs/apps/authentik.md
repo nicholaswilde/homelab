@@ -5,20 +5,27 @@ tags:
 ---
 # :simple-authentik: authentik
 
+[authentik][1] is used as a single sign on provider. This is so I don't have different logins for
+different applications.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
 
     :material-console-network: Default Port: `9000`
 
-```shell title="AMD64"
-bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
-```
+=== "AMD64"
+
+    ```shell
+    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
+    ```
 
 ## :gear: Config
 
-Make symlinks to repo.
+WIP
 
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=authentik>
+
+[1]: <https://goauthentik.io/>
