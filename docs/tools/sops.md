@@ -38,7 +38,7 @@ brew install sops
     )
     ```
 
-## Usage
+## :pencil: Usage
 
 ### :lock: Encrypt
 
