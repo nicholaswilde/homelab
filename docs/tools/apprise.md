@@ -12,7 +12,13 @@ apt install apprise
 
 ## :gear: Config
 
-WIP
+```shell title="Test"
+apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
+```
+
+```shell title="Notification URL List"
+mailto://email:passkey@gmail.com
+```
 
 ## :link: References
 
