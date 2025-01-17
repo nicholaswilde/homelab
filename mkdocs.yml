@@ -46,7 +46,7 @@ nav:
   - Tools:
       - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
-      - Micro: tools/micro.md
+      - micro: tools/micro.md
       - SOPS: tools/sops.md
       - Task: tools/task.md
   - Reference:
