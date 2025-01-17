@@ -44,6 +44,7 @@ nav:
       - Raspberry Pi 4: hardware/rpi4.md
       - Raspberry Pi 5: hardware/rpi5.md
   - Tools:
+      - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
       - Micro: tools/micro.md
       - SOPS: tools/sops.md
