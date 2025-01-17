@@ -2,7 +2,7 @@
 tags:
   - tool
 ---
-# apprise
+# :mailbox: apprise
 
 ## :hammer_and_wrench: Installation
 
