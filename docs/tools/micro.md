@@ -4,6 +4,8 @@ tags:
 ---
 # :simple-microeditor: Micro
 
+[Micro][1] is my editor of choice due to its modernity.
+
 ## :hammer_and_wrench: Installation
 
 ```shell
@@ -29,3 +31,7 @@ apt install micro
     set tabsize 2
     set tabtospaces "true"
     ```
+
+## :link: References
+
+[1]: <>
