@@ -4,6 +4,8 @@ tags:
 ---
 # :mailbox: apprise
 
+[apprise][1] is used as a notification app that supports multiple protocols and integrations.
+
 ## :hammer_and_wrench: Installation
 
 ```shell
@@ -24,3 +26,4 @@ mailto://email:passkey@gmail.com
 
 - <https://github.com/caronc/apprise>
 
+[1]: <https://github.com/caronc/apprise>
