@@ -38,6 +38,20 @@ brew install sops
     )
     ```
 
+## Usage
+
+### :lock: Encrypt
+
+```shell
+sops -e .env > .env.enc
+```
+
+### :closed_lock_with_key: Decrypt
+
+```shell
+sops -d --input-type dotenv --output-type dotenv .env.enc
+```
+
 ## :link: References
 
 [1]: <https://getsops.io/>
