@@ -1,6 +1,6 @@
 ---
 tags:
-  - setup
+  - tool
 ---
 # :fontawesome-solid-hard-drive: Autofs
 
