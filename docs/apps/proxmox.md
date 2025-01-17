@@ -113,7 +113,7 @@ WIP
 
 WIP
 
-## :simple-authentik: [Authentik][4]
+## :simple-authentik: [authentik][4]
 
 !!! example "Proxmox GUI"
 
