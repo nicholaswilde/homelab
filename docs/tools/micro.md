@@ -2,9 +2,9 @@
 tags:
   - tool
 ---
-# :simple-microeditor: Micro
+# :simple-microeditor: micro
 
-[Micro][1] is my editor of choice due to its modernity.
+[micro][1] is my editor of choice due to its modernity.
 
 ## :hammer_and_wrench: Installation
 
@@ -34,4 +34,4 @@ apt install micro
 
 ## :link: References
 
-[1]: <>
+[1]: <https://micro-editor.github.io/>
