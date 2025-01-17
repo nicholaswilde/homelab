@@ -25,5 +25,7 @@ brew install sops
 )
 ```
 
+## :link: References
+
 [1]: <https://getsops.io/>
 [2]: <https://github.com/FiloSottile/age>
