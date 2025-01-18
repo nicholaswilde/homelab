@@ -35,6 +35,7 @@ nav:
       - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
+      - reprepro: apps/reprepeo.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
   - Hardware:
