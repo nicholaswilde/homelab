@@ -3,11 +3,21 @@ tags:
   - lxc
   - proxmox
 ---
-# reprepro
+# :package: reprepro
 
 [reprepro][1] is used as a local repository for deb packages.
 
 Some apps, like SOPS, release devs, but are not a part of the normal repository. Hosting them locally, allows me to download the package once and then easily update on all other containers.
+
+## Installation
+
+```shell
+apt install reprepro apache2
+```
+
+## :gear: Config
+
+WIP
 
 ## :link: References
 
