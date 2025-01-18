@@ -2,8 +2,9 @@
 tags:
   - lxc
   - proxmox
+  - debian
 ---
-# :package: reprepro
+# :package: reprepro gpg
 
 [reprepro][1] is used as a local repository for deb packages.
 
