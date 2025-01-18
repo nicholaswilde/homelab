@@ -17,7 +17,7 @@ http:
     influxdb:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.15:8086"
+          - url: "http://192.168.2.15:8086"
         passHostHeader: true
 #endregion
   middlewares:
