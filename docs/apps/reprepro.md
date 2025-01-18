@@ -10,7 +10,7 @@ tags:
 
 Some apps, like SOPS, release devs, but are not a part of the normal repository. Hosting them locally, allows me to download the package once and then easily update on all other containers.
 
-## Installation
+## :hammer_and_wrench: Installation
 
 ```shell
 apt install reprepro apache2
