@@ -15,7 +15,11 @@ layout:
     style: row
     columns: 3
     icon: mdi-laptop
-  ARM64:
+  ARM64-01:
+    style: row
+    columns: 3
+    icon: si-raspberrypi
+  ARM64-02:
     style: row
     columns: 3
     icon: si-raspberrypi

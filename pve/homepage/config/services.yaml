@@ -21,7 +21,7 @@
     - ESPHome:
         icon: si-esphome
         href: https://esphome.l.nicholaswilde.io/
-- ARM64:
+- ARM64-01:
     - Proxmox 02:
         icon: si-proxmox
         href: https://pve02.l.nicholaswilde.io
@@ -49,6 +49,10 @@
     - netboot.xyz:
         icon: sh-netboot-xyz-light.png
         href: https://netboot.l.nicholaswilde.io/
+- ARM64-02:
+    - Proxmox 04:
+        icon: si-proxmox
+        href: https://pve04.l.nicholaswilde.io
 - AMD:
     - Proxmox 01:
         icon: si-proxmox
