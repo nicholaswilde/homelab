@@ -37,7 +37,7 @@ http:
         - default-headers@file
         - https-redirectscheme@file
       tls: {}
-      service: proxmox02
+      service: proxmox04
   
 #endregion
 #region services
