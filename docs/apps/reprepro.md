@@ -102,6 +102,12 @@ gpg --list-keys
  sub  2048R/870B8E2D 2014-07-15
 ```
 
+```ini title="/var/www/repos/apt/debian/conf/options"
+verbose  
+basedir /var/www/repos/apt/debian  
+ask-passphrase
+```
+
 WIP
 
 ## :link: References
