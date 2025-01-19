@@ -49,13 +49,15 @@ echo "ServerName localhost" | tee -a /etc/apache2/apache2.conf
 </Directory>
 ```
 
-```shell
-(
-    a2enconf repos && \
-    apache2ctl configtest && \
-    service apache2 restart
-)
-```
+!!! example
+
+    ```shell
+    (
+        a2enconf repos && \
+        apache2ctl configtest && \
+        service apache2 restart
+    )
+    ```
 
 ```shell
 mkdir -p /var/www/repos/apt/debian/conf
