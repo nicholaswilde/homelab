@@ -95,6 +95,13 @@ DscOverride: override.wheezy
 SignWith: 870B8E2D
 ```
 
+```shell
+gpg --list-keys  
+ pub  2048R/489CD644 2014-07-15  
+ uid         Your Name <your_email_address@domain.com>  
+ sub  2048R/870B8E2D 2014-07-15
+```
+
 WIP
 
 ## :link: References
