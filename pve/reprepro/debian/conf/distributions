@@ -1,0 +1,19 @@
+Origin: Debian  
+Label: Bookworm apt repository  
+Codename: bookworm
+Architectures: i386 amd64 arm64  
+Components: main  
+Description: Apt repository for Debian stable - Bookworm  
+DebOverride: override.bookworm
+DscOverride: override.bookworm
+SignWith: 089C9FAF 
+
+Origin: Debian  
+Label: Bullseye apt repository
+Codename: bullseye
+Architectures: i386 amd64 arm64  
+Components: main  
+Description: Apt repository for Debian stable - Bullseye  
+DebOverride: override.bullseye
+DscOverride: override.bullseye
+SignWith: 089C9FAF 
