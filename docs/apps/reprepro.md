@@ -49,7 +49,7 @@ echo "ServerName localhost" | tee -a /etc/apache2/apache2.conf
 </Directory>
 ```
 
-!!! example
+!!! example "Enable and test"
 
     ```shell
     (
