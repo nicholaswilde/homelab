@@ -18,36 +18,80 @@ apt install reprepro apache2 gpg
 
 ## :gear: Config
 
-```shell
-mkdir -p /var/www/repos/apt/debian
-```
+### :feather: Apache
 
-```shell title="/etc/apache2/apache2.conf"
-echo "ServerName localhost" | tee -a /etc/apache2/apache2.conf
-```
+!!! abstract "/etc/apache2/apache2.conf"
 
-```xml title="/etc/apache2/conf-availabe/repos.conf"
-<Directory /var/www/repos/ >  
-     # We want the user to be able to browse the directory manually  
-     Options Indexes FollowSymLinks Multiviews  
-     Order allow,deny  
-     Allow from all  
-</Directory>  
- # This syntax supports several repositories, e.g. one for Debian, one for Ubuntu.  
- # Replace * with debian, if you intend to support one distribution only.  
-<Directory "/var/www/repos/apt/*/db/">  
-     Order allow,deny  
-     Deny from all  
-</Directory>  
-<Directory "/var/www/repos/apt/*/conf/">  
-     Order allow,deny  
-     Deny from all  
-</Directory>  
-<Directory "/var/www/repos/apt/*/incoming/">  
-     Order allow,deny  
-     Deny from all  
-</Directory>
-```
+    === "Automated"
+
+        ```shell
+        echo "ServerName localhost" | tee -a /etc/apache2/apache2.conf
+        ```
+
+    === "Manual"
+
+        ```ini
+        ServerName localhost
+        ```
+
+!!! abstract "/etc/apache2/conf-availabe/repos.conf"
+
+    === "Automatic"
+        ```shell
+        cat <<EOF > /etc/apache2/conf-availabe/repos.conf 
+        <Directory /srv/reprepro/ >
+             # We want the user to be able to browse the directory manually  
+             Options Indexes FollowSymLinks Multiviews  
+             Order allow,deny  
+             Allow from all  
+        </Directory>  
+         # This syntax supports several repositories, e.g. one for Debian, one for Ubuntu.  
+         # Replace * with debian, if you intend to support one distribution only.  
+        <Directory "/srv/reprepro/*/db/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>  
+        <Directory "/srv/reprepro/*/conf/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>  
+        <Directory "/srv/reprepro/*/incoming/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>
+        EOF
+        ```
+
+    === "Download"
+
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/apache2/conf-available/repos.conf -O /etc/apache2/conf-availabe/repos.conf
+        ```
+
+    === "Manual"
+    
+        ```xml
+        <Directory /srv/reprepro/ >  
+             # We want the user to be able to browse the directory manually  
+             Options Indexes FollowSymLinks Multiviews  
+             Order allow,deny  
+             Allow from all  
+        </Directory>  
+         # This syntax supports several repositories, e.g. one for Debian, one for Ubuntu.  
+         # Replace * with debian, if you intend to support one distribution only.  
+        <Directory "/srv/reprepro/*/db/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>  
+        <Directory "/srv/reprepro/*/conf/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>  
+        <Directory "/srv/reprepro/*/incoming/">  
+             Order allow,deny  
+             Deny from all  
+        </Directory>
+        ```
 
 !!! example "Enable and test"
 
@@ -59,11 +103,31 @@ echo "ServerName localhost" | tee -a /etc/apache2/apache2.conf
     )
     ```
 
-```shell
-mkdir -p /var/www/repos/apt/debian/conf
+### :package: Repository
+
+```shell title="Make directories"
+(
+  [ -d /srv/reprepo/debian/conf ] || mkdir -p /srv/reprepo/debian/conf
+  [ -d /srv/reprepo/ubuntu/conf ] || mkdir -p /srv/reprepo/ubuntu/conf
+)
 ```
 
-```ini title="/var/www/repos/apt/debian/conf/distributions"
+```shell title="Generate new gpg keys"
+gpg --full-generate-key
+```
+
+```shell
+gpg --list-keys  
+ pub  2048R/489CD644 2014-07-15  
+ uid         Your Name <your_email_address@domain.com>  
+ sub  2048R/870B8E2D 2014-07-15
+```
+
+```shell title="Get short fingerprint"
+gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
+```
+
+```ini title="/srv/reprepo/debian/conf/distributions"
 Origin: Debian  
 Label: Sid apt repository  
 Codename: sid  
@@ -95,21 +159,41 @@ DscOverride: override.wheezy
 SignWith: 870B8E2D
 ```
 
-```shell
-gpg --list-keys  
- pub  2048R/489CD644 2014-07-15  
- uid         Your Name <your_email_address@domain.com>  
- sub  2048R/870B8E2D 2014-07-15
-```
+!!! abstract "/srv/reprepo/&lt;dist&gt;/conf/options"
 
-```ini title="/var/www/repos/apt/debian/conf/options"
-verbose  
-basedir /var/www/repos/apt/debian  
-ask-passphrase
-```
+    === "Automated"
 
-WIP
+        ```shell
+        cat <<EOF > /srv/reprepo/debian/conf/options
+        verbose
+        basedir /srv/reprepo/debian
+        ask-passphrase
+        EOF
+        cat <<EOF > /srv/reprepo/ubuntu/conf/options
+        verbose
+        basedir /srv/reprepo/ubuntu
+        ask-passphrase
+        EOF
+        ```
+
+    === "Debian Manual"
+
+        ```ini title="/srv/reprepo/debian/conf/options"
+        verbose  
+        basedir /srv/reprepo/debian  
+        ask-passphrase
+        ```
+
+    === "Ubuntu Manual"
+
+        ```ini title="/srv/reprepo/ubuntu/conf/options"
+        verbose  
+        basedir /srv/reprepo/ubuntu
+        ask-passphrase
+        ```
 
 ## :link: References
 
+  - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
+  
 [1]: <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
