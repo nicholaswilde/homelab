@@ -135,17 +135,19 @@ apt install autofs
 
 #### /etc/auto.nfs
 
-=== "Automated"
+!!! abstract "/etc/auto.nfs"
 
-    ```shell
-    echo "storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage" | tee /etc/auto.nfs
-    ```
+    === "Automated"
 
-=== "Manual"
+        ```shell
+        echo "storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage" | tee /etc/auto.nfs
+        ```
 
-    ```ini title="/etc/auto.nfs"
-    storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
-    ```
+    === "Manual"
+
+        ```ini title="/etc/auto.nfs"
+        storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
+        ```
 
 ```shell title="Test"
 showmount -e 192.168.2.19
