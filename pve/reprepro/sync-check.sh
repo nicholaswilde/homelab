@@ -15,7 +15,8 @@
 # set -o pipefail
 
 # Set the URL for the GitHub releases API
-archs=(amd64 arm64)
+
+dists=(debian ubuntu)
 debian_codenames=(bullseye bookworm)
 ubuntu_codenames=(noble oracular)
 usernames=(getsops go-task)
@@ -42,8 +43,15 @@ function get_latest_version(){
 
 function get_current_version(){
   # Get the current installed version (if any)
-  current_version=$("${app}" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+  # current_version=$("${app}" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+  current_version=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list noble sops | grep 'amd64'|awk '{print $NF}')
   export current_version
+}
+
+function get_archs(){
+  archs=()
+  archs=(amd64 arm64)
+  export archs
 }
 
 function get_filename(){
@@ -54,6 +62,7 @@ function check_version(){
   # Compare versions
   if [[ "${latest_version2}" != "${current_version}" ]]; then
     printf 'New version available: %s\n' "${latest_version2}"
+    get_archs
     for arch in "${archs[@]}"; do
       export arch
       printf '%s\n' "${arch}"
@@ -82,7 +91,7 @@ function main(){
     get_api_url
     get_latest_version
     get_current_version
-    check_version
+    # check_version
     printf '%s\n' "${current_version}"
     # printf '%s\n' "${latest_version2}"
     ((i+=1))
