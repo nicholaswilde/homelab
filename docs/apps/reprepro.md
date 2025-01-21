@@ -127,37 +127,41 @@ gpg --list-keys
 gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 ```
 
-```ini title="/srv/reprepo/debian/conf/distributions"
-Origin: Debian  
-Label: Sid apt repository  
-Codename: sid  
-Architectures: i386 amd64  
-Components: main  
-Description: Apt repository for Debian unstable - Sid  
-DebOverride: override.sid  
-DscOverride: override.sid  
-SignWith: 870B8E2D  
+!!! abstact "/srv/reprepo/debian/conf/distributions"
 
-Origin: Debian  
-Label: Jessie apt repository  
-Codename: jessie  
-Architectures: i386 amd64  
-Components: main  
-Description: Apt repository for Debian testing - Jessie  
-DebOverride: override.jessie  
-DscOverride: override.jessie  
-SignWith: 870B8E2D  
+    === "Manual"
 
-Origin: Debian  
-Label: Wheezy apt repository  
-Codename: wheezy  
-Architectures: i386 amd64  
-Components: main  
-Description: Apt repository for Debian stable - Wheezy  
-DebOverride: override.wheezy  
-DscOverride: override.wheezy  
-SignWith: 870B8E2D
-```
+        ```ini title="/srv/reprepo/debian/conf/distributions"
+        Origin: Debian  
+        Label: Sid apt repository  
+        Codename: sid  
+        Architectures: i386 amd64  
+        Components: main  
+        Description: Apt repository for Debian unstable - Sid  
+        DebOverride: override.sid  
+        DscOverride: override.sid  
+        SignWith: 870B8E2D  
+
+        Origin: Debian  
+        Label: Jessie apt repository  
+        Codename: jessie  
+        Architectures: i386 amd64  
+        Components: main  
+        Description: Apt repository for Debian testing - Jessie  
+        DebOverride: override.jessie  
+        DscOverride: override.jessie  
+        SignWith: 870B8E2D
+        
+        Origin: Debian  
+        Label: Wheezy apt repository  
+        Codename: wheezy  
+        Architectures: i386 amd64  
+        Components: main  
+        Description: Apt repository for Debian stable - Wheezy  
+        DebOverride: override.wheezy  
+        DscOverride: override.wheezy  
+        SignWith: 870B8E2D
+        ```
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/options"
 
