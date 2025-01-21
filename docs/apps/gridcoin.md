@@ -37,24 +37,28 @@ boincdatadir=/var/lib/boinc-client/
 email=ncwilde43@gmail.com
 ```
 
-```ini title="/etc/systemd/system/gridcoinresearchd.service"
-[Unit]
-Description=Gridcoin Research Daemon
-After=network.target
+!!! abstract "/etc/systemd/system/gridcoinresearchd.service"
 
-[Service]
-User=root
-Group=root
-Type=forking
-ExecStart=/usr/bin/gridcoinresearchd -daemon
-ExecStop=/usr/bin/gridcoinresearchd stop
-Restart=always
-RestartSec=10
-RemainAfterExit=yes
+    === "Manual"
 
-[Install]
-WantedBy=multi-user.target
-```
+        ```ini
+        [Unit]
+        Description=Gridcoin Research Daemon
+        After=network.target
+
+        [Service]
+        User=root
+        Group=root
+        Type=forking
+        ExecStart=/usr/bin/gridcoinresearchd -daemon
+        ExecStop=/usr/bin/gridcoinresearchd stop
+        Restart=always
+        RestartSec=10
+        RemainAfterExit=yes
+
+        [Install]
+        WantedBy=multi-user.target
+        ```
 
 ```shell
 (
