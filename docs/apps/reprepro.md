@@ -36,7 +36,7 @@ apt install reprepro apache2 gpg
 
 !!! abstract "/etc/apache2/conf-availabe/repos.conf"
 
-    === "Automatic"
+    === "Automated"
         ```shell
         cat <<EOF > /etc/apache2/conf-availabe/repos.conf 
         <Directory /srv/reprepro/ >
@@ -127,7 +127,7 @@ gpg --list-keys
 gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 ```
 
-!!! abstact "/srv/reprepo/debian/conf/distributions"
+!!! abstract "/srv/reprepo/debian/conf/distributions"
 
     === "Debian Manual"
 
