@@ -129,13 +129,13 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 
 !!! abstact "/srv/reprepo/debian/conf/distributions"
 
-    === "Manual"
+    === "Debian Manual"
 
         ```yaml
         Origin: Debian  
         Label: Bookworm apt repository  
         Codename: bookworm
-        Architectures: i386 amd64 arm64  
+        Architectures: amd64 arm64  
         Components: main  
         Description: Apt repository for Debian stable - Bookworm  
         DebOverride: override.bookworm
@@ -145,7 +145,7 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
         Origin: Debian  
         Label: Bullseye apt repository
         Codename: bullseye
-        Architectures: i386 amd64 arm64  
+        Architectures: amd64 arm64  
         Components: main  
         Description: Apt repository for Debian stable - Bullseye  
         DebOverride: override.bullseye
