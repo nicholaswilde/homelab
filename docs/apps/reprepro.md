@@ -131,36 +131,26 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 
     === "Manual"
 
-        ```ini title="/srv/reprepo/debian/conf/distributions"
+        ```yaml
         Origin: Debian  
-        Label: Sid apt repository  
-        Codename: sid  
-        Architectures: i386 amd64  
+        Label: Bookworm apt repository  
+        Codename: bookworm
+        Architectures: i386 amd64 arm64  
         Components: main  
-        Description: Apt repository for Debian unstable - Sid  
-        DebOverride: override.sid  
-        DscOverride: override.sid  
-        SignWith: 870B8E2D  
+        Description: Apt repository for Debian stable - Bookworm  
+        DebOverride: override.bookworm
+        DscOverride: override.bookworm
+        SignWith: 089C9FAF 
 
         Origin: Debian  
-        Label: Jessie apt repository  
-        Codename: jessie  
-        Architectures: i386 amd64  
+        Label: Bullseye apt repository
+        Codename: bullseye
+        Architectures: i386 amd64 arm64  
         Components: main  
-        Description: Apt repository for Debian testing - Jessie  
-        DebOverride: override.jessie  
-        DscOverride: override.jessie  
-        SignWith: 870B8E2D
-        
-        Origin: Debian  
-        Label: Wheezy apt repository  
-        Codename: wheezy  
-        Architectures: i386 amd64  
-        Components: main  
-        Description: Apt repository for Debian stable - Wheezy  
-        DebOverride: override.wheezy  
-        DscOverride: override.wheezy  
-        SignWith: 870B8E2D
+        Description: Apt repository for Debian stable - Bullseye  
+        DebOverride: override.bullseye
+        DscOverride: override.bullseye
+        SignWith: 089C9FAF 
         ```
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/options"
