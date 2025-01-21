@@ -138,7 +138,10 @@ markdown_extensions:
       user: nicholaswilde
       repo: homepage
   - pymdownx.mark
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path:
+        - ./pve
+        - ./docker
   - pymdownx.smartsymbols
   - pymdownx.superfences:
       custom_fences:

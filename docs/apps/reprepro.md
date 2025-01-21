@@ -39,26 +39,7 @@ apt install reprepro apache2 gpg
     === "Automated"
         ```shell
         cat <<EOF > /etc/apache2/conf-availabe/repos.conf 
-        <Directory /srv/reprepro/ >
-             # We want the user to be able to browse the directory manually  
-             Options Indexes FollowSymLinks Multiviews  
-             Order allow,deny  
-             Allow from all  
-        </Directory>  
-         # This syntax supports several repositories, e.g. one for Debian, one for Ubuntu.  
-         # Replace * with debian, if you intend to support one distribution only.  
-        <Directory "/srv/reprepro/*/db/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>  
-        <Directory "/srv/reprepro/*/conf/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>  
-        <Directory "/srv/reprepro/*/incoming/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>
+        --8<-- "reprepro/apache2/conf-available/repos.conf"
         EOF
         ```
 
@@ -71,26 +52,7 @@ apt install reprepro apache2 gpg
     === "Manual"
     
         ```xml
-        <Directory /srv/reprepro/ >  
-             # We want the user to be able to browse the directory manually  
-             Options Indexes FollowSymLinks Multiviews  
-             Order allow,deny  
-             Allow from all  
-        </Directory>  
-         # This syntax supports several repositories, e.g. one for Debian, one for Ubuntu.  
-         # Replace * with debian, if you intend to support one distribution only.  
-        <Directory "/srv/reprepro/*/db/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>  
-        <Directory "/srv/reprepro/*/conf/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>  
-        <Directory "/srv/reprepro/*/incoming/">  
-             Order allow,deny  
-             Deny from all  
-        </Directory>
+        --8<-- "reprepro/apache2/conf-available/repos.conf"
         ```
 
 !!! example "Enable and test"
@@ -127,30 +89,39 @@ gpg --list-keys
 gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 ```
 
-!!! abstract "/srv/reprepo/debian/conf/distributions"
+!!! abstract "/srv/reprepo/&lt;dist&gt;/conf/distributions"
+
+    === "Automated"
+
+        ```shell
+        (
+          cat <<EOF > /srv/reprepo/debian/conf/distributions
+          --8<-- "reprepro/debian/conf/distributions"
+          EOF
+          cat <<EOF > /srv/reprepo/ubuntu/conf/distributions
+          --8<-- "reprepro/ubuntu/conf/distributions"
+          EOF
+        )
+        ```
+    === "Download"
+
+        ```shell
+        (
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/distributions -O /srv/reprepo/debian/conf/distributions
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/distributions -O /srv/reprepo/ubuntu/conf/distributions
+        )
+        ```
 
     === "Debian Manual"
 
         ```yaml
-        Origin: Debian  
-        Label: Bookworm apt repository  
-        Codename: bookworm
-        Architectures: amd64 arm64  
-        Components: main  
-        Description: Apt repository for Debian stable - Bookworm  
-        DebOverride: override.bookworm
-        DscOverride: override.bookworm
-        SignWith: 089C9FAF 
+        --8<-- "reprepro/debian/conf/distributions"
+        ```
 
-        Origin: Debian  
-        Label: Bullseye apt repository
-        Codename: bullseye
-        Architectures: amd64 arm64  
-        Components: main  
-        Description: Apt repository for Debian stable - Bullseye  
-        DebOverride: override.bullseye
-        DscOverride: override.bullseye
-        SignWith: 089C9FAF 
+    === "Ubuntu Manual"
+
+        ```yaml
+        --8<-- "reprepro/ubuntu/conf/distributions"
         ```
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/options"
@@ -159,31 +130,23 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 
         ```shell
         cat <<EOF > /srv/reprepo/debian/conf/options
-        verbose
-        basedir /srv/reprepo/debian
-        ask-passphrase
+        --8<-- "reprepro/debian/conf/options::3"
         EOF
         cat <<EOF > /srv/reprepo/ubuntu/conf/options
-        verbose
-        basedir /srv/reprepo/ubuntu
-        ask-passphrase
+        --8<-- "reprepro/ubuntu/conf/options::3"
         EOF
         ```
 
     === "Debian Manual"
 
-        ```ini title="/srv/reprepo/debian/conf/options"
-        verbose  
-        basedir /srv/reprepo/debian  
-        ask-passphrase
+        ```ini
+        --8<-- "reprepro/debian/conf/options"
         ```
 
     === "Ubuntu Manual"
 
-        ```ini title="/srv/reprepo/ubuntu/conf/options"
-        verbose  
-        basedir /srv/reprepo/ubuntu
-        ask-passphrase
+        ```ini
+        --8<-- "reprepro/ubuntu/conf/options"
         ```
 
 ## :link: References
