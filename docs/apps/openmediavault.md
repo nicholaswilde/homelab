@@ -48,9 +48,7 @@ tags:
 
     Memory (MiB): `4096`
 
-- Look for disk
-
-```shell
+```shell title="Look for disk"
 lsblk
 ```
 
@@ -82,9 +80,7 @@ Top right person icon -> Change Password
 
 Mounted after reinstall and not before.
 
-remount
-
-```shell
+```shell title="Remount"
 omv-firstaid
 ```
 
