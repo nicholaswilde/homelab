@@ -27,6 +27,12 @@ tags:
     bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/apt-cacher-ng.sh)"
     ```
 
+=== "apt"
+
+    ```shell
+    apt install apt-cacher-ng
+    ```
+
 ## :gear: Config
 
 ```ini title="/etc/apt-cacher-ng/acng.conf"
