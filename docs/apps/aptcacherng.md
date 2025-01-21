@@ -46,12 +46,21 @@ http://aptcache.l.nicholaswilde.io:3142/acng-report.html
 
 ## :material-laptop: Client
 
-```shell title="/etc/apt/apt.conf.d/00aptproxy"
-(
-  echo 'Acquire::http::Proxy "http://192.168.2.40:3142";' | tee /etc/apt/apt.conf.d/00aptproxy && \
-  apt update
-)
-```
+!!! abstract "/etc/apt/apt.conf.d/00aptproxy"
+
+    === "Automated"
+
+        ```shell title="/etc/apt/apt.conf.d/00aptproxy"
+        (
+          echo 'Acquire::http::Proxy "http://192.168.2.40:3142";' | tee /etc/apt/apt.conf.d/00aptproxy && \
+          apt update
+        )
+        ```
+    === "Manual"
+
+        ```
+        Acquire::http::Proxy "http://192.168.2.40:3142";
+        ```
 
 ## :link: References
 
