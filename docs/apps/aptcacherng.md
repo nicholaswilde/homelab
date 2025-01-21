@@ -58,7 +58,7 @@ http://aptcache.l.nicholaswilde.io:3142/acng-report.html
         ```
     === "Manual"
 
-        ```
+        ```ini
         Acquire::http::Proxy "http://192.168.2.40:3142";
         ```
 
