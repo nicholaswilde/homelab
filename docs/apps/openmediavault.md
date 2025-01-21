@@ -114,26 +114,24 @@ omv-firstaid
 
 ### :material-laptop: Client
 
-```shell
+```shell title="Installation"
 apt install autofs
 ```
 
-#### /etc/auto.master
+!!! abstract "/etc/auto.master"
 
-=== "Automated"
+    === "Automated"
 
-    ```shell
-    echo "/mnt /etc/auto.nfs --ghost --timeout=60" | tee -a /etc/auto.master
-    ```
+        ```shell
+        echo "/mnt /etc/auto.nfs --ghost --timeout=60" | tee -a /etc/auto.master
+        ```
 
-=== "Manual"
+    === "Manual"
 
-    ```ini title="/etc/auto.master"
-    +auto.master
-    /mnt /etc/auto.nfs --ghost --timeout=60
-    ```
-
-#### /etc/auto.nfs
+        ```ini title="/etc/auto.master"
+        +auto.master
+        /mnt /etc/auto.nfs --ghost --timeout=60
+        ```
 
 !!! abstract "/etc/auto.nfs"
 
