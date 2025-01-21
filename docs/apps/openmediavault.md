@@ -128,7 +128,7 @@ apt install autofs
 
     === "Manual"
 
-        ```ini title="/etc/auto.master"
+        ```ini
         +auto.master
         /mnt /etc/auto.nfs --ghost --timeout=60
         ```
@@ -143,13 +143,15 @@ apt install autofs
 
     === "Manual"
 
-        ```ini title="/etc/auto.nfs"
+        ```ini
         storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
         ```
 
-```shell title="Test"
-showmount -e 192.168.2.19
-```
+!!! example "Test"
+
+    ```shell
+    showmount -e 192.168.2.19
+    ```
 
 ```shell title="Mount"
 (
