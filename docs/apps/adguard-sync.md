@@ -27,6 +27,10 @@ It is installed only on the primary instance and is scheduled to run once a day,
 
 ## :gear: Config
 
+```
+--8<-- "reprepro/debian/conf/distributions"
+```
+
 === "Automatic"
 
     ```shell

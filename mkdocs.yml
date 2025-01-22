@@ -47,6 +47,7 @@ nav:
   - Tools:
       - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
+      - jinja2-cli: tools/jinja2-cli.md
       - micro: tools/micro.md
       - SOPS: tools/sops.md
       - Task: tools/task.md
