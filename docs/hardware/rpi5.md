@@ -11,9 +11,47 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 !!! example ""
 
-    OS: [Rasbperry Pi OS Lite (64-bit)][2]
+    OS: [`Rasbperry Pi OS Lite (64-bit)`][2]
     
     RAM: `16GB`
+
+    HAT: [`GeeekPi N04 M.2 NVMe to PCIe Adapter`][5]
+
+    DRIVE: [`Crucial P3 500GB PCIe Gen3 3D NAND NVMe M.2 SSD`][6]
+
+### Enable PCIe
+
+!!! abstract "/boot/firmware/config.txt"
+
+    === "Manual Gen 3.0"
+
+        ```shell
+        dtparam=pciex1_gen=3
+        ```
+        
+    === "Manual Gen 2.0"
+
+        ```shell
+        dtparam=pciex1
+        ```
+
+### Enable auto detection PCIe and booting from NVMe
+
+!!! note
+
+    ```shell
+    sudo rpi-eeprom-config --edit
+    ```
+
+!!! abstract ""
+
+    ```env
+    PCIE_PROBE=1
+
+    BOOT_ORDER=0xf416
+    ```
+
+The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `lsblk` or `lspci -vvv` to get more details of the PCIe device.
 
 ## :simple-proxmox: Proxmox
 
@@ -21,7 +59,11 @@ See [Raspberry Pi 4 8GB][4].
 
 ## :link: References
 
+  - <https://a.co/d/etvDazc>
+
 [1]: <../apps/adguard.md>
 [2]: <https://www.raspberrypi.com/software/>
 [3]: <https://www.raspberrypi.com/products/raspberry-pi-5/>
 [4]: <./rpi4.md>
+[5]: <https://www.amazon.com/dp/B0CRK4YB4C>
+[6]: <https://www.amazon.com/dp/B0B25LQQPC>

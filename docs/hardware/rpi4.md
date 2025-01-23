@@ -29,9 +29,74 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 !!! example ""
 
-    OS: [Raspberry Pi OS Lite (64-bit)][3]
+    OS: [`Raspberry Pi OS Lite (64-bit)`][3]
 
     RAM: `8GB`
+
+    HAT: `none`
+
+    DRIVE: `USB 500GB SSD`
+
+### :material-usb-flash-drive: [Raspberry Pi 4 boot from usb][6]
+
+```shell
+sudo raspi-config
+```
+
+```
+Advanced Options -> Boot Order -> B2 NVMe/USB
+```
+
+```shell
+sudo reboot
+```
+
+```shell title="Get vendorId and deviceId"
+dmesg
+```
+
+!!! abstract "/boot/firmware/cmdline.txt"
+
+    === "Manual"
+
+        ```
+        usb-storage.quirks=152d:1561:u console=serial0,115200 console=tty1 root=PARTUUID=fcf4cb94-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
+        ```
+
+!!! abstract "/boot/firmware/config.txt"
+
+    === "Automatic"
+    
+        ```shell
+        echo program_usb_boot_mode=1 | sudo tee -a /boot/firmware/config.txt
+        ```
+
+    === "Manual"
+    
+        ```shell
+        program_usb_boot_mode=1
+        ```
+
+!!! success "Check"
+
+    ```shell
+    mount | egrep "/([[:space:]]|boot)"
+    ```
+
+    ```shell
+    vcgencmd otp_dump | grep 17
+    ```
+
+    ```shell
+    17:1020000a=USB boot disabled
+    17:3020000a=USB boot enabled
+    ```
+
+```shell
+sudo raspi-config
+sudo rpi-update
+sudo raspi-config --expand-rootfs
+```
 
 ## :simple-proxmox: Proxmox
 
@@ -53,7 +118,6 @@ xz -d 2024-11-19-raspios-bookworm-arm64-lite.img.xz
 dd if=2024-11-19-raspios-bookworm-arm64-lite.img /dev/mmcblk0 status=progress
 ```
 
-
 ```shell title="Mount boot partition"
 (
   [ -d /media/sd ] || mkdir /media/sd
@@ -65,37 +129,59 @@ dd if=2024-11-19-raspios-bookworm-arm64-lite.img /dev/mmcblk0 status=progress
 cd /media/sd
 ```
 
-```shell title="/boot/userconf.txt"
-echo 'nicholas:' "$(openssl passwd -6)" | sed 's/ //g' | sudo tee -a userconf.txt
-```
+### Create Username & Password
 
-```shell title="Enable ssh /boot/ssh"
-touch ssh
-```
+!!! abstract "/boot/firmware/userconf.txt"
+
+    === "Automatic"
+    
+        ```shell
+        echo 'nicholas:' "$(openssl passwd -6)" | sed 's/ //g' | sudo tee -a userconf.txt
+        ```
+
+    === "Manual"
+
+        ```shell
+        nicholas:<hash>
+        ```
+
+### Enable SSH
+
+!!! abstract "/boot/ssh"
+    
+    ```shell
+    touch ssh
+    ```
 
 #### :page_facing_up: Kernel Page Size
 
 You should use the Kernel with 4K pagesize
 
-```shell title="/boot/firmware/config.txt"
-kernel=kernel8.img # to end of line
-```
+!!! abstract "/boot/firmware/config.txt"
+
+    === "Manual"
+    
+        ```shell
+        kernel=kernel8.img # to end of line
+        ```
 
 #### :material-memory: CT Notes
 
 Is the container summary memory usage and swap usage always shows `0`?
 
-=== "Automatic"
+!!! abstract "/boot/firmware/cmdline.txt"
 
-    ```shell
-    sed -i '1s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' cmdline.txt
-    ```
+    === "Automatic"
 
-=== "Manual"
+        ```shell
+        sed -i '1s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' cmdline.txt
+        ```
 
-    ```shell title="/boot/firmware/cmdline.txt"
-    cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-    ```
+    === "Manual"
+
+        ```ini
+        cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+        ```
 
 Unmount SD card, plug into the Raspberry Pi and boot
 
@@ -135,16 +221,17 @@ hostname -I | awk '{print $1}'
 
 For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`, then your `/etc/hosts` file could look like:
 
-```ini title="/etc/hosts"
-# /etc/hosts
-127.0.0.1       localhost.localdomain localhost
+!!! abstract "/etc/hosts"
 
-::1             localhost ip6-localhost ip6-loopback
-ff02::1         ip6-allnodes
-ff02::2         ip6-allrouters
+    ```ini
+    127.0.0.1       localhost.localdomain localhost
 
-192.168.1.192   pve02.nicholaswilde.io pve02
-```
+    ::1             localhost ip6-localhost ip6-loopback
+    ff02::1         ip6-allnodes
+    ff02::2         ip6-allrouters
+
+    192.168.1.192   pve02.nicholaswilde.io pve02
+    ```
 
 You can test if your setup is ok using the hostname command:
 
@@ -153,16 +240,26 @@ hostname --ip-address
 ```
 
 ```shell
-192.168.15.77 # should return your IP address here
+192.168.1.192 # should return your IP address here
 ```
 
 ### :floppy_disk: Install Proxmox VE
 
 ##### :octicons-repo-24: Add the Proxmox VE repository:
 
-```shell
-echo 'deb [arch=arm64] https://mirrors.apqa.cn/proxmox/debian/pve bookworm port'>/etc/apt/sources.list.d/pveport.list
-```
+!!! abstract "/etc/apt/sources.list.d/pveport.list"
+
+    === "Automatic"
+    
+        ```shell
+        echo 'deb [arch=arm64] https://mirrors.apqa.cn/proxmox/debian/pve bookworm port'>/etc/apt/sources.list.d/pveport.list
+        ```
+
+    === "Manual"
+
+        ```shell
+        https://mirrors.apqa.cn/proxmox/debian/pve bookworm port
+        ```
 
 Add the Proxmox VE repository key:
 
@@ -198,14 +295,20 @@ If you don't know what to enter here, choose local only and leave the system nam
 
 Reenable ssh.
 
-```shell
-sudo sed -i 's/^#?\s*PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-```
 
-```shell
-# /etc/ssh/sshd_config
-PermitRootLogin yes
-```
+!!! abstract "/etc/ssh/sshd_config"
+
+    === "Automatic"
+
+        ```shell
+        sudo sed -i 's/^#?\s*PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+        ```
+        
+    === "Manual "
+    
+        ```ini
+        PermitRootLogin yes
+        ```
 
 Finally, you can connect to the admin web interface (`https://youripaddress:8006`).
 
@@ -216,7 +319,7 @@ Finally, you can connect to the admin web interface (`https://youripaddress:8006
 
 Create `vmbr0` network interface in GUI
 
-```
+```yaml
 <node> -> Network -> Create
 Name: vmbr0
 IPv4: 192.168.1.192/24
@@ -250,3 +353,4 @@ apt-get --allow-releaseinfo-change update
 [2]: <../apps/proxmox.md>
 [4]: <https://community-scripts.github.io/ProxmoxVE/>
 [5]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
+[6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>>
