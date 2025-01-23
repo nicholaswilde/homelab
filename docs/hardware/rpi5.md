@@ -19,7 +19,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
     DRIVE: [`Crucial P3 500GB PCIe Gen3 3D NAND NVMe M.2 SSD`][6]
 
-### Enable PCIe
+### :pager: Enable PCIe
 
 !!! abstract "/boot/firmware/config.txt"
 
