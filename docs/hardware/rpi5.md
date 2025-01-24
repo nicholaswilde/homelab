@@ -21,6 +21,11 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 ### :pager: Enable PCIe
 
+!!! tip
+
+    When connecting the PCIe adapter to the pi, ensure that the correct end of the ribbon cable is being plugged into the correct connector.
+    Typically, the ribbon cable ends are labeled.
+
 !!! abstract "/boot/firmware/config.txt"
 
     === "Manual Gen 3.0"
@@ -35,7 +40,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
         dtparam=pciex1
         ```
 
-### Enable auto detection PCIe and booting from NVMe
+### :detective: Enable auto detection PCIe and booting from NVMe
 
 !!! note
 
