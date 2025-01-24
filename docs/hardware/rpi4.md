@@ -39,21 +39,23 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 ### :material-usb-flash-drive: [Raspberry Pi 4 boot from usb][6]
 
-```shell
-sudo raspi-config
-```
+!!! quote ""
 
-```
-Advanced Options -> Boot Order -> B2 NVMe/USB
-```
+    ```shell
+    sudo raspi-config
+    ```
 
-```shell
-sudo reboot
-```
+    ```
+    Advanced Options -> Boot Order -> B2 NVMe/USB
+    ```
 
-```shell title="Get vendorId and deviceId"
-dmesg
-```
+    ```shell
+    sudo reboot
+    ```
+
+    ```shell title="Get vendorId and deviceId"
+    dmesg
+    ```
 
 !!! abstract "/boot/firmware/cmdline.txt"
 
@@ -92,11 +94,13 @@ dmesg
     17:3020000a=USB boot enabled
     ```
 
-```shell
-sudo raspi-config
-sudo rpi-update
-sudo raspi-config --expand-rootfs
-```
+!!! quote ""
+
+    ```shell
+    sudo raspi-config
+    sudo rpi-update
+    sudo raspi-config --expand-rootfs
+    ```
 
 ## :simple-proxmox: Proxmox
 
