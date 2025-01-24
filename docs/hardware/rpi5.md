@@ -54,7 +54,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 ### :detective: Enable auto detection PCIe and booting from NVMe
 
-!!! note
+!!! quote ""
 
     === "root"
 
@@ -82,7 +82,7 @@ The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `l
 
 If `apt` is slow, it might be due to the pi reducing the power input.
 
-!!! quote "shell"
+!!! quote ""
 
     === "root"
     
