@@ -56,9 +56,17 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 !!! note
 
-    ```shell
-    sudo rpi-eeprom-config --edit
-    ```
+    === "root"
+
+        ```shell
+        rpi-eeprom-config --edit
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo rpi-eeprom-config --edit
+        ```
 
 !!! abstract ""
 
