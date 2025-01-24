@@ -82,7 +82,7 @@ The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `l
 
 If `apt` is slow, it might be due to the pi reducing the power input.
 
-!!! note
+!!! quote "shell"
 
     === "root"
     
