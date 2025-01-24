@@ -70,15 +70,23 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `lsblk` or `lspci -vvv` to get more details of the PCIe device.
 
-### :detective: Enable 5A PSU
+### :detective: [Enable 5A PSU][7]
 
 If `apt` is slow, it might be due to the pi reducing the power input.
 
 !!! note
 
-    ```shell
-    sudo rpi-eeprom-config --edit
-    ```
+    === "root"
+    
+        ```shell
+        rpi-eeprom-config --edit
+        ```
+        
+    === "sudo"
+    
+        ```shell
+        sudo rpi-eeprom-config --edit
+        ```
 
 !!! abstract ""
 
@@ -100,3 +108,4 @@ See [Raspberry Pi 4 8GB][4].
 [4]: <./rpi4.md>
 [5]: <https://www.amazon.com/dp/B0CRK4YB4C>
 [6]: <https://www.amazon.com/dp/B0B25LQQPC>
+[7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
