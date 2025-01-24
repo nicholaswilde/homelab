@@ -28,6 +28,18 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 !!! abstract "/boot/firmware/config.txt"
 
+    === "Automatic Gen 3.0"
+    
+        ```shell
+        echo "dtparam=pciex1_gen=3" | sudo tee -a config.txt
+        ```
+
+    === "Automatic Gen 2.0"
+    
+        ```shell
+        echo "dtparam=pciex1" | sudo tee -a config.txt
+        ```
+  
     === "Manual Gen 3.0"
 
         ```shell
