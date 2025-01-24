@@ -70,7 +70,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `lsblk` or `lspci -vvv` to get more details of the PCIe device.
 
-### :detective: [Enable 5A PSU][7]
+### :electric_plug: [Enable 5A PSU][7]
 
 If `apt` is slow, it might be due to the pi reducing the power input.
 
