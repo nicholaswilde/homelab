@@ -2,15 +2,6 @@
 http:
  #region routers 
   routers:
-    proxmox03:
-      entryPoints:
-        - "websecure"
-      rule: "Host(`pve03.l.nicholaswilde.io`)"
-      middlewares:
-        - default-headers@file
-        - https-redirectscheme@file
-      tls: {}
-      service: proxmox03
     proxmox01:
       entryPoints:
         - "websecure"
@@ -29,6 +20,15 @@ http:
         - https-redirectscheme@file
       tls: {}
       service: proxmox02
+    proxmox03:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`pve03.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: proxmox03
     proxmox04:
       entryPoints:
         - "websecure"
@@ -42,11 +42,6 @@ http:
 #endregion
 #region services
   services:
-    proxmox03:
-      loadBalancer:
-        servers:
-          - url: "https://192.168.2.198:8006"
-        passHostHeader: true
     proxmox01:
       loadBalancer:
         servers:
@@ -57,10 +52,15 @@ http:
         servers:
           - url: "https://192.168.1.192:8006"
         passHostHeader: true
+    proxmox03:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.2.198:8006"
+        passHostHeader: true
     proxmox04:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.221:8006"
+          - url: "https://192.168.2.33:8006"
         passHostHeader: true
 
 
