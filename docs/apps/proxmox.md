@@ -181,6 +181,25 @@ resize2fs /dev/ubuntu-vg/ubuntu-lv
 fdisk -l
 ```
 
+## :key: [private key /root/.ssh/id_rsa contents do not match][5]
+
+!!! quote "Run on all nodes"
+
+    ```shell
+    (
+      cd /root/.ssh && \
+      mv id_rsa id_rsa.bak && \
+      mv id_rsa.pub id_rsa.pub.bak && \
+      mv config config.bak
+    )
+    ```
+
+!!! quote "Run on all nodes"
+
+    ```shell
+    pvecm updatecerts
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
@@ -190,3 +209,4 @@ fdisk -l
 [2]: <https://forum.proxmox.com/threads/remove-or-reset-cluster-configuration.114260/#post-493906>
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
+[5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
