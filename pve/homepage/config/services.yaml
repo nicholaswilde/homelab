@@ -53,6 +53,9 @@
     - Proxmox 04:
         icon: si-proxmox
         href: https://pve04.l.nicholaswilde.io
+    - Beszel:
+        icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg
+        href: https://beszel.l.nicholaswilde.io
 - AMD:
     - Proxmox 01:
         icon: si-proxmox
