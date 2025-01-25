@@ -21,6 +21,7 @@ nav:
       - Apt-Cacher NG: apps/aptcacherng.md
       - aria2: apps/aria2.md
       - authentik: apps/authentik.md
+      - Beszel: apps/beszel.md
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
       - Gitea: apps/gitea.md
