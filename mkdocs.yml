@@ -39,6 +39,7 @@ nav:
       - reprepro: apps/reprepro.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
+      - Uptime Kuma: apps/uptime-kuma.md
   - Hardware:
       - Intel NUC: hardware/nuc.md
       - Raspberry Pi Zero W: hardware/rpi0.md
