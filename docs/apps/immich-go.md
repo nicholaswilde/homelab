@@ -27,7 +27,7 @@ server.
         export IMMICH_SERVER='https://server.xyz'
         ```
 
-## Usage
+## :pencil: Usage
 
 !!! quote ""
 
