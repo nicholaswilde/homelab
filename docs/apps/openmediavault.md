@@ -80,9 +80,11 @@ Top right person icon -> Change Password
 
 Mounted after reinstall and not before.
 
-```shell title="Remount"
-omv-firstaid
-```
+!!! quote "Remount"
+
+    ```shell
+    omv-firstaid
+    ```
 
 ## :material-check-network: Static IP
 
@@ -110,9 +112,11 @@ omv-firstaid
 
 ### :material-laptop: Client
 
-```shell title="Installation"
-apt install autofs
-```
+!!! quote "Installation"
+
+    ```shell
+    apt install autofs
+    ```
 
 !!! abstract "/etc/auto.master"
 
