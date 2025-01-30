@@ -11,16 +11,18 @@ tags:
 
 - [Download][2] ISO into Proxmox
 
-```shell title="pve"
-(
-  cd /var/lib/vz/template/iso && \
-  wget $(curl -s https://sourceforge.net/projects/openmediavault/rss?path=/iso | \
-  grep -oP '<link>https://sourceforge.net/projects/openmediavault/files/iso/[^<]+</link>' | \
-  head -n 1 | \
-  sed 's/<link>//; s/<\/link>//'| \
-  sed 's/\/download$//')
-)
-```
+!!! quote "pve"
+
+    ```shell
+    (
+      cd /var/lib/vz/template/iso && \
+      wget $(curl -s https://sourceforge.net/projects/openmediavault/rss?path=/iso | \
+      grep -oP '<link>https://sourceforge.net/projects/openmediavault/files/iso/[^<]+</link>' | \
+      head -n 1 | \
+      sed 's/<link>//; s/<\/link>//'| \
+      sed 's/\/download$//')
+    )
+    ```
 
 - Create new VM
 
@@ -48,9 +50,11 @@ tags:
 
     Memory (MiB): `4096`
 
-```shell title="Look for disk"
-lsblk
-```
+!!! quote "Look for disk"
+
+    ```shell
+    lsblk
+    ```
 
 - Install omv into VM.
 
