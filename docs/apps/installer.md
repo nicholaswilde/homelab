@@ -15,9 +15,11 @@ For setup apps that have are not supported by apt package manager, such as task,
 
     :material-console-network: Default Port: `3000`
 
-```shell
-curl -s https://i.jpillora.com/installer! | bash
-```
+!!! quote ""
+
+    ```shell
+    curl -s https://i.jpillora.com/installer! | bash
+    ```
 
 ## :gear: Config
 
