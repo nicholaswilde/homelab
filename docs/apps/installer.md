@@ -50,13 +50,17 @@ For setup apps that have are not supported by apt package manager, such as task,
 
 ## :pencil: Usage
 
-```sh title="install user/repo from github"
-curl https://i.jpillora.com/<user>/<repo>@<release>! | bash
-```
+!!! quote "install user/repo from github"
 
-```sh title="search web for github repo query"
-curl https://i.jpillora.com/<query>! | bash
-```
+    ```shell
+    curl https://i.jpillora.com/<user>/<repo>@<release>! | bash
+    ```
+
+!!! quote "search web for github repo query"
+
+    ```shell
+    curl https://i.jpillora.com/<query>! | bash
+    ```
 
 *Or you can use* `wget -qO- url | bash`
 
