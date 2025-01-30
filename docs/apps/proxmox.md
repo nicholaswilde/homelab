@@ -14,47 +14,47 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
     :material-console-network: Default Port: `8006`
 
-### Post Install
+!!! quote "Post Install"
 
-=== "AMD64"
+    === "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
+        ```
 
-=== "ARM64"
+    === "ARM64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/misc/post-pve-install.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/misc/post-pve-install.sh)"
+        ```
 
-### Add LXC IP Tag
+!!! quote "Add LXC IP Tag"
 
-=== "AMD64"
+    === "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        ```
 
-=== "ARM64"
+    === "ARM64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        ```
 
-### Update
+!!! quote "Update"
 
-=== "AMD64"
+    === "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-lxcs.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-lxcs.sh)"
+        ```
 
-=== "ARM64"
+    === "ARM64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        ```
 
 ## :material-harddisk-plus: Datacenter NFS Volumes
 
@@ -80,24 +80,28 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
 ## :simple-kubernetes: [Reset Cluster Info][2]
 
-How to reset cluster. Useful if the node IP isn't matching.
+How to reset cluster. Useful if the node IP isn't matching during join.
 
-```shell title="node"
-(
-  systemctl stop pve-cluster corosync && \
-  pmxcfs -l
-)
-```
+!!! quote "node"
 
-```shell title="node"
-(
-  rm /etc/corosync/*  && \
-  rm -r /etc/corosync/*  && \
-  rm -r /etc/pve/corosync.conf  && \ 
-  killall pmxcfs && \
-  systemctl start pve-cluster
-)
-```
+    ```shell
+    (
+      systemctl stop pve-cluster corosync && \
+      pmxcfs -l
+    )
+    ```
+
+!!! quote "node"
+
+    ```shell
+    (
+      rm /etc/corosync/*  && \
+      rm -r /etc/corosync/*  && \
+      rm -r /etc/pve/corosync.conf  && \ 
+      killall pmxcfs && \
+      systemctl start pve-cluster
+    )
+    ```
 
 ## :material-ip-network: Static IP
 
@@ -131,55 +135,102 @@ WIP
 
     Username Claim: `username`
 
+## :material-group: [Create a Volume Group][6]
+
+!!! quote "Create a partition"
+
+    ```shell
+    sgdisk -N 1 /dev/sdb
+    ```
+!!! quote "Create a [P]hysical [V]olume (PV) without confirmation and 250K metadatasize."
+
+    ```shell
+    pvcreate --metadatasize 250k -y -ff /dev/sdb1
+    ```
+
+!!! quote "Create a volume group named `vmdata` on /dev/sdb1"
+
+    ```shell
+    vgcreate vmdata /dev/sdb1
+    ```
+
+## :material-pool: Create a LVM-thin pool
+
+!!! quote ""
+
+    ```shell
+    lvcreate -L 80G -T -n vmstore vmdata
+    ```
+
 ## :material-harddisk-plus: [Resize VM Disks][3]
 
 ### :frame_photo: Step 1: Increase/resize disk from GUI console
 
 ### :material-harddisk-plus: Step 2: Extend physical drive partition
 
-```shell title="check free space"
-fdisk -l
-```
+!!! quote "check free space"
 
-```shell title="Extend physical drive partition"
-growpart /dev/sda3
-```
+    ```shell
+    fdisk -l
+    ```
 
-```shell title="See  phisical drive"
-pvdisplay
-```
+!!! quote "Extend physical drive partition"
 
-```shell title="Instruct LVM that disk size has changed"
-pvresize /dev/sda3
-```
+    ```shell
+    growpart /dev/sda3
+    ```
 
-```shell title="Check physical drive if has changed"
-pvdisplay
-```
+!!! quote "See physical drive"
+
+    ```shell
+    pvdisplay
+    ```
+
+!!! quote "Instruct LVM that disk size has changed"
+
+    ```shell
+    pvresize /dev/sda3
+    ```
+
+!!! success "Check physical drive if has changed"
+
+    ```shell
+    pvdisplay
+    ```
 
 ### :brain: Step 3: Extend Logical volume
 
-```shell title="View starting LV"
-lvdisplay
-```
+!!! quote "View starting LV"
 
-```shell title="Resize LV"
-lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
-```
+    ```shell
+    lvdisplay
+    ```
 
-```shell title="View changed LV"
-lvdisplay
-```
+!!! quote "Resize LV"
+
+    ```shell
+    lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+    ```
+
+!!! success "View changed LV"
+
+    ```shell
+    lvdisplay
+    ```
 
 ### :open_file_folder: Step 4: Resize Filesystem
 
-```shell title="Resize Filesystem"
-resize2fs /dev/ubuntu-vg/ubuntu-lv
-```
+!!! quote "Resize Filesystem"
 
-```shell title="Confirm results"
-fdisk -l
-```
+    ```shell
+    resize2fs /dev/ubuntu-vg/ubuntu-lv
+    ```
+
+!!! success "Confirm results"
+
+    ```shell
+    fdisk -l
+    ```
 
 ## :key: [private key /root/.ssh/id_rsa contents do not match][5]
 
@@ -218,10 +269,15 @@ fdisk -l
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
 - <https://pimox-scripts.com/scripts?id=Homepage>
+- <https://pve.proxmox.com/wiki/>
 
 [1]: <https://www.proxmox.com/en/>
 [2]: <https://forum.proxmox.com/threads/remove-or-reset-cluster-configuration.114260/#post-493906>
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
+<<<<<<< HEAD
 [6]: <https://www.youtube.com/watch?v=U-UTMuhmC1U>
+=======
+[6]: <https://pve.proxmox.com/wiki/Logical_Volume_Manager_(LVM)>
+>>>>>>> 9026f4e0c0da5067ac320b82a193a69c45c905f6
