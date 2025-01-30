@@ -13,17 +13,19 @@ tags:
 
     :material-console-network: Default Port: `5216`
 
-=== "AMD64"
+!!! example ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/myspeed.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/myspeed.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/myspeed.sh)"
-    ```
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/myspeed.sh)"
+        ```
 
 ## :gear: Config
 
