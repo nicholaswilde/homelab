@@ -23,25 +23,30 @@ For setup apps that have are not supported by apt package manager, such as task,
 
 ## :gear: Config
 
-```shell title="Install location"
-/usr/local/bin/installer
-```
+!!! abstract "Install location"
 
-```ini title="/etc/systemd/system/installer.service"
-[Unit]
-Description=Quickly install pre-compiled binaries from Github releases
+    ```shell
+    /usr/local/bin/installer
+    ```
+!!! abstract "/etc/systemd/system/installer.service"
 
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/installer
-Restart=on-failure
-ExecReload=/bin/kill -USR1 $MAINPID
-StandardOutput=append:/var/log/installer.log
-StandardError=inherit
+    === "Manual"
+    
+        ```ini
+        [Unit]
+        Description=Quickly install pre-compiled binaries from Github releases
 
-[Install]
-WantedBy=multi-user.target
-```
+        [Service]
+        Type=simple
+        ExecStart=/usr/local/bin/installer
+        Restart=on-failure
+        ExecReload=/bin/kill -USR1 $MAINPID
+        StandardOutput=append:/var/log/installer.log
+        StandardError=inherit
+
+        [Install]
+        WantedBy=multi-user.target
+        ```
 
 ## :pencil: Usage
 
