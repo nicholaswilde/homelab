@@ -200,6 +200,20 @@ fdisk -l
     pvecm updatecerts
     ```
 
+## :material-monitor: [Pass Disk to VM][6]
+
+!!! quote "List the disks by ID"
+
+    ```shell
+    ls -n /dev/disk/by-id/
+    ```
+    
+!!! quote "Attach the disk to the VM"
+
+    ```
+    /sbin/qm set [VM-ID] -virtio2 /dev/disk/by-id/[DISK-ID]
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
@@ -210,3 +224,4 @@ fdisk -l
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
+[6]: <https://www.youtube.com/watch?v=U-UTMuhmC1U>
