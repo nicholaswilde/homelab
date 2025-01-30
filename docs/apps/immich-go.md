@@ -10,22 +10,30 @@ server.
 
 ## :hammer_and_wrench: Installation
 
-```shell
-curl -s https://installer.l.nicholaswilde.io/simulot/immich-go! | bash
-```
+!!! quote ""
+
+    ```shell
+    curl -s https://installer.l.nicholaswilde.io/simulot/immich-go! | bash
+    ```
 
 ## :gear: Config
 
-```ini title="~/.bash_exports"
-export API_KEY='key'
-export IMMICH_SERVER='https://server.xyz'
-```
+!!! abstract "~/.bash_exports"
+
+    === "Manual"
+    
+        ```ini
+        export API_KEY='key'
+        export IMMICH_SERVER='https://server.xyz'
+        ```
 
 ## Usage
 
-```shell
-immich-go -key=${API_KEY} -server=${IMMICH_SERVER} upload -create-albums -google-photos Takeout/
-```
+!!! quote ""
+
+    ```shell
+    immich-go -key=${API_KEY} -server=${IMMICH_SERVER} upload -create-albums -google-photos Takeout/
+    ```
 
 ## :link: References
 
