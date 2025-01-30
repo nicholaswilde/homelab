@@ -157,12 +157,14 @@ Mounted after reinstall and not before.
     showmount -e 192.168.2.19
     ```
 
-```shell title="Mount"
-(
-  systemctl restart autofs.service && \
-  systemctl status autofs.service
-)
-```
+!!! quote "Mount"
+
+    ```shell
+    (
+      systemctl restart autofs.service && \
+      systemctl status autofs.service
+    )
+    ```
 
 
 ## :link: References
