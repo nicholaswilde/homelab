@@ -17,7 +17,7 @@ files.
 
 ## :gear: Config
 
-Make symlinks to repo.
+WIP
 
 ## :pencil: Usage
 

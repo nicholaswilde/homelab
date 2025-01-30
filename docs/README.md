@@ -24,17 +24,15 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 ---
 
+## :hammer_and_wrench: Setup & Maintenance
+
+My homelab is setup and maintained using [Ansible][5], which is documented [here][6].
+
+---
+
 ## :construction: Development
 
-New pages for this site can be created using [jinja2][3] and the `.template.md.j2` file.
-
-```shell title="Install"
-pipx install jinja2-cli
-```
-
-```shell title="Create new page"
-jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/new-app > new-app.md
-```
+Check out the [Development](./reference/development.md) page.
 
 ---
 
@@ -51,3 +49,6 @@ jinja2 .template.md.j2 -D app_name=New App -D app_port=8080 -D config_path=/opt/
 [1]: <https://nicholaswilde.io/homelab/>
 [2]: <https://github.com/nicholaswilde/>
 [3]: <https://pypi.org/project/Jinja2/>
+
+[5]: <https://www.redhat.com/en/ansible-collaborative>
+[6]: <https://github.com/nicholaswilde/homelab-playbooks>

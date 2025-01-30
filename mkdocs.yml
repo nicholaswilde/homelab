@@ -54,6 +54,7 @@ nav:
       - SOPS: tools/sops.md
       - Task: tools/task.md
   - Reference:
+      - Development: reference/development.md
       - Tags: reference/tags.md
 
 extra:

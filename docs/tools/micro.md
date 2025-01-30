@@ -8,29 +8,33 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-```shell
-apt install micro
-```
+!!! quote ""
+
+    ```shell
+    apt install micro
+    ```
 
 ## :gear: Config
 
-=== "Automated"
+!!! abstract "~/.config/micro/settings.json"
 
-    ```shell
-    (
-      [ -d ~/.config/micro ] || mkdir -p ~/.config/micro && \
-      wget https://github.com/nicholaswilde/dotfiles2/raw/refs/heads/main/.config/micro/settings.json -O ~/.config/micro/settings.json
-    )
-    ```
+    === "Automated"
 
-=== "Manual"
+        ```shell
+        (
+          [ -d ~/.config/micro ] || mkdir -p ~/.config/micro
+          wget https://github.com/nicholaswilde/dotfiles2/raw/refs/heads/main/.config/micro/settings.json -O ~/.config/micro/settings.json
+        )
+        ```
 
-    ```shell
-    # Ctrl + e
-    set colorscheme twilight
-    set tabsize 2
-    set tabtospaces "true"
-    ```
+    === "Manual"
+
+        ```shell
+        # Ctrl + e
+        set colorscheme twilight
+        set tabsize 2
+        set tabtospaces "true"
+        ```
 
 ## :link: References
 

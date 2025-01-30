@@ -35,15 +35,7 @@ My homelab is setup and maintained using [Ansible][5], which is documented [here
 
 ## :construction: Development
 
-New pages for this site can be created using [jinja2][3] and the `.template.md.j2` file.
-
-```shell title="Install"
-pipx install jinja2-cli
-```
-
-```shell title="Create new page"
-jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > new-app.md
-```
+Check out the [Development](./reference/development.md) page.
 
 ## ​:scales: License
 
