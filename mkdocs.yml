@@ -31,6 +31,7 @@ nav:
       - Immich-Go: apps/immich-go.md
       - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
+      - IT-TOOLS: apps/it-tools.md
       - MySpeed: apps/myspeed.md
       - OpenMediaVault: apps/openmediavault.md
       - Prometheus: apps/prometheus.md
