@@ -14,17 +14,20 @@ tags:
 {% if config_path is defined %}    
     :material-information-outline: Configuration path: `{{ config_path }}`
 {% endif %}
-=== "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
-    ```
+!!! quote ""
 
-=== "ARM64"
+    === "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
+        ```
+
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+        ```
 
 ## :gear: Config
 
