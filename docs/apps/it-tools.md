@@ -2,8 +2,9 @@
 tags:
   - lxc
   - proxmox
+  - docker
 ---
-# :simple-it-tools: IT-TOOLS
+# ![it-tools](https://github.com/CorentinTh/it-tools/raw/refs/heads/main/public/safari-pinned-tab.svg){ width="32" } IT-TOOLS
 
 ## :hammer_and_wrench: Installation
 
