@@ -1,0 +1,11 @@
+---
+
+services:
+  it-tools:
+    container_name: it-tools
+    image: ghcr.io/corentinth/it-tools:2024.10.22-7ca5933
+    env_file:
+      - .env
+    ports:
+      - '8080:80'
+    restart: always
