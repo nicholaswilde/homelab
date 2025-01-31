@@ -11,7 +11,6 @@ tags:
 
     :material-console-network: Default Port: `8080`
 
-
 !!! quote ""
 
     === "Docker"
@@ -26,5 +25,4 @@ Make symlinks to repo.
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=it-tools>
-- <https://pimox-scripts.com/scripts?id=it-tools>
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id=alpine-it-tools>
