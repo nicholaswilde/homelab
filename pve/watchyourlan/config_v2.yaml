@@ -1,0 +1,26 @@
+
+arp_args: ""
+arp_strs:
+    - -gNx 192.168.1.0/24 -Q 1 -I eth0
+    - -gNx 192.168.2.0/24 -Q 2 -I eth0
+    - -gNx 192.168.3.0/24 -Q 3 -I eth0
+arp_strs_joined: ""
+color: dark
+hist_in_db: false
+host: 0.0.0.0
+ifaces: eth0
+influx_addr: ""
+influx_bucket: ""
+influx_enable: false
+influx_org: ""
+influx_skip_tls: false
+influx_token: ""
+log_level: info
+nodepath: ""
+pg_connect: ""
+port: "8840"
+shoutrrr_url: ""
+theme: sand
+timeout: 120
+trim_hist: 48
+use_db: sqlite

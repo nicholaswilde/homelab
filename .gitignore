@@ -6,3 +6,4 @@ site/
 acme*
 **/docker/netbootxyz/config/
 **/docker/netbootxyz/assets/
+scan.db

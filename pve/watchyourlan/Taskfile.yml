@@ -1,0 +1,22 @@
+---
+version: '3'
+
+tasks:
+  encrypt:
+    desc: Encrypt scan.db using SOPS
+    cmds:
+      - sops -e scan.db > scan.db.enc
+  decrypt:
+    desc: Decrypt scan.db using SOPS
+    cmds:
+     - sops -d scan.db.enc > scan.db
+  mklinks:
+    desc: Make soft links
+    cmds:
+      - task: decrypt
+      - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/scan.db /etc/watchyourlan/scan.db
+      - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/config_v2.yaml /etc/watchyourlan/config_v2.yaml
+  default:
+    cmds:
+      - task -l
+    silent: true
