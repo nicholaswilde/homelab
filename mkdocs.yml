@@ -26,6 +26,7 @@ nav:
       - ChangeDetection: apps/changedetection.md
       - Gitea: apps/gitea.md
       - Gridcoin: apps/gridcoin.md
+      - Home Assistant OS: apps/home-assistant-os.md
       - homepage: apps/homepage.md
       - Immich: apps/immich.md
       - Immich-Go: apps/immich-go.md
