@@ -3,7 +3,7 @@ tags:
   - vm
   - proxmox
 ---
-# :simple-home assistant os: Home Assistant OS
+# :simple-homeassistant: Home Assistant OS
 
 ## :hammer_and_wrench: Installation
 
