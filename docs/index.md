@@ -22,12 +22,18 @@ I also have a Raspberry Pi Zero W running an NTP server.
 
 !!! note
 
+    The commands assume that this repo is cloned into a directory `/root/git/nicholaswilde/homelab`.
+    
+!!! note
+
     I tend to use [tteck's][2] [ProxmoxVE Helper Scripts][3] and [Proxmox arm64 Install Scripts][4] to create LXCs and not run in Docker containers to reduce resources.
 
 !!! info
 
     Features or applications that I come across on the Internet and have not yet been incorporated into my homelab are tracked
     in the [repository issues][8].
+
+
 
 ## :hammer_and_wrench: Setup & Maintenance
 

@@ -2,6 +2,14 @@
 version: '3'
 
 tasks:
+  stop:
+    desc: Stop the service
+    cmds:
+      - service watchyourlan stop
+  restart:
+    desc: Restart the service
+    cmds:
+      - service watchyourlan restart
   encrypt:
     desc: Encrypt scan.db using SOPS
     cmds:
@@ -9,13 +17,15 @@ tasks:
   decrypt:
     desc: Decrypt scan.db using SOPS
     cmds:
-     - sops -d scan.db.enc > scan.db
+      - sops -d scan.db.enc > scan.db
   mklinks:
     desc: Make soft links
     cmds:
+      - task: stop
       - task: decrypt
       - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/scan.db /etc/watchyourlan/scan.db
       - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/config_v2.yaml /etc/watchyourlan/config_v2.yaml
+      - task: restart
   default:
     cmds:
       - task -l
