@@ -8,16 +8,18 @@ The development of my homelab is mainly done by watching YouTube videos and occa
 
 ## :twisted_rightwards_arrows: Workflow
 
-1. Create VM or LXC
-2. Run setup playbook
+1. Create VM or LXC.
+2. Run setup playbook.
 3. Add to lxcAll inventory.
 4. Clone and log into homelab repo on container.
-5. Setup app
-6. Add to AdGuardHome
-7. Run AdGuardHome sync
-8. Add to Traefik
-9. Add to homepage
-10. Add to homelab docs
+5. Setup app.
+6. Add to AdGuardHome.
+7. Run AdGuardHome sync.
+8. Add to Traefik.
+9. Add to homepage.
+10. Add to homelab docs.
+11. Add to WatchYourLAN.
+12. Add to Beszel.
 
 ## :page_facing_up: New Document Pages
 
