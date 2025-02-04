@@ -265,6 +265,34 @@ WIP
     /sbin/qm set [VM-ID] -virtio2 /dev/disk/by-id/[DISK-ID]
     ```
 
+## :material-backup-restore: [Kill Backup Job][7]
+
+!!! quote ""
+
+    ```shell
+    vzdump -stop
+    ```
+
+!!! quote ""
+
+    ```shell
+    ps awxf | grep vzdump
+    ```
+
+!!! note ""
+
+    ```shell
+    2444287 ?        Ds     0:00 task UPID:server_name:00254BFF:06D36C31:63BB7524:vzdump::root@pam:
+    ```
+
+!!! quote ""
+
+    ```shell
+    kill -9 <process id>
+    ```
+
+
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
@@ -277,3 +305,4 @@ WIP
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
 [6]: <https://pve.proxmox.com/wiki/Logical_Volume_Manager_(LVM)>
+[7]: <https://forum.proxmox.com/threads/backup-job-is-stuck-and-i-cannot-stop-it-or-even-kill-it.120835/#post-524962>
