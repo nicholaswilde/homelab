@@ -60,6 +60,9 @@ nav:
       - Development: reference/development.md
       - Tags: reference/tags.md
 
+extra_css:
+  - stylesheets/extra.css
+
 extra:
   social:
     - icon: fontawesome/solid/house
