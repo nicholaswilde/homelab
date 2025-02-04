@@ -211,6 +211,10 @@ Unmount SD card, plug into the Raspberry Pi and boot
 
 ### Proxmox Installation
 
+!!! tip
+
+    Alternatively, the [ISO][7] may be downloaded and installed as a removable media.
+
 Log into the Raspberry Pi using SSH.
 
 !!! quote "Switch to `root` user. Default password is blank for Raspberry Pi OS.""
@@ -367,15 +371,10 @@ Where `eth0` is the current existing network interface
     )
     ```
 
-!!! pied-piper "Pied Piper"
-
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
-    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
-    purus auctor massa, nec semper lorem quam in massa.
-
 ## :link: References
 
 - <https://github.com/jiangcuo/Proxmox-Port/wiki/Install-Proxmox-VE-on-Debian-bookworm>
+- <https://mirrors.apqa.cn/proxmox/isos/>
 
 [1]: <https://www.raspberrypi.com/products/raspberry-pi-4-model-b/>
 [3]: <https://www.raspberrypi.com/software/operating-systems/>
@@ -383,3 +382,4 @@ Where `eth0` is the current existing network interface
 [4]: <https://community-scripts.github.io/ProxmoxVE/>
 [5]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
 [6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>>
+[7]: <https://mirrors.apqa.cn/proxmox/isos/>
