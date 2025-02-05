@@ -27,54 +27,54 @@ It is installed only on the primary instance and is scheduled to run once a day,
 
 ## :gear: Config
 
-```
---8<-- "reprepro/debian/conf/distributions"
-```
+!!! abstract "/etc/systemd/system/adguardhome-sync.service"
 
-=== "Automatic"
+    === "Automatic"
 
-    ```shell
-    cat > /etc/systemd/system/adguardhome-sync.service <<EOF
-    [Unit]
-    Description = AdGuardHome Sync
-    After = network.target
+        ```shell
+        cat > /etc/systemd/system/adguardhome-sync.service <<EOF
+        [Unit]
+        Description = AdGuardHome Sync
+        After = network.target
 
-    [Service]
-    ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
+        [Service]
+        ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
 
-    [Install]
-    WantedBy = multi-user.target
-    EOF
-    ```
+        [Install]
+        WantedBy = multi-user.target
+        EOF
+        ```
 
-=== "Download"
+    === "Download"
 
-    ```shell
-    wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
-    ```
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
+        ```
     
-=== "Manual"
+    === "Manual"
 
-    ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
-    [Unit]
-    Description = AdGuardHome Sync
-    After = network.target
+        ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
+        [Unit]
+        Description = AdGuardHome Sync
+        After = network.target
 
-    [Service]
-    ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
+        [Service]
+        ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
 
-    [Install]
-    WantedBy = multi-user.target
+        [Install]
+        WantedBy = multi-user.target
+        ```
+
+!!! quote "Enable service"
+
+    ```shell
+    (
+     cp /opt/adguardhome-sync/adguardhome-sync.service /etc/systemd/system/ && \
+     systemctl enable adguardhome-sync.service && \
+     systemctl start adguardhome-sync.service && \
+     systemctl status adguardhome-sync.service
+    ) 
     ```
-
-```shell title="Enable service"
-(
- cp /opt/adguardhome-sync/adguardhome-sync.service /etc/systemd/system/ && \
- systemctl enable adguardhome-sync.service && \
- systemctl start adguardhome-sync.service && \
- systemctl status adguardhome-sync.service
-) 
-```
 
 Make symlinks from `/opt/adguardhome-sync` to this repo.
 
