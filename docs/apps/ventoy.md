@@ -27,5 +27,4 @@ tags:
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=ventoy>
-- <https://pimox-scripts.com/scripts?id=Ventoy>
+- <https://www.ventoy.net/en/index.html>
