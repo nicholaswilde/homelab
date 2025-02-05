@@ -42,6 +42,7 @@ nav:
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
       - Uptime Kuma: apps/uptime-kuma.md
+      - Ventoy: apps/ventoy.md
       - WatchYourLAN: apps/watchyourlan.md
   - Hardware:
       - Intel NUC: hardware/nuc.md

@@ -1,0 +1,18 @@
+---
+version: '3'
+
+env:
+  APP_NAME: '{{ .APP_NAME }}'
+  USER_NAME: '{{ .USER_NAME | default "username" }}'
+  APP_NAME_LOWER: '{{ .APP_NAME | lower }}'
+
+tasks:
+  new:
+    desc: Create a new lxc app
+    cmds:
+      - mkdir {{ .APP_NAME_LOWER }}
+      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
+  default:
+    cmds:
+      - task -l
+    silent: true

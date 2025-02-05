@@ -1,0 +1,16 @@
+---
+version: '3'
+
+tasks:
+  sync:
+    desc: Sync ISO images with USB drive
+    cmds:
+      - rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/
+  cron:
+    desc: Setup cron job
+    cmds:
+      - echo "0 2 * * * rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/" | crontab -
+  default:
+    cmds:
+      - task -l
+    silent: true

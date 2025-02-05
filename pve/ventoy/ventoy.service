@@ -1,0 +1,12 @@
+[Unit]
+Description=Ventoy Web Service
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/etc/ventoy/VentoyWeb.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
