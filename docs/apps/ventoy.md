@@ -31,7 +31,7 @@ WIP
 
 ### :handshake: Service
 
-!!! abstract ""
+!!! abstract "/etc/systemd/system/ventoy.service"
 
     === "Manual"
 
