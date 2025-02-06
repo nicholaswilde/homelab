@@ -39,6 +39,16 @@ WIP
         --8<-- "ventoy/ventoy.service"
         ```
 
+!!! quote "Enable service"
+
+    ```shell
+    (
+     systemctl enable ventoy.service && \
+     systemctl start ventoy.service && \
+     systemctl status ventoy.service
+    ) 
+    ```
+
 ### :alarm_clock: Cronjob
 
 WIP
