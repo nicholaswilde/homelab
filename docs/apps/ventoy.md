@@ -21,12 +21,18 @@ It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTor
 
     :material-information-outline: Configuration path: `/opt/ventoy`    
 
-!!! quote ""
+!!! quote "homelab/pve/ventoy/install.sh"
 
-    === "AMD64"
+    === "root"
 
         ```shell
-        wget https://sourceforge.net/projects/ventoy/files/v1.1.00/ventoy-1.1.00-linux.tar.gz/download -O ventoy-linux.tar.gz
+        ./install.sh
+        ```
+
+    === "sudo"
+
+        ```shell
+        sudo ./install.sh
         ```
 
 ## :gear: Config
