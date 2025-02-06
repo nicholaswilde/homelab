@@ -33,12 +33,26 @@ WIP
 
 !!! abstract "/etc/systemd/system/ventoy.service"
 
+    === "Automatic"
+
+        ```shell
+        cat > /etc/systemd/system/ventoy.service <<EOF
+        --8<-- "ventoy/ventoy.service"
+        EOF
+        ```
+
+    === "Download"
+
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/ventoy/ventoy.service -O /etc/systemd/system/adguardhome-sync.service
+        ```
+        
     === "Manual"
 
         ```ini
         --8<-- "ventoy/ventoy.service"
         ```
-
+    
 !!! quote "Enable service"
 
     ```shell
