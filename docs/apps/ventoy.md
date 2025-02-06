@@ -23,7 +23,7 @@ tags:
 
 ## :gear: Config
 
-## :gear: Service
+## :handshake: Service
 
 ## :link: References
 
