@@ -19,14 +19,14 @@ It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTor
 
     :material-console-network: Default Port: `24680`
 
-    :material-information-outline: Configuration path: `/etc/ventoy`    
+    :material-information-outline: Configuration path: `/opt/ventoy`    
 
 !!! quote ""
 
     === "AMD64"
 
         ```shell
-        wget https://sourceforge.net/projects/ventoy/files/v1.1.00/ventoy-1.1.00-linux.tar.gz/download -O ventoy-1.1.00-linux.tar.gz
+        wget https://sourceforge.net/projects/ventoy/files/v1.1.00/ventoy-1.1.00-linux.tar.gz/download -O ventoy-linux.tar.gz
         ```
 
 ## :gear: Config
