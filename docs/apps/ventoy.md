@@ -9,6 +9,10 @@ tags:
 The drive is consistently plugged into the node and updated automatically using `rsync`
 It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTorrent.
 
+!!! warning
+
+    Continuous writes to USB drives will degrade the life of the drive.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
