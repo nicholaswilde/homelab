@@ -36,7 +36,7 @@ WIP
     === "Manual"
 
         ```ini
-        --8<-- "pve/ventoy/ventoy.service"
+        --8<-- "ventoy/ventoy.service"
         ```
 
 ### :alarm_clock: Cronjob
