@@ -44,7 +44,7 @@ WIP
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/ventoy/ventoy.service -O /etc/systemd/system/adguardhome-sync.service
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/ventoy/ventoy.service -O /etc/systemd/system/ventoy.service
         ```
         
     === "Manual"
