@@ -31,7 +31,13 @@ WIP
 
 ### :handshake: Service
 
-WIP
+!!! abstract ""
+
+    === "Manual"
+
+        ```ini
+        --8<-- "pve/ventoy/ventoy.service"
+        ```
 
 ### :alarm_clock: Cronjob
 
