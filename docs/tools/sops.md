@@ -28,25 +28,27 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 ## :gear: Config
 
-### Keys
+### :key: Keys
 
-=== "SCP"
+!!! quote ""
 
-    ```shell
-    (
-      [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
-      scp nicholas@192.168.2.250/home/nicholas/.config/sops/age/keys.txt ~/.config/sops/age/
-    )
-    ```
+    === "SCP"
 
-=== "LastPass"
+        ```shell
+        (
+          [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
+          scp nicholas@192.168.2.250/home/nicholas/.config/sops/age/keys.txt ~/.config/sops/age/
+        )
+        ```
 
-    ```shell
-    (
-      [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
-      lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/age/keys.txt
-    )
-    ```
+    === "LastPass"
+
+        ```shell
+        (
+          [ -d ~/.config/sops/age ] || mkdir -p ~/.config/sops/age
+          lpass show sops-age --attach=att-2571789250549588435-38084 -q > ~/.config/sops/age/keys.txt
+        )
+        ```
 
 ## :pencil: Usage
 
