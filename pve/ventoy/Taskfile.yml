@@ -21,6 +21,16 @@ tasks:
     cmds:
       - ./install.sh
 
+  up:
+    desc: Start web server
+    cmds:
+      - task: serve
+
+  serve:
+    desc: Start web server
+    cmds:
+      - ./opt/ventoy/VentoyWeb.sh
+
   default:
     cmds:
       - task -l
