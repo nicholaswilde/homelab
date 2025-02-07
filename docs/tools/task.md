@@ -8,13 +8,43 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-```shell
-curl https://installer.l.nicholaswilde.io/go-task/task! | bash
-```
+!!! quote ""
+
+    === "reprepeo"
+
+        ```shell
+        apt install task
+        ```
+        
+    === "installer"
+    
+        ```shell
+        curl https://installer.l.nicholaswilde.io/go-task/task! | bash
+        ```
 
 ## :gear: Config
 
-WIP
+Most apps should have `Taskfiles.yml` in their directories to help manage the apps.
+
+## :pencil: Usage
+
+!!! quote "Change to app directory"
+
+    ```shell
+    cd pve/<appname>
+    ```
+
+!!! quote "List available commands"
+
+    ```shell
+    task
+    ```
+
+!!! quote "Run task"
+
+    ```shell
+    task restart
+    ```
 
 ## :link: References
 
