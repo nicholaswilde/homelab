@@ -10,6 +10,17 @@ tasks:
     desc: Setup cron job
     cmds:
       - echo "0 2 * * * rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/" | crontab -
+
+  restart:
+    desc: Restart Ventoy
+    cmds:
+      - service ventoy restart
+
+  install:
+    desc: Install Ventoy
+    cmds:
+      - ./install.sh
+
   default:
     cmds:
       - task -l
