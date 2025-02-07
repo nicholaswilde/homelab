@@ -45,7 +45,7 @@ nav:
       - Ventoy: apps/ventoy.md
       - WatchYourLAN: apps/watchyourlan.md
   - Hardware:
-      - HP Pro desk 600 G3: hardware/hp-pro desk-600-g3.md
+      - HP Pro desk 600 G3: hardware/hp-prodesk-600-g3.md
       - Intel NUC: hardware/nuc.md
       - Raspberry Pi Zero W: hardware/rpi0.md
       - Raspberry Pi 2: hardware/rpi2.md
