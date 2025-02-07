@@ -56,17 +56,21 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 !!! quote ""
 
-    ```shell
-    sops -e .env > .env.enc
-    ```
+    === ".env"
+    
+        ```shell
+        sops -e .env > .env.enc
+        ```
 
 ### :closed_lock_with_key: Decrypt
 
 !!! quote ""
 
-    ```shell
-    sops -d --input-type dotenv --output-type dotenv .env.enc
-    ```
+    === ".env"
+    
+        ```shell
+        sops -d --input-type dotenv --output-type dotenv .env.enc
+        ```
 
 ## :link: References
 
