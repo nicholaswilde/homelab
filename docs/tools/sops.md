@@ -69,6 +69,12 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 !!! quote ""
 
+    === "task"
+
+        ```shell
+        task encrypt
+        ```
+        
     === ".env"
     
         ```shell
@@ -79,6 +85,12 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 !!! quote ""
 
+    === "task"
+
+        ```shell
+        task decrypt
+        ```
+        
     === ".env"
     
         ```shell
