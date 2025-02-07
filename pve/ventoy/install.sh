@@ -1,7 +1,19 @@
 #!/bin/bash
+################################################################################
+#
+# install
+# ----------------
+# Install Ventoy
+#
+# @author Nicholas Wilde, 0x08b7d7a3
+# @date 07 Feb 2025
+# @version 0.1.0
+#
+################################################################################
 
-# Define the installation directory
-INSTALL_DIR="/opt/ventoy/"
+# Variables
+INSTALL_DIR="/opt/ventoy"
+FILENAME="ventoy.tar.gz"
 
 function command_exists() {
   command -v "$1" >/dev/null 2>&1
@@ -9,27 +21,32 @@ function command_exists() {
 
 function check_root(){
   if [ "$UID" -ne 0 ]; then
-    echo "Please run as root or with sudo."
+    printf "%s\n" "Please run as root or with sudo."
     exit 1
   fi
 }
 
 function check_xmllint(){
   if ! command_exists "xmllint"; then
-    echo "xmllint is not installed"
+    printf "%s\n" "xmllint is not installed"
     exit 1
   fi
 }
 
 # Create the installation directory if it doesn't exist
 function check_dir(){
-  [ -d "$INSTALL_DIR" ] || mkdir -p "$INSTALL_DIR"
+  [ -d "${INSTALL_DIR}" ] || mkdir -p "${INSTALL_DIR}"
+}
+
+function make_temp_dir(){
+  TEMP_PATH=$(mktemp -d)
+  export TEMP_PATH
 }
 
 # Download the Ventoy tarball
 function download_app(){
   DOWNLOAD_URL=$(curl -s "https://sourceforge.net/projects/ventoy/rss?path=/" | xmllint --xpath 'string(//item[contains(link, "linux")]/link)' -)
-  wget -O ventoy.tar.gz "$DOWNLOAD_URL"
+  wget -O "${TEMP_PATH}/${FILENAME}" "${DOWNLOAD_URL}"
   # Check if the download was successful
   if [ $? -ne 0 ]; then
     echo "Error: Failed to download Ventoy."
@@ -39,36 +56,32 @@ function download_app(){
 
 # Extract the tarball to the installation directory
 function extract_app(){
-  tar -xzf ventoy.tar.gz -C "$INSTALL_DIR"
+  tar --strip-components=2 -xf "${TEMP_PATH}/${FILENAME}" -C "${INSTALL_DIR}"
 }
 
-# VENTOY_DIR=$(find "$INSTALL_DIR" -maxdepth 1 -type d -name "ventoy-*")
-# 
-# # Create a symbolic link for easier access (optional, but recommended)
-# if [ -n "$VENTOY_DIR" ]; then
-#   ln -s "$VENTOY_DIR" "$INSTALL_DIR/ventoy"
-#   echo "Ventoy installed to $INSTALL_DIR/ventoy"
-# else
-#   echo "Error: Could not find extracted Ventoy directory."
-#   exit 1
-# fi
-# 
-# 
-# echo "Installation complete."
-# 
-# exit 0
+function check_install(){
+  if [ -f "${INSTALL_DIR}/VentoyWeb.sh" ]; then
+    printf "%s\n" "Installation successful"
+  else
+    printf "%s\n" "Installation failed"
+    exit 1
+  fi
+}
 
 function cleanup(){
-  rm ventoy.tar.gz
+  [ -f "${TEMP_PATH}/ventoy.tar.gz" ] && rm "${TEMP_PATH}/ventoy.tar.gz"
 }
 
 function main(){
   check_root  
   check_xmllint
   check_dir
-  # download_app
-
-  # cleanup
+  make_temp_dir
+  download_app
+  extract_app
+  cleanup
+  check_install
+  exit 0
 }
 
 main "@"

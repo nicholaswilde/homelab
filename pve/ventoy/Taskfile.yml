@@ -1,11 +1,23 @@
 ---
 version: '3'
 
+env:
+  INSTALL_DIR: "/opt/ventoy"
+
+dotenv:
+  - .env
+
 tasks:
+  deps:
+    desc: Install dependencies
+    cmds:
+      - sudo apt install rsync libxml2-utils
+
   sync:
     desc: Sync ISO images with USB drive
     cmds:
       - rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/
+
   cron:
     desc: Setup cron job
     cmds:
@@ -28,8 +40,9 @@ tasks:
 
   serve:
     desc: Start web server
+    dir: /opt/ventoy/
     cmds:
-      - ./opt/ventoy/VentoyWeb.sh
+      - sudo bash -c {{ .INSTALL_DIR}}/VentoyWeb.sh -H {{ .VENTOY_HOST }}
 
   default:
     cmds:
