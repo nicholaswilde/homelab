@@ -50,6 +50,17 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
         )
         ```
 
+!!! abstract ".sops.yaml"
+
+    ```yaml
+    ---
+    creation_rules:
+      - filename_regex: \.yaml$
+        age: 'age1x2at6wwq2gks47fsep9a25emdeqd93e3k0gfsswtmhruqrteu5jqjvy7kd'
+      - filename_regex: \.db$
+        age: 'age1x2at6wwq2gks47fsep9a25emdeqd93e3k0gfsswtmhruqrteu5jqjvy7kd'
+    ```
+
 ## :pencil: Usage
 
 ### :lock: Encrypt
