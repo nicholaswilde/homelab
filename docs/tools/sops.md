@@ -12,9 +12,19 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 ## :hammer_and_wrench: Installation
 
-```shell
-brew install sops
-```
+!!! quote ""
+
+    === "reprepro"
+
+        ```shell
+        apt install sops
+        ```
+        
+    === "brew"
+    
+        ```shell
+        brew install sops
+        ```
 
 ## :gear: Config
 
@@ -42,15 +52,19 @@ brew install sops
 
 ### :lock: Encrypt
 
-```shell
-sops -e .env > .env.enc
-```
+!!! quote ""
+
+    ```shell
+    sops -e .env > .env.enc
+    ```
 
 ### :closed_lock_with_key: Decrypt
 
-```shell
-sops -d --input-type dotenv --output-type dotenv .env.enc
-```
+!!! quote ""
+
+    ```shell
+    sops -d --input-type dotenv --output-type dotenv .env.enc
+    ```
 
 ## :link: References
 
