@@ -8,6 +8,8 @@ tags:
 
 Typically, my secrets are kept in `.env` files that are read as environmental variables and then used my configs.
 
+Other files are encrypted that have secrets, such as yaml config or sqlite db files.
+
 [age][2] is my encryption of choice.
 
 ## :hammer_and_wrench: Installation
