@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 User=root
-ExecStart=/etc/ventoy/VentoyWeb.sh
+ExecStart=/opt/ventoy/VentoyWeb.sh
 Restart=always
 
 [Install]
