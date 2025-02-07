@@ -3,4 +3,6 @@ tags:
   - hardware
   - amd64
 ---
-# HP Pro desk 600 G3
+# :computer: HP Pro desk 600 G3
+
+## :link: References
