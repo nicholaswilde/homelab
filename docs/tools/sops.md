@@ -30,7 +30,7 @@ Typically, my secrets are kept in `.env` files that are read as environmental va
 
 ### :key: Keys
 
-!!! quote ""
+!!! abstract "~/.config/sops/age/keys.txt"
 
     === "SCP"
 
