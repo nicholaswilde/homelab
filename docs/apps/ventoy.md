@@ -75,7 +75,11 @@ WIP
 
 ### :alarm_clock: Cronjob
 
-WIP
+!!! quote "2 A.M. nightly"
+
+    ```shell
+          echo "0 2 * * * rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/" | crontab -
+    ```
 
 ## :pencil: Usage
 
