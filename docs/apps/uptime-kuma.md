@@ -3,7 +3,7 @@ tags:
   - bare-metal
   - docker
 ---
-# :simple-uptime-kuma: Uptime Kuma
+# :simple-uptimekuma: Uptime Kuma
 
 [Uptime Kuma][1] is used to monitor the uptime of my devices.
 
