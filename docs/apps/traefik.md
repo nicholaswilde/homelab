@@ -15,13 +15,22 @@ tags:
 
 ### :handshake: Service
 
-```shell
-/etc/systemd/system/traefik.service
-```
+!!! quote ""
+
+    ```shell
+    /etc/systemd/system/traefik.service
+    ```
 
 ## :file_folder: Logs
 
-```shell
-tail -n10 /var/log/traefik/traefik.log
-```
+!!! quote ""
+
+    ```shell
+    tail -n10 /var/log/traefik/traefik.log
+    ```
+
+## :pencil: Usage
+
+WIP
+
 [1]: <https://traefik.io/traefik/>
