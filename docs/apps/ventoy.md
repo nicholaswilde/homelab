@@ -6,8 +6,10 @@ tags:
 # ![ventoy](https://a.fsdn.com/allura/p/ventoy/icon?83b3cf3559dee8e8a1302821225c2e6076b1e2fded2a1ddc8c229a99eb9efd5a?&w=90){ width="32" } Ventoy
 
 [Ventoy][1] is used as an app to serve multipe ISOs on a bootable USB drive.
-The drive is consistently plugged into the node and updated automatically using `rsync`
+The drive is consistently plugged into the node and updated automatically using `cp -u`.
 It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTorrent.
+
+The way that it works is that an NFS share and USB drive are mounted using autofs. A cronjob is run nightly to sync the ISO files on the NFS with the thumb drive.
 
 !!! warning
 
@@ -86,7 +88,7 @@ It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTor
     === "Automatic"
     
 	    ```shell
-	    echo 0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp {} /mnt/usb \;  >/dev/null 2>&1" | crontab -
+	    (crontab -l 2>/dev/null; echo "0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1") | crontab -
 	    ```
 	    
 	=== "Manual"
@@ -96,12 +98,12 @@ It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTor
 		```
 
 		```ini
-		0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp {} /mnt/usb \;  >/dev/null 2>&1"
+		0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1"
 		```
 
 ## :pencil: Usage
 
-WIP
+The app may be installed and updated on the USB drive via the web app.
 
 ## :link: References
 
