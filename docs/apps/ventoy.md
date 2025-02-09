@@ -37,7 +37,13 @@ It is meant to be synchronized with ISOs saved in Proxmox or downloaded via qTor
 
 ## :gear: Config
 
-WIP
+!!! abstract ".env"
+
+	=== "Manual"
+
+		```dotenv
+		--8<-- "ventoy/.env.tmpl"
+		```
 
 ### :handshake: Service
 
