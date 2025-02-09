@@ -1,0 +1,3 @@
+usb -fstype=auto,rw  :/dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_04019ebb9045b2187b4c68fdf6daa1ba6507f9ffa0329ae0dc9c496da45564b4c2550000000000000000000066a6801d000fb41883558107952c0477-0:0-part1
+storage -fstype=nfs4,rw 192.168.2.19:/storage
+# usb		-fstype=auto,rw :/dev/sda1

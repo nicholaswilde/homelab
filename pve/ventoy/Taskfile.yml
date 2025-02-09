@@ -8,25 +8,44 @@ dotenv:
   - .env
 
 tasks:
+  mount:
+    desc: Mount USB
+    cmds:
+      - mount -t auto {{ .VENTOY_USB }} {{ .VENTOY_MNT }}
+  umount:
+    desc: Unmount USB
+    cmds:
+      - umount {{ .VENTOY_MNT }}
+
   deps:
     desc: Install dependencies
     cmds:
-      - sudo apt install rsync libxml2-utils
+      - sudo apt install rsync libxml2-utils dosfstools cron
 
   sync:
     desc: Sync ISO images with USB drive
     cmds:
-      - rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/
-
+      - find {{ .VENTOY_SOURCE }} -type f -name "*.iso" -exec cp -u {} {{ .VENTOY_DEST }} \;
+      
   cron:
     desc: Setup cron job
     cmds:
-      - echo "0 2 * * * rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/" | crontab -
+      - (crontab -l 2>/dev/null; echo "0 2 * * * find {{ .VENTOY_SOURCE }} -type f -name \"*.iso\" -exec cp {} {{ .VENTOY_DEST }} \;") | crontab -
+
+  start:
+    desc: Restart Ventoy
+    cmds:
+      - service ventoy start
 
   restart:
     desc: Restart Ventoy
     cmds:
       - service ventoy restart
+
+  stop:
+    desc: Stop Ventoy
+    cmds:
+      - service ventoy stop
 
   install:
     desc: Install Ventoy

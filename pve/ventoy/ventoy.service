@@ -5,8 +5,11 @@ After=network-online.target
 [Service]
 Type=simple
 User=root
-ExecStart=/opt/ventoy/VentoyWeb.sh
+WorkingDirectory=/opt/ventoy
+EnvironmentFile=/root/git/nicholaswilde/homelab/pve/ventoy/.env
+ExecStart=/opt/ventoy/VentoyWeb.sh -H ${VENTOY_HOST}
 Restart=always
+ExecReload=/bin/kill -USR1 $MAINPID
 
 [Install]
 WantedBy=multi-user.target
