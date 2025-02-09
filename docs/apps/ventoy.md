@@ -77,9 +77,21 @@ WIP
 
 !!! quote "2 A.M. nightly"
 
-    ```shell
-    echo "0 2 * * * rsync -avz /path/to/your/isos/ /media/yourusername/USBDRIVE/isos/" | crontab -
-    ```
+    === "Automatic"
+    
+	    ```shell
+	    echo 0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp {} /mnt/usb \;  >/dev/null 2>&1" | crontab -
+	    ```
+	    
+	=== "Manual"
+
+		```shell
+		crontab -e
+		```
+
+		```ini
+		0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp {} /mnt/usb \;  >/dev/null 2>&1"
+		```
 
 ## :pencil: Usage
 
