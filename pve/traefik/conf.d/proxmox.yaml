@@ -60,7 +60,7 @@ http:
     proxmox04:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.33:8006"
+          - url: "https://192.168.2.67:8006"
         passHostHeader: true
 
 
