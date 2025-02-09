@@ -1,0 +1,20 @@
+---
+
+version: '3'
+
+tasks:
+  update:
+    desc: Update running containers
+    cmds:
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f
+
+  upgrade:
+    desc: upgrade
+    cmds:
+      - git pull origin
+      - task: update
+  default:
+    cmds:
+      - task -l
+    silent: true
