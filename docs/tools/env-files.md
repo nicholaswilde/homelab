@@ -26,9 +26,7 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
 
 ## :pencil: Service
 
-WIP
-
-!!! abstract "app.service"
+!!! abstract "appname.service"
 
     ```ini
     [Service]
