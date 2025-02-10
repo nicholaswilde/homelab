@@ -82,7 +82,7 @@ If the tool is only available to download as a binary file, I'll use my [`instal
 
 New pages for this site can be created using [jinja2][3] and the `.template.md.j2` file.
 
-!!! quote "Create new page"
+!!! quote "From `homepage/docs`"
 
     === "task"
 
