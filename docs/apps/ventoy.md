@@ -47,7 +47,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 	cp .env.tmpl .env
 	nano .env
 	```
-	 
+ 
     === "Manual"
 
 	```dotenv
