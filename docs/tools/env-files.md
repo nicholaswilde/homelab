@@ -53,7 +53,7 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
           - .env
     ```
 
-## Shell Script
+## :scroll: Shell Script
 
 !!! abstract "script.sh"
 
