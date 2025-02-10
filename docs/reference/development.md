@@ -84,9 +84,17 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 !!! quote "Create new page"
 
-    ```shell
-    jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > new-app.md
-    ```
+    === "task"
+
+        ```shell
+        APP_NAME="New App" task new > apps/new-app.md
+        ```
+        
+    === "jinja2-cli"
+    
+        ```shell
+        jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > apps/new-app.md
+        ```
 
 ## :link: References
 
