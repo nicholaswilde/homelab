@@ -10,9 +10,17 @@ tags:
 
 !!! quote ""
 
-    ```shell
-    apt install micro
-    ```
+    === "apt"
+    
+        ```shell
+        apt install micro
+        ```
+
+    === "brew"
+
+        ```shell
+        brew install micro
+        ```
 
 ## :gear: Config
 
