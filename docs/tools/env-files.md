@@ -10,9 +10,19 @@ tags:
 
     Because they can hold secrets, they are ignored by git.
 
+## Template
+
+Since the file is ignored by git, the template file may be copied.
+
+!!! quote ".env.tmpl`
+
+    ```shell
+    cp .env.tmpl .enclv
+    ```
+
 ## :key: Secrets
 
-WIP
+If secrets are kept in the `.env` file, the file is encrypted using SOPS and stored as `.env.enc`.
 
 ## :pencil: Service
 
