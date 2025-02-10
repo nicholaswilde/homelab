@@ -84,7 +84,7 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 !!! quote "From `homepage/docs`"
 
-    === "task"
+    === "Task"
 
         ```shell
         APP_NAME="New App" task new > apps/new-app.md
