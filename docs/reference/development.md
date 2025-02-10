@@ -35,7 +35,7 @@ If a it exists as a Proxmox Helper Script, I'll use that.
 
 #### :package: LXC
 
-If that doesn't exist, I'll clone an Debian LXC and manually install the app. Generally, I like to stick with LXCs because of there lower overhead.
+If that doesn't exist, I'll clone a Debian LXC and manually install the app. Generally, I like to stick with LXCs because of their lower overhead.
 
 #### :computer: VM
 
