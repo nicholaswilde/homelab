@@ -35,7 +35,12 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
 
 ## :simple-task: Task
 
-WIP
+!!! abstract "Taskfile.yml"
+
+    ```yaml
+    dotenv:
+      - .env
+    ```
 
 ## :simple-docker: Docker Compose
 
