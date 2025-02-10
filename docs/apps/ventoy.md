@@ -41,6 +41,13 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
 !!! abstract ".env"
 
+        === "Template"
+	
+	        ```shell
+	        cp .env.tmpl .env
+	        nano .env
+	        ```
+	 
 	=== "Manual"
 
 		```dotenv
