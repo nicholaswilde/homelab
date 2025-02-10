@@ -34,7 +34,16 @@ WIP
 
 ## :simple-docker: Docker Compose
 
-WIP
+!!! abstract "compose.yaml"
+
+    ```yaml
+    ...
+    services:
+      app_name:
+        env_file:
+          - .env
+    ...
+    ```
 
 ## :link: References
 
