@@ -17,13 +17,17 @@ It is installed only on the primary instance and is scheduled to run once a day,
     
     :material-information-outline: Configuration path: `/opt/adguardhome-sync`
 
-```shell title="Install or Update"
-(
-  [ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync && \
-  cd /opt/adguardhome-sync && \
-  curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash
-)
-```
+!!! quote "Install or Update"
+
+    === "installer"
+    
+        ```shell
+        (
+          [ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync && \
+          cd /opt/adguardhome-sync && \
+          curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash
+        )
+        ```
 
 ## :gear: Config
 
