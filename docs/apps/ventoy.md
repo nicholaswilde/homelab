@@ -43,16 +43,16 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
     === "Template"
 	
-	```shell
-	cp .env.tmpl .env
-	nano .env
-	```
+	      ```shell
+	      cp .env.tmpl .env
+	      nano .env
+	      ```
  
     === "Manual"
 
-	```dotenv
-	--8<-- "ventoy/.env.tmpl"
-	```
+	      ```dotenv
+	      --8<-- "ventoy/.env.tmpl"
+	      ```
 
 ### :handshake: Service
 
@@ -94,19 +94,19 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
     === "Automatic"
     
-	```shell
-	(crontab -l 2>/dev/null; echo "0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1") | crontab -
-	```
+        ```shell
+        (crontab -l 2>/dev/null; echo "0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1") | crontab -
+        ```
 	    
     === "Manual"
 
         ```shell
-	crontab -e
-	```
+	      crontab -e
+        ```
 
-	```ini
-	0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1"
-	```
+        ```ini
+        0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1"
+        ```
 
 ## :pencil: Usage
 
