@@ -47,12 +47,10 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
 !!! abstract "compose.yaml"
 
     ```yaml
-    ...
     services:
-      app_name:
+      appname:
         env_file:
           - .env
-    ...
     ```
 
 ## :link: References
