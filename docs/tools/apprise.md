@@ -20,9 +20,11 @@ apt install apprise
     apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
     ```
 
-```shell title="Notification URL List"
-mailto://email:passkey@gmail.com
-```
+!!! quote "Notification URL List"
+
+    ```shell
+    mailto://email:passkey@gmail.com
+    ```
 
 ## :link: References
 
