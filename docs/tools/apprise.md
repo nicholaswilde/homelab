@@ -8,9 +8,13 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-```shell
-apt install apprise
-```
+!!! quote ""
+
+    === "apt"
+
+        ```shell
+        apt install apprise
+        ```
 
 ## :gear: Config
 
