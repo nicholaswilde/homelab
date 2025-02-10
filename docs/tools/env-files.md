@@ -10,14 +10,14 @@ tags:
 
     Because they can hold secrets, they are ignored by git.
 
-## Template
+## :material-content-copy: Template
 
-Since the file is ignored by git, the template file may be copied.
+Since the file is ignored by git, the template file may be copied, if it exists.
 
-!!! quote ".env.tmpl`
+!!! quote ".env.tmpl"
 
     ```shell
-    cp .env.tmpl .enclv
+    cp .env.tmpl .env
     ```
 
 ## :key: Secrets
