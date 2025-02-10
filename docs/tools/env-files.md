@@ -22,7 +22,7 @@ Since the file is ignored by git, the template file may be copied, if it exists.
 
 ## :key: Secrets
 
-If secrets are kept in the `.env` file, the file is encrypted using SOPS and stored as `.env.enc`.
+If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] and stored as `.env.enc`.
 
 ## :pencil: Service
 
@@ -37,3 +37,5 @@ WIP
 WIP
 
 ## :link: References
+
+[1]: <./sops.md>
