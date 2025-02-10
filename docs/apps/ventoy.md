@@ -98,9 +98,9 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 	(crontab -l 2>/dev/null; echo "0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1") | crontab -
 	```
 	    
-     === "Manual"
+    === "Manual"
 
-	```shell
+        ```shell
 	crontab -e
 	```
 
