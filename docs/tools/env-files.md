@@ -28,6 +28,13 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
 
 WIP
 
+!!! abstract "app.service"
+
+    ```ini
+    [Service]
+    EnvironmentFile=/root/git/nicholaswilde/homelab/pve/appname/.env
+    ```
+
 ## :simple-task: Task
 
 WIP
