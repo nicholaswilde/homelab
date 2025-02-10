@@ -4,7 +4,7 @@ name: immich
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v1.125.7
+    image: ghcr.io/immich-app/immich-server:v1.126.1
     # user: "1000:1000"
     # extends:
     #   file: hwaccel.transcoding.yml
