@@ -13,13 +13,13 @@ The development of my homelab is mainly done by watching YouTube videos and occa
 3. Add to lxcAll inventory.
 4. Clone and log into homelab repo on container.
 5. Setup app.
-6. Add to AdGuardHome.
-7. Run AdGuardHome sync.
-8. Add to Traefik.
-9. Add to homepage.
+6. Add to [AdGuardHome][1].
+7. Run [AdGuardHome sync][2].
+8. Add to [Traefik][4].
+9. Add to [homepage][5].
 10. Add to homelab docs.
-11. Add to WatchYourLAN.
-12. Add to Beszel.
+11. Add to [WatchYourLAN][6].
+12. Add to [Beszel][7].
 
 ## :page_facing_up: New Document Pages
 
@@ -34,3 +34,9 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
+[1]: <../apps/adguard.md>
+[2]: <../apps/adguard-sync.md>
+[4]: <../apps/traefik.md>
+[5]: <../apps/homepage.md>
+[6]: <../apps/watchyourlan.md>
+[7]: <../apps/beszel.md>

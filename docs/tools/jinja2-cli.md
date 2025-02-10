@@ -9,15 +9,13 @@ files.
 
 ## :hammer_and_wrench: Installation
 
-=== "pipx"
+!!! quote ""
 
-    ```shell
-    pipx install jinja2-cli
-    ```
+    === "pipx"
 
-## :gear: Config
-
-WIP
+        ```shell
+        pipx install jinja2-cli
+        ```
 
 ## :pencil: Usage
 
