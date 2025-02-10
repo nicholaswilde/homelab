@@ -53,6 +53,15 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
           - .env
     ```
 
+## Shell Script
+
+!!! abstract "script.sh"
+
+    ```shell
+    DEFAULT_VALUE=foo
+    source .env
+    ```
+    
 ## :link: References
 
 [1]: <./sops.md>
