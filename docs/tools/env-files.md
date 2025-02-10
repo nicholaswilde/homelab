@@ -22,7 +22,7 @@ WIP
 
 WIP
 
-## :simple-docker: Docker
+## :simple-docker: Docker Compose
 
 WIP
 
