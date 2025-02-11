@@ -96,6 +96,31 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
         jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > apps/new-app.md
         ```
 
+## :rocket: Upgrades
+
+### :simple-docker: Docker Upgrades
+
+Docker tags are scanned by Rennovate, which opens a PR if a newer version is available.
+The PR is then merged and then the repo is pulled and updated on the LXC/VM and then Docker Compose performs a pull and restarts the Docker container.
+
+!!! quote "`homelab/docker/appname`"
+
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        (
+          git pull origin
+          docker compose -d
+          docker purge
+        )
+        ```
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
