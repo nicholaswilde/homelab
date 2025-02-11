@@ -19,17 +19,19 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
     
     :material-information-outline: Configuration (bookmarks.yaml, services.yaml, widgets.yaml) path: `/opt/homepage/config/`
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/homepage.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/homepage.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/homepage.sh)"
-    ```
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/homepage.sh)"
+        ```
 
 ## :gear: Config
 
