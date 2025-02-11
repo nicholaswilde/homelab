@@ -12,9 +12,11 @@ server.
 
 !!! quote ""
 
-    ```shell
-    curl -s https://installer.l.nicholaswilde.io/simulot/immich-go! | bash
-    ```
+    === "installer"
+    
+        ```shell
+        curl -s https://installer.l.nicholaswilde.io/simulot/immich-go! | bash
+        ```
 
 ## :gear: Config
 
