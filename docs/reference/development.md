@@ -103,6 +103,10 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 Docker tags are scanned by Rennovate, which opens a PR if a newer version is available.
 The PR is then merged and then the repo is pulled and updated on the LXC/VM and then Docker Compose performs a pull and restarts the Docker container.
 
+!!! warning
+
+    The below commands purge any unused Docker images! Use at your own risk!
+
 !!! quote "`homelab/docker/appname`"
 
     === "Task"
@@ -116,8 +120,8 @@ The PR is then merged and then the repo is pulled and updated on the LXC/VM and 
         ```shell
         (
           git pull origin
-          docker compose -d
-          docker purge
+          docker compose up --force-recreate --build -d
+          docker image prune -a -f
         )
         ```
 
