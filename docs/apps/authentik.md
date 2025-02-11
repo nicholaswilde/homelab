@@ -14,11 +14,13 @@ different applications.
 
     :material-console-network: Default Port: `9000`
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
-    ```
+    === "AMD64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
+        ```
 
 ## :gear: Config
 
