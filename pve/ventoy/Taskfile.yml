@@ -1,9 +1,6 @@
 ---
 version: '3'
 
-env:
-  INSTALL_DIR: "/opt/ventoy"
-
 dotenv:
   - .env
 
@@ -12,10 +9,23 @@ tasks:
     desc: Mount USB
     cmds:
       - mount -t auto {{ .VENTOY_USB }} {{ .VENTOY_MNT }}
+
   umount:
     desc: Unmount USB
     cmds:
       - umount {{ .VENTOY_MNT }}
+
+  update:
+    desc: Update Ventoy
+    cmds:
+      - task: remove
+      - task: install
+
+  remove:
+    desc: Remove Ventoy
+    cmds:
+      - task: stop
+      - rm -rf {{ .VENTOY_INSTALL_DIR }}
 
   deps:
     desc: Install dependencies
