@@ -100,7 +100,7 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 ### :simple-docker: Docker Upgrades
 
-Docker tags are scanned by Rennovate, which opens a PR if a newer version is available.
+Docker tags are scanned by [Mend Renovate][10], which opens a PR if a newer version is available.
 The PR is then merged and then the repo is pulled and updated on the LXC/VM and then Docker Compose performs a pull and restarts the Docker container.
 
 !!! warning
@@ -136,3 +136,4 @@ The PR is then merged and then the repo is pulled and updated on the LXC/VM and 
 [7]: <../apps/beszel.md>
 [8]: <../apps/reprepro.md>
 [9]: <../apps/installer.md>
+[10]: <https://github.com/apps/renovate>
