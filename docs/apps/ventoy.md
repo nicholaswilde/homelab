@@ -23,6 +23,8 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
     :material-information-outline: Configuration path: `/opt/ventoy`    
 
+    :material-file-key: .env: `true`
+
 !!! quote "`homelab/pve/ventoy/install.sh`"
 
     === "Task"
