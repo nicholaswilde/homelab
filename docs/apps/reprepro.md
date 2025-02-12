@@ -39,6 +39,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 !!! abstract "/etc/apache2/conf-availabe/repos.conf"
 
     === "Automated"
+    
         ```shell
         cat <<EOF > /etc/apache2/conf-availabe/repos.conf 
         --8<-- "reprepro/apache2/conf-available/repos.conf"
