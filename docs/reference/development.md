@@ -98,6 +98,10 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 ## :rocket: Upgrades
 
+### :simple-proxmox: Upgrades via Proxmox Helper Scripts
+
+The helper scripts can update the app in the LXC/VM.
+
 ### :simple-docker: Docker Upgrades
 
 Docker tags are scanned by [Mend Renovate][10], which opens a PR if a newer version is available.
