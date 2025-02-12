@@ -141,9 +141,9 @@ The app may be installed and updated on the USB drive via the web app.
     === "Manual"
 
         ```shell
-	(
+        (
           cd /opt/ventoy && \
-	  sudo bash -c bash VentoyWeb.sh -H "0.0.0.0"
+          sudo bash -c bash VentoyWeb.sh -H "0.0.0.0"
         )
         ```
  
