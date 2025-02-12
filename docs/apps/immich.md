@@ -12,6 +12,8 @@ tags:
 
     :material-console-network: Default Port: `2283`
 
+## :rocket: Upgrade
+
 !!! warning
 
     The below commands purge any unused Docker images! Use at your own risk!
