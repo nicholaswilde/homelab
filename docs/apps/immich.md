@@ -2,6 +2,7 @@
 tags:
   - vm
   - proxmox
+  - docker
 ---
 # :simple-immich: Immich
 
