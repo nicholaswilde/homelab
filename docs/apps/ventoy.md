@@ -132,12 +132,18 @@ The app may be installed and updated on the USB drive via the web app.
 
 !!! quote "Start web server"
 
-    === "Task
+    === "Task"
     
         ```shell
         task serve
         ```
 
+    === "Manual"
+
+        ```shell
+	bash /opt/ventoy/VentoyWeb.sh -H 0.0.0.0
+	```
+ 
 ## :link: References
 
 - <https://www.ventoy.net/en/index.html>
