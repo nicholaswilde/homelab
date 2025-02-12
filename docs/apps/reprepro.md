@@ -149,6 +149,23 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
         --8<-- "reprepro/ubuntu/conf/options"
         ```
 
+## :pencil: Usage
+
+Add deb file to reprepro
+
+!!! quote ""
+
+    === "Manual"
+
+        ```shell
+        (
+          reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb oracular sops_3.9.4_amd64.deb
+          reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb noble sops_3.9.4_amd64.deb
+          reprepro --confdir /srv/reprepro/debian/conf/ includedeb bookworm sops_3.9.4_amd64.deb
+          reprepro --confdir /srv/reprepro/debian/conf/ includedeb bullseye sops_3.9.4_amd64.deb
+        )
+        ```
+
 ## :link: References
 
   - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
