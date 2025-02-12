@@ -6,6 +6,11 @@ tags:
 ---
 # :simple-immich: Immich
 
+Immich photos is an open source alternative to Google Photos.
+
+[Immich Go][1] is a command line utility to assist with importing photos to Immich.
+
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -58,3 +63,5 @@ Make symlinks to repo.
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=immich>
 - <https://pimox-scripts.com/scripts?id=Immich>
+
+[1]: <./immich-go.md>
