@@ -151,6 +151,17 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
         --8<-- "reprepro/ubuntu/conf/options"
         ```
 
+!!! abstract "/srv/reprepo/&lt;dist&gt;/conf/&lt;codename&gt;.override"
+
+    ```shell
+    (
+      touch noble.override
+      touch oracular.override
+      touch bookworm.override
+      touch bullseye.override
+    )
+    ```
+
 ## :pencil: Usage
 
 Add deb file to reprepro
@@ -167,6 +178,7 @@ Add deb file to reprepro
           reprepro --confdir /srv/reprepro/debian/conf/ includedeb bullseye sops_3.9.4_amd64.deb
         )
         ```
+
 
 ## :link: References
 
