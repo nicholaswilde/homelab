@@ -11,6 +11,28 @@ tags:
 
     :material-console-network: Default Port: `2283`
 
+! warning
+
+    The below commands purge any unused Docker images! Use at your own risk!
+
+!!! quote "`homelab/docker/immich`"
+
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        (
+          git pull origin
+          docker compose up --force-recreate --build -d
+          docker image prune -a -f
+        )
+        ```
+
 ## :gear: Config
 
 Make symlinks to repo.
