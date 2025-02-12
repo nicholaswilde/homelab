@@ -20,6 +20,7 @@ tasks:
     cmds:
       - task: remove
       - task: install
+      - task: start
 
   remove:
     desc: Remove Ventoy
