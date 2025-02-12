@@ -149,7 +149,7 @@ The app may be installed and updated on the USB drive via the web app.
         )
         ```
 
- !!! quote "Sync ISOs"
+!!! quote "Sync ISOs"
 
      === "Manual"
 
