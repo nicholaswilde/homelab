@@ -151,11 +151,17 @@ The app may be installed and updated on the USB drive via the web app.
 
 !!! quote "Sync ISOs"
 
-     === "Manual"
+    === "Task"
 
-         ```shell
-         find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;
-         ```
+        ```shell
+	task sync
+        ```
+    
+    === "Manual"
+
+        ```shell
+        find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;
+        ```
 
 ## :link: References
 
