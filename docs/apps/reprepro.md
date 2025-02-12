@@ -188,7 +188,18 @@ Add deb file to reprepro
         )
         ```
 
+## :computer: Client
 
+!!! quote ""
+
+    ```shell
+    (
+      wget -O - http://YOUR_REPO_SERVER/repos/apt/conf/public.gpg.key | apt-key add -  
+      echo "deb http://YOUR_REPO_SERVER/repos/apt/debian jessie main" >> /etc/apt/sources.list  
+      apt update && \
+      apt install YOUR_PACKAGE
+    )
+    ```
 ## :link: References
 
   - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
