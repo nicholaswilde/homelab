@@ -153,14 +153,16 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/&lt;codename&gt;.override"
 
-    ```shell
-    (
-      touch noble.override
-      touch oracular.override
-      touch bookworm.override
-      touch bullseye.override
-    )
-    ```
+    === "Manual"
+    
+        ```shell
+        (
+          touch override.noble
+          touch override.oracular
+          touch override.bookworm
+          touch override.bullseye
+        )
+        ```
 
 ## :pencil: Usage
 
