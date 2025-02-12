@@ -154,7 +154,7 @@ The app may be installed and updated on the USB drive via the web app.
     === "Task"
 
         ```shell
-	task sync
+        task sync
         ```
     
     === "Manual"
