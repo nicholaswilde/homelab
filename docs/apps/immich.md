@@ -12,6 +12,20 @@ tags:
 
     :material-console-network: Default Port: `2283`
 
+!!! quote ""
+
+    === "Task"
+    
+        ```shell
+        task up
+        ```
+
+    === "Docker Compose"
+    
+        ```shell
+        docker compose up
+        ```
+
 ## :rocket: Upgrade
 
 !!! warning
