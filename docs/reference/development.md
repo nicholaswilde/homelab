@@ -129,6 +129,14 @@ The PR is then merged and then the repo is pulled and updated on the LXC/VM and 
         )
         ```
 
+## :alarm_clock: Cronjobs
+
+WIP
+
+## :handshake: Services
+
+WIP
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
