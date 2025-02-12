@@ -148,7 +148,15 @@ The app may be installed and updated on the USB drive via the web app.
           sudo bash -c bash VentoyWeb.sh -H "0.0.0.0"
         )
         ```
- 
+
+ !!! quote "Sync ISOs"
+
+     === "Manual"
+
+         ```shell
+         find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;
+         ```
+
 ## :link: References
 
 - <https://www.ventoy.net/en/index.html>
