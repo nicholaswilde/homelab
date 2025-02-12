@@ -12,9 +12,11 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ## :hammer_and_wrench: Installation
 
-```shell
-apt install reprepro apache2 gpg
-```
+!!! quote ""
+
+    ```shell
+    apt install reprepro apache2 gpg
+    ```
 
 ## :gear: Config
 
