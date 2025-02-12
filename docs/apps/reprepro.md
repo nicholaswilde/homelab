@@ -69,27 +69,33 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ### :package: Repository
 
-```shell title="Make directories"
-(
-  [ -d /srv/reprepo/debian/conf ] || mkdir -p /srv/reprepo/debian/conf
-  [ -d /srv/reprepo/ubuntu/conf ] || mkdir -p /srv/reprepo/ubuntu/conf
-)
-```
+!!! quote "Make directories"
 
-```shell title="Generate new gpg keys"
-gpg --full-generate-key
-```
+    ```shell
+    (
+      [ -d /srv/reprepo/debian/conf ] || mkdir -p /srv/reprepo/debian/conf
+      [ -d /srv/reprepo/ubuntu/conf ] || mkdir -p /srv/reprepo/ubuntu/conf
+     )
+     ```
 
-```shell
-gpg --list-keys  
- pub  2048R/489CD644 2014-07-15  
- uid         Your Name <your_email_address@domain.com>  
- sub  2048R/870B8E2D 2014-07-15
-```
+!!! quote "Generate new gpg keys"
 
-```shell title="Get short fingerprint"
-gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
-```
+    ```shell
+    gpg --full-generate-key
+    ```
+
+    ```shell
+    gpg --list-keys  
+     pub  2048R/489CD644 2014-07-15  
+     uid         Your Name <your_email_address@domain.com>  
+     sub  2048R/870B8E2D 2014-07-15
+    ```
+
+!!! quote "Get short fingerprint"
+
+    ```shell
+    gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
+    ```
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/distributions"
 
