@@ -14,6 +14,20 @@
 # set -e
 # set -o pipefail
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+red=$(tput setaf 1)
+blue=$(tput setaf 4)
+default=$(tput setaf 9)
+white=$(tput setaf 7)
+
+readonly bold
+readonly normal
+readonly red
+readonly blue
+readonly default
+readonly white
+
 # Set the URL for the GitHub releases API
 
 dists=(debian ubuntu)
@@ -22,9 +36,41 @@ ubuntu_codenames=(noble oracular)
 usernames=(getsops go-task)
 apps=(sops task)
 
-function get_params(){
-  username="${usernames[i]}"
-  export username
+function print_text(){
+  echo "${blue}==> ${white}${bold}${1}${normal}"
+}
+
+function raise_error(){
+  printf "${red}%s\n" "${1}"
+  exit 1
+}
+
+# Check if variable is set
+# Returns false if empty
+function is_set(){
+  [ -n "${1}" ]
+}
+
+# Check if directory exists
+function dir_exists(){
+  [ -d "${1}" ]
+}
+
+function command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+function set_vars(){
+  SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
+  # ! is_set "${VENTOY_INTALL_DIR}" && VENTOY_INSTALL_DIR="${DEFAULT_VENTOY_INSTALL_DIR}"
+  # ! is_set "${FILENAME}" && FILENAME="${DEFAULT_FILENAME}"
+}
+
+function check_reprepro(){
+  if ! command_exists "reprepro"; then
+    raise_error "reprepro is not installed"
+  fi
 }
 
 function get_api_url(){
@@ -44,8 +90,11 @@ function get_latest_version(){
 function get_current_version(){
   # Get the current installed version (if any)
   # current_version=$("${app}" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-  current_version=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list noble sops | grep 'amd64'|awk '{print $NF}')
-  export current_version
+  print_text "Get current version"
+  APP_NAME="${1}"
+  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list oracular "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
+  export CURRENT_VERSION
+  print_text "${CURRENT_VERSION}"
 }
 
 function get_archs(){
@@ -82,20 +131,16 @@ function check_version(){
   logger -t "sync_check" "${message}"
 }
 
+function update_app(){
+  APP_NAME="${1}"
+  OWNER="${2}"
+  get_current_version "${APP_NAME}"  
+}
+
 function main(){
-  i=0
-  for app in "${apps[@]}"; do
-    export app
-    export i
-    get_params
-    get_api_url
-    get_latest_version
-    get_current_version
-    # check_version
-    printf '%s\n' "${current_version}"
-    # printf '%s\n' "${latest_version2}"
-    ((i+=1))
-  done
+  check_reprepro
+  update_app "task" "go-task"
+  # update_app "sops" "go-task"
 }
 
 main "$@"
