@@ -23,7 +23,13 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
     :material-information-outline: Configuration path: `/opt/ventoy`    
 
-!!! quote "homelab/pve/ventoy/install.sh"
+!!! quote "`homelab/pve/ventoy/install.sh`"
+
+    === "task"
+
+        ```shell
+        task install
+        ```
 
     === "root"
 
@@ -36,6 +42,18 @@ The way that it works is that an NFS share and USB drive are mounted using autof
         ```shell
         sudo ./install.sh
         ```
+
+## :rocket: Upgrade
+
+!!! quote ""
+
+    === "task"
+
+        ```shell
+        task update
+        ```
+
+Then update the USB drive from the Web GUI.
 
 ## :gear: Config
 
