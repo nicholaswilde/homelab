@@ -151,7 +151,7 @@ gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
         --8<-- "reprepro/ubuntu/conf/options"
         ```
 
-!!! abstract "/srv/reprepo/&lt;dist&gt;/conf/&lt;codename&gt;.override"
+!!! abstract "/srv/reprepo/&lt;dist&gt;/conf/override.&lt;codename&gt;"
 
     === "Manual"
     
