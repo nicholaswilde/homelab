@@ -25,7 +25,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
 !!! quote "`homelab/pve/ventoy/install.sh`"
 
-    === "task"
+    === "Task"
 
         ```shell
         task install
@@ -47,7 +47,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
 !!! quote ""
 
-    === "task"
+    === "Task"
 
         ```shell
         task update
@@ -129,6 +129,14 @@ Then update the USB drive from the Web GUI.
 ## :pencil: Usage
 
 The app may be installed and updated on the USB drive via the web app.
+
+!!! quote "Start web server"
+
+    === "Task
+    
+        ```shell
+        task serve
+        ```
 
 ## :link: References
 
