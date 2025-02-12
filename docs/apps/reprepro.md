@@ -71,7 +71,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 ### :package: Repository
 
 !!! quote "Make directories"
-
+    
     ```shell
     (
       [ -d /srv/reprepo/debian/conf ] || mkdir -p /srv/reprepo/debian/conf
