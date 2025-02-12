@@ -12,7 +12,7 @@ tags:
 
     :material-console-network: Default Port: `2283`
 
-!!! quote ""
+!!! quote "`homelab/docker/immich`"
 
     === "Task"
     
