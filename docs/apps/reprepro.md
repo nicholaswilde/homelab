@@ -202,15 +202,31 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
     ```
 
-!!! quote "Add repo"
+Add repo and install.
 
-    ```shell
-    (
-      echo "deb http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list  
-      apt update && \
-      apt install sops
-    )
-    ```
+!!! abstract "`/etc/apt/sources.list.d/reprepro.list`"
+
+    === "Automatic"
+    
+        ```shell
+        (
+          echo "deb http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list && \  
+          apt update && \
+          apt install sops
+        )
+        ```
+
+    === "Manual"
+
+        ```ini
+        deb http://deb.l.nicholaswilde.io/debian bookworm main
+        ```
+
+        ```shell
+        apt update && \
+        apt install sops
+        ```
+        
 ## :link: References
 
   - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
