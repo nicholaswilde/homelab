@@ -15,17 +15,19 @@ tags:
     
     :material-information-outline: Configuration path: `/etc/unbound/unbound.conf.d/unbound.conf`
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
-    ```
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
+        ```
 
 ## :gear: Config
 
