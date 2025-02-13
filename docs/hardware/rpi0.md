@@ -14,4 +14,4 @@ tags:
 ## :link: References
 
 [2]: <https://www.raspberrypi.com/software/>
-[3]: <https://www.raspberrypi.com/products/raspberry-pi-2-model-b/>
+[3]: <https://www.raspberrypi.com/products/raspberry-pi-zero-w/>
