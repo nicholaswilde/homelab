@@ -48,8 +48,8 @@ Most apps should have `Taskfiles.yml` in their directories to help manage the ap
 
 ## :broom: Common Tasks
 
-| Task      | Description |
-|:-----++--:|-------------|
+| Task        | Description  |
+| :---------: | ------------ |
 | `serve`   | Start a web server        |
 | `up`      | Start a Docker container  |
 | `restart` | Restart a systemd service |
