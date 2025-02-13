@@ -11,10 +11,8 @@ tags:
 
 !!! example ""
 
-    :material-console-network: Default Port: `{{ app_port }}`
-{% if config_path is defined %}    
+    :material-console-network: Default Port: `80`
     :material-information-outline: Configuration path: `{{ config_path }}`
-{% endif %}
 
 !!! quote ""
 
