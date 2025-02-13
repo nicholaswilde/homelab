@@ -5,6 +5,13 @@ tags:
 ---
 # :simple-raspberrypi: Raspberry Pi Zero W
 
-WIP
+## :gear: Config
+
+!!! example ""
+
+    OS: [Rasbperry Pi OS (Legacy) Lite][2]
 
 ## :link: References
+
+[2]: <https://www.raspberrypi.com/software/>
+[3]: <https://www.raspberrypi.com/products/raspberry-pi-2-model-b/>
