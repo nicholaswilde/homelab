@@ -21,13 +21,14 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/traefik.sh)"
         ```
 
     === "ARM64"
 
         ```shell
         bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/traefik.sh)"
         ```
 
 ## :gear: Config
