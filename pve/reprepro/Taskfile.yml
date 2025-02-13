@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  deps:
+    desc: Install dependencies
+    cmds:
+      - sudo apt install jq reprepro
   default:
     cmds:
       - task -l
