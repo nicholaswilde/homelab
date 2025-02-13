@@ -46,6 +46,18 @@ Most apps should have `Taskfiles.yml` in their directories to help manage the ap
     task restart
     ```
 
+## :broom: Common Tasks
+
+| Task      | Description |
+|:-----++--:|-------------|
+| `serve`   | Start a web server        |
+| `up`      | Start a Docker container  |
+| `restart` | Restart a systemd service |
+| `upgrade` | Update the repo and update the running Docker container |
+| `update`  | Update the running Docker container |
+| `mklinks` | Make symlinks to config files |
+| `deps`    | Install dependencies |
+
 ## :link: References
 
 [1]: <https://taskfile.dev/>
