@@ -7,6 +7,29 @@ tags:
 
 [Traefik][1] is used as my reverse proxy.
 
+## :hammer_and_wrench: Installation
+
+!!! example ""
+
+    :material-console-network: Default Port: `{{ app_port }}`
+{% if config_path is defined %}    
+    :material-information-outline: Configuration path: `{{ config_path }}`
+{% endif %}
+
+!!! quote ""
+
+    === "AMD64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
+        ```
+
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+        ```
+
 ## :gear: Config
 
 !!! note
