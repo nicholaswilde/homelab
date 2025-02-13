@@ -15,10 +15,36 @@ tags:
 
 ### :handshake: Service
 
-!!! quote ""
+!!! abstract "/etc/systemd/system/traefik.service"
+
+    === "Automatic"
+
+        ```shell
+        cat > /etc/systemd/system/ventoy.service <<EOF
+        --8<-- "traefik/traefik.service"
+        EOF
+        ```
+
+    === "Download"
+
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/traefik/traefik.service -O /etc/systemd/system/traefik.service
+        ```
+        
+    === "Manual"
+
+        ```ini
+        --8<-- "traefik/traefik.service"
+        ```
+    
+!!! quote "Enable service"
 
     ```shell
-    /etc/systemd/system/traefik.service
+    (
+     systemctl enable traefik.service && \
+     systemctl start traefik.service && \
+     systemctl status traefik.service
+    ) 
     ```
 
 ## :file_folder: Logs
