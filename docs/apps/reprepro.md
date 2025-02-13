@@ -101,7 +101,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 !!! abstract "Export public gpg key"
 
     ```shell
-    gpg --armor --output reprepro.asc --export-options export-minimal --export <key-id>
+    gpg --armor --output /srv/reprepro/public.gpg.key --export-options export-minimal --export <key-id>
     ```
     
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/distributions"
@@ -206,7 +206,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
     ```shell
     (
-      echo "deb http://deb.l.nicholaswilde.io/repos/apt/debian bookworm main" >> /etc/apt/sources.list  
+      echo "deb http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list  
       apt update && \
       apt install YOUR_PACKAGE
     )
