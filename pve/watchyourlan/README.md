@@ -1,4 +1,4 @@
-# watchyourlan
+# WatchYourLAN
 
 See documentation located [here][1].
 
