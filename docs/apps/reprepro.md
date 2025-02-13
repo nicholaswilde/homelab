@@ -190,12 +190,17 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ### :computer: Client
 
-!!! quote ""
+!!! quote "Download gpg key"
+
+    ```shell
+    wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
+    ```
+
+!!! quote "Add repo"
 
     ```shell
     (
-      wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
-      echo "deb http://YOUR_REPO_SERVER/repos/apt/debian jessie main" >> /etc/apt/sources.list  
+      echo "deb http://deb.l.nicholaswilde.io/repos/apt/debian bookworm main" >> /etc/apt/sources.list  
       apt update && \
       apt install YOUR_PACKAGE
     )
