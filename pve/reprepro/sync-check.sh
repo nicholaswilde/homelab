@@ -63,6 +63,12 @@ function command_exists() {
 function set_vars(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
+  API_URL="https://api.github.com/repos/${2}/${1}/releases/latest"
+  export API_URL
+  # curl -s https://api.github.com/repos/go-task/task/releases/latest | jq -r '.assets[] | select(.name | contains("amd64.deb")) | .browser_download_url'
+  PACKAGE_URL="https://github.com/${2}/${1}/releases/download/${LATEST_VERSION}/task_linux_arm64.deb"
+  print_text "${API_URL}"
+  export PACKAGE_URL
   # ! is_set "${VENTOY_INTALL_DIR}" && VENTOY_INSTALL_DIR="${DEFAULT_VENTOY_INSTALL_DIR}"
   # ! is_set "${FILENAME}" && FILENAME="${DEFAULT_FILENAME}"
 }
@@ -73,57 +79,32 @@ function check_reprepro(){
   fi
 }
 
-function get_api_url(){
-  api_url="https://api.github.com/repos/${username}/${app}/releases/latest"
-  export api_url
-}
-
 # Get the latest release version from the API
 function get_latest_version(){
-  latest_version=$(curl -s "$api_url" | grep '"tag_name":' | cut -d '"' -f 4)
+  LATEST_VERSION=$(curl -s "$API_URL" | grep '"tag_name":' | cut -d '"' -f 4)
   # Remove the "v" prefix from the version string
-  latest_version2=${latest_version#v}
-  export latest_version
-  export latest_version2
+  LATEST_VERSION2=${LATEST_VERSION#v}
+  print_text "Latest version: ${LATEST_VERSION2}"
+  export LATEST_VERSION
+  export LATEST_VERSION2
 }
 
 function get_current_version(){
-  # Get the current installed version (if any)
-  # current_version=$("${app}" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
   print_text "Get current version"
   APP_NAME="${1}"
   CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list oracular "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
   export CURRENT_VERSION
-  print_text "${CURRENT_VERSION}"
-}
-
-function get_archs(){
-  archs=()
-  archs=(amd64 arm64)
-  export archs
-}
-
-function get_filename(){
-  export filename
+  print_text "Current version: ${CURRENT_VERSION}"
 }
 
 function check_version(){
   # Compare versions
-  if [[ "${latest_version2}" != "${current_version}" ]]; then
-    printf 'New version available: %s\n' "${latest_version2}"
-    get_archs
-    for arch in "${archs[@]}"; do
-      export arch
-      printf '%s\n' "${arch}"
-      # Download the .deb package
-      # package_url="https://github.com/go-task/task/releases/download/${latest_version}/task_linux_arm64.deb"
+  if [[ "${LATEST_VERSION2}" != "${CURRENT_VERSION}" ]]; then
+    printf 'New version available: %s\n' "${LATEST_VERSION2}"
+      # package_url="https://github.com/go-task/task/releases/download/${LATEST_VERSION}/task_linux_arm64.deb"
       # wget "${package_url}"
-# 
+ 
       # message="Downloaded task_linux_arm64.deb"
-    done
-    # (Optional) Install the package
-    # sudo dpkg -i task_linux_arm64.deb
-
   else
     message="Already up-to-date: ${current_version}"
   fi
@@ -133,8 +114,10 @@ function check_version(){
 
 function update_app(){
   APP_NAME="${1}"
-  OWNER="${2}"
-  get_current_version "${APP_NAME}"  
+  USERNAME="${2}"
+  get_current_version "${APP_NAME}"
+  set_vars "${APP_NAME}" "${USERNAME}"
+  get_latest_version "${APP_NAME}"
 }
 
 function main(){
