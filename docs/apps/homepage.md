@@ -35,7 +35,25 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
 
 ## :gear: Config
 
-Make symlinks to repo.
+### :link: Symlinks
+
+!!! abstract "`/opt/homepage/config/`"
+
+    === "Manual"
+
+        ```shell
+        (
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/bookmarks.yaml /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/custom.css /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/custom.js /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/docker.yaml /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/kubernetes.yaml /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/services.yaml /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/settings.yaml /opt/homepage/config/
+          ln -s /root/git/nicholaswilde/homelab/pve/homepage/config/widgets.yaml /opt/homepage/config/
+          ls /opt/homepage/config/
+        )
+        ```
 
 ## :link: References
 
