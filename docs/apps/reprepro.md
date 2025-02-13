@@ -98,6 +98,12 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
     ```
 
+!!! abstract "Export public gpg key"
+
+    ```shell
+    gpg --armor --output reprepro.asc --export-options export-minimal --export <key-id>
+    ```
+    
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/distributions"
 
     === "Automated"
