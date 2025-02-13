@@ -173,9 +173,9 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ## :pencil: Usage
 
-Add deb file to reprepro
+### :desktop_computer: Server
 
-!!! quote ""
+!!! quote "Add deb file to reprepro."
 
     === "Manual"
 
@@ -188,13 +188,13 @@ Add deb file to reprepro
         )
         ```
 
-## :computer: Client
+### :computer: Client
 
 !!! quote ""
 
     ```shell
     (
-      wget -O - http://YOUR_REPO_SERVER/repos/apt/conf/public.gpg.key | apt-key add -  
+      wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
       echo "deb http://YOUR_REPO_SERVER/repos/apt/debian jessie main" >> /etc/apt/sources.list  
       apt update && \
       apt install YOUR_PACKAGE
