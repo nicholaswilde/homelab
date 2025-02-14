@@ -134,8 +134,20 @@ The old and unused images are then purged to save space in the LXC/VM.
 
 ## :alarm_clock: Cronjobs
 
-WIP
+Cronjobs are run on some containers to periodically perform functions, usually to sync files.
 
+!!! quote "Edit job"
+
+   === "Manual"
+
+      ```shell
+      crontab -e
+      ```
+
+      ```ini
+      0 2 * * * * /foo.sh
+      ```
+      
 ## :handshake: Services
 
 WIP
