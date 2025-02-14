@@ -5,6 +5,27 @@ dotenv:
   - .env
 
 tasks:
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  mklinks:
+    desc: Make symlinks
+    cmd:
+      ln -s /root/git/nicholaswilde/homelab/pve/unbound/unbound.conf.d/unbound.conf {{ .CONFIG_DIR }}/unbound.conf.d/
+  stop:
+    desc: Stop service
+    cmds:
+      - service unbound stop
+  restart:
+    desc: Restart service
+    cmds:
+      - service unbound restart
+  status:
+    desc: Check service status
+    cmds:
+      - service unbound status
+
   default:
     cmds:
       - task -l
