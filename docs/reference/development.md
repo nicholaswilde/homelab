@@ -156,7 +156,7 @@ The services are usually created automatically if installed via a package manage
 
 Apps that are manually installed, such as Ventoy, need a service to keep them running after restarts.
 
-Docker :simple-docker: containers don't require services because they are managed by the `restart` parameter.
+Docker :simple-docker: containers don't require services because they are managed by the [restart policy][11].
 
 ## :link: References
 
@@ -170,3 +170,4 @@ Docker :simple-docker: containers don't require services because they are manage
 [8]: <../apps/reprepro.md>
 [9]: <../apps/installer.md>
 [10]: <https://github.com/apps/renovate>
+[11]: <https://docs.docker.com/reference/compose-file/services/#restart>
