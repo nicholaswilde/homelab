@@ -84,6 +84,7 @@ function set_vars(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
   API_URL="https://api.github.com/repos/${2}/${1}/releases/latest"
+  
   PACKAGE_URL_AMD64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("amd64.deb")) | .browser_download_url')
   PACKAGE_URL_ARM64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("arm64.deb")) | .browser_download_url')
   BASENAME_AMD64=$(basename "${PACKAGE_URL_AMD64}")
@@ -120,11 +121,11 @@ function get_current_version(){
 function add_package(){
   PACKAGE_URL="${1}"
   FILEPATH="${2}"
-  wget "${PACKAGE_URL}" -O "${FILEPATH}"
+  wget "${PACKAGE_URL}" -q -O "${FILEPATH}"
   reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb oracular "${FILEPATH}"
   reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb noble "${FILEPATH}"
-  reprepro --confdir /srv/reprepro/debian/conf/ includedeb bookworm "${FILEPATH}"
-  reprepro --confdir /srv/reprepro/debian/conf/ includedeb bullseye "${FILEPATH}"
+  reprepro -b /srv/reprepro/debian/ includedeb bookworm "${FILEPATH}"
+  reprepro -b /srv/reprepro/debian/ includedeb bullseye "${FILEPATH}"
 }
 
 function check_version(){
@@ -133,9 +134,9 @@ function check_version(){
     print_text "New version available: ${LATEST_VERSION2}"
     add_package "${PACKAGE_URL_AMD64}" "${FILEPATH_AMD64}"
     add_package "${PACKAGE_URL_ARM64}" "${FILEPATH_ARM64}" 
-    MESSAGE="Downloaded ${APP_NAME} deb files"
+    MESSAGE="Added ${APP_NAME} deb files: ${LATEST_VERSION2}"
   else
-    MESSAGE="is slready up-to-date: ${current_version}"
+    MESSAGE="${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
   fi
   print_text "${MESSAGE}"
   logger -t "sync-check" "${MESSAGE}"
@@ -144,8 +145,10 @@ function check_version(){
 function update_app(){
   APP_NAME="${1}"
   USERNAME="${2}"
+  export APP_NAME
   get_current_version "${APP_NAME}"
   set_vars "${APP_NAME}" "${USERNAME}"
+  [ -n "${PACKAGE_URL_AMD64}" ] || return
   get_latest_version "${APP_NAME}"
   check_version
 }
@@ -156,7 +159,7 @@ function main(){
   check_jq
   make_temp_dir
   update_app "task" "go-task"
-  # update_app "sops" "go-task"
+  update_app "sops" "getsops"
 }
 
 main "$@"

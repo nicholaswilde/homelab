@@ -8,7 +8,12 @@ tasks:
   deps:
     desc: Install dependencies
     cmds:
-      - sudo apt install jq reprepro
+      - sudo apt install jq reprepro cron
+  sync-check:
+    desc: Check and sync released versions of SOPS and Taks
+    cmds:
+      - ./sync-check.sh
+
   default:
     cmds:
       - task -l

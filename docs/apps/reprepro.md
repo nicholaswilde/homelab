@@ -118,6 +118,15 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           EOF
         )
         ```
+    === "Symlinks"
+
+        ```shell
+        (
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/distributions /srv/reprepo/debian/conf/distributions
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/distributions /srv/reprepo/ubuntu/conf/distributions
+        )
+        ```
+        
     === "Download"
 
         ```shell
@@ -152,6 +161,24 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         EOF
         ```
 
+    === "Download"
+
+        ```shell
+        (
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/options -O /srv/reprepo/debian/conf/options
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/options -O /srv/reprepo/ubuntu/conf/options
+        )
+        ```
+
+    === "Symlinks"
+
+        ```shell
+        (
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/options /srv/reprepo/debian/conf/options
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/options /srv/reprepo/ubuntu/conf/options
+        )
+        ```
+
     === "Debian Manual"
 
         ```ini
@@ -166,14 +193,36 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/override.&lt;codename&gt;"
 
+    === "Download"
+
+        ```shell
+        (
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye -O /srv/reprepo/debian/conf/override.bullseye
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepo/debian/conf/override.bookworm
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepo/ubuntu/conf/override.oracular
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepo/ubuntu/conf/override.noble
+        )
+        ```
+
+    === "Symlinks"
+
+        ```shell
+        (
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepo/debian/conf/override.bullseye
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepo/debian/conf/override.bookworm
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepo/ubuntu/conf/override.oracular
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepo/ubuntu/conf/override.noble
+        )
+        ```
+
     === "Manual"
     
         ```shell
         (
-          touch override.noble
-          touch override.oracular
-          touch override.bookworm
-          touch override.bullseye
+          touch /srv/reprepro/ubuntu/conf/override.noble
+          touch /srv/reprepro/ubuntu/conf/override.oracular
+          touch /srv/reprepro/debian/conf/override.bookworm
+          touch /srv/reprepro/debian/conf/override.bullseye
         )
         ```
 
@@ -187,10 +236,10 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb oracular sops_3.9.4_amd64.deb
-          reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb noble sops_3.9.4_amd64.deb
-          reprepro --confdir /srv/reprepro/debian/conf/ includedeb bookworm sops_3.9.4_amd64.deb
-          reprepro --confdir /srv/reprepro/debian/conf/ includedeb bullseye sops_3.9.4_amd64.deb
+          reprepro -b /srv/reprepro/ubuntu/ includedeb oracular sops_3.9.4_amd64.deb
+          reprepro -b /srv/reprepro/ubuntu/ includedeb noble sops_3.9.4_amd64.deb
+          reprepro -b /srv/reprepro/debian/ includedeb bookworm sops_3.9.4_amd64.deb
+          reprepro -b /srv/reprepro/debian/ includedeb bullseye sops_3.9.4_amd64.deb
         )
         ```
 
@@ -226,10 +275,53 @@ Add repo and install.
         apt update && \
         apt install sops
         ```
+
+## :material-sync: Sync Check
+
+The script `sync-check.sh` is used to compare the latest released versions of the apps SOPS and Task to the local versions.
+
+If out of date, the debs are downloaded and added to reprepro.
+
+!!! quote "`homelab/pve/reprepro`"
+
+    === "Task"
+
+        ```shell
+        task sync-check
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        ./sync-check
+        ```
+
+## :alarm_clock: Cronjob
+
+A cronjob can be setup to run every night to check the released versions.
+
+!!! quote "2 A.M. nightly"
+
+    === "Automatic"
+    
+        ```shell
+        (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh) | crontab -
+        ```
+        
+    === "Manual"
+
+        ```shell
+        crontab -e
+        ```
+        
+        ```ini
+        0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh
+        ```
         
 ## :link: References
 
   - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
   - <https://wiki.debian.org/DebianRepository/SetupWithReprepro>
+  - <https://wikitech.wikimedia.org/wiki/Reprepro>
   
 [1]: <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
