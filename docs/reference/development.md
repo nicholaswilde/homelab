@@ -105,7 +105,10 @@ The helper scripts can update the app in the LXC/VM.
 ### :simple-docker: Docker Upgrades
 
 Docker tags are scanned by [Mend Renovate][10], which opens a PR if a newer version is available.
+
 The PR is then merged and then the repo is pulled and updated on the LXC/VM and then Docker Compose performs a pull and restarts the Docker container.
+
+The old and unused images are then purged to save space in the LXC/VM.
 
 !!! warning
 
