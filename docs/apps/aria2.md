@@ -13,17 +13,19 @@ tags:
     
     :material-information-outline: Within the LXC console, run `cat rpc.secret` to display the rpc-secret. Copy this token and paste it into the Aria2 RPC Secret Token box within the AriaNG Settings. Then, click the reload AriaNG button.
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/aria2.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/aria2.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/aria2.sh)"
-    ```
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/aria2.sh)"
+        ```
 
 ## :gear: Config
 
