@@ -138,19 +138,25 @@ Cronjobs are run on some containers to periodically perform functions, usually t
 
 !!! quote "Edit job"
 
-   === "Manual"
+    === "Manual"
 
-      ```shell
-      crontab -e
-      ```
+        ```shell
+        crontab -e
+        ```
 
-      ```ini
-      0 2 * * * * /foo.sh
-      ```
+        ```ini
+        0 2 * * * * /foo.sh
+        ```
       
 ## :handshake: Services
 
-WIP
+Systemd services are used to keep processes running in the background.
+
+The services are usually created automatically if installed via a package manager, such as `apt` :package:.
+
+Apps that are manually installed, such as Ventoy, need a service to keep them running after restarts.
+
+Docker :simple-docker: containers don't require services because they are managed by the `restart` parameter.
 
 ## :link: References
 
