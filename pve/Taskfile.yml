@@ -12,6 +12,8 @@ tasks:
     cmds:
       - mkdir {{ .APP_NAME_LOWER }}
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
+      - cp ./.template/.env.tmpl ./{{ .APP_NAME_LOWER }}/.env.tmpl
+      - cp ./.template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/Taskfile.yml
   default:
     cmds:
       - task -l
