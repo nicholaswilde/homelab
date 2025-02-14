@@ -293,7 +293,7 @@ If out of date, the debs are downloaded and added to reprepro.
     === "Manual"
     
         ```shell
-        ./sync-check
+        ./sync-check.sh
         ```
 
 ## :alarm_clock: Cronjob
