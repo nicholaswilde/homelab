@@ -104,7 +104,7 @@ The helper scripts can update the app in the LXC/VM.
 
 ### :simple-docker: Docker Upgrades
 
-Docker tags are scanned by [Mend Renovate][10], which opens a PR if a newer version is available.
+Docker tags are scanned by [Mend Renovate][10] :simple-renovate:, which opens a PR if a newer version is available.
 
 The PR is then merged and then the repo is pulled and updated on the LXC/VM and then Docker Compose performs a pull and restarts the Docker container.
 
@@ -134,7 +134,7 @@ The old and unused images are then purged to save space in the LXC/VM.
 
 ## :alarm_clock: Cronjobs
 
-Cronjobs are run on some containers to periodically perform functions, usually to sync files.
+Cronjobs :alarm_clock: are run on some containers to periodically perform functions, usually to sync files.
 
 !!! quote "Edit job"
 
