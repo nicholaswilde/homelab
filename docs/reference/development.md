@@ -158,6 +158,10 @@ Apps that are manually installed, such as Ventoy, need a service to keep them ru
 
 Docker :simple-docker: containers don't require services because they are managed by the [restart policy][11].
 
+## Logs
+
+WIP
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
