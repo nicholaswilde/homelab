@@ -45,7 +45,7 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
 
 ## :rocket: Updates
 
-Updates to the app are implemented via the web GUI.
+Updates to the app are implemented [via the web GUI][3].
 
 ## :link: References
 
@@ -54,3 +54,4 @@ Updates to the app are implemented via the web GUI.
 
 [1]: <https://adguard.com/en/adguard-home/overview.html>
 [2]: <./adguard-sync.md>
+[3]: <https://github.com/adguardteam/adguardhome/wiki/Getting-Started#update>
