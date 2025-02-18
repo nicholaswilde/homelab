@@ -7,16 +7,18 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-```shell
-(
-  add-apt-repository universe && \
-  apt update && \
-  apt install boinc-client boinc-client-nvidia-cuda boinc-client-opencl && \
-  usermod -aG boinc $(whoami) && \
-  systemctl enable --now boinc-client && \
-  ps aux | grep boinc
-)
-```
+!!! quote ""
+
+    ```shell
+    (
+      add-apt-repository universe && \
+      apt update && \
+      apt install boinc-client boinc-client-nvidia-cuda boinc-client-opencl && \
+      usermod -aG boinc $(whoami) && \
+      systemctl enable --now boinc-client && \
+      ps aux | grep boinc
+    )
+    ```
 
 ## :gear: Config
 
