@@ -35,11 +35,13 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
 
 ## :gear: Config
 
-```yaml title="/opt/AdGuardHome/AdGuardHome.yaml"
-rewrites:
-    - domain: adguard02.l.nicholaswilde.io
-      answer: 192.168.3.250
-```
+!!! abstract "/opt/AdGuardHome/AdGuardHome.yaml"
+
+    ```yaml
+    rewrites:
+        - domain: adguard02.l.nicholaswilde.io
+          answer: 192.168.3.250
+    ```
 
 ## :link: References
 
