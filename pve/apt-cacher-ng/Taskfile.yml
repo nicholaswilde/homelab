@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  mklinks:
+    desc: Make symlinks
+    cmd:
+      - ln -s {{ .TASKFILE_DIR }}/acng.conf /etc/apt-cacher-ng/
   default:
     cmds:
       - task -l
