@@ -18,18 +18,20 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
     :material-console-network: Default Port: `3000`
 
     :material-information-outline: Configuration path: `/opt/AdGuardHome`
-    
-=== "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/adguard.sh)"
-    ```
+!!! quote ""
 
-=== "ARM64"
+    === "AMD64"
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/adguard.sh)"
-    ```
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/adguard.sh)"
+        ```
+
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/adguard.sh)"
+        ```
 
 ## :gear: Config
 
