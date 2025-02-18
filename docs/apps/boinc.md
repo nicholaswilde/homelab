@@ -7,6 +7,10 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
+!!! example ""
+    
+    :material-information-outline: Configuration path: `/etc/boinc-client/`
+    
 !!! quote ""
 
     ```shell
@@ -22,21 +26,19 @@ tags:
 
 ## :gear: Config
 
-```shell title="Default dir"
-/etc/boinc-client/
-```
-
 ## :pencil: Usage
 
 Get key from [here][1].
 
-```shell
-(
-  boinccmd --project_attach https://sech.me/boinc/Amicable/ <key> && \
-  boinccmd --get_project_status
-  boinccmd --get_task_summary
-)
-```
+!!! quote ""
+
+    ```shell
+    (
+      boinccmd --project_attach https://sech.me/boinc/Amicable/ <key> && \
+      boinccmd --get_project_status
+      boinccmd --get_task_summary
+    )
+    ```
 
 ## :stethoscope: Troubleshooting
 
