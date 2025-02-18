@@ -11,17 +11,19 @@ tags:
 
     :material-console-network: Default Port: `9090`
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/prometheus.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/prometheus.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/prometheus.sh)"
-    ```
+    === "ARM64"
+
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/prometheus.sh)"
+        ```
 
 ## :gear: Config
 
