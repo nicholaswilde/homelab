@@ -1,7 +1,14 @@
 ---
 version: '3'
 
+dotenv:
+  - .env
+
 tasks:
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:
