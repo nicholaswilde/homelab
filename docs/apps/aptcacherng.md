@@ -45,18 +45,20 @@ tags:
         CacheDir: /mnt/storage/aptcache
         ```
 
-```shell
-(
-  chown -R apt-cacher-ng:apt-cacher-ng /mnt/storage/aptcache
-  systemctl restart apt-cacher-ng.service
-  systemctl status apt-cacher-ng.service
-  journalctl -xeu apt-cacher-ng.service
-)
-```
+!!! quote "/mnt/storage/aptcache"
 
-```
-http://aptcache.l.nicholaswilde.io:3142/acng-report.html
-```
+    ```shell
+    (
+      chown -R apt-cacher-ng:apt-cacher-ng /mnt/storage/aptcache
+      systemctl restart apt-cacher-ng.service
+      systemctl status apt-cacher-ng.service
+      journalctl -xeu apt-cacher-ng.service
+    )
+    ```
+
+    ```
+    http://aptcache.l.nicholaswilde.io:3142/acng-report.html
+    ```
 
 ## :material-laptop: Client
 
