@@ -15,23 +15,25 @@ tags:
     
     :material-information-outline: Configuration path: `/etc/apt-cacher-ng`
 
-=== "AMD64"
+!!! quote ""
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/apt-cacher-ng.sh)"
-    ```
+    === "AMD64"
 
-=== "ARM64"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/apt-cacher-ng.sh)"
+        ```
 
-    ```shell
-    bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/apt-cacher-ng.sh)"
-    ```
+    === "ARM64"
 
-=== "apt"
+        ```shell
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/apt-cacher-ng.sh)"
+        ```
 
-    ```shell
-    apt install apt-cacher-ng
-    ```
+    === "apt"
+
+        ```shell
+        apt install apt-cacher-ng
+        ```
 
 ## :gear: Config
 
