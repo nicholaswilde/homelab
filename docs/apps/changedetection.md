@@ -29,27 +29,33 @@ tags:
 
 ## :gear: Config
 
-```shell
-apt install apprise
-```
+!!! quote ""
 
-```shell title="Test"
-apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
-```
+    ```shell
+    apt install apprise
+    ```
 
-```shell title="Notification URL List"
-mailto://email:passkey@gmail.com
-```
+!!! success "Test"
+
+    ```shell
+    apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
+    ```
+
+!!! abstract "Notification URL List"
+
+    ```shell
+    mailto://email:passkey@gmail.com
+    ```
 
 ## :material-update: Update
 
-```shell
-(
-  echo 'bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"' | tee -a ~/.bash_aliases && \
-  source ~/.bashrc && \
-  update
-)
-```
+    ```shell
+    (
+      echo 'bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"' | tee -a ~/.bash_aliases && \
+      source ~/.bashrc && \
+      update
+    )
+    ```
 
 
 ## :link: References
