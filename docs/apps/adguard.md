@@ -43,6 +43,10 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
           answer: 192.168.3.250
     ```
 
+## :rocket: Updates
+
+Updates to the app are implemented via the web GUI.
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=adguard>
