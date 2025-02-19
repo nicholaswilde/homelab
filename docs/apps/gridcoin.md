@@ -19,25 +19,27 @@ tags:
 
 ## :gear: Config
 
-Get rpcuser and rpcpassword by running.
+!!! quote "Get rpcuser and rpcpassword"
 
-```shell
-gridcoinresearchd
-```
+    ```shell
+    gridcoinresearchd
+    ```
 
-```ini title="~/.GridcoinResearch/gridcoinresearch.conf"
-addnode=addnode-us-central.cycy.me
-addnode=ec2-3-81-39-58.compute-1.amazonaws.com
-addnode=gridcoin.network
-addnode=seeds.gridcoin.ifoggz-network.xyz
-addnode=seed.gridcoin.pl
-addnode=www.grcpool.com
-rpcuser=gridcoinrpc
-rpcpassword=mypassword
-datadir=/mnt/storage/gridcoin
-boincdatadir=/var/lib/boinc-client/
-email=ncwilde43@gmail.com
-```
+!!! abstract "~/.GridcoinResearch/gridcoinresearch.conf"
+
+    ```ini
+    addnode=addnode-us-central.cycy.me
+    addnode=ec2-3-81-39-58.compute-1.amazonaws.com
+    addnode=gridcoin.network
+    addnode=seeds.gridcoin.ifoggz-network.xyz
+    addnode=seed.gridcoin.pl
+    addnode=www.grcpool.com
+    rpcuser=gridcoinrpc
+    rpcpassword=mypassword
+    datadir=/mnt/storage/gridcoin
+    boincdatadir=/var/lib/boinc-client/
+    email=ncwilde43@gmail.com
+    ```
 
 !!! abstract "/etc/systemd/system/gridcoinresearchd.service"
 
