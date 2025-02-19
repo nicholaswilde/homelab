@@ -1,0 +1,51 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+
+  decrypt:
+    desc: Decrypt .env using SOPS
+    cmds:
+     - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+
+  update:
+    desc: Update running containers
+    cmds:
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f
+  up:
+    desc: Tun Docker compose in the foreground.
+    cmds:
+      - docker compose up
+
+  up-d:
+    desc: Run Docker compose in the background.
+    cmds:
+      - docker compose up -d --remove-orphans
+
+  restart:
+    desc: Restart Docker containers
+    cmds:
+      - "docker compose restart"
+
+  upgrade:
+    desc: upgrade
+    cmds:
+      - git pull origin
+      - task: update
+  default:
+    cmds:
+      - task -l
+    silent: true
