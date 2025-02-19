@@ -47,7 +47,9 @@ tags:
     mailto://email:passkey@gmail.com
     ```
 
-## :material-update: Update
+## :rocket: Update
+
+!!! quote ""
 
     ```shell
     (
