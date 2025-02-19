@@ -41,6 +41,8 @@ tags:
     email=ncwilde43@gmail.com
     ```
 
+## :handshake: Service
+
 !!! abstract "/etc/systemd/system/gridcoinresearchd.service"
 
     === "Manual"
@@ -63,34 +65,44 @@ tags:
         [Install]
         WantedBy=multi-user.target
         ```
+        
+!!! quote "Enable service"
 
-```shell
-(
-  systemctl daemon-reload && \
-  systemctl enable gridcoinresearchd.service && \
-  systemctl start gridcoinresearchd.service
-)
-```
+    ```shell
+    (
+      systemctl daemon-reload && \
+      systemctl enable gridcoinresearchd.service && \
+      systemctl start gridcoinresearchd.service
+    )
+    ```
 
 ## :pencil: Usage
 
-```shell
-gridcoinresearchd getmininginfo
-```
+!!! quote ""
 
-```shell title="Get current block count"
-gridcoinresearchd getblockcount
-```
+    ```shell
+    gridcoinresearchd getmininginfo
+    ```
+
+!!! quote "Get current block count"
+
+    ```shell
+    gridcoinresearchd getblockcount
+    ```
 
 Compare to [current block count][1].
 
-```shell title="Get wallet address"
-gridcoinresearchd getnewaddress
-```
+!!! quote "Get wallet address"
 
-```shell title="Check wallet balance"
-gridcoinresearchd listaddressgroupings
-```
+    ```shell
+    gridcoinresearchd getnewaddress
+    ```
+
+!!! quote "Check wallet balance"
+
+    ```shell
+    gridcoinresearchd listaddressgroupings
+    ```
 
 ## :link: References
 
