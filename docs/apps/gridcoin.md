@@ -7,13 +7,15 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-```shell
-(
-  add-apt-repository ppa:gridcoin/gridcoin-stable && \
-  apt update && \
-  apt install -y gridcoinresearch
-)
-```
+!!! quote ""
+
+    ```shell
+    (
+      add-apt-repository ppa:gridcoin/gridcoin-stable && \
+      apt update && \
+      apt install -y gridcoinresearch
+    )
+    ```
 
 ## :gear: Config
 
