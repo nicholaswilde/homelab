@@ -1,0 +1,60 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  backup:
+    desc: Backup ChangeDetection
+    cmds:
+      - "curl -I http://localhost:5000/backups/request-backup"
+      # - "curl -I https://cd.l.nicholaswilde.io/backups/request-backup"
+  init:
+    desc: Init app
+    cmds:
+      - cp .env.tmpl .env
+  encrypt:
+    desc: Encrypt scan.db using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+      - sops -e secret.txt > secret.txt.enc
+      - sops -e url-watches.json > url-watches.json.enc
+  decrypt:
+    desc: Decrypt scan.db using SOPS
+    cmds:
+      - sops -d .env.enc > .env
+      - sops -d secret.txt.enc > secret.txt
+      - sops -d url-watches.json.enc > url-watches.json
+  start:
+    desc: Start ChangeDetection service
+    cmds:
+      - service start changedetection
+  restart:
+    desc: Restart ChangeDetection service
+    cmds:
+      - service restart changedetection
+  stop:
+    desc: Stop changedetection service
+    cmds:
+      - service stop changedetection
+  mklinks:
+    desc: Make symlinks
+    cmds:
+      - task: stop
+      - task: decrypt
+      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR }}
+      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json {{ .CONFIG_DIR }}
+      - task: restart
+  deps:
+    desc: Install dependencies
+    cmds:
+      - apt update && apt install apprise
+  update:
+    desc: Update ChangeDetection
+    cmds:
+     - ./update.sh
+  default:
+    cmds:
+      - task -l
+    silent: true
