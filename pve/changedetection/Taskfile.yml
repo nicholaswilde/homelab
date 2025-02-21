@@ -45,6 +45,8 @@ tasks:
       - task: decrypt
       - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR }}
       - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json {{ .CONFIG_DIR }}
+      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-list-with-tags.txt {{ .CONFIG_DIR }}
+      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-list.txt {{ .CONFIG_DIR }}
       - task: restart
   deps:
     desc: Install dependencies
