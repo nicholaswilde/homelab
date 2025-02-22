@@ -25,28 +25,28 @@ tasks:
     cmds:
       - sops -d .env.enc > .env
       - sops -d secret.txt.enc > secret.txt
-      - sops -d url-watches.json.enc > url-watches.json
+      - sops -d --input-type json --output-type json url-watches.json.enc > url-watches.json
   start:
     desc: Start ChangeDetection service
     cmds:
-      - service start changedetection
+      - systemctl start changedetection.service
   restart:
     desc: Restart ChangeDetection service
     cmds:
-      - service restart changedetection
+      - systemctl restart changedetection.service
   stop:
     desc: Stop changedetection service
     cmds:
-      - service stop changedetection
+      - systemctl stop changedetection.service
   mklinks:
     desc: Make symlinks
     cmds:
       - task: stop
-      - task: decrypt
-      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR }}
-      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json {{ .CONFIG_DIR }}
-      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-list-with-tags.txt {{ .CONFIG_DIR }}
-      - ln -s /root/git/nicholaswilde/homelab/pve/changedetection/url-list.txt {{ .CONFIG_DIR }}
+      # - task: decrypt
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list-with-tags.txt {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list.txt {{ .CONFIG_DIR }}
       - task: restart
   deps:
     desc: Install dependencies
