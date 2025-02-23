@@ -5,9 +5,26 @@ dotenv:
   - .env
 
 tasks:
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  restart:
+    desc: Restart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  # Currently not working
   mklinks:
     desc: Make symlinks
-    cmd:
+    cmds:
       - ln -s {{ .TASKFILE_DIR }}/acng.conf /etc/apt-cacher-ng/
   default:
     cmds:
