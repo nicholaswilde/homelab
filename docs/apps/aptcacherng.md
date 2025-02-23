@@ -37,6 +37,11 @@ tags:
 
 ## :gear: Config
 
+!!! warning
+
+    For some reason, apt-cacher-ng doesn't work when the `acng.conf` file is symlinked to the repo directly
+    and so the config file needs to be manually synced.
+
 !!! abstract "/etc/apt-cacher-ng/acng.conf"
 
     === "Manual"
