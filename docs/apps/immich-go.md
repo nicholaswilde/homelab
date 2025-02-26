@@ -34,7 +34,7 @@ server.
 !!! quote ""
 
     ```shell
-    immich-go -key=${API_KEY} -server=${IMMICH_SERVER} upload -create-albums -google-photos Takeout/
+    immich-go upload from-google-photos takeout-20250216T024307Z-005.zip -k ${API_KEY} -s ${IMMICH_SERVER}
     ```
 
 ## :link: References
