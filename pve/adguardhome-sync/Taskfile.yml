@@ -1,0 +1,57 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  bootstrap:
+    desc: Bootstrap {{ .SERVICE_NAME }}
+    cmds:
+      - task: init
+      - task: install
+      - task: install-service
+      - task: start
+  install:
+    desc: Install {{ .SERVICE_NAME }}
+    cmds:
+      - "[ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync"
+      - "cd /opt/adguardhome-sync"
+      - "curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash"
+  install-service:
+    desc: Install service
+    cmds:
+      - "cp ./adguardhome-sync.service /etc/systemd/system/"
+      - "systemctl enable adguardhome-sync.service"
+  decrypt:
+    desc: Decrypt .env using SOPS
+    cmds:
+      - "[ -f .env.enc ] && sops -d --input-type dotenv --output-type dotenv .env.enc > .env"
+      - sops -d --input-type yaml --output-type yaml adguardhome-sync.yaml.enc > adguardhome-sync.yaml
+    ignore_error: true
+
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+      - sops -e adguardhome-sync.yaml > adguardhome-sync.yaml.enc
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  restart:
+    desc: Restart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  default:
+    cmds:
+      - task -l
+    silent: true
