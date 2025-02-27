@@ -1,0 +1,12 @@
+---
+services:
+  registry:
+    container_name: registry
+    image: library/registry:2.8.3
+    env_file:
+      - .env
+    ports:
+      - '5000:5000'
+    volumes:
+      - ${REGISTRY_DIR:-/var/lib/registry}
+    restart: always

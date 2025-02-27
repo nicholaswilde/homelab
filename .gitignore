@@ -9,3 +9,5 @@ acme*
 scan.db
 **/secret.txt
 **/url-watches.json
+
+**/registry/config.yml
