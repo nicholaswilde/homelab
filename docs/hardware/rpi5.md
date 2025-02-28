@@ -106,6 +106,39 @@ If `apt` is slow, it might be due to the pi reducing the power input.
 
 See [Raspberry Pi 4 8GB][4].
 
+## :broom: [Swap][8]
+
+!!! success ""
+
+    ```shell
+    free -h
+    ```
+
+!!! quote ""
+
+    ```shell
+    dphys-swapfile swapoff
+    ```
+
+!!! abstract "`/etc/dphys-swapfile`"
+
+    ```ini
+    CONF_SWAPSIZE=2048
+    ```
+
+!!! quote ""
+
+    ```shell
+    dphys-swapfile setup
+    dphys-swapfile swapon
+    ```
+
+!!! success ""
+
+    ```shell
+    free -h
+    ```
+
 ## :link: References
 
   - <https://a.co/d/etvDazc>
@@ -117,3 +150,4 @@ See [Raspberry Pi 4 8GB][4].
 [5]: <https://www.amazon.com/dp/B0CRK4YB4C>
 [6]: <https://www.amazon.com/dp/B0B25LQQPC>
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
+[8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>

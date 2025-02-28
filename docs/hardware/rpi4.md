@@ -371,6 +371,10 @@ Where `eth0` is the current existing network interface
     )
     ```
 
+## :broom: Swap
+
+See [Raspberry Pi 5 16GB][8].
+
 ## :link: References
 
 - <https://github.com/jiangcuo/Proxmox-Port/wiki/Install-Proxmox-VE-on-Debian-bookworm>
@@ -383,3 +387,4 @@ Where `eth0` is the current existing network interface
 [5]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
 [6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>>
 [7]: <https://mirrors.apqa.cn/proxmox/isos/>
+[8]: <./rpi5.md>
