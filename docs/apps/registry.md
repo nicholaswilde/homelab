@@ -60,7 +60,9 @@ Registry is a being used as a Docker pull through cache for my network.
 
 Make symlinks to repo.
 
-## Usage
+## :pencil: Usage
+
+WIP
 
 ## :link: References
 
