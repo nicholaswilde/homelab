@@ -131,10 +131,16 @@ Edit `.env`
         docker pull ubuntu
         ```
 
-    === "Pull from local"
+    === "Secure pull from local"
 
         ```shell
         docker pull https://registry.l.nicholaswilde.io/library/ubuntu
+        ```
+
+    === "Insecure pull from local"
+
+        ```shell
+        docker pull 192.168.2.81:5000/library/ubuntu
         ```
 WIP
 
