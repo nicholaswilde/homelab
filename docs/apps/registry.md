@@ -128,3 +128,4 @@ WIP
 ## :link: References
 
 - <https://docs.docker.com/docker-hub/image-library/mirror/>
+- <https://youtu.be/Bm7g0saAC9k>
