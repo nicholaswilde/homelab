@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  status:
+    desc: Status
+    cmds:
+      - systemctl status docker.service
   init:
     desc: Init
     cmds:
