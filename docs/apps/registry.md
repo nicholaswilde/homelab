@@ -6,7 +6,7 @@ tags:
 ---
 # :simple-docker: Registry 
 
-Registry is a being used as a Docker pull through cache for my network.
+[Registry][1] is a being used as a Docker pull through cache for my network.
 
 ## :hammer_and_wrench: Installation
 
@@ -127,9 +127,9 @@ Edit `.env`
 
     === "Pull Through"
 
-       ```shell
-       docker pull ubuntu
-       ```
+        ```shell
+        docker pull ubuntu
+        ```
 
     === "Pull from local"
 
@@ -142,3 +142,5 @@ WIP
 
 - <https://docs.docker.com/docker-hub/image-library/mirror/>
 - <https://youtu.be/Bm7g0saAC9k>
+
+[1]: <https://hub.docker.com/_/registry>
