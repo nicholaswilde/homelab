@@ -31,7 +31,7 @@ Registry is a being used as a Docker pull through cache for my network.
 
 ## :gear: Config
 
-### Server
+### :desktop_computer: Server
 
 !!! abstract "/etc/docker/registry/config.yml"
 
@@ -52,6 +52,7 @@ Registry is a being used as a Docker pull through cache for my network.
     === "Manual"
     
         ```json
+        -->8-- "registry/daemon.json"
         {
           "registry-mirrors": ["https://<my-docker-mirror-host>"]
         }
