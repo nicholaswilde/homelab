@@ -1,5 +1,5 @@
 {
   "log-driver": "journald",
   "insecure-registries": [ "192.168.2.81:5000" ],
-  "registry-mirrors": [ "http://192.168.2.81:5000" ]
+  "registry-mirrors": [ "https://registry.l.nicholaswilde.io" ]
 }

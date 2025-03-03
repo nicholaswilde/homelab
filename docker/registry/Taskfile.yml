@@ -13,17 +13,14 @@ tasks:
     desc: Init
     cmds:
       - cp .env.tmpl .env
-      - cp config.yml.tmpl config.yml
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
-      - sops -d --input-type yaml --output-type yaml config.yml.enc > config.yml
   encrypt:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-      - sops -e config.yml > config.yml.enc
   update:
     desc: Update running containers
     cmds:
@@ -50,10 +47,10 @@ tasks:
     desc: Stop registry container
     cmds:
       - docker compose stop
-  mklink:
-    desc: Make symlinks
+  mklinks:
+    desc: Make client symlinks
     cmds:
-      - ln -s /root/git/nicholaswilde/homelab/docker/registry/config.yml  /etc/docker/registry/config.yml
+      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
   default:
     cmds:
       - task -l
