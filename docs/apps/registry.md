@@ -12,7 +12,7 @@ Registry is a being used as a Docker pull through cache for my network.
 
 !!! example ""
 
-    :material-console-network: Default Port: ``
+    :material-console-network: Default Port: `5000`
 
 
 !!! quote ""
@@ -61,6 +61,4 @@ Make symlinks to repo.
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=>
-- <https://pimox-scripts.com/scripts?id=>
 - <https://docs.docker.com/docker-hub/image-library/mirror/>
