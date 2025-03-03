@@ -52,13 +52,15 @@ Registry is a being used as a Docker pull through cache for my network.
     === "Manual"
     
         ```json
-        -->8-- "registry/daemon.json"
+        --8<-- "registry/daemon.json"
         {
           "registry-mirrors": ["https://<my-docker-mirror-host>"]
         }
         ```
 
 Make symlinks to repo.
+
+## Usage
 
 ## :link: References
 
