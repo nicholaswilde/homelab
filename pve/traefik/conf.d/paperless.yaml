@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    paperless:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`paperless.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: paperless
+#endregion
+#region services
+  services:
+    paperless:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.89:8000"
+        passHostHeader: true
+#endregion
