@@ -7,6 +7,8 @@ services:
       - REGISTRY_STORAGE_DELETE_ENABLED=true
       - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
       - REGISTRY_PROXY_REMOTEURL="https://registry-1.docker.io"
+      - REGISTRY_PROXY_USERNAME=$DOCKER_USER
+      - REGISTRY_PROXY_PASSWORD=$DOCKER_TOKEN
     env_file:
       - .env
     ports:
