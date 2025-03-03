@@ -123,6 +123,19 @@ Edit `.env`
 
 ### :computer: Client
 
+!!! quote ""
+
+    === "Pull Through"
+
+       ```shell
+       docker pull ubuntu
+       ```
+
+    === "Pull from local"
+
+        ```shell
+        docker pull https://registry.l.nicholaswilde.io/library/ubuntu
+        ```
 WIP
 
 ## :link: References
