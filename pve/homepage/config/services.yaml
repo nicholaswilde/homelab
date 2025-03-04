@@ -58,6 +58,12 @@
     - netboot.xyz:
         icon: sh-netboot-xyz-light.png
         href: https://netboot.l.nicholaswilde.io/
+    - Semaphore:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/semaphore-ui-light.svg
+        href: https://semaphore.l.nicholaswilde.io
+    - Wireguard:
+        icon: si-wireguard
+        href: https://wireguard.l.nicholaswilde.io
 - ARM64-02:
     - Proxmox 04:
         icon: si-proxmox
@@ -69,6 +75,9 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io
+    - Paperless:
+        icon: si-paperlessngx
+        href: https://paperless.l.nicholaswilde.io
     - Immich:
         icon: si-immich
         href: https://photos.l.nicholaswilde.io
