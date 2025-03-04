@@ -148,8 +148,14 @@ WIP
 
 Watch the logs on the server during a pull to ensure that the image is being pulled through the local registry.
 
-!!! quote ""
+!!! quote "`homelab/docker/registry`"
 
+    === "Task"
+
+        ```shell
+        task logs
+        ```
+        
     === "Manual"
 
         ```shell
