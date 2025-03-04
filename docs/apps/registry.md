@@ -144,6 +144,18 @@ Edit `.env`
         ```
 WIP
 
+## :stethoscope: Troubleshooting
+
+Watch the logs on the server during a pull to ensure that the image is being pulled through the local registry.
+
+!!! quote ""
+
+    === "Manual"
+
+        ```shell
+        docker logs registry -f
+        ```
+
 ## :link: References
 
 - <https://docs.docker.com/docker-hub/image-library/mirror/>
