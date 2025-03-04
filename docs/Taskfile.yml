@@ -3,12 +3,13 @@ version: '3'
 
 env:
   APP_NAME: '{{ .APP_NAME }}'
+  APP_PORT: '{{ .APP_PORT }}'
 
 tasks:
   new:
     desc: Create a new file
     cmds:
-      - jinja2 -D app_name={{shellQuote .APP_NAME }} .template.md.j2
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME }} -D APP_PORT={{ shellQuote .APP_PORT }} .template.md.j2
 
   default:
     cmds:
