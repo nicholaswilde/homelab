@@ -11,3 +11,5 @@ scan.db
 **/url-watches.json
 
 **/registry/config.yml
+
+**/semaphore/config.json
