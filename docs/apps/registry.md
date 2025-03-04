@@ -76,6 +76,14 @@ Edit `.env`
 
 !!! abstract "`homelab/docker/registry/compose.yaml`"
 
+    === "Automatic"
+    
+        ```shell
+        cat << EOF > ./docker/registry/compose.yaml
+        --8<-- "registry/compose.yaml"
+        EOF
+        ```
+        
     === "Manual"
     
         ```yaml
