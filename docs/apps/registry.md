@@ -14,7 +14,7 @@ tags:
 
     :material-console-network: Default Port: `5000`
 
-     : `/etc/docker`
+    :material-information-outline: Configuration path: `/etc/docker`
 
 !!! quote "`homelab/docker/registry`"
 
