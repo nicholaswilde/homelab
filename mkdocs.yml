@@ -40,6 +40,7 @@ nav:
       - qBittorrent: apps/qbittorrent.md
       - Registry: apps/registry.md
       - reprepro: apps/reprepro.md
+      - Semaphore UI: apps/semaphoreui.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
       - Uptime Kuma: apps/uptime-kuma.md
