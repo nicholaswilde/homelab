@@ -4,15 +4,15 @@ tags:
   - vm
   - proxmox
 ---
-# :simple-{{ app_name | lower }}: {{ app_name }}
+# :simple-{{ APP_NAME | lower }}: {{ APP_NAME }}
 
 ## :hammer_and_wrench: Installation
 
 !!! example ""
 
-    :material-console-network: Default Port: `{{ app_port }}`
-{% if config_path is defined %}    
-    :material-information-outline: Configuration path: `{{ config_path }}`
+    :material-console-network: Default Port: `{{ APP_PORT }}`
+{% if CONFIG_PATH is defined %}    
+    :material-information-outline: Configuration path: `{{ CONFIG_PATH }}`
 {% endif %}
 
 !!! quote ""
@@ -20,13 +20,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ app_name | lower }}.sh)"
+        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/{{ APP_NAME | lower }}.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ APP_NAME | lower }}.sh)"
         ```
 
 ## :gear: Config
@@ -35,5 +35,5 @@ Make symlinks to repo.
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ app_name | lower }}>
-- <https://pimox-scripts.com/scripts?id={{ app_name }}>
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ APP_NAME | lower }}>
+- <https://pimox-scripts.com/scripts?id={{ APP_NAME }}>
