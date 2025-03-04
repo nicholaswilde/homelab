@@ -115,12 +115,21 @@ Edit `.env`
 
 !!! quote "Restart the Docker service"
 
-    ```shell
-    (
-      systemctl daemon-reload
-      systemctl restart docker.service
-    )
-    ```
+    === "Task"
+
+        ```shell
+        task restart
+        ```
+
+    === "Manual"
+    
+        ```shell
+        (
+          systemctl daemon-reload
+          systemctl restart docker.service
+        )
+        ```
+
 ## :pencil: Usage
 
 ### :computer: Client
