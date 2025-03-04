@@ -14,6 +14,7 @@ tags:
 
     :material-console-network: Default Port: `5000`
 
+     : `/etc/docker`
 
 !!! quote "`homelab/docker/registry`"
 
@@ -28,6 +29,7 @@ tags:
         ```shell
         docker compose up
         ```
+
 ## :rocket: Upgrade
 
 !!! warning
