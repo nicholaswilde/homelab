@@ -1,0 +1,21 @@
+---
+http:
+ #region routers 
+  routers:
+    wireguard:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`wireguard.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: wireguard
+#endregion
+#region services
+  services:
+    wireguard:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.87:10086"
+        passHostHeader: true
