@@ -36,7 +36,7 @@ tags:
 
 ### :handshake: Service
 
-!!! abstract "/etc/systemd/system/traefik.service"
+!!! abstract "`/etc/systemd/system/traefik.service`"
 
     === "Automatic"
 
@@ -60,21 +60,25 @@ tags:
     
 !!! quote "Enable service"
 
-    ```shell
-    (
-     systemctl enable traefik.service && \
-     systemctl start traefik.service && \
-     systemctl status traefik.service
-    ) 
-    ```
+    === "Manual"
+    
+        ```shell
+        (
+         systemctl enable traefik.service && \
+         systemctl start traefik.service && \
+         systemctl status traefik.service
+        ) 
+        ```
 
 ## :file_folder: Logs
 
-!!! quote ""
+!!! quote "`/var/log/traefik/traefik.log`"
 
-    ```shell
-    tail -n10 /var/log/traefik/traefik.log
-    ```
+    === "Manual"
+    
+        ```shell
+        tail -n10 /var/log/traefik/traefik.log
+        ```
 
 ## :pencil: Usage
 
