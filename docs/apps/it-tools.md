@@ -24,6 +24,30 @@ tags:
 
 Make symlinks to repo.
 
+## :rocket: Upgrade
+
+!!! warning
+
+    The below commands purge any unused Docker images! Use at your own risk!
+
+!!! quote "`homelab/docker/it-tools`"
+
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        (
+          git pull origin
+          docker compose up --force-recreate --build -d
+          docker image prune -a -f
+        )
+        ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=alpine-it-tools>
