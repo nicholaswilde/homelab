@@ -45,18 +45,6 @@ The way that it works is that an NFS share and USB drive are mounted using autof
         sudo ./install.sh
         ```
 
-## :rocket: Upgrade
-
-!!! quote ""
-
-    === "Task"
-
-        ```shell
-        task update
-        ```
-
-Then update the USB drive from the Web GUI.
-
 ## :gear: Config
 
 !!! abstract ".env"
@@ -162,6 +150,18 @@ The app may be installed and updated on the USB drive via the web app.
         ```shell
         find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;
         ```
+
+## :rocket: Upgrade
+
+!!! quote ""
+
+    === "Task"
+
+        ```shell
+        task update
+        ```
+
+Then update the USB drive from the Web GUI.
 
 ## :link: References
 
