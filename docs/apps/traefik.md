@@ -70,18 +70,24 @@ tags:
         ) 
         ```
 
+## :pencil: Usage
+
+WIP
+
 ## :file_folder: Logs
 
 !!! quote "`/var/log/traefik/traefik.log`"
 
+    === "Task"
+
+        ```shell
+        task logs
+        ```
+        
     === "Manual"
     
         ```shell
         tail -n10 /var/log/traefik/traefik.log
         ```
-
-## :pencil: Usage
-
-WIP
 
 [1]: <https://traefik.io/traefik/>
