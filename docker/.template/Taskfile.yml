@@ -1,0 +1,57 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  status:
+    desc: Status
+    cmds:
+      - systemctl status docker.service
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  decrypt:
+    desc: Decrypt .env using SOPS
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+  update:
+    desc: Update running containers
+    cmds:
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f
+  up:
+    desc: Tun Docker compose in the foreground.
+    cmds:
+      - docker compose up
+  up-d:
+    desc: Run Docker compose in the background.
+    cmds:
+      - docker compose up -d --remove-orphans
+  restart:
+    desc: Restart Docker containers
+    cmds:
+      - "docker compose restart"
+  upgrade:
+    desc: upgrade
+    cmds:
+      - git pull origin
+      - task: update
+  stop:
+    desc: Stop registry container
+    cmds:
+      - docker compose stop
+  mklinks:
+    desc: Make client symlinks
+    cmds:
+      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+  default:
+    cmds:
+      - task -l
+    silent: true
