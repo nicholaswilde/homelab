@@ -5,6 +5,33 @@ dotenv:
   - .env
 
 tasks:
+  backup:
+    desc: Backup files
+    cmds:
+      - cp {{ .INSTALL_DIR }}/config.json {{ .INSTALL_DIR }}/config.json.bak 
+      - cp {{ .INSTALL_DIR }}/semaphore_db.bolt {{ .INSTALL_DIR }}/semaphore_db.bolt.bak
+  copy:
+    desc: Copy config files from install dir to repo
+    cmds:
+      - cp {{ .INSTALL_DIR }}/config.json {{ .TASKFILE_DIR }}/config.json 
+      - cp {{ .INSTALL_DIR }}/semaphore_db.bolt {{ .TASKFILE_DIR }}/semaphore_db.bolt
+  mklinks:
+    desc: Make symlinks
+    cmds:
+      - ln -sf {{ .TASKFILE_DIR }}/config.json  {{ .INSTALL_DIR }}/config.json
+      - ln -sf {{ .TASKFILE_DIR }}/semaphore_db.bolt {{ .INSTALL_DIR }}/semaphore_db.bolt
+  restart:
+    desc: Restart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
   creds:
     desc: Show credentials
     cmds:

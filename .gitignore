@@ -12,4 +12,5 @@ scan.db
 
 **/registry/config.yml
 
-**/semaphore/config.json
+**/semaphoreui/config.json
+semaphore_db.bolt
