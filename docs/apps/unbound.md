@@ -31,6 +31,14 @@ tags:
 
 ## :gear: Config
 
+!!! abstact "`unbound.conf.d/unbound.conf`"
+
+    === "Manual"
+
+        ```yaml
+        --8<-- "unbound/unbound.conf.d/unbound.conf"
+        ```
+
 ### :simple-adguard: AdGuard Home
 
 !!! example ""
