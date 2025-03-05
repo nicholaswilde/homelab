@@ -15,11 +15,13 @@ tasks:
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
       - sops -d --input-type json --output-type json config.json.enc > config.json
+      - sops -d semaphore_db.bolt.enc
   encrypt:
     desc: Encrypt files using SOPS
     cmds:
       - sops -e .env > .env.enc
       - sops -e config.json > config.json.enc
+      - sops -e semaphore_db.bolt > semaphore_db.bolt.enc
   default:
     cmds:
       - task -l
