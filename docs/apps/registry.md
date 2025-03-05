@@ -163,6 +163,30 @@ Edit `.env`
         ```
 WIP
 
+## :rocket: Upgrade
+
+!!! warning
+
+    The below commands purge any unused Docker images! Use at your own risk!
+
+!!! quote "`homelab/docker/registry`"
+
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        (
+          git pull origin
+          docker compose up --force-recreate --build -d
+          docker image prune -a -f
+        )
+        ```
+
 ## :stethoscope: Troubleshooting
 
 Watch the logs on the server during a pull to ensure that the image is being pulled through the local registry.
