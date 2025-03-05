@@ -2,13 +2,13 @@
 version: '3'
 
 env:
-  app_name: '{{ .app_name }}'
+  APP_NAME: '{{ .APP_NAME }}'
 
 tasks:
   new:
     desc: Create a new config file
     cmds:
-      - jinja2 -D app_name={{shellQuote .app_name }} conf.d/.template.yaml.j2
+      - jinja2 -D APP_NAME={{shellQuote .APP_NAME }} conf.d/.template.yaml.j2
   watch:
     desc: Watch the log file
     cmds:
