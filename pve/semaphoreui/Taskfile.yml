@@ -5,6 +5,21 @@ dotenv:
   - .env
 
 tasks:
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+      - cp config.json.tmpl config.json
+  decrypt:
+    desc: Decrypt files using SOPS
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type json --output-type json config.json.enc > config.json
+  encrypt:
+    desc: Encrypt files using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+      - sops -e config.json > config.json.enc
   default:
     cmds:
       - task -l
