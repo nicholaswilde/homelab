@@ -39,6 +39,12 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
 
 !!! abstract "`/opt/homepage/config/`"
 
+    === "Task"
+
+        ```shell
+        task mklinks
+        ```
+        
     === "Manual"
 
         ```shell
