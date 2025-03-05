@@ -8,7 +8,7 @@ tasks:
   status:
     desc: Status
     cmds:
-      - systemctl status docker.service
+      - systemctl status {{ .SERVICE_NAME }}.service
   init:
     desc: Init
     cmds:
