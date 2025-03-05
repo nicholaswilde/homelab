@@ -58,8 +58,8 @@ Make symlinks to repo.
               "client_id": "<client-id>",
               "client_secret": "<client-secret>",
               "redirect_url": "https://semaphore.company/api/auth/oidc/authentik/redirect/",
-              "username_claim": "username",
-              "name_claim": "name",
+              "username_claim": "preferred_username",
+              "name_claim": "preferred_username",
               "scopes": ["openid", "profile", "email"]
             }
           },
