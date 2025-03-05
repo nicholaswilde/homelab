@@ -60,9 +60,10 @@ Make symlinks to repo.
               "redirect_url": "https://semaphore.company/api/auth/oidc/authentik/redirect/",
               "username_claim": "username",
               "name_claim": "name",
-              "email_claim": "email",
               "scopes": ["openid", "profile", "email"]
+            }
           },
+          "web_host": "/",
           ...
         }
         ```
