@@ -72,9 +72,13 @@ tags:
         cp .env.tmpl .env
         ```
 
-Edit `.env`
+!!! abstract "`homelab/docker/registry/.env`"
 
-!!! abstract "`homelab/docker/registry/compose.yaml`"
+    ```
+    --8<-- "homelab/docker/registry/.env.tmpl"
+    ```
+
+??? abstract "`homelab/docker/registry/compose.yaml`"
 
     === "Automatic"
     
@@ -186,6 +190,14 @@ WIP
           docker image prune -a -f
         )
         ```
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "registry/task-list.txt"
+    ```
 
 ## :stethoscope: Troubleshooting
 

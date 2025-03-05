@@ -5,11 +5,14 @@ dotenv:
   - .env
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
   init:
     desc: Init
     cmds:
       - cp .env.tmpl .env
-
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:

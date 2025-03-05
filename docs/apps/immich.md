@@ -31,6 +31,20 @@ Immich photos is an open source alternative to Google Photos.
         docker compose up
         ```
 
+## :gear: Config
+
+!!! abstract "`homelab/docker/immich/.env`"
+
+    ```ini
+    --8<-- "immich/.env.tmpl"
+    ```
+
+??? abstract "`homelab/docker/immich/compose.yaml`"
+
+    ```yaml
+    --8<-- "immich/compose.yaml"
+    ```
+
 ## :rocket: Upgrade
 
 !!! warning
@@ -55,9 +69,13 @@ Immich photos is an open source alternative to Google Photos.
         )
         ```
 
-## :gear: Config
+## :simple-task: Task List
 
-Make symlinks to repo.
+!!! example ""
+
+    ```yaml
+    --8<-- "immich/task-list.txt"
+    ```
 
 ## :link: References
 

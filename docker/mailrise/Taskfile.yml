@@ -1,20 +1,14 @@
 ---
 version: '3'
 
-includes:
-  lib:
-    taskfile: ../Taskfile.yml
-    flatten: true
+dotenv:
+  - .env
 
 tasks:
-  encrypt:
-    desc: Encrypt .env using SOPS
+  export:
+    desc: Export the task list
     cmds:
-      - sops -e .env > .env.enc
-  decrypt:
-    desc: Decript .env using SOPS
-    cmds:
-     - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - task --list > task-list.txt
   test-remote:
     desc: Send a test email to remote address
     cmds:
@@ -23,35 +17,52 @@ tasks:
     desc: Send a test email
     cmds:
       - "swaks --to email@mailrise.xyz --server localhost --port 8025"
+  status:
+    desc: Status
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}.service
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  decrypt:
+    desc: Decrypt .env using SOPS
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
   update:
     desc: Update running containers
     cmds:
-      - docker compose up --force-recreate --build
+      - docker compose up --force-recreate --build -d
       - docker image prune -a -f
-  # update-d:
-    # desc: Update running containers
-    # cmds:
-      # - docker compose up --force-recreate --build -d
-      # - docker image prune -a -f
-
   up:
-    desc: Docker Up
+    desc: Tun Docker compose in the foreground.
     cmds:
       - docker compose up
   up-d:
-    desc: Docker Up in background
+    desc: Run Docker compose in the background.
     cmds:
-      - docker compose up -d
+      - docker compose up -d --remove-orphans
+  restart:
+    desc: Restart Docker containers
+    cmds:
+      - "docker compose restart"
   upgrade:
-    desc: upgrade
+    desc: Upgrade running containers
     cmds:
       - git pull origin
       - task: update
-  upgrade-d:
-    desc: upgrade
+  stop:
+    desc: Stop registry container
     cmds:
-      - git pull origin
-      - task: update-d
+      - docker compose stop
+  mklinks:
+    desc: Make client symlinks
+    cmds:
+      - ln -sf {{ .TASKFILE_DIR }}/mailrise.conf  {{ .CONFIG_DIR }}/mailrise.conf
   default:
     cmds:
       - task -l
