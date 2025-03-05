@@ -31,7 +31,7 @@ tags:
 
 ## :gear: Config
 
-!!! abstact "`unbound.conf.d/unbound.conf`"
+!!! abstact "`/etc/unbound/unbound.conf.d/unbound.conf`"
 
     === "Manual"
 
