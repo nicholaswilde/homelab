@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  creds:
+    desc: Show credentials
+    cmds:
+      - cat ~/semaphore.creds
   init:
     desc: Init
     cmds:
