@@ -116,6 +116,14 @@ The way that it works is that an NFS share and USB drive are mounted using autof
         0 2 * * * find /mnt/storage/downloads -type f -name \"*.iso\" -exec cp -u {} /mnt/usb \;  >/dev/null 2>&1"
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/ventoy.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/ventoy.yaml"
+    ```
+
 ## :pencil: Usage
 
 The app may be installed and updated on the USB drive via the web app.
