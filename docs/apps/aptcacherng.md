@@ -84,7 +84,7 @@ tags:
         ```
 ## :simple-traefikproxy: Traefik
 
-!!! example "`homelab/pve/traefik/conf.d/aptcache.yaml`"
+??? abstract "`homelab/pve/traefik/conf.d/aptcache.yaml`"
 
     ```yaml
     --8<-- "traefik/conf.d/aptcache.yaml"
