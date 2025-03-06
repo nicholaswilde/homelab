@@ -70,6 +70,12 @@ tags:
         ) 
         ```
 
+??? abstract "`homelab/pve/traefik/traefik.yaml`"
+
+    ```yaml
+    --8<-- "traefik/traefik.yaml"
+    ```
+
 ## :pencil: Usage
 
 WIP
