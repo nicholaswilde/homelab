@@ -88,13 +88,15 @@ The way that it works is that an NFS share and USB drive are mounted using autof
     
 !!! quote "Enable service"
 
-    ```shell
-    (
-     systemctl enable ventoy.service && \
-     systemctl start ventoy.service && \
-     systemctl status ventoy.service
-    ) 
-    ```
+    === "Manual"
+    
+        ```shell
+        (
+         systemctl enable ventoy.service && \
+         systemctl start ventoy.service && \
+         systemctl status ventoy.service
+        ) 
+        ```
 
 ### :alarm_clock: Cronjob
 
