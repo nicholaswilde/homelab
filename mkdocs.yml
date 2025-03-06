@@ -33,7 +33,9 @@ nav:
       - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
+      - mailrise: apps/mailrise.md
       - MySpeed: apps/myspeed.md
+      - netboot.xyz: apps/netbootxyz.md
       - OpenMediaVault: apps/openmediavault.md
       - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md

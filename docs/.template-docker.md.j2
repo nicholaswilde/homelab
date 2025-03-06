@@ -1,0 +1,68 @@
+{%- set APP_NAME_LOWER = APP_NAME | lower | replace(" ", "-") | replace(".", "") -%}
+---
+tags:
+  - lxc
+  - vm
+  - proxmox
+  - docker
+---
+# :simple-{{ APP_NAME_LOWER }}: {{ APP_NAME }}
+
+## :hammer_and_wrench: Installation
+
+!!! example ""
+
+    :material-console-network: Default Port: `{{ APP_PORT | default('3000') }}`
+{%- if CONFIG_PATH is defined %}
+
+    :material-information-outline: Configuration path: `{{ CONFIG_PATH }}`
+{%- endif %}
+
+!!! quote "`homelab/docker/{{ APP_NAME_LOWER }}`"
+
+    === "Task"
+    
+        ```shell
+        task up
+        ```
+
+    === "Docker Compose"
+    
+        ```shell
+        docker compose up
+        ```
+
+## :gear: Config
+
+!!! abstract "`homelab/docker/{{ APP_NAME_LOWER }}/.env`"
+
+    ```ini
+    --8<-- "{{ APP_NAME_LOWER }}/.env.tmpl"
+    ```
+
+??? abstract "`homelab/docker/{{ APP_NAME_LOWER }}/compose.yaml`"
+
+    ```yaml
+    --8<-- "{{ APP_NAME_LOWER }}/compose.yaml"
+    ```
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/{{ APP_NAME_LOWER }}.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/{{ APP_NAME_LOWER }}.yaml"
+    ```
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "{{ APP_NAME_LOWER }}/task-list.txt"
+    ```
+
+## :link: References
+
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ APP_NAME_LOWER }}>
+- <https://pimox-scripts.com/scripts?id={{ APP_NAME_LOWER }}>

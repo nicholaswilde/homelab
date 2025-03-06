@@ -5,19 +5,19 @@ vars:
   IMAGE: squidfunk/mkdocs-material
   PORT: 8000
 
-includes:
-  traefik:
-    taskfile: ./pve/traefik/Taskfile.yml
-    dir: ./pve/traefik
-  docs:
-    taskfile: ./docs/Taskfile.yml
-    dir: ./docs
-  mailrise:
-    taskfile: ./docker/mailrise/Taskfile.yml
-    dir: ./docker/mailrise
-  docker:
-    taskfile: ./docker/Taskfile.yml
-    flatten: true
+# includes:
+#   traefik:
+#     taskfile: ./pve/traefik/Taskfile.yml
+#     dir: ./pve/traefik
+#   docs:
+#     taskfile: ./docs/Taskfile.yml
+#     dir: ./docs
+#   mailrise:
+#     taskfile: ./docker/mailrise/Taskfile.yml
+#     dir: ./docker/mailrise
+#   docker:
+#     taskfile: ./docker/Taskfile.yml
+#     flatten: true
 
 tasks:
   build:

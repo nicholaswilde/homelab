@@ -7,11 +7,27 @@ tags:
 
 [Uptime Kuma][1] is used to monitor the uptime of my devices.
 
-## :gear: Config
-
 !!! example ""
 
     :material-console-network: Default Port: `3001`
+
+!!! quote "`compose.yaml`"
+
+    === "Task"
+    
+        ```shell
+        task up
+        ```
+
+    === "Docker Compose"
+    
+        ```shell
+        docker compose up
+        ```
+
+## :gear: Config
+
+WIP
 
 ## :key: Auth
 

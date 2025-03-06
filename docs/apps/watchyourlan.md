@@ -96,6 +96,14 @@ tags:
         ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/scan.db /etc/watchyourlan/scan.db
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/watchyourlan.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/watchyourlan.yaml"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=watchyourlan>
