@@ -31,6 +31,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "gitea/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
