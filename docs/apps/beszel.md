@@ -41,6 +41,10 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/beszel.yaml"
     ```
 
+## :pencil: Usage
+
+WIP
+
 ## :link: References
 
 [1]: <https://beszel.dev/>
