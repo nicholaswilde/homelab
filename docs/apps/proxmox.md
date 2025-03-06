@@ -8,6 +8,14 @@ tags:
 
 I am using it over Portainer and kubernetes for ease of use and feature set.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/proxmox.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/proxmox.yaml"
+    ```
+
 ## :hammer_and_wrench: Post Installation
 
 !!! example ""
