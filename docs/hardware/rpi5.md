@@ -2,6 +2,7 @@
 tags:
   - rpi
   - proxmox
+  - arm64
 ---
 # :simple-raspberrypi: Raspberry Pi 5 16GB
 
