@@ -3,6 +3,7 @@ tags:
   - bare-metal
   - home-assistant
   - docker
+  - amd64
 ---
 # :simple-intel: Intel NUC
 
