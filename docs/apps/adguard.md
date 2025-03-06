@@ -43,9 +43,9 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
           answer: 192.168.3.250
     ```
 
-## :rocket: Updates
+## :rocket: Upgrade
 
-Updates to the app are implemented [via the web GUI][3].
+Upgrading the app is done [via the web GUI][3].
 
 ## :link: References
 
