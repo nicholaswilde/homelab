@@ -76,6 +76,12 @@ tags:
     --8<-- "traefik/traefik.yaml"
     ```
 
+??? abstract "`homelab/pve/traefik/conf.d/config.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/config.yaml"
+    ```
+
 ## :pencil: Usage
 
 WIP
