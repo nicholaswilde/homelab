@@ -45,6 +45,14 @@ Make symlinks to repo.
 
 WIP
 
+## :rocket: Upgrade
+
+!!! quote ""
+
+    ```shell
+    ./beszel update
+    ```
+
 ## :link: References
 
 [1]: <https://beszel.dev/>
