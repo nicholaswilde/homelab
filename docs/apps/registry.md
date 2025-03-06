@@ -72,7 +72,7 @@ tags:
         cp .env.tmpl .env
         ```
 
-!!! abstract "`homelab/docker/registry/.env`"
+!!! abstract "`homelab/docker/registry/.env.tmpl`"
 
     ```
     --8<-- "homelab/docker/registry/.env.tmpl"
