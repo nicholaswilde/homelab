@@ -6,6 +6,8 @@ tags:
 ---
 # ![mailrise](https://raw.githubusercontent.com/YoRyan/mailrise/refs/heads/main/src/mailrise/asset/mailrise-info-128x128.png){ width="32" } mailrise
 
+[mailrise][1] An SMTP gateway for Apprise notifications.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -58,5 +60,6 @@ tags:
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=mailrise>
-- <https://pimox-scripts.com/scripts?id=mailrise>
+- <https://hub.docker.com/r/yoryan/mailrise>
+
+[1]: <https://github.com/YoRyan/mailrise>
