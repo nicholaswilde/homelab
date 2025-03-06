@@ -47,6 +47,14 @@ tags:
     mailto://email:passkey@gmail.com
     ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/changedetection.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/changedetection.yaml"
+    ```
+
 ## :rocket: Update
 
 !!! quote ""
