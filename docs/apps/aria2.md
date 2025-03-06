@@ -33,7 +33,11 @@ Make symlinks to repo.
 
 ## :simple-traefikproxy: Traefik
 
-WIP
+??? abstract "`homelab/pve/traefik/conf.d/aria2.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/aria2.yaml"
+    ```
 
 ## :link: References
 
