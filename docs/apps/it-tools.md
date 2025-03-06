@@ -48,6 +48,14 @@ Make symlinks to repo.
         )
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/it-tools.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/it-tools.yaml"
+    ```
+
 ## :simple-task: Task List
 
 !!! example ""
