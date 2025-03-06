@@ -2,6 +2,7 @@
 tags:
   - proxmox
   - rpi
+  - arm64
 ---
 # :simple-raspberrypi: Raspberry Pi 4 8GB
 
