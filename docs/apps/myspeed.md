@@ -31,6 +31,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/myspeed.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/myspeed.yaml"
+    ```
+
 ## :link: References
 
 [1]: <https://myspeed.dev/>
