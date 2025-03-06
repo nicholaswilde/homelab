@@ -31,6 +31,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/gitea.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/gitea.yaml"
+    ```
+
 ## :simple-task: Task List
 
 !!! example ""
