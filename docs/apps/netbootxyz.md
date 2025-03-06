@@ -6,6 +6,10 @@ tags:
 ---
 # ![netboot.xyz](https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/png/netboot-xyz-light.png){ width="32" } netboot.xyz
 
+[netboot.xyz][1] enables me to boot into many types of operating
+systems using lightweight tooling to get you up and running as soon as possible 
+over my network.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -58,5 +62,4 @@ tags:
 
 ## :link: References
 
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=netbootxyz>
-- <https://pimox-scripts.com/scripts?id=netbootxyz>
+[1]: <https://netboot.xyz/>
