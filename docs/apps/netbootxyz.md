@@ -1,11 +1,10 @@
 ---
 tags:
   - lxc
-  - vm
   - proxmox
   - docker
 ---
-# :simple-netbootxyz: netboot.xyz
+# ![netboot.xyz](https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/png/netboot-xyz-light.png){ width="32" } netboot.xyz
 
 ## :hammer_and_wrench: Installation
 
