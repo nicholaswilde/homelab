@@ -5,6 +5,44 @@ dotenv:
   - .env
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  status:
+    desc: Status
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}.service
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  decrypt:
+    desc: Decrypt .env using SOPS
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type dotenv --output-type dotenv app.ini.enc > app.ini
+  encrypt:
+    desc: Encrypt .env using SOPS
+    cmds:
+      - sops -e .env > .env.enc
+      - sops -e app.ini > app.ini.enc
+  update:
+    desc: Update running containers
+    cmds:
+      - bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  restart:
+    desc: Restart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  mklinks:
+    desc: Make client symlinks
+    cmds:
+      - ln -sf {{ .TASKFILE_DIR }}/app.ini  {{ .CONFIG_DIR }}/app.ini
   default:
     cmds:
       - task -l
