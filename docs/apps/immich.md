@@ -45,6 +45,14 @@ Immich photos is an open source alternative to Google Photos.
     --8<-- "immich/compose.yaml"
     ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/immich.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/immich.yaml"
+    ```
+
 ## :rocket: Upgrade
 
 !!! warning
