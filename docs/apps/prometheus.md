@@ -29,6 +29,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/prometheus.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/prometheus.yaml"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=prometheus>
