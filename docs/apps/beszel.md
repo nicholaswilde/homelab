@@ -33,6 +33,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/beszel.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/beszel.yaml"
+    ```
+
 ## :link: References
 
 [1]: <https://beszel.dev/>
