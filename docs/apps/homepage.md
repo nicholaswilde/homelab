@@ -61,6 +61,14 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
         )
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/homepage.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/homepage.yaml"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
