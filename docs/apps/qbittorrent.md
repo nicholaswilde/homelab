@@ -35,6 +35,14 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/qbittorrent.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/qbittorrent.yaml"
+    ```
+
 ## :link: References
 
 [1]: <https://www.qbittorrent.org/>
