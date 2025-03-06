@@ -82,7 +82,15 @@ Make symlinks to repo.
       "web_host": "/"
     }
     ```
-    
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/semaphoreui.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/semaphoreui.yaml"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=semaphore>
