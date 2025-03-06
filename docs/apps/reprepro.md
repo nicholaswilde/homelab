@@ -226,6 +226,14 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         )
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/reprepro.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/reprepro.yaml"
+    ```
+
 ## :pencil: Usage
 
 ### :desktop_computer: Server
