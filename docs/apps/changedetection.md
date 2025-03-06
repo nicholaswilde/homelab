@@ -55,7 +55,7 @@ tags:
     --8<-- "traefik/conf.d/changedetection.yaml"
     ```
 
-## :rocket: Update
+## :rocket: Upgrade
 
 !!! quote ""
 
