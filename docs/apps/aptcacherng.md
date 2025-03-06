@@ -82,6 +82,13 @@ tags:
         ```ini
         Acquire::http::Proxy "http://192.168.2.40:3142";
         ```
+## :simple-traefik: Traefik
+
+!!! example "`homelab/pve/traefik/conf.d/aptcache.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/aptcache.yaml"
+    ```
 
 ## :link: References
 
