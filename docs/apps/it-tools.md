@@ -50,7 +50,7 @@ Make symlinks to repo.
 
 ## :simple-task: Task List
 
- ??? example
+??? example ""
 
     ```yaml
     --8<-- "it-tools/task-list.txt"
