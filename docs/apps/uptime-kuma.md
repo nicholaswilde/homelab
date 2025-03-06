@@ -17,6 +17,14 @@ tags:
 
 Disable authentication.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/uptimekuma.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/uptimekuma.yaml"
+    ```
+
 ## :link: References
 
 [1]: <https://uptime.kuma.pet/>
