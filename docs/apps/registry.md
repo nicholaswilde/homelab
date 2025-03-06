@@ -142,6 +142,14 @@ tags:
         )
         ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/registry.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/registry.yaml"
+    ```
+
 ## :pencil: Usage
 
 ### :computer: Client
