@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    excalidraw:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`draw.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: excalidraw
+#endregion
+#region services
+  services:
+    excalidraw:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.91:5000"
+        passHostHeader: true
+#endregion
