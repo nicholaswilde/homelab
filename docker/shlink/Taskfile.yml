@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  gen:
+    desc: Generate an api key
+    cmds:
+      - " docker exec shlink-backend shlink api-key:generate"
   status:
     desc: Status
     cmds:
