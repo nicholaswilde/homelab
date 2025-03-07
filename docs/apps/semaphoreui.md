@@ -85,10 +85,10 @@ Make symlinks to repo.
 
 ## :simple-traefikproxy: Traefik
 
-??? abstract "`homelab/pve/traefik/conf.d/semaphoreui.yaml`"
+??? abstract "`homelab/pve/traefik/conf.d/semaphore.yaml`"
 
     ```yaml
-    --8<-- "traefik/conf.d/semaphoreui.yaml"
+    --8<-- "traefik/conf.d/semaphore.yaml"
     ```
 
 ## :link: References
