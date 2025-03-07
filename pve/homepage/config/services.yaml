@@ -75,6 +75,9 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io
+    - Excalidraw:
+        icon: si-excalidraw
+        href: https://draw.l.nicholaswilde.io
     - Paperless:
         icon: si-paperlessngx
         href: https://paperless.l.nicholaswilde.io
