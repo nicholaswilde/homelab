@@ -117,7 +117,18 @@ tags:
         ```shell
         systemctl restart traefik.service
         ```
-         
+**Test URL**
+
+**Comment out middleware in config file**
+
+**Restart traefik**
+
+**Test URL**
+
+**Remove middleware or uncomment middleware**
+
+**Restart traefik**
+
 ## :file_folder: Logs
 
 !!! quote "`/var/log/traefik/traefik.log`"
