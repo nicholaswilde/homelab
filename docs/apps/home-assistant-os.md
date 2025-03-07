@@ -5,6 +5,12 @@ tags:
 ---
 # :simple-homeassistant: Home Assistant OS
 
+My current setup consists of running Docker containers on my [NUC][]. 
+
+Evaluating if I want to convert to a VM running HAOS to better support add ons like Matter.
+
+I am not that familiar with HAOS and I don't know how else to back it up other than the entire VM. Also concerned about latency but perhaps I integrate redis, if I am not already.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
