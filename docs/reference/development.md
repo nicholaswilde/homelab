@@ -65,18 +65,20 @@ If the tool is only available to download as a binary file, I'll use my [`instal
 
 ## :twisted_rightwards_arrows: Workflow
 
-1. Create VM or LXC.
-2. Run setup playbook.
-3. Add to lxcAll inventory.
-4. Clone and log into homelab repo on container.
-5. Setup app.
-6. Add to [AdGuardHome][1].
-7. Run [AdGuardHome sync][2].
-8. Add to [Traefik][4].
-9. Add to [homepage][5].
-10. Add to homelab docs.
-11. Add to [WatchYourLAN][6].
-12. Add to [Beszel][7].
+1. Create VM or LXC container.
+2. Ensure that python3 is installed on the container.
+3. Run setup playbook.
+4. Add to Ansible inventory.
+6. Setup app.
+7. Backup config files to repo on cintainer.
+8. Add to [AdGuardHome][1].
+9. Run [AdGuardHome sync][2].
+10. Add to [Traefik][4].
+11. Add to [homepage][5].
+12. Add to homelab docs.
+13. Add to [WatchYourLAN][6].
+14. Add to [Beszel][7].
+15. Add to [authentik][12].
 
 ## :page_facing_up: New Document Pages
 
@@ -183,3 +185,4 @@ WIP
 [9]: <../apps/installer.md>
 [10]: <https://github.com/apps/renovate>
 [11]: <https://docs.docker.com/reference/compose-file/services/#restart>
+[12]: <../apps/authentik.md>
