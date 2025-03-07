@@ -5,7 +5,7 @@ tags:
 ---
 # :simple-homeassistant: Home Assistant OS
 
-My current setup consists of running Docker containers on my [NUC][]. 
+My current setup consists of running Docker containers on my [NUC][1]. 
 
 Evaluating if I want to convert to a VM running HAOS to better support add ons like Matter.
 
@@ -32,3 +32,5 @@ Make symlinks to repo.
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=haos-vm>
+
+[1]: <../hardware/nuc.md>
