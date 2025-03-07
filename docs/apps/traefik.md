@@ -112,11 +112,11 @@ tags:
         task restart
         ```
 
-     === "Manual"
+    === "Manual"
 
-         ```shell
-         systemctl restart traefik.service
-         ```
+        ```shell
+        systemctl restart traefik.service
+        ```
          
 ## :file_folder: Logs
 
