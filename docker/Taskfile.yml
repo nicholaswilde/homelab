@@ -12,8 +12,8 @@ tasks:
     cmds:
       - mkdir {{ .APP_NAME_LOWER }}
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
+      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/.env.j2 > ./{{ .APP_NAME_LOWER }}/.env.tmpl
       - jinja2 -D APP_NAME={{ .APP_NAME}} -D USER_NAME={{ .USER_NAME }} ./.template/compose.yaml.j2 > ./{{ .APP_NAME_LOWER }}/compose.yaml
-      - cp .template/.env.j2 ./{{ .APP_NAME_LOWER }}/.env
       - cp .template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/
   update-d:
     # desc: Update running containers
