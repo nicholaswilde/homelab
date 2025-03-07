@@ -84,8 +84,40 @@ tags:
 
 ## :pencil: Usage
 
-WIP
+**Create new config**
 
+!!! quote "`homelab/pve/traefik/conf.d/`"
+
+    === "Task"
+
+        ```shell
+        APP_NAME=AppName task new > appname.yaml
+        ```
+
+    === "Manual"
+
+        ```shell
+        jinja2 -D APP_NAME=AppName .template.yaml.j2 > appname.yaml
+        ```
+
+**Edit config file**
+
+**Restart traefik**
+
+!!! quote "`homelab/pve/traefik/conf.d/`"
+
+    === "Task"
+
+        ```shell
+        task restart
+        ```
+
+     === "Manual"
+
+         ```shell
+         systemctl restart traefik.service
+         ```
+         
 ## :file_folder: Logs
 
 !!! quote "`/var/log/traefik/traefik.log`"
