@@ -84,7 +84,7 @@ tags:
 
 ## :pencil: Usage
 
-**Create new config**
+**Create new config for app**
 
 !!! quote "`homelab/pve/traefik/conf.d/`"
 
