@@ -10,7 +10,7 @@ http:
         - default-headers@file
         - https-redirectscheme@file
       tls: {}
-      service: {{ APP_NAME }}
+      service: {{ APP_NAME | lower }}
 #endregion
 #region services
   services:
