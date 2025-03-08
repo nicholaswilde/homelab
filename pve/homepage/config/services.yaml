@@ -25,8 +25,11 @@
     - Proxmox 02:
         icon: si-proxmox
         href: https://pve02.l.nicholaswilde.io
+    - Kestra:
+        icon: sh-kestra.svg
+        href: https://kestra.l.nicholaswilde.io
     - Shlink:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/shlink.svg
+        icon: sh-shlink.svg
         href: https://shlink.l.nicholaswilde.io
     - WatchYourLAN:
         icon: sh-watchyourlan.png
