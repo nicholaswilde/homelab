@@ -1,0 +1,11 @@
+---
+
+services:
+  kestra:
+    container_name: kestra
+    image: ghcr.io/username/kestra:1.0.0
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    restart: always
