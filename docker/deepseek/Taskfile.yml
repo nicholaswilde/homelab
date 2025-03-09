@@ -5,6 +5,15 @@ dotenv:
   - .env
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  prune:
+    desc: Prune Docker items
+    cmds:
+      - docker image prune -a -f
+      - docker system prune -a -f
   status:
     desc: Status
     cmds:
