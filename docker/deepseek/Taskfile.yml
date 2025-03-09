@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  deepseek:
+    desc: Pull deepseek
+    cmds:
+      - 'docker exec -it deepseek bash -c "ollama pull deepseek-r1:1.5b"'
   export:
     desc: Export the task list
     cmds:
