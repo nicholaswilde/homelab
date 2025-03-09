@@ -81,6 +81,9 @@
     - Proxmox 01:
         icon: si-proxmox
         href: https://pve01.l.nicholaswilde.io
+    - DeepSeek:
+        icon: sh-deepseek.svg
+        href: https://deepseek.l.nicholaswilde.io
     - Excalidraw:
         icon: si-excalidraw
         href: https://draw.l.nicholaswilde.io
