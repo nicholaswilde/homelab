@@ -14,7 +14,7 @@ tags:
 
 Since the file is ignored by git, the template file may be copied, if it exists.
 
-!!! quote ".env.tmpl"
+!!! code ".env.tmpl"
 
     ```shell
     cp .env.tmpl .env
