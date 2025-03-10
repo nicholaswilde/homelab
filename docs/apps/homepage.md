@@ -19,7 +19,7 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
     
     :material-information-outline: Configuration (bookmarks.yaml, services.yaml, widgets.yaml) path: `/opt/homepage/config/`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
