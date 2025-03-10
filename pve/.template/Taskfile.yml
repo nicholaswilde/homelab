@@ -5,8 +5,12 @@ dotenv:
   - .env
 
 tasks:
+  enable:
+    desc: Enable service
+    cmds:
+      - systemctl enable {{ .SERVICE_NAME }}.service
   status:
-    desc: Status
+    desc: Service status
     cmds:
       - systemctl status {{ .SERVICE_NAME }}.service
   init:
@@ -35,18 +39,22 @@ tasks:
     cmds:
       - docker compose up -d --remove-orphans
   restart:
-    desc: Restart Docker containers
+    desc: Resart service
     cmds:
-      - "docker compose restart"
+      - systemctl restart {{ .SERVICE_NAME }}.service
   upgrade:
     desc: upgrade
     cmds:
       - git pull origin
       - task: update
   stop:
-    desc: Stop registry container
+    desc: Stop service
     cmds:
-      - docker compose stop
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
   mklinks:
     desc: Make client symlinks
     cmds:
