@@ -47,7 +47,7 @@ WIP
 
 ## :rocket: Upgrade
 
-!!! quote ""
+!!! code ""
 
     ```shell
     ./beszel update
