@@ -64,7 +64,7 @@ If a `deb` file is available for download for the tool, I'll add it to my [`repr
 If the tool is only available to download as a binary file, I'll use my [`installer`][9] container.
 
 
-## Config
+## :gear: Config
 
 Generally, config files are moved to the repo for backup and then symlinked back to the original location.
 
@@ -74,7 +74,7 @@ Generally, config files are moved to the repo for backup and then symlinked back
 
 If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
 
-### Encrypted Files
+### :lock: Encrypted Files
 
 Encrypted files will end in `.enc` and are encrypted using SOPS and age.
 
