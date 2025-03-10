@@ -116,7 +116,7 @@ Mounted after reinstall and not before.
 
 ### :material-laptop: Client
 
-!!! quote "Installation"
+!!! code "Installation"
 
     ```shell
     apt install autofs
@@ -157,7 +157,7 @@ Mounted after reinstall and not before.
     showmount -e 192.168.2.19
     ```
 
-!!! quote "Mount"
+!!! code "Mount"
 
     ```shell
     (
