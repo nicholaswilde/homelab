@@ -17,7 +17,7 @@ I am not that familiar with HAOS and I don't know how else to back it up other t
 
     :material-console-network: Default Port: `8123`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
