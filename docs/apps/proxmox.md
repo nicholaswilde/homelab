@@ -150,7 +150,7 @@ WIP
     ```shell
     sgdisk -N 1 /dev/sdb
     ```
-!!! quote "Create a [P]hysical [V]olume (PV) without confirmation and 250K metadatasize."
+!!! code "Create a [P]hysical [V]olume (PV) without confirmation and 250K metadatasize."
 
     ```shell
     pvcreate --metadatasize 250k -y -ff /dev/sdb1
