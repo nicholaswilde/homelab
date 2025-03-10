@@ -19,7 +19,7 @@ tags:
 
     :material-database: Database: `BoltDB`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
