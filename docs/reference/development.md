@@ -14,7 +14,7 @@ Generally, the repo is meant to be used as a centralized location for my homelab
 
 This repo is cloned into each container and VM and then updated and maintained on that container and VM.
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (
@@ -63,22 +63,37 @@ If a `deb` file is available for download for the tool, I'll add it to my [`repr
 
 If the tool is only available to download as a binary file, I'll use my [`installer`][9] container.
 
-
 ## :gear: Config
+
+Config files are backed up into this repo so that can be replicated or referenced when lost.
 
 ## :floppy_disk: Backups
 
 The original files are copied into the original config location with a `.bak` extension before making any changes to them.
 
-### :link: Symlinks
-
-Generally, config files are moved to the repo for remote backup and then symlinked back to the original location.
-
 ??? example
 
     ```shell
     cp /etc/prometheus/prometheus.yml /etc/prometheus/prometheus.yml.bak
-    ln -s /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+    ```
+
+### :link: Symlinks
+
+Generally, config files are moved to the repo for remote backup and then symlinked back to the original location.
+
+!!! note
+
+    The app service needs to be stopped and restarted when moving the config files.
+
+??? example
+
+    ```shell
+    (
+      systemctl stop prometheus.service
+      cp /etc/prometheus/prometheus.yml /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml
+      ln -s /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+      systemctl stop prometheus.service
+    )
     ```
 
 !!! warning
@@ -87,15 +102,19 @@ Generally, config files are moved to the repo for remote backup and then symlink
 
 ### :lock: Encrypted Files
 
-If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
+If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`.
 
-Encrypted files will end in `.enc` and are encrypted using SOPS and age.
+Encrypted files will end in `.enc` and are encrypted using [SOPS][13] and age.
 
 ??? example
 
     ```shell
     sops -d --input-type dotenv --output-type dotenv .env.enc > .env
     ```
+
+### :pencil: .env Files
+
+[.env][14] files are used to store variables and secrets. There are used whenever possible.
 
 ### :material-content-copy: Template Files
 
@@ -128,7 +147,7 @@ Template files end in `.tmpl` and are not used by the app and are meant to be co
 
 New pages for this site can be created using [jinja2][3] and the `.template.md.j2` file.
 
-!!! quote "`homelab/docs`"
+!!! code "`homelab/docs`"
 
     === "Task"
 
@@ -160,7 +179,7 @@ The old and unused images are then purged to save space in the LXC/VM.
 
     The below commands purge any unused Docker images! Use at your own risk!
 
-!!! quote "`homelab/docker/appname`"
+!!! code "`homelab/docker/appname`"
 
     === "Task"
 
@@ -182,7 +201,7 @@ The old and unused images are then purged to save space in the LXC/VM.
 
 Cronjobs :alarm_clock: are run on some containers to periodically perform functions, usually to sync files.
 
-!!! quote "Edit job"
+!!! code "Edit job"
 
     === "Manual"
 
@@ -206,15 +225,33 @@ Docker :simple-docker: containers don't require services because they are manage
 
 ## :floppy_disk: Logs
 
-WIP
+Logs are used to debug applications. They may be looked at once or followed get to real time updates.
 
-## Test
+### :package: LXC Logs
 
-!!! code "Code"
+??? example
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et
-    euismod nulla. Curabitur feugiat, tortor non consequat finibus, justo
-    purus auctor massa, nec semper lorem quam in massa.
+    === "journalctl"
+
+        ```shell
+        journalctl -xeu prometheus.service
+        ```
+
+### :simple-docker: Docker Logs
+
+??? example
+
+    === "Once"
+    
+        ```shell
+        docker logs immich-server
+        ```
+
+    === "Followed"
+
+        ```shell
+        docker logs immich-server -f
+        ```
 
 ## :link: References
 
@@ -230,3 +267,5 @@ WIP
 [10]: <https://github.com/apps/renovate>
 [11]: <https://docs.docker.com/reference/compose-file/services/#restart>
 [12]: <../apps/authentik.md>
+[13]: <../tools/sops.md>
+[14]: <../tools/env-files.md>
