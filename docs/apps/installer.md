@@ -28,6 +28,7 @@ For setup apps that have are not supported by apt package manager, such as task,
     ```shell
     /usr/local/bin/installer
     ```
+
 !!! abstract "/etc/systemd/system/installer.service"
 
     === "Manual"
@@ -56,7 +57,7 @@ For setup apps that have are not supported by apt package manager, such as task,
     curl https://i.jpillora.com/<user>/<repo>@<release>! | bash
     ```
 
-!!! quote "search web for github repo query"
+!!! code "search web for github repo query"
 
     ```shell
     curl https://i.jpillora.com/<query>! | bash
