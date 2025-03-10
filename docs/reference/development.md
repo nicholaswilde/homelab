@@ -63,6 +63,25 @@ If a `deb` file is available for download for the tool, I'll add it to my [`repr
 
 If the tool is only available to download as a binary file, I'll use my [`installer`][9] container.
 
+
+## Config
+
+Generally, config files are moved to the repo for backup and then symlinked back to the original location.
+
+!!! warning
+
+    Some apps have trouble starting their service when using symlinked config files.
+
+If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
+
+### Encrypted File
+
+Encrypted files will end in `.enc` and are encrypted using SOPS and age.
+
+### Template Files
+
+Templated files end in `.tmpl` and are meant to be copied.
+
 ## :twisted_rightwards_arrows: Workflow
 
 1. Create VM or LXC container.
