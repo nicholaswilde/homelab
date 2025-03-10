@@ -16,7 +16,7 @@ tags:
 
     :material-information-outline: Configuration path: `/etc/docker`
 
-!!! quote "`homelab/docker/registry`"
+!!! code "`homelab/docker/registry`"
 
     === "Task"
     
@@ -36,7 +36,7 @@ tags:
 
     The below commands purge any unused Docker images! Use at your own risk!
 
-!!! quote "`homelab/docker/registry`"
+!!! code "`homelab/docker/registry`"
 
     === "Task"
 
@@ -58,7 +58,7 @@ tags:
 
 ### :desktop_computer: Server
 
-!!! quote "Init .env"
+!!! code "Init .env"
 
     === "Task"
     
@@ -125,7 +125,7 @@ tags:
         --8<-- "registry/daemon.json"
         ```
 
-!!! quote "Restart the Docker service"
+!!! code "Restart the Docker service"
 
     === "Task"
 
@@ -154,7 +154,7 @@ tags:
 
 ### :computer: Client
 
-!!! quote ""
+!!! code ""
 
     === "Pull Through"
 
@@ -181,7 +181,7 @@ WIP
 
     The below commands purge any unused Docker images! Use at your own risk!
 
-!!! quote "`homelab/docker/registry`"
+!!! code "`homelab/docker/registry`"
 
     === "Task"
 
@@ -211,7 +211,7 @@ WIP
 
 Watch the logs on the server during a pull to ensure that the image is being pulled through the local registry.
 
-!!! quote "`homelab/docker/registry`"
+!!! code "`homelab/docker/registry`"
 
     === "Task"
 
