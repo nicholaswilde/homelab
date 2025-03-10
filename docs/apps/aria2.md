@@ -13,7 +13,7 @@ tags:
     
     :material-information-outline: Within the LXC console, run `cat rpc.secret` to display the rpc-secret. Copy this token and paste it into the Aria2 RPC Secret Token box within the AriaNG Settings. Then, click the reload AriaNG button.
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
