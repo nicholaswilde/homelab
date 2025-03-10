@@ -13,7 +13,7 @@ tags:
 
     :material-console-network: Default Port: `5216`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
