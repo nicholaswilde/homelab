@@ -66,15 +66,24 @@ If the tool is only available to download as a binary file, I'll use my [`instal
 
 ## :gear: Config
 
+### :link: Symlinks
+
 Generally, config files are moved to the repo for backup and then symlinked back to the original location.
+
+??? example
+
+    ```shell
+    cp /etc/prometheus/prometheus.yml /etc/prometheus/prometheus.yml.bak
+    ln -s /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+    ```
 
 !!! warning
 
     Some apps have trouble starting their service when using symlinked config files.
 
-If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
-
 ### :lock: Encrypted Files
+
+If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
 
 Encrypted files will end in `.enc` and are encrypted using SOPS and age.
 
