@@ -15,7 +15,7 @@ For setup apps that have are not supported by apt package manager, such as task,
 
     :material-console-network: Default Port: `3000`
 
-!!! quote ""
+!!! code ""
 
     ```shell
     curl -s https://i.jpillora.com/installer! | bash
@@ -50,7 +50,7 @@ For setup apps that have are not supported by apt package manager, such as task,
 
 ## :pencil: Usage
 
-!!! quote "install user/repo from github"
+!!! code "install user/repo from github"
 
     ```shell
     curl https://i.jpillora.com/<user>/<repo>@<release>! | bash
@@ -89,7 +89,7 @@ For setup apps that have are not supported by apt package manager, such as task,
 * https://i.jpillora.com/rclone
 * https://i.jpillora.com/ripgrep?as=rg
 
-    ```sh
+    ```shell
     $ curl -s i.jpillora.com/mholt/caddy! | bash
     Downloading mholt/caddy v0.8.2 (https://github.com/mholt/caddy/releases/download/v0.8.2/caddy_darwin_amd64.zip)
     ######################################################################## 100.0%
