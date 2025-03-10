@@ -16,7 +16,7 @@ tags:
 
     :material-information-outline: Configuration path: `/etc/watchyourlan`
     
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
