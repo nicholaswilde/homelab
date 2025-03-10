@@ -12,7 +12,7 @@ tags:
 
     :material-console-network: Default Port: `8080`
 
-!!! quote ""
+!!! code ""
 
     === "Docker"
 
@@ -30,7 +30,7 @@ Make symlinks to repo.
 
     The below commands purge any unused Docker images! Use at your own risk!
 
-!!! quote "`homelab/docker/it-tools`"
+!!! code "`homelab/docker/it-tools`"
 
     === "Task"
 
