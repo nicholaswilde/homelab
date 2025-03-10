@@ -9,7 +9,7 @@ containers/VMs so that they can share storage.
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     ```shell
     apt install autofs
@@ -17,7 +17,7 @@ containers/VMs so that they can share storage.
 
 ## :material-laptop: Client
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (
