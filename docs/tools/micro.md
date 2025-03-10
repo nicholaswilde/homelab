@@ -8,7 +8,7 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "apt"
     
