@@ -8,7 +8,7 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "apt"
 
@@ -24,7 +24,7 @@ tags:
     apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
     ```
 
-!!! quote "Notification URL List"
+!!! code "Notification URL List"
 
     ```shell
     mailto://email:passkey@gmail.com
