@@ -25,7 +25,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
     :material-file-key: .env: `true`
 
-!!! quote "`homelab/pve/ventoy/install.sh`"
+!!! code "`homelab/pve/ventoy/install.sh`"
 
     === "Task"
 
@@ -86,7 +86,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
         --8<-- "ventoy/ventoy.service"
         ```
     
-!!! quote "Enable service"
+!!! code "Enable service"
 
     === "Manual"
     
@@ -100,7 +100,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
 ### :alarm_clock: Cronjob
 
-!!! quote "2 A.M. nightly"
+!!! code "2 A.M. nightly"
 
     === "Automatic"
     
@@ -130,7 +130,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
 
 The app may be installed and updated on the USB drive via the web app.
 
-!!! quote "Start web server"
+!!! code "Start web server"
 
     === "Task"
     
@@ -147,7 +147,7 @@ The app may be installed and updated on the USB drive via the web app.
         )
         ```
 
-!!! quote "Sync ISOs"
+!!! code "Sync ISOs"
 
     === "Task"
 
@@ -163,7 +163,7 @@ The app may be installed and updated on the USB drive via the web app.
 
 ## :rocket: Upgrade
 
-!!! quote ""
+!!! code ""
 
     === "Task"
 
