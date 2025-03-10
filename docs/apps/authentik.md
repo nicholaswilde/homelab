@@ -14,7 +14,7 @@ different applications.
 
     :material-console-network: Default Port: `9000`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
