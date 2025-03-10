@@ -22,7 +22,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
     :material-console-network: Default Port: `8006`
 
-!!! quote "Post Install"
+!!! code "Post Install"
 
     === "AMD64"
 
@@ -36,7 +36,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
         bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/misc/post-pve-install.sh)"
         ```
 
-!!! quote "Add LXC IP Tag"
+!!! code "Add LXC IP Tag"
 
     === "AMD64"
 
@@ -50,7 +50,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
         bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
         ```
 
-!!! quote "Update"
+!!! code "Update"
 
     === "AMD64"
 
@@ -90,7 +90,7 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
 How to reset cluster. Useful if the node IP isn't matching during join.
 
-!!! quote "node"
+!!! code "node"
 
     ```shell
     (
@@ -99,7 +99,7 @@ How to reset cluster. Useful if the node IP isn't matching during join.
     )
     ```
 
-!!! quote "node"
+!!! code "node"
 
     ```shell
     (
@@ -145,7 +145,7 @@ WIP
 
 ## :material-group: [Create a Volume Group][6]
 
-!!! quote "Create a partition"
+!!! code "Create a partition"
 
     ```shell
     sgdisk -N 1 /dev/sdb
@@ -156,7 +156,7 @@ WIP
     pvcreate --metadatasize 250k -y -ff /dev/sdb1
     ```
 
-!!! quote "Create a volume group named `vmdata` on /dev/sdb1"
+!!! code "Create a volume group named `vmdata` on /dev/sdb1"
 
     ```shell
     vgcreate vmdata /dev/sdb1
@@ -164,7 +164,7 @@ WIP
 
 ## :material-pool: Create a LVM-thin pool
 
-!!! quote ""
+!!! code ""
 
     ```shell
     lvcreate -L 80G -T -n vmstore vmdata
@@ -176,25 +176,25 @@ WIP
 
 ### :material-harddisk-plus: Step 2: Extend physical drive partition
 
-!!! quote "check free space"
+!!! code "check free space"
 
     ```shell
     fdisk -l
     ```
 
-!!! quote "Extend physical drive partition"
+!!! code "Extend physical drive partition"
 
     ```shell
     growpart /dev/sda3
     ```
 
-!!! quote "See physical drive"
+!!! code "See physical drive"
 
     ```shell
     pvdisplay
     ```
 
-!!! quote "Instruct LVM that disk size has changed"
+!!! code "Instruct LVM that disk size has changed"
 
     ```shell
     pvresize /dev/sda3
@@ -208,13 +208,13 @@ WIP
 
 ### :brain: Step 3: Extend Logical volume
 
-!!! quote "View starting LV"
+!!! code "View starting LV"
 
     ```shell
     lvdisplay
     ```
 
-!!! quote "Resize LV"
+!!! code "Resize LV"
 
     ```shell
     lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
@@ -228,7 +228,7 @@ WIP
 
 ### :open_file_folder: Step 4: Resize Filesystem
 
-!!! quote "Resize Filesystem"
+!!! code "Resize Filesystem"
 
     ```shell
     resize2fs /dev/ubuntu-vg/ubuntu-lv
@@ -242,7 +242,7 @@ WIP
 
 ## :key: [private key /root/.ssh/id_rsa contents do not match][5]
 
-!!! quote "Run on all nodes"
+!!! code "Run on all nodes"
 
     ```shell
     (
@@ -253,7 +253,7 @@ WIP
     )
     ```
 
-!!! quote "Run on all nodes"
+!!! code "Run on all nodes"
 
     ```shell
     pvecm updatecerts
@@ -261,13 +261,13 @@ WIP
 
 ## :material-monitor: [Pass Disk to VM][6]
 
-!!! quote "List the disks by ID"
+!!! code "List the disks by ID"
 
     ```shell
     ls -n /dev/disk/by-id/
     ```
     
-!!! quote "Attach the disk to the VM"
+!!! code "Attach the disk to the VM"
 
     ```
     /sbin/qm set [VM-ID] -virtio2 /dev/disk/by-id/[DISK-ID]
@@ -275,13 +275,13 @@ WIP
 
 ## :material-backup-restore: [Kill Backup Job][7]
 
-!!! quote ""
+!!! code ""
 
     ```shell
     vzdump -stop
     ```
 
-!!! quote ""
+!!! code ""
 
     ```shell
     ps awxf | grep vzdump
@@ -293,13 +293,11 @@ WIP
     2444287 ?        Ds     0:00 task UPID:server_name:00254BFF:06D36C31:63BB7524:vzdump::root@pam:
     ```
 
-!!! quote ""
+!!! code ""
 
     ```shell
     kill -9 <process id>
     ```
-
-
 
 ## :link: References
 
