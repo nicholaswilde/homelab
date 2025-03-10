@@ -12,7 +12,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     ```shell
     apt install reprepro apache2 gpg
@@ -70,7 +70,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ### :package: Repository
 
-!!! quote "Make directories"
+!!! code "Make directories"
     
     ```shell
     (
@@ -79,7 +79,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
      )
      ```
 
-!!! quote "Generate new gpg keys"
+!!! code "Generate new gpg keys"
 
     ```shell
     gpg --full-generate-key
@@ -92,7 +92,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
      sub  2048R/870B8E2D 2014-07-15
     ```
 
-!!! quote "Get short fingerprint"
+!!! code "Get short fingerprint"
 
     ```shell
     gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
@@ -238,7 +238,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ### :desktop_computer: Server
 
-!!! quote "Add deb file to reprepro."
+!!! code "Add deb file to reprepro."
 
     === "Manual"
 
@@ -253,7 +253,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ### :computer: Client
 
-!!! quote "Download gpg key"
+!!! code "Download gpg key"
 
     ```shell
     wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
@@ -290,7 +290,7 @@ The script `sync-check.sh` is used to compare the latest released versions of th
 
 If out of date, the debs are downloaded and added to reprepro.
 
-!!! quote "`homelab/pve/reprepro`"
+!!! code "`homelab/pve/reprepro`"
 
     === "Task"
 
@@ -308,7 +308,7 @@ If out of date, the debs are downloaded and added to reprepro.
 
 A cronjob can be setup to run every night to check the released versions.
 
-!!! quote "2 A.M. nightly"
+!!! code "2 A.M. nightly"
 
     === "Automatic"
     
