@@ -74,13 +74,13 @@ Generally, config files are moved to the repo for backup and then symlinked back
 
 If the config file contains secrets, the file is encrypted and saved in the repo and the unencrypted file is added to `.gitignore`,
 
-### Encrypted File
+### Encrypted Files
 
 Encrypted files will end in `.enc` and are encrypted using SOPS and age.
 
 ### Template Files
 
-Templated files end in `.tmpl` and are meant to be copied.
+Template files end in `.tmpl` and are not used by the app and are meant to be copied.
 
 ## :twisted_rightwards_arrows: Workflow
 
