@@ -96,7 +96,7 @@ Other files are encrypted that have secrets, such as yaml config or sqlite db fi
     === ".env"
     
         ```shell
-        sops -d --input-type dotenv --output-type dotenv .env.enc
+        sops -d --input-type dotenv --output-type dotenv .env.enc > .env
         ```
 
 ## :link: References
