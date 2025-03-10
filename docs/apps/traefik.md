@@ -13,7 +13,7 @@ tags:
 
     :material-console-network: Default Port: `80`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
@@ -58,7 +58,7 @@ tags:
         --8<-- "traefik/traefik.service"
         ```
     
-!!! quote "Enable service"
+!!! code "Enable service"
 
     === "Manual"
     
@@ -86,7 +86,7 @@ tags:
 
 **Create new config for app**
 
-!!! quote "`homelab/pve/traefik/conf.d/`"
+!!! code "`homelab/pve/traefik/conf.d/`"
 
     === "Task"
 
@@ -104,7 +104,7 @@ tags:
 
 **Restart traefik**
 
-!!! quote "`homelab/pve/traefik/conf.d/`"
+!!! code "`homelab/pve/traefik/conf.d/`"
 
     === "Task"
 
@@ -131,7 +131,7 @@ tags:
 
 ## :file_folder: Logs
 
-!!! quote "`/var/log/traefik/traefik.log`"
+!!! code "`/var/log/traefik/traefik.log`"
 
     === "Task"
 
