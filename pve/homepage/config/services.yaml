@@ -1,5 +1,32 @@
 ---
-- NUC-01:
+- Proxmox:
+    - Node 01:
+        icon: mdi-server
+        href: https://pve01.l.nicholaswilde.io
+    - Node 02:
+        icon: mdi-server-network
+        href: https://pve02.l.nicholaswilde.io    
+    - Node 03:
+        icon: mdi-server
+        href: https://pve03.l.nicholaswilde.io
+    - Node 04:
+        icon: mdi-server-network
+        href: https://pve04.l.nicholaswilde.io
+- DNS:
+    - AdGuardHome 01:
+        icon: si-adguard
+        href: http://adguard01.l.nicholaswilde.io/
+    - AdGuardHome 02:
+        icon: si-adguard
+        href: http://adguard02.l.nicholaswilde.io/
+    - AdGuardHome Sync:
+        icon: si-adguard
+        href: https://adguard-sync.l.nicholaswilde.io/
+- Proxies:
+    - Traefik:
+        icon: si-traefikproxy
+        href: https://traefik.l.nicholaswilde.io/    
+- IoT:
     - Home Assistant:
         icon: si-homeassistant
         href: http://ha.l.nicholaswilde.io:8123/
@@ -21,25 +48,43 @@
     - ESPHome:
         icon: si-esphome
         href: https://esphome.l.nicholaswilde.io/
-- ARM64-01:
-    - Proxmox 02:
-        icon: si-proxmox
-        href: https://pve02.l.nicholaswilde.io
-    - Kestra:
-        icon: sh-kestra.svg
-        href: https://kestra.l.nicholaswilde.io
-    - Shlink:
-        icon: sh-shlink.svg
-        href: https://shlink.l.nicholaswilde.io
-    - WatchYourLAN:
-        icon: sh-watchyourlan.png
-        href: https://watch.l.nicholaswilde.io/
-    - Ventoy:
-        icon: https://a.fsdn.com/allura/p/ventoy/icon?83b3cf3559dee8e8a1302821225c2e6076b1e2fded2a1ddc8c229a99eb9efd5a?&w=90
-        href: https://ventoy.l.nicholaswilde.io/
-    - IT-TOOLS:
-        icon: https://github.com/CorentinTh/it-tools/raw/refs/heads/main/public/safari-pinned-tab.svg
-        href: https://it-tools.l.nicholaswilde.io
+- Network & Firewall:
+    - Apt-Cacher NG:
+        icon: mdi-package-variant
+        href: https://aptcache.l.nicholaswilde.io/acng-report.html
+    - UniFi:
+        icon: si-ubiquiti
+        href: https://unifi.l.nicholaswilde.io
+    - Wireguard:
+        icon: si-wireguard
+        href: https://wireguard.l.nicholaswilde.io
+- Media:
+    - Immich:
+        icon: si-immich
+        href: https://photos.l.nicholaswilde.io
+    - Excalidraw:
+        icon: si-excalidraw
+        href: https://draw.l.nicholaswilde.io
+    - Paperless:
+        icon: si-paperlessngx
+        href: https://paperless.l.nicholaswilde.io
+- Authentication & Security:
+    - Authentik:
+        icon: si-authentik
+        href: http://authentik.l.nicholaswilde.io:9000/
+    - Password Generator:
+        icon: mdi-form-textbox-password
+        href: https://passgen.l.nicholaswilde.io/
+    - Vaultwarden:
+        icon: si-bitwarden
+        href: https://vault.l.nicholaswilde.io
+- Monitoring & Analytics:
+    - Beszel:
+        icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg
+        href: https://beszel.l.nicholaswilde.io
+    - Change Detection:
+        icon: sh-changedetection.png
+        href: https://cd.l.nicholaswilde.io/
     - Grafana:
         icon: si-grafana
         href: https://grafana.l.nicholaswilde.io/
@@ -49,88 +94,46 @@
     - InfluxDB:
         icon: si-influxdb
         href: https://influxdb.l.nicholaswilde.io/
-    - Password Generator:
-        icon: mdi-form-textbox-password
-        href: https://passgen.l.nicholaswilde.io/
-    - AdGuard01:
-        icon: si-adguard
-        href: http://adguard01.l.nicholaswilde.io/
-    - adguardhome-sync:
-        icon: si-adguard
-        href: https://adguard-sync.l.nicholaswilde.io/
-    - Traefik:
-        icon: si-traefikproxy
-        href: https://traefik.l.nicholaswilde.io/
-    - netboot.xyz:
-        icon: sh-netboot-xyz-light.png
-        href: https://netboot.l.nicholaswilde.io/
-    - Semaphore:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/semaphore-ui-light.svg
-        href: https://semaphore.l.nicholaswilde.io
-    - Wireguard:
-        icon: si-wireguard
-        href: https://wireguard.l.nicholaswilde.io
-- ARM64-02:
-    - Proxmox 04:
-        icon: si-proxmox
-        href: https://pve04.l.nicholaswilde.io
-    - Beszel:
-        icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg
-        href: https://beszel.l.nicholaswilde.io
-- AMD:
-    - Proxmox 01:
-        icon: si-proxmox
-        href: https://pve01.l.nicholaswilde.io
-    - DeepSeek:
-        icon: sh-deepseek.svg
-        href: https://deepseek.l.nicholaswilde.io
-    - Excalidraw:
-        icon: si-excalidraw
-        href: https://draw.l.nicholaswilde.io
-    - Paperless:
-        icon: si-paperlessngx
-        href: https://paperless.l.nicholaswilde.io
-    - Immich:
-        icon: si-immich
-        href: https://photos.l.nicholaswilde.io
-    - Vaultwarden:
-        icon: si-bitwarden
-        href: https://vault.l.nicholaswilde.io
+    - WatchYourLAN:
+        icon: sh-watchyourlan.png
+        href: https://watch.l.nicholaswilde.io/
+- Files & Downloads:
     - Aria2:
         icon: mdi-download
-        href: https://aria2.l.nicholaswilde.io
+        href: https://aria2.l.nicholaswilde.io    
     - Gitea:
         icon: si-gitea
         href: https://gitea.l.nicholaswilde.io/
     - qBittorrent:
         icon: si-qbittorrent
         href: https://qbittorrent.l.nicholaswilde.io/
-    - Authentik:
-        icon: si-authentik
-        href: http://authentik.l.nicholaswilde.io:9000/
-    - MySpeed:
-        icon: si-speedtest
-        href: https://myspeed.l.nicholaswilde.io
-    - Change Detection:
-        icon: sh-changedetection.png
-        href: https://cd.l.nicholaswilde.io/
-    - Apt-Cacher NG:
-        icon: mdi-package-variant
-        href: https://aptcache.l.nicholaswilde.io/acng-report.html
     - OpenMediaVault:
         icon: si-openmediavault
         href: http://omv.l.nicholaswilde.io
-- Other:
-    - UniFi:
-        icon: si-ubiquiti
-        href: https://unifi.l.nicholaswilde.io
-    - AdGuard02:
-        icon: si-adguard
-        href: http://adguard02.l.nicholaswilde.io/
-- Laptop:
-    - Proxmox 03:
-        icon: si-proxmox
-        href: https://pve03.l.nicholaswilde.io
-    - Proxmox Backup:
-        icon: si-proxmox
-        href: https://pbs.nicholaswilde.io:8007/
+- ARM64-01:
+    - Kestra:
+        icon: sh-kestra.svg
+        href: https://kestra.l.nicholaswilde.io
+    - Shlink:
+        icon: sh-shlink.svg
+        href: https://shlink.l.nicholaswilde.io
+    - Ventoy:
+        icon: https://a.fsdn.com/allura/p/ventoy/icon?83b3cf3559dee8e8a1302821225c2e6076b1e2fded2a1ddc8c229a99eb9efd5a?&w=90
+        href: https://ventoy.l.nicholaswilde.io/
+    - IT-TOOLS:
+        icon: https://github.com/CorentinTh/it-tools/raw/refs/heads/main/public/safari-pinned-tab.svg
+        href: https://it-tools.l.nicholaswilde.io
+    - netboot.xyz:
+        icon: sh-netboot-xyz-light.png
+        href: https://netboot.l.nicholaswilde.io/
+    - Semaphore:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/semaphore-ui-light.svg
+        href: https://semaphore.l.nicholaswilde.io
+- AMD:
+    - DeepSeek:
+        icon: sh-deepseek.svg
+        href: https://deepseek.l.nicholaswilde.io
+    - MySpeed:
+        icon: si-speedtest
+        href: https://myspeed.l.nicholaswilde.io
+# - Other:

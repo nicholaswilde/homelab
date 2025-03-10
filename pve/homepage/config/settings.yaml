@@ -7,10 +7,42 @@ providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
 layout:
-  NUC-01:
+  Proxmox:
+    style: row
+    columns: 4
+    icon: si-proxmox
+  DNS:
     style: row
     columns: 3
-    icon: mdi-desktop-classic
+    icon: mdi-dns
+  Proxies:
+    style: row
+    columns: 3
+    icon: mdi-web
+  IoT:
+    style: row
+    columns: 3
+    icon: mdi-home-automation
+  Network & Firewall:
+    style: row
+    columns: 3
+    icon: mdi-wall-fire
+  Media:
+    style: row
+    columns: 3
+    icon: mdi-camera-iris
+  Authentication & Security:
+    style: row
+    columns: 3
+    icon: mdi-shield-key
+  Monitoring & Analytics:
+    style: row
+    columns: 3
+    icon: mdi-chart-line
+  Files & Downloads:
+    style: row
+    columns: 3
+    icon: mdi-download-box
   AMD:
     style: row
     columns: 3
@@ -23,14 +55,10 @@ layout:
     style: row
     columns: 3
     icon: si-raspberrypi
-  Other:
-    style: row
-    columns: 3
-    icon: mdi-folder-multiple
-  Laptop:
-    style: row
-    columns: 3
-    icon: mdi-laptop
+  # Other:
+    # style: row
+    # columns: 3
+    # icon: mdi-folder-multiple
   Developer:
     style: row
     columns: 3
