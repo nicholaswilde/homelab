@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    modem:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`modem.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: modem
+#endregion
+#region services
+  services:
+    modem:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.100.1"
+        passHostHeader: true
+#endregion
