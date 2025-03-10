@@ -78,11 +78,17 @@ If the config file contains secrets, the file is encrypted and saved in the repo
 
 Encrypted files will end in `.enc` and are encrypted using SOPS and age.
 
+??? example
+
+    ```shell
+    sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+    ```
+
 ### :material-content-copy: Template Files
 
 Template files end in `.tmpl` and are not used by the app and are meant to be copied.
 
-!!! example
+??? example
 
     ```shell
     cp .env.tmpl .env
