@@ -66,9 +66,13 @@ If the tool is only available to download as a binary file, I'll use my [`instal
 
 ## :gear: Config
 
+## :floppy_disk: Backups
+
+The original files are copied into the original config location with a `.bak` extension before making any changes to them.
+
 ### :link: Symlinks
 
-Generally, config files are moved to the repo for backup and then symlinked back to the original location.
+Generally, config files are moved to the repo for remote backup and then symlinked back to the original location.
 
 ??? example
 
