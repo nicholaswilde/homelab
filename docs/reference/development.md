@@ -78,9 +78,15 @@ If the config file contains secrets, the file is encrypted and saved in the repo
 
 Encrypted files will end in `.enc` and are encrypted using SOPS and age.
 
-### Template Files
+### :material-content-copy: Template Files
 
 Template files end in `.tmpl` and are not used by the app and are meant to be copied.
+
+!!! example
+
+    ```shell
+    cp .env.tmpl .env
+    ```
 
 ## :twisted_rightwards_arrows: Workflow
 
