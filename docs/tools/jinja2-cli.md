@@ -9,7 +9,7 @@ files.
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "pipx"
 
