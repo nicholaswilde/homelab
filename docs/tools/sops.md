@@ -14,7 +14,7 @@ Other files are encrypted that have secrets, such as yaml config or sqlite db fi
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "reprepro"
 
@@ -69,7 +69,7 @@ Other files are encrypted that have secrets, such as yaml config or sqlite db fi
 
 ### :lock: Encrypt
 
-!!! quote ""
+!!! code ""
 
     === "task"
 
@@ -85,7 +85,7 @@ Other files are encrypted that have secrets, such as yaml config or sqlite db fi
 
 ### :closed_lock_with_key: Decrypt
 
-!!! quote ""
+!!! code ""
 
     === "task"
 
