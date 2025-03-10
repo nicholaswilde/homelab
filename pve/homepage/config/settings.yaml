@@ -13,52 +13,40 @@ layout:
     icon: si-proxmox
   DNS:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-dns
-  Proxies:
-    style: row
-    columns: 3
-    icon: mdi-web
-  IoT:
-    style: row
-    columns: 3
-    icon: mdi-home-automation
-  Network & Firewall:
+  Networking:
     style: row
     columns: 3
     icon: mdi-wall-fire
+  Automation:
+    style: row
+    columns: 2
+    icon: mdi-robot
   Media:
     style: row
     columns: 3
     icon: mdi-camera-iris
+  Development Tools:
+    style: row
+    columns: 3
+    icon: mdi-robot
+  Files & Downloads:
+    style: row
+    columns: 3
+    icon: mdi-download-box
+  IoT:
+    style: row
+    columns: 3
+    icon: mdi-home-automation
   Authentication & Security:
     style: row
     columns: 3
     icon: mdi-shield-key
   Monitoring & Analytics:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-chart-line
-  Files & Downloads:
-    style: row
-    columns: 3
-    icon: mdi-download-box
-  AMD:
-    style: row
-    columns: 3
-    icon: mdi-laptop
-  ARM64-01:
-    style: row
-    columns: 3
-    icon: si-raspberrypi
-  ARM64-02:
-    style: row
-    columns: 3
-    icon: si-raspberrypi
-  # Other:
-    # style: row
-    # columns: 3
-    # icon: mdi-folder-multiple
   Developer:
     style: row
     columns: 3
