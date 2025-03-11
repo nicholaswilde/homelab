@@ -4,7 +4,7 @@ tags:
 ---
 # :pencil: .env Files
 
-`.env` files are used to store variables and secrets. There are used whenver possible.
+[`.env`][2] files are used to store variables and secrets. There are used whenver possible.
 
 !!! note
 
@@ -68,4 +68,7 @@ If secrets are kept in the `.env` file, the file is encrypted using [SOPS][1] an
     
 ## :link: References
 
+- <https://www.dotenv.org/docs/security/env>
+
 [1]: <./sops.md>
+[2]: <https://www.dotenv.org/docs/security/env>
