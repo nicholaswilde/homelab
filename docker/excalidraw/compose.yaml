@@ -1,8 +1,7 @@
 ---
-
 services:
   excalidraw:
-    container_name: excalidraw
+    container_name: ${CONTAINER_NAME}
     image: excalidraw/excalidraw:latest
     env_file:
       - .env

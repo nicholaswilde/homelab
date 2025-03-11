@@ -5,49 +5,60 @@ dotenv:
   - .env
 
 tasks:
-  export:
-    desc: Export the task list
+  status:
+    desc: Docker container status
     cmds:
-      - task --list > task-list.txt
+      - docker compose ps
+  watch:
+    desc: Watch Docker container logs
+    cmds:
+      - docker compose logs -f
+  pull:
+    desc: Pull docker images
+    cmds:
+      - docker compose pull
+  status:
+    desc: Docker container status
+    cmds:
+      - docker container ps
   init:
-    desc: Init
+    desc: Init .env file
     cmds:
       - cp .env.tmpl .env
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:
-     - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
-
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   encrypt:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-
   update:
     desc: Update running containers
     cmds:
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f
   up:
-    desc: Tun Docker compose in the foreground.
+    desc: Run Docker compose in the foreground.
     cmds:
       - docker compose up
-
   up-d:
     desc: Run Docker compose in the background.
     cmds:
       - docker compose up -d --remove-orphans
-
   restart:
     desc: Restart Docker containers
     cmds:
-      - "docker compose restart"
-
+      - docker compose restart
   upgrade:
-    desc: upgrade
+    desc: Upgrade Docker containers
     cmds:
       - git pull origin
       - task: update
+  stop:
+    desc: Stop Docker containers
+    cmds:
+      - docker compose stop
   default:
     cmds:
       - task -l

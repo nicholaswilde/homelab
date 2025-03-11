@@ -2,7 +2,7 @@
 version: '3'
 
 vars:
-  IMAGE: squidfunk/mkdocs-material
+  IMAGE: nicholaswilde/mkdocs-material
   PORT: 8000
 
 # includes:

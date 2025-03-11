@@ -2,7 +2,7 @@
 
 services:
   it-tools:
-    container_name: it-tools
+    container_name: ${CONTAINER_NAME}
     image: ghcr.io/corentinth/it-tools:2024.10.22-7ca5933
     env_file:
       - .env
