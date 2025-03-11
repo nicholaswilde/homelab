@@ -80,6 +80,10 @@
     - Vaultwarden:
         icon: si-bitwarden
         href: https://vault.l.nicholaswilde.io
+- Finance:
+    - Wallos:
+        icon: sh-wallos.png
+        href: https://wallos.l.nicholaswilde.io
 - Monitoring & Analytics:
     - Beszel:
         icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg

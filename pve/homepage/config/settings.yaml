@@ -43,6 +43,10 @@ layout:
     style: row
     columns: 3
     icon: mdi-shield-key
+  Finance:
+    style: row
+    columns: 3
+    icon: mdi-currency-usd
   Monitoring & Analytics:
     style: row
     columns: 4
