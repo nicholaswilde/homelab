@@ -53,7 +53,11 @@ tags:
 !!! code
 
     ```shell
-    
+    (
+      [ -d ~/.config/micro/colorschemes ] || mkdir -p ~/.config/micro/colorschemes
+      wget -O ~/.config/micro/colorschemes/
+      wget -O ~/.config/micro/colorschemes/
+    )
     ```
 
 ## :link: References
