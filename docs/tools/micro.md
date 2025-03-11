@@ -43,7 +43,17 @@ tags:
         set tabsize 2
         set tabtospaces "true"
         ```
+### [Catppuccin][2]
+
+WIP
+
+!!! code
+
+    ```shell
+    
+    ```
 
 ## :link: References
 
 [1]: <https://micro-editor.github.io/>
+[2]: <https://github.com/catppuccin/micro>
