@@ -67,6 +67,7 @@ nav:
       - Task: tools/task.md
   - Reference:
       - Development: reference/development.md
+      - Emoji: reference/emoji.md
       - Tags: reference/tags.md
 
 extra_css:
