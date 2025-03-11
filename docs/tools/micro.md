@@ -43,7 +43,7 @@ tags:
         set tabsize 2
         set tabtospaces "true"
         ```
-### [Catppuccin][2]
+### ![catppuuccin](https://raw.githubusercontent.com/catppuccin/website/refs/heads/main/public/favicon.png){ width="24" } [Catppuccin][2]
 
 WIP
 
