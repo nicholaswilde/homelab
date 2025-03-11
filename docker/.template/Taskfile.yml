@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  pull:
+    desc: Pull docker images
+    cmds:
+      - docker compose pull
   status:
     desc: Status
     cmds:
