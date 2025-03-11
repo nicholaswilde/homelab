@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    wallos:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`wallos.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: wallos
+#endregion
+#region services
+  services:
+    wallos:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.95"
+        passHostHeader: true
+#endregion
