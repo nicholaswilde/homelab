@@ -45,7 +45,9 @@ tags:
         ```
 ### ![catppuuccin](https://raw.githubusercontent.com/catppuccin/website/refs/heads/main/public/favicon.png){ width="24" } [Catppuccin][2]
 
-WIP
+1. Copy your preferred flavor(s) from `src/| to `~/.config/micro/colorschemes`.
+2. Add export `"MICRO_TRUECOLOR=1"` to your shell RC file (`bashrc`, `zshrc`, `config.fish`, etc).
+3. Open Micro, press `Ctrl+e`, type set `colorscheme catppuccin-<flavor>` (where <flavor> is one of latte, `frappe`, `macchiato`, or `mocha`), and press `Enter`.
 
 !!! code
 
