@@ -11,7 +11,7 @@ tags:
     
     :material-information-outline: Configuration path: `/etc/boinc-client/`
     
-!!! quote ""
+!!! code ""
 
     ```shell
     (
@@ -30,7 +30,7 @@ tags:
 
 Get key from [here][1].
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (

@@ -7,7 +7,7 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (
@@ -19,7 +19,7 @@ tags:
 
 ## :gear: Config
 
-!!! quote "Get rpcuser and rpcpassword"
+!!! code "Get rpcuser and rpcpassword"
 
     ```shell
     gridcoinresearchd
@@ -66,7 +66,7 @@ tags:
         WantedBy=multi-user.target
         ```
         
-!!! quote "Enable service"
+!!! code "Enable service"
 
     ```shell
     (
@@ -78,13 +78,13 @@ tags:
 
 ## :pencil: Usage
 
-!!! quote ""
+!!! code ""
 
     ```shell
     gridcoinresearchd getmininginfo
     ```
 
-!!! quote "Get current block count"
+!!! code "Get current block count"
 
     ```shell
     gridcoinresearchd getblockcount
@@ -92,13 +92,13 @@ tags:
 
 Compare to [current block count][1].
 
-!!! quote "Get wallet address"
+!!! code "Get wallet address"
 
     ```shell
     gridcoinresearchd getnewaddress
     ```
 
-!!! quote "Check wallet balance"
+!!! code "Check wallet balance"
 
     ```shell
     gridcoinresearchd listaddressgroupings

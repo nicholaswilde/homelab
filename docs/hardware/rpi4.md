@@ -5,12 +5,11 @@ tags:
   - arm64
 ---
 # :simple-raspberrypi: Raspberry Pi 4 8GB
-
 I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 ### :clipboard: TL;DR
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (
@@ -42,7 +41,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 ### :material-usb-flash-drive: [Raspberry Pi 4 boot from usb][6]
 
-!!! quote ""
+!!! code ""
 
     ```shell
     sudo raspi-config
@@ -103,7 +102,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
     17:3020000a=USB boot enabled
     ```
 
-!!! quote ""
+!!! code ""
 
     ```shell
     sudo raspi-config
@@ -115,31 +114,31 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 ### Setup [Raspberry Pi OS][3].
 
-!!! quote "Create a tmp dir"
+!!! code "Create a tmp dir"
 
     ```shell
     cd "$(mktemp -d)"
     ```
 
-!!! quote "Download image"
+!!! code "Download image"
 
     ```shell
     wget https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz -O 2024-11-19-raspios-bookworm-arm64-lite.img.xz
     ```
 
-!!! quote "Extract image"
+!!! code "Extract image"
 
     ```shell
     xz -d 2024-11-19-raspios-bookworm-arm64-lite.img.xz
     ```
 
-!!! quote "Write image to SD card"
+!!! code "Write image to SD card"
 
     ```shell
     dd if=2024-11-19-raspios-bookworm-arm64-lite.img /dev/mmcblk0 status=progress
     ```
 
-!!! quote "Mount boot partition"
+!!! code "Mount boot partition"
 
     ```shell
     (
@@ -148,7 +147,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
     )
     ```
 
-!!! quote "Change to boot partition"
+!!! code "Change to boot partition"
 
     ```shell
     cd /media/sd
@@ -218,13 +217,13 @@ Unmount SD card, plug into the Raspberry Pi and boot
 
 Log into the Raspberry Pi using SSH.
 
-!!! quote "Switch to `root` user. Default password is blank for Raspberry Pi OS.""
+!!! code "Switch to `root` user. Default password is blank for Raspberry Pi OS.""
 
     ```shell
     sudo su root
     ```
 
-!!! quote "Set root password so that you can log into Proxmox web GUI"
+!!! code "Set root password so that you can log into Proxmox web GUI"
 
     ```shell
     passwd
@@ -244,7 +243,7 @@ Make sure that you have configured one of the following addresses in `/etc/hosts
 
     This also means removing the address `127.0.1.1` that might be present as default.
 
-!!! quote "Get IP address"
+!!! code "Get IP address"
 
     ```shell
     hostname -I | awk '{print $1}'
@@ -264,7 +263,7 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
     192.168.1.192   pve02.nicholaswilde.io pve02
     ```
 
-!!! quote "Test if your setup is ok using the hostname command"
+!!! code "Test if your setup is ok using the hostname command"
 
     ```shell
     hostname --ip-address
@@ -294,19 +293,19 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
         https://mirrors.apqa.cn/proxmox/debian/pve bookworm port
         ```
 
-!!! quote "Add the Proxmox VE repository key"
+!!! code "Add the Proxmox VE repository key"
 
     ```shell
     curl -L https://mirrors.apqa.cn/proxmox/debian/pveport.gpg -o /etc/apt/trusted.gpg.d/pveport.gpg 
     ```
 
-!!! quote "Update repository and system"
+!!! code "Update repository and system"
 
     ```shell
     apt update && apt full-upgrade
     ```
 
-!!! quote "Install `ifupdown2` and Proxmox VE packages"
+!!! code "Install `ifupdown2` and Proxmox VE packages"
 
     ```shell
     apt install ifupdown2 proxmox-ve postfix open-iscsi
@@ -355,7 +354,7 @@ Where `eth0` is the current existing network interface
 
 ## [Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Version' value from '' to '10.0' Error][5]
 
-!!! quote ""
+!!! code ""
 
   ``` shell
   apt --allow-releaseinfo-change update
@@ -363,7 +362,7 @@ Where `eth0` is the current existing network interface
 
 ### :material-script-text: [Proxmox VE Helper-Scripts][4]
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (

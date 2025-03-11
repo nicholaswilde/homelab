@@ -19,7 +19,7 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
 
     :material-information-outline: Configuration path: `/opt/AdGuardHome`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 

@@ -55,7 +55,7 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
 ### :detective: Enable auto detection PCIe and booting from NVMe
 
-!!! quote ""
+!!! code ""
 
     === "root"
 
@@ -83,7 +83,7 @@ The 6 means to enable booting from nvme. Reboot Raspberry Pi 5 and try to use `l
 
 If `apt` is slow, it might be due to the pi reducing the power input.
 
-!!! quote ""
+!!! code ""
 
     === "root"
     
@@ -115,7 +115,7 @@ See [Raspberry Pi 4 8GB][4].
     free -h
     ```
 
-!!! quote ""
+!!! code ""
 
     ```shell
     dphys-swapfile swapoff
@@ -127,7 +127,7 @@ See [Raspberry Pi 4 8GB][4].
     CONF_SWAPSIZE=2048
     ```
 
-!!! quote ""
+!!! code ""
 
     ```shell
     dphys-swapfile setup

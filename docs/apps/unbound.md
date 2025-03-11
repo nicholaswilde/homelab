@@ -15,7 +15,7 @@ tags:
     
     :material-information-outline: Configuration path: `/etc/unbound/unbound.conf.d/unbound.conf`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 

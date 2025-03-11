@@ -16,7 +16,7 @@ over my network.
 
     :material-console-network: Default Port: `3000`
 
-!!! quote "`homelab/docker/netbootxyz`"
+!!! code "`homelab/docker/netbootxyz`"
 
     === "Task"
     

@@ -14,7 +14,7 @@ tags:
 
     :material-console-network: Default Port: `5000`
 
-!!! quote "`homelab/docker/excalidraw`"
+!!! code "`homelab/docker/excalidraw`"
 
     === "Task"
     

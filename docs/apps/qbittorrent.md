@@ -17,7 +17,7 @@ tags:
 
     :material-key: Password: `changeme`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 

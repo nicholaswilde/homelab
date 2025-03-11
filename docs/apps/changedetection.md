@@ -13,7 +13,7 @@ tags:
 
     :material-console-network: Default Port: `5000`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
@@ -29,7 +29,7 @@ tags:
 
 ## :gear: Config
 
-!!! quote ""
+!!! code ""
 
     ```shell
     apt install apprise
@@ -57,7 +57,7 @@ tags:
 
 ## :rocket: Upgrade
 
-!!! quote ""
+!!! code ""
 
     ```shell
     (

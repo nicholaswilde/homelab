@@ -11,7 +11,7 @@ tags:
 
     :material-console-network: Default Port: `8086`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 

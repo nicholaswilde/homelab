@@ -9,7 +9,7 @@ files.
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "pipx"
 
@@ -22,7 +22,7 @@ files.
 !!! example
 
     ```shell
-    jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > new-app.md
+    jinja2 .template.md.j2 -D APP_NAME="New App" -D APP_PORT=8080 -D CONFIG_PATH=/opt/new-app > new-app.md
     ```
 
 ## :link: References

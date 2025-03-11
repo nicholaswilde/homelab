@@ -17,7 +17,7 @@ Immich photos is an open source alternative to Google Photos.
 
     :material-console-network: Default Port: `2283`
 
-!!! quote "`homelab/docker/immich`"
+!!! code "`homelab/docker/immich`"
 
     === "Task"
     
@@ -59,7 +59,7 @@ Immich photos is an open source alternative to Google Photos.
 
     The below commands purge any unused Docker images! Use at your own risk!
 
-!!! quote "`homelab/docker/immich`"
+!!! code "`homelab/docker/immich`"
 
     === "Task"
 

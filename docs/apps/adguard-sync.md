@@ -17,7 +17,7 @@ It is installed only on the primary instance and is scheduled to run once a day,
     
     :material-information-outline: Configuration path: `/opt/adguardhome-sync`
 
-!!! quote "Install or Update"
+!!! code "Install or Update"
 
     === "installer"
     
@@ -69,7 +69,7 @@ It is installed only on the primary instance and is scheduled to run once a day,
         WantedBy = multi-user.target
         ```
 
-!!! quote "Enable service"
+!!! code "Enable service"
 
     ```shell
     (

@@ -15,7 +15,7 @@ tags:
     
     :material-information-outline: Configuration path: `/etc/apt-cacher-ng`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
@@ -50,7 +50,7 @@ tags:
         CacheDir: /mnt/storage/aptcache
         ```
 
-!!! quote "/mnt/storage/aptcache"
+!!! code "/mnt/storage/aptcache"
 
     ```shell
     (

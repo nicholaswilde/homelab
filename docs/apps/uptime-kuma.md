@@ -11,7 +11,7 @@ tags:
 
     :material-console-network: Default Port: `3001`
 
-!!! quote "`compose.yaml`"
+!!! code "`compose.yaml`"
 
     === "Task"
     

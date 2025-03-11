@@ -11,7 +11,7 @@ tags:
 
     :material-console-network: Default Port: `9090`
 
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 

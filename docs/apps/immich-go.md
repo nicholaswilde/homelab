@@ -10,7 +10,7 @@ server.
 
 ## :hammer_and_wrench: Installation
 
-!!! quote ""
+!!! code ""
 
     === "installer"
     
@@ -31,7 +31,7 @@ server.
 
 ## :pencil: Usage
 
-!!! quote ""
+!!! code ""
 
     ```shell
     immich-go upload from-google-photos takeout-20250216T024307Z-005.zip -k ${API_KEY} -s ${IMMICH_SERVER}

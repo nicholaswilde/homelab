@@ -14,7 +14,7 @@ tags:
 
     :material-console-network: Default Port: `8025`
 
-!!! quote "`homelab/docker/mailrise`"
+!!! code "`homelab/docker/mailrise`"
 
     === "Task"
     

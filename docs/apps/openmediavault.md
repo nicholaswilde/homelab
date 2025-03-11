@@ -11,7 +11,7 @@ tags:
 
 - [Download][2] ISO into Proxmox
 
-!!! quote "pve"
+!!! code "pve"
 
     ```shell
     (
@@ -50,7 +50,7 @@ tags:
 
     Memory (MiB): `4096`
 
-!!! quote "Look for disk"
+!!! code "Look for disk"
 
     ```shell
     lsblk
@@ -84,7 +84,7 @@ Top right person icon -> Change Password
 
 Mounted after reinstall and not before.
 
-!!! quote "Remount"
+!!! code "Remount"
 
     ```shell
     omv-firstaid
@@ -116,7 +116,7 @@ Mounted after reinstall and not before.
 
 ### :material-laptop: Client
 
-!!! quote "Installation"
+!!! code "Installation"
 
     ```shell
     apt install autofs
@@ -157,7 +157,7 @@ Mounted after reinstall and not before.
     showmount -e 192.168.2.19
     ```
 
-!!! quote "Mount"
+!!! code "Mount"
 
     ```shell
     (

@@ -15,7 +15,7 @@ tags:
 
     :material-console-network: Agent Port: `45876`
 
-!!! quote ""
+!!! code ""
 
     === "hub"
 
@@ -47,7 +47,7 @@ WIP
 
 ## :rocket: Upgrade
 
-!!! quote ""
+!!! code ""
 
     ```shell
     ./beszel update

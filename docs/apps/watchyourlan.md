@@ -16,7 +16,7 @@ tags:
 
     :material-information-outline: Configuration path: `/etc/watchyourlan`
     
-!!! quote ""
+!!! code ""
 
     === "AMD64"
 
@@ -62,7 +62,7 @@ tags:
 
 !!! abstract "/etc/watchyourlan/scan.db"
 
-    !!! quote "Decrypt"
+    !!! code "Decrypt"
 
         === "Task"
 
@@ -76,7 +76,7 @@ tags:
             sops -d scan.db.enc > scan.db
             ```
 
-    !!! quote "Encrypt"
+    !!! code "Encrypt"
 
         === "Task"
     
@@ -90,7 +90,7 @@ tags:
             sops -e scan.db > scan.db.enc
             ```
 
-    !!! quote "Symbolic Link"
+    !!! code "Symbolic Link"
 
         ```shell
         ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/scan.db /etc/watchyourlan/scan.db
