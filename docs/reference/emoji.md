@@ -6,6 +6,8 @@ tags:
 
 Emoji that are used on this site.
 
+\:gear\: :gear: Config
+
 ## :link: Reference
 
 - <https://emojipedia.org/>
