@@ -6,8 +6,11 @@ tags:
 
 Emoji that are used on this site.
 
-- \:gear\: :gear: Config
-- \:hammer_and_wrench\: :hammer_and_wrench: Installation
+| Short code | Heading       |
+|------------|---------------|
+| `\:gear\:`   | :gear: Config |
+| `\:hammer_and_wrench\:` | :hammer_and_wrench: Installation |
+| `\:pencil\:` | :pencil: Usage |
 
 ## :link: Reference
 
