@@ -84,6 +84,9 @@
     - Wallos:
         icon: sh-wallos.png
         href: https://wallos.l.nicholaswilde.io
+    - Mealie:
+        icon: si-mealie
+        href: https://mealie.l.nicholaswilde.io
 - Monitoring & Analytics:
     - Beszel:
         icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg

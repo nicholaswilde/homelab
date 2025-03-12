@@ -1,0 +1,22 @@
+--- 
+http: 
+ #region routers 
+  routers: 
+    mealie: 
+      entryPoints: 
+        - "websecure" 
+      rule: "Host(`mealie.l.nicholaswilde.io`)" 
+      middlewares: 
+        - default-headers@file 
+        - https-redirectscheme@file 
+      tls: {} 
+      service: mealie 
+#endregion 
+#region services 
+  services: 
+    mealie: 
+      loadBalancer: 
+        servers: 
+          - url: "http://192.168.2.97:9925" 
+        passHostHeader: true 
+#endregion 
