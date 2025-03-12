@@ -4,8 +4,10 @@ services:
     image: ghcr.io/mealie-recipes/mealie:v2.7.1
     container_name: ${CONTAINER_NAME}
     restart: always
+    env_file:
+      - .env
     ports:
-        - "9925:9000"
+      - "9925:9000"
     deploy:
       resources:
         limits:
@@ -19,6 +21,11 @@ services:
       PGID: 0
       TZ: America/Los_Angeles
       BASE_URL: https://mealie.l.nicholaswilde.io
-
+      OIDC_AUTH_ENABLED: true
+      OIDC_SIGNUP_ENABLED: true
+      OIDC_CONFIGURATION_URL: http://authentik.l.nicholaswilde.io:9000/application/o/mealie/.well-known/openid-configuration
+      SMTP_HOST: "smtp.gmail.com"
+      SMTP_PORT: 465
+      SMTP_AUTH_STRATEGY: "SSL"
 volumes:
   mealie-data:
