@@ -8,12 +8,12 @@ Emoji that are used on this site.
 
 | Short code | Heading       |
 |------------|---------------|
-| `:gear:`   | :gear: Config |
-| `:hammer_and_wrench:` | :hammer_and_wrench: Installation |
-| `:pencil:` | :pencil: Usage |
-| `:simple-task:` | :simple-task: Task List |
+| `## :gear: Config`   | :gear: Config |
+| `## :hammer_and_wrench: Installation` | :hammer_and_wrench: Installation |
+| `## :pencil: Usage` | :pencil: Usage |
+| `## :simple-task: Task` | :simple-task: Task List |
 | `## :simple-traefikproxy: Traefik` | :simple-traefikproxy: Traefik |
-| `:link:` | :link: Reference |
+| `## :link: Reference` | :link: Reference |
 
 ## :link: Reference
 
