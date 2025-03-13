@@ -13,6 +13,7 @@ Emoji that are used on this site.
 | `## :pencil: Usage` | :pencil: Usage |
 | `## :simple-task: Task` | :simple-task: Task List |
 | `## :simple-traefikproxy: Traefik` | :simple-traefikproxy: Traefik |
+| `## :rocket: Upgrade` | ## :rocket: Upgrade |
 | `## :link: Reference` | :link: Reference |
 
 ## :link: Reference
