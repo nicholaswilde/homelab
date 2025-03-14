@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-    #   - /home:/srv #Change to match your directory
+      - /mnt/storage:/srv
       - ${PWD}/filebrowser.db:/database.db"
       - ${PWD}/settings.json:/.filebrowser.json
     environment:
@@ -14,3 +14,4 @@ services:
       - PGID=$(id -g)
     ports:
       - 8095:80
+    restart: always
