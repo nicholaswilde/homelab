@@ -4,16 +4,16 @@ version: '3'
 env:
   APP_NAME: '{{ .APP_NAME }}'
   USER_NAME: '{{ .USER_NAME | default "username" }}'
-  APP_NAME_LOWER: '{{ .APP_NAME | lower }}'
+  APP_NAME_LOWER: '{{ .APP_NAME | lower | replace " " ""}}'
 
 tasks:
   new:
     desc: Create a new docker app
     cmds:
       - mkdir {{ .APP_NAME_LOWER }}
-      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
-      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/.env.tmpl.j2 > ./{{ .APP_NAME_LOWER }}/.env.tmpl
-      - jinja2 -D APP_NAME={{ .APP_NAME}} -D USER_NAME={{ .USER_NAME }} ./.template/compose.yaml.j2 > ./{{ .APP_NAME_LOWER }}/compose.yaml
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME}} ./.template/.env.tmpl.j2 > ./{{ .APP_NAME_LOWER }}/.env.tmpl
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME}} -D USER_NAME={{ shellQuote .USER_NAME }} ./.template/compose.yaml.j2 > ./{{ .APP_NAME_LOWER }}/compose.yaml
       - cp .template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/
   update-d:
     # desc: Update running containers

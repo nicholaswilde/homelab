@@ -25,6 +25,7 @@ nav:
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
       - Excalidraw: apps/excalidraw.md
+      - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
       - Gridcoin: apps/gridcoin.md
       - Home Assistant OS: apps/home-assistant-os.md
