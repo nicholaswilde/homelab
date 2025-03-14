@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    filebrowser:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`fb.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: filebrowser
+#endregion
+#region services
+  services:
+    filebrowser:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.98:8095"
+        passHostHeader: true
+#endregion
