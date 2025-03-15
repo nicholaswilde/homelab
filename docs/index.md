@@ -33,8 +33,6 @@ I also have a Raspberry Pi Zero W running an NTP server.
     Features or applications that I come across on the Internet and have not yet been incorporated into my homelab are tracked
     in the [repository issues][8].
 
-
-
 ## :hammer_and_wrench: Setup & Maintenance
 
 My homelab is setup and maintained using [Ansible][5] and [Semaphore UI][9], which is documented [here][6].
@@ -43,13 +41,17 @@ My homelab is setup and maintained using [Ansible][5] and [Semaphore UI][9], whi
 
 Check out the [Development](./reference/development.md) page.
 
-## ​:scales: License
+## :scales: License
 
 ​[​Apache License 2.0](./LICENSE)
 
-## ​:pencil:​Author
+## :pencil:​Author
 
 ​This project was started in 2024 by [​Nicholas Wilde​][1].
+
+## :link: References
+
+- <https://docs.techdox.nz/>
 
 [1]: <https://github.com/nicholaswilde/>
 [2]: <https://github.com/tteck>
