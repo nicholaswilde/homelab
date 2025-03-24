@@ -24,6 +24,7 @@ nav:
       - Beszel: apps/beszel.md
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
+      - cheat.sh: apps/cheatsh.md
       - Excalidraw: apps/excalidraw.md
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
