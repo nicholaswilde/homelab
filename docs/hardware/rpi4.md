@@ -375,6 +375,45 @@ Where `eth0` is the current existing network interface
 
 See [Raspberry Pi 5 16GB][8].
 
+## :material-fan: [Argon Fan Hat][9]
+
+!!! code "Install"
+
+    ```shell
+    curl https://download.argon40.com/argonfanhat.sh | bash
+    ```
+!!! code "Uninstall"
+
+    ```shell
+    argonone-uninstall
+    ```
+
+!!! code "Config"
+
+    ```shell
+    argonone-config
+    ```
+
+### :gear: Config
+
+1. Without the `ARGON FAN HAT` script the FAN will run constantly at 50% `FAN SPEED`
+2. Upon installation of the script, `DEFAULT SETTINGS` of the `ARGON FAN HAT` are as follows:
+
+| CPU TEMP | FAN SPEED / POWER |
+|:-----:|:------------------------:|
+| 55°C | 10 % |
+| 60°C | 55 % |
+| 65°C | 100 % |
+
+### :electric_plug: Power Buttons
+
+| ARGON FAN HAT | ACTION | FUNCTION |
+|:-------------:|:------:|:--------:|
+| OFF (FROM SOFT SHUTDOWN) | Short Press | Turn ON |
+| ON | Short Press | Nothing |
+| ON | Long Press (> 3 Secs) | Initiate Soft Shutdown (NO POWER CUT) |
+| ON | Double Tap | Reboot |
+
 ## :link: References
 
 - <https://github.com/jiangcuo/Proxmox-Port/wiki/Install-Proxmox-VE-on-Debian-bookworm>
@@ -388,3 +427,4 @@ See [Raspberry Pi 5 16GB][8].
 [6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>>
 [7]: <https://mirrors.apqa.cn/proxmox/isos/>
 [8]: <./rpi5.md>
+[9]: <https://cdn.shopify.com/s/files/1/0556/1660/2177/files/Argon_Fan_Hat.pdf>
