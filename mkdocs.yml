@@ -24,6 +24,7 @@ nav:
       - Beszel: apps/beszel.md
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
+      - DeepSeek: apps/deepseek.md
       - Excalidraw: apps/excalidraw.md
       - Gitea: apps/gitea.md
       - Gridcoin: apps/gridcoin.md
