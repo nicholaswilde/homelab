@@ -16,3 +16,6 @@ scan.db
 semaphore_db.bolt
 
 **/gitea/app.ini
+
+filebrowser.db
+**/filebrowser/settings.json

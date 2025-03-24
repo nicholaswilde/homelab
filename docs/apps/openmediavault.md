@@ -166,6 +166,13 @@ Mounted after reinstall and not before.
     )
     ```
 
+## :rocket: Upgrade
+
+!!! code
+
+    ```shell
+    omv-upgrade
+    ```
 
 ## :link: References
 

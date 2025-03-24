@@ -24,8 +24,10 @@ nav:
       - Beszel: apps/beszel.md
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
+      - cheat.sh: apps/cheatsh.md
       - DeepSeek: apps/deepseek.md
       - Excalidraw: apps/excalidraw.md
+      - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
       - Gridcoin: apps/gridcoin.md
       - Home Assistant OS: apps/home-assistant-os.md
@@ -48,6 +50,7 @@ nav:
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
       - Uptime Kuma: apps/uptime-kuma.md
+      - Vaultwarden: apps/vaultwarden.md
       - Ventoy: apps/ventoy.md
       - WatchYourLAN: apps/watchyourlan.md
   - Hardware:

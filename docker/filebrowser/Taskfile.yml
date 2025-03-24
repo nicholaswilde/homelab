@@ -5,10 +5,6 @@ dotenv:
   - .env
 
 tasks:
-  export:
-    desc: Export the task list
-    cmds:
-      - task --list > task-list.txt
   watch:
     desc: Watch Docker container logs
     cmds:
@@ -25,14 +21,21 @@ tasks:
     desc: Init .env file
     cmds:
       - cp .env.tmpl .env
+      - "[ -f filebrowser.db ] || touch filebrowser.db"
+      - cp settings.json.tmpl settings.json
+    ignore_error: true
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type json --output-type json settings.json.enc > settings.json
+      - sops -d filebrowser.db.enc > filebrowser.db
   encrypt:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
+      - sops -e filebrowser.db > filebrowser.db.enc
+      - sops -e settings.json > settings.json.enc
   update:
     desc: Update running containers
     cmds:

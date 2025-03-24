@@ -1,0 +1,17 @@
+---
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:v2.32.0
+    container_name: ${CONTAINER_NAME}
+    env_file:
+      - .env
+    volumes:
+      - /mnt/storage:/srv
+      - ${PWD}/filebrowser.db:/database.db"
+      - ${PWD}/settings.json:/.filebrowser.json
+    environment:
+      - PUID=$(id -u)
+      - PGID=$(id -g)
+    ports:
+      - 8095:80
+    restart: always

@@ -29,7 +29,7 @@ layout:
     icon: mdi-camera-iris
   Development Tools:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-robot
   Files & Downloads:
     style: row
