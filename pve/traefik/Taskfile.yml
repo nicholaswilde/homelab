@@ -5,6 +5,10 @@ env:
   APP_NAME: '{{ .APP_NAME }}'
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
   new:
     desc: Create a new config file
     cmds:

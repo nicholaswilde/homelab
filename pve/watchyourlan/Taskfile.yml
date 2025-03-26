@@ -2,6 +2,10 @@
 version: '3'
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
   stop:
     desc: Stop the service
     cmds:

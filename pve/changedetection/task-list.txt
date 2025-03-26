@@ -1,0 +1,12 @@
+task: Available tasks for this project:
+* backup:        Backup ChangeDetection
+* decrypt:       Decrypt scan.db using SOPS
+* deps:          Install dependencies
+* encrypt:       Encrypt scan.db using SOPS
+* export:        Export the task list
+* init:          Init app
+* mklinks:       Make symlinks
+* restart:       Restart ChangeDetection service
+* start:         Start ChangeDetection service
+* stop:          Stop changedetection service
+* update:        Update ChangeDetection

@@ -1,0 +1,11 @@
+task: Available tasks for this project:
+* bootstrap:             Bootstrap 
+* decrypt:               Decrypt .env using SOPS
+* encrypt:               Encrypt .env using SOPS
+* export:                Export the task list
+* init:                  Init
+* install:               Install 
+* install-service:       Install service
+* restart:               Restart service
+* start:                 Start service
+* stop:                  Stop service

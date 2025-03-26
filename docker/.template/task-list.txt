@@ -2,12 +2,13 @@ task: Available tasks for this project:
 * decrypt:       Decrypt .env using SOPS
 * encrypt:       Encrypt .env using SOPS
 * export:        Export the task list
-* init:          Init
+* init:          Init .env file
 * pull:          Pull docker images
 * restart:       Restart Docker containers
-* status:        Status
-* stop:          Stop registry container
+* status:        Docker container status
+* stop:          Stop Docker containers
 * up:            Run Docker compose in the foreground.
 * up-d:          Run Docker compose in the background.
 * update:        Update running containers
 * upgrade:       Upgrade Docker containers
+* watch:         Watch Docker container logs

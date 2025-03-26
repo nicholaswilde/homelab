@@ -5,6 +5,11 @@ dotenv:
   - .env
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+
   mount:
     desc: Mount USB
     cmds:

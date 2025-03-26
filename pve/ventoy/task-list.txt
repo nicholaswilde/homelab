@@ -1,0 +1,15 @@
+task: Available tasks for this project:
+* cron:          Setup cron job
+* deps:          Install dependencies
+* export:        Export the task list
+* install:       Install Ventoy
+* mount:         Mount USB
+* remove:        Remove Ventoy
+* restart:       Restart Ventoy
+* serve:         Start web server
+* start:         Restart Ventoy
+* stop:          Stop Ventoy
+* sync:          Sync ISO images with USB drive
+* umount:        Unmount USB
+* up:            Start web server
+* update:        Update Ventoy

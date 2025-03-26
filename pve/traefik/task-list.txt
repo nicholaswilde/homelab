@@ -1,0 +1,6 @@
+task: Available tasks for this project:
+* export:        Export the task list
+* new:           Create a new config file
+* restart:       Restart Traefik
+* status:        View the Traefik service status
+* watch:         Watch the log file

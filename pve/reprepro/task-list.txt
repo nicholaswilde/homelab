@@ -1,0 +1,4 @@
+task: Available tasks for this project:
+* deps:             Install dependencies
+* export:           Export the task list
+* sync-check:       Check and sync released versions of SOPS and Taks

@@ -1,0 +1,7 @@
+task: Available tasks for this project:
+* export:        Export the task list
+* init:          Init
+* mklinks:       Make symlinks
+* restart:       Restart service
+* status:        Check service status
+* stop:          Stop service

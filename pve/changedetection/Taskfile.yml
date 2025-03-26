@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
   backup:
     desc: Backup ChangeDetection
     cmds:
