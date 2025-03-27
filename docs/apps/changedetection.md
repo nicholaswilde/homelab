@@ -67,6 +67,13 @@ tags:
     )
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "changedetection/task-list.txt"
+    ```
 
 ## :link: References
 

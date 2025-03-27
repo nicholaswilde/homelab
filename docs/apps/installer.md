@@ -99,6 +99,22 @@ For setup apps that have are not supported by apt package manager, such as task,
     Caddy 0.8.2
     ```
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/installer.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/installer.yaml"
+    ```
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "installer/task-list.txt"
+    ```
+
 ## :link: References
 
 [1]: <https://github.com/jpillora/installer>

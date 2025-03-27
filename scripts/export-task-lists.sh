@@ -1,12 +1,12 @@
 #!/bin/bash
 ################################################################################
 #
-# sync-check
+# export-task-lists
 # ----------------
-# Check if deb files are in sync
+# Export task lists from Taskfiles using the export task.
 #
 # @author Nicholas Wilde, 0x08b7d7a3
-# @date 19 Jan 2025
+# @date 27 Mar 2025
 # @version 0.1.0
 #
 ################################################################################
@@ -65,9 +65,17 @@ function check_task() {
 }
 
 function find_taskfiles(){
-  find "$START_DIR" -name "Taskfile.yml" -print | while IFS= read -r taskfile_path; do
+  find "$START_DIR" -name "Taskfile.yml" -type f -print | while IFS= read -r taskfile_path; do
     # Extract the directory containing the Taskfile.yml
     dir_path=$(dirname "$taskfile_path")
+    # Skip certain Taskfiles
+    if [[ "${dir_path}" == "../docker" ]] \
+      || [[ "${dir_path}" == ".." ]] \
+      || [[ "${dir_path}" == "../docs" ]] \
+      || [[ "${dir_path}" == "../site" ]] \
+      || [[ "${dir_path}" == "../pve" ]]; then
+        continue
+    fi
     print_text "Found Taskfile in: '$dir_path'"
     print_text "Running task '$TASK_TO_RUN' in '$dir_path'..."
     task_list_path="${dir_path}/${TASK_LIST_FILENAME}"

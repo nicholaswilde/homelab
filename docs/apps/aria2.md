@@ -39,6 +39,14 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/aria2.yaml"
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "aria2/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=aria2>

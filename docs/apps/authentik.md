@@ -26,6 +26,14 @@ different applications.
 
 WIP
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "authentik/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=authentik>

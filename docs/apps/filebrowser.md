@@ -4,7 +4,7 @@ tags:
   - vm
   - proxmox
 ---
-# :simple-file browser: File Browser
+# ![filebrowser](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/file-browser.svg){ width="32" } File Browser
 
 [File Browser][1] is a web file browser.
 
@@ -32,12 +32,20 @@ tags:
 
 Make symlinks to repo.
 
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/filebrowser.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/filebrowser.yaml"
+    ```
+
 ## :simple-task: Task List
 
 !!! example ""
 
     ```yaml
-    --8<-- "file browser/task-list.txt"
+    --8<-- "filebrowser/task-list.txt"
     ```
 
 ## :link: References

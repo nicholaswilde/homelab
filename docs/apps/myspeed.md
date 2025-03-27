@@ -39,6 +39,14 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/myspeed.yaml"
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "myspeed/task-list.txt"
+    ```
+
 ## :link: References
 
 [1]: <https://myspeed.dev/>

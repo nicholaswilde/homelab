@@ -90,6 +90,14 @@ tags:
     --8<-- "traefik/conf.d/aptcache.yaml"
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "apt-cacher-ng/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=apt-cacher-ng>

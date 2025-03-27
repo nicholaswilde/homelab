@@ -82,6 +82,14 @@ It is installed only on the primary instance and is scheduled to run once a day,
 
 Make symlinks from `/opt/adguardhome-sync` to this repo.
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "adguardhome-sync/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://github.com/bakito/adguardhome-sync>

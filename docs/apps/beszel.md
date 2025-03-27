@@ -53,6 +53,14 @@ WIP
     ./beszel update
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "beszel/task-list.txt"
+    ```
+
 ## :link: References
 
 [1]: <https://beszel.dev/>

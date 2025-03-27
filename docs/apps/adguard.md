@@ -47,6 +47,14 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
 
 Upgrading the app is done [via the web GUI][3].
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "adguardhome/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=adguard>
