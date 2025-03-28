@@ -326,6 +326,11 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```shell
     scp user@hostip:/mnt/rpi.tar.gz /mnt
     ```
+!!! success "Check the `tar` file before using it"
+
+    ```shell
+    tar -tvf /mnt/rpi.tar.gz
+    ```
 
 !!! code "Mount the USB partitions and restore the contents"
 
@@ -344,6 +349,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```
 
     ```shell
+    
     ```
 
 !!! code "List modules"
@@ -383,19 +389,15 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 !!! code "Unmount the partitions"
 
     ```shell
+    cd /mnt
     umount rpi/boot/firmware
     umount rpi
-    rmdir rpi
+    rm -r rpi
     ```
 
 Optionally use `raspi-config` to set the boot order to be USB drive first.
 
-----
-
-
-
-2. Safely eject (NOTE:  You shouldn't need to deactivate the LVM volumes to safely eject).
-
+### Troubleshooting
 
 !!! code "Activate LVM volume group"
 
