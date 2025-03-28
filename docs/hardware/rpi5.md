@@ -162,7 +162,7 @@ Install Raspberry Pi OS on an SD card.
     ```shell
     ls /lib/modules/
     ```
-    
+
     ```shell
     4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
      ```
