@@ -144,7 +144,21 @@ See [Raspberry Pi 4 8GB][4].
 
 By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
 
+The main concept is as follows:
+
+1. Create an SD card with a stock OS,
+2. Install necessary packages on SD card.
+3. Generate new initramfs.
+4. Backup the OS to a `tar` file.
+5. Create file system on new NVMe drive.
+6. Mount new file drive.
+7. Extract tar to new drive.
+8. Modify boot on new drive
+9. Boot new drive.
+
 I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+
+### :credit_card: SD Card
 
 Install Raspberry Pi OS on an SD card.
 
