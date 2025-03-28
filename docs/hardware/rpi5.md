@@ -140,11 +140,22 @@ See [Raspberry Pi 4 8GB][4].
     free -h
     ```
 
-## [LVM][9]
+## :floppy_disk: [LVM][9]
 
 By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
 
 I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+
+Install Raspberry Pi OS on an SD card.
+
+!!! code "Update and install packages"
+
+    ```shell
+    apt update
+    apt dist-upgrade
+    apt install initramfs-tools
+    apt install lvm2
+    ```
 
 !!! code "Check drive mount point"
 
