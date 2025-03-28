@@ -140,6 +140,56 @@ See [Raspberry Pi 4 8GB][4].
     free -h
     ```
 
+## [LVM][9]
+
+!!! code
+
+    ```shell
+    foo@pi23:/wrk $ cat sdlvm
+    #!/bin/false
+
+    #umount /mnt/dev/p2
+    #umount /mnt/dev/p1
+    #vgremove $(hostname)
+    #pvremove "$1""2"
+
+    which pvs || exit 1
+    [ -z "$1" ] && exit 1
+
+    E=echo
+    #chk and umount /dev/media/*
+    $E vgchange -an -y $(hostname)
+    $E vgremove -y $(hostname)
+    $E pvremove "$1""2"
+
+    $E parted -s "$1" mklabel gpt || exit 1
+    $E parted -s "$1" mkpart primary 4M 516M || exit 1
+    $E parted -s "$1" mkpart primary 516M 64G || exit 1
+    $E parted -s "$1" name 1 bootfs || exit 1
+    $E parted -s "$1" name 2 rootfs || exit 1
+    $E parted -s "$1" set 1 boot on || exit 1
+    $E parted -s "$1" set 2 lvm on || exit 1
+    $E pvcreate "$1""2"  || exit 1
+    $E vgcreate $(hostname) "$1""2" || exit 1
+    $E lvcreate -y -n rootfs -l 100%FREE $(hostname) || exit 1
+    $E mkfs.vfat "$1""1" || exit 1
+    $E mkfs.ext4 "/dev/"$(hostname)"/rootfs" || exit 1
+    $E mkdir -p /mnt/dev/p{1,2} || exit 1
+    $E mount "$1""1" /mnt/dev/p1 || exit 1
+    $E mount "/dev/"$(hostname)"/rootfs" /mnt/dev/p2 || exit 1
+    $E update-initramfs -u -k all
+    $E DRY=" " sys-rbackup /boot/firmware/ /mnt/dev/p1/ || exit 1
+    $E DRY=" " sys-rbackup / /mnt/dev/p2/ || exit 1
+    $E sed -i -e "s,root=[^[:space:]]*,root=/dev/mapper/$(hostname)-rootfs," /mnt/dev/p1/cmdline.txt || exit 1
+    $E sed -i -e "s,PART.*=.*-01[^[:space:]]*,PARTLABEL=bootfs," /mnt/dev/p2/etc/fstab || exit 1
+    $E sed -i -e "s,PART.*=.*-02[^[:space:]]*,/dev/mapper/$(hostname)-rootfs," /mnt/dev/p2/etc/fstab || exit 1
+
+    $E cat /mnt/dev/p2/etc/fstab
+    $E umount /mnt/dev/p2 || exit 1
+    $E cat /mnt/dev/p1/cmdline.txt
+    $E umount /mnt/dev/p1 || exit 1
+    ```
+
 ## :link: References
 
   - <https://a.co/d/etvDazc>
@@ -152,3 +202,4 @@ See [Raspberry Pi 4 8GB][4].
 [6]: <https://www.amazon.com/dp/B0B25LQQPC>
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
+[9]: <https://forums.raspberrypi.com/viewtopic.php?t=366552>
