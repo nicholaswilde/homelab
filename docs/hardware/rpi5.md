@@ -146,9 +146,9 @@ By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for t
 
 The main concept is as follows:
 
-1. Create an SD card with a stock OS on a host system.
+1. Create an SD card with a stock Raspberry Pi OS on a host system.
 2. Install necessary packages on SD card.
-3. Generate new initramfs.
+3. Generate new `initramfs` on the Pi.
 4. Backup the OS to a `tar` file from the host system.
 5. Create file system on new NVMe drive.
 6. Mount new file system drive.
@@ -156,9 +156,27 @@ The main concept is as follows:
 8. Modify boot on new drive.
 9. Boot new drive.
 
+### Equipment
+
+The following equipment was used:
+
+1. Raspberry Pi 5 with SD card and an NVMe hat.
+2. Host computer with Ubuntu server installed that can read an SD card.
+3. SD card.
+4. 500GB NVMe.
+
+!!! note
+
+    My setup can only read NVMe drives from my Pi and so all of my interfacing with the NVMe is done while booted into
+    the SD card on the Pi.
+
 !!! note
 
     I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+
+!!! note
+
+    Most of the mounting of file systems is being done in the `/mnt` directory of both the Pi and host system.
 
 ### :computer: Host System
 
@@ -168,73 +186,110 @@ Install Raspberry Pi OS on an SD card.
 
 Insert SD card into Pi and boot from SD card.
 
-!!! code "Update and install packages"
+!!! code "Switch to `root`"
+
+    ```shell
+    sudo su
+    ```
+    
+!!! code "Update the Pi"
 
     ```shell
     apt update
-    apt dist-upgrade
-    apt install initramfs-tools
-    apt install lvm2
+    apt full-upgrade
     ```
 
-!!! code "Generate new `initramfs`"
+!!! code "Install `lvm2` and `initramfs-tools`"
+
+    ```shell
+    apt install initramfs-tools
+    apt install lvm2 -y
+    ```
+
+!!! code "Update `initramfs`"
 
     ```shell
     update-initramfs -u -k all
     ```
 
-### :computer: Host System
+!!! note
 
-Shutdown Pi and plug SD card back into host.
+    Updating initramfs may not be needed because it may update itself during the `lvm2` installation.
 
-!!! code "Backup SD card"
+!!! code "Shutown the Pi"
 
     ```shell
-    
+    poweroff
     ```
 
-Insert SD card into Pi and boot from SD card.
+### :computer: Host System
+
+Remove the SD card from the Pi and insert it back into the host system.
+
+!!! code "Mount the SD card partitions and archive the contents to a `tar` file"
+
+    ```shell
+    sudo su
+    cd /mnt
+    mkdir -p rpi/boot/firmware
+    mount /dev/nvme0n1p2 rpi
+    mount /dev/nvme0n1p1 rpi/boot/firmware
+    tar -cvzf rpi.tar.gz -C rpi ./
+    umount /rpi/boot/firmware
+    umount /rpi
+    ```
+
+The SD card is not archived into the `/mnt/rpi.tar.gz` file on the host system.
 
 ### :credit_card: SD Card
 
-Boot back into SD card on Raspberry Pi.
+Insert SD card into Pi and boot from SD card.
 
-!!! code "Mount and copy files to NVMe"
+Using `parted`, remove all partitions from the NVMe.  
 
-    ```shell
-    cd /mnt
-    mkdir -p rpi/boot/firmware
-    mount /dev/sda2 rpi
-    mount /dev/sda1 rpi/boot/firmware
-    tar -cvzf rpi.tar.gz -C rpi ./
-    ```
+!!! warning
 
-### :credit_card: NVMe
+    THIS DESTROYS ALL EXISTING DATA ON THE NVMe
 
-!!! code "Check version of modules"
+!!! code
 
     ```shell
-    ls /lib/modules/
+    sudo su
+    parted /dev/nvme0n1
+    ```
+
+Identify the partition number: Once inside the parted interactive shell (you'll see a (parted) prompt), use the print command to list the partitions on the selected disk and find the number of the one you want to delete.
+
+!!! code
+
+    ```shell
+    (parted) print
+    ```
+
+!!! code "Look at the output to identify the correct partition number (the first column)."
+
+    ```shell
+    (parted) rm 2
     ```
 
     ```shell
-    4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
-     ```
-
-!!! abstract "Add to `/boot/config.txt`"
-
-    ```ini
-    [pi5]
-    initramfs initrd.img-4.19.97-v7l+ followkernel
+    (parted) rm 1
     ```
-    
-!!! code "Check drive mount point"
+
+    ```shell
+    (parted) quit
+    ```
+
+!!! success "Check that the partitions were deleted"
 
     ```shell
     lsblk
     ```
 
-!!! code "Make partitions"
+    ```shell
+    ```
+    
+!!! code "Create a 500MB FAT32 partition and the remainder of the disk as an LVM partition"
 
     ```shell
     parted /dev/nvme0n1 mkpart primary fat32 2048s 512MiB
@@ -242,11 +297,84 @@ Boot back into SD card on Raspberry Pi.
     parted /dev/nvme0n1 set 2 lvm on
     ```
 
-!!! code "Make boot file system"
+!!! success "Check that the partitions were created successfully"
+
+    ```shell
+    lsblk
+    ```
+
+    ```shell
+    ```
+
+!!! code "Format and label the FAT partition"
 
     ```shell
     mkfs.fat -F 32 -n bootfs-rpi /dev/nvme0n1p1
     ```
+
+!!! code "Setup LVM on the USB drive, create and format the root volume"
+
+    ```shell
+    pvcreate /dev/nvme0n1p2
+    vgcreate usb-rpi /dev/nvme0n1p2
+    lvcreate -L 30G -n rootfs usb-rpi
+    mke2fs -t ext4 -L rootfs-rpi /dev/usb-rpi/rootfs
+    ```
+
+!!! code "Transfer the archived tar file from the host system using SCP"
+
+    ```shell
+    scp user@hostip:/mnt/rpi.tar.gz /mnt
+    ```
+
+!!! code "Mount the USB partitions and restore the contents"
+
+    ```shell
+    cd /mnt
+    mkdir -p rpi/boot/firmware
+    mount /dev/usb-rpi/rootfs rpi
+    mount /dev/nvme0n1p1 rpi/boot/firmware
+    tar -xvzf rpi.tar.gz -C rpi
+    ```
+
+!!! success "Check that the contents transferred successfully"
+
+    ```shell
+    ls rpi
+    ```
+
+    ```shell
+    ```
+
+----
+
+## Copy boot and root partitions to USB drive
+
+
+
+## Point to the new partitions
+
+1. In `rpi/boot/firmware/cmdline.txt`, update the `root=` entry to be `root=LABEL=rootfs-rpi`.  This will cause the root partition to be loaded from our LVM rootfs volume.  Since `LVM` is a part of the Init RAM Disk image now, the LVM volume will be usable during the boot sequence.
+2. In `rpi/etc/fstab`, update the entries for `/` and `/boot/firmware` to `LABEL=rootfs-rpi` and `LABEL=bootfs-rpi` respectively.
+
+## Safely eject the USB drive from the desktop.
+
+1. Unmount the partitions:
+
+```
+umount rpi/boot/firmware
+umount rpi
+rmdir rpi
+```
+
+2. Safely eject (NOTE:  You shouldn't need to deactivate the LVM volumes to safely eject).
+
+## Plug it in and boot!
+
+1. Plug the USB drive into the Raspberry Pi
+2. The MicroSD should not be in the Pi
+3. Boot up!
+4. Optionally use `raspi-config` to set the boot order to be USB drive first.
 
 !!! code "Activate LVM volume group"
 
