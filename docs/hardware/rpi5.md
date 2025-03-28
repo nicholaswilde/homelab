@@ -353,7 +353,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```
 
     ```shell
-    
+    4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
     ```
 
 !!! abstract "Update `rpi/boot/firmware/config.txt`"
@@ -366,43 +366,32 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 !!! abstract "`rpi/etc/fstab`"
 
     ```ini
-    
+    LABEL=rootfs-rpi  /
+    LABEL=bootfs-rpi  /boot/firmware
     ```
 
 !!! abstract "`rpi/boot/firmware/cmdline.txt`"
 
     ```ini
-    
+    root=LABEL=rootfs-rpi
     ```
+
+!!! code "Unmount the partitions"
+
+    ```shell
+    umount rpi/boot/firmware
+    umount rpi
+    rmdir rpi
+    ```
+
+Optionally use `raspi-config` to set the boot order to be USB drive first.
+
 ----
 
-## Copy boot and root partitions to USB drive
 
-
-
-## Point to the new partitions
-
-1. In `rpi/boot/firmware/cmdline.txt`, update the `root=` entry to be `root=LABEL=rootfs-rpi`.  This will cause the root partition to be loaded from our LVM rootfs volume.  Since `LVM` is a part of the Init RAM Disk image now, the LVM volume will be usable during the boot sequence.
-2. In `rpi/etc/fstab`, update the entries for `/` and `/boot/firmware` to `LABEL=rootfs-rpi` and `LABEL=bootfs-rpi` respectively.
-
-## Safely eject the USB drive from the desktop.
-
-1. Unmount the partitions:
-
-```
-umount rpi/boot/firmware
-umount rpi
-rmdir rpi
-```
 
 2. Safely eject (NOTE:  You shouldn't need to deactivate the LVM volumes to safely eject).
 
-## Plug it in and boot!
-
-1. Plug the USB drive into the Raspberry Pi
-2. The MicroSD should not be in the Pi
-3. Boot up!
-4. Optionally use `raspi-config` to set the boot order to be USB drive first.
 
 !!! code "Activate LVM volume group"
 
