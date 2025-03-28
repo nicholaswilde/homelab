@@ -157,6 +157,21 @@ Install Raspberry Pi OS on an SD card.
     apt install lvm2
     ```
 
+!!! code "Check version of modules"
+
+    ```shell
+    ls /lib/modules/
+    ```
+    
+    ```shell "Output"
+    4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
+     ```
+
+!!! code "Add to `config.txt`"
+
+    ```shell
+    ```
+    
 !!! code "Check drive mount point"
 
     ```shell
