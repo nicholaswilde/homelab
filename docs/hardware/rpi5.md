@@ -358,23 +358,27 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
 !!! abstract "Update `rpi/boot/firmware/config.txt`"
 
-    ```shell
+    ```ini
     [pi4]
     initramfs initrd.img-4.19.97-v7l+ followkernel
     ```
 
 !!! abstract "`rpi/etc/fstab`"
 
-    ```ini
-    LABEL=rootfs-rpi  /
-    LABEL=bootfs-rpi  /boot/firmware
-    ```
+    === "Manual"
+    
+        ```ini
+        LABEL=rootfs-rpi  /
+        LABEL=bootfs-rpi  /boot/firmware
+        ```
 
 !!! abstract "`rpi/boot/firmware/cmdline.txt`"
 
-    ```ini
-    root=LABEL=rootfs-rpi
-    ```
+    === "Manual"
+    
+        ```ini
+        root=LABEL=rootfs-rpi
+        ```
 
 !!! code "Unmount the partitions"
 
