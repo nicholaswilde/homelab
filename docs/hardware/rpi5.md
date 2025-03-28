@@ -146,21 +146,21 @@ By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for t
 
 The main concept is as follows:
 
-1. Create an SD card with a stock OS,
+1. Create an SD card with a stock OS on a host system.
 2. Install necessary packages on SD card.
 3. Generate new initramfs.
-4. Backup the OS to a `tar` file.
+4. Backup the OS to a `tar` file from the host system.
 5. Create file system on new NVMe drive.
-6. Mount new file drive.
-7. Extract tar to new drive.
-8. Modify boot on new drive
+6. Mount new file system drive.
+7. Extract `tar` to new drive.
+8. Modify boot on new drive.
 9. Boot new drive.
 
 !!! note
 
     I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
 
-## :laptop: Host System
+## :computer: Host System
 
 Install Raspberry Pi OS on an SD card.
 
