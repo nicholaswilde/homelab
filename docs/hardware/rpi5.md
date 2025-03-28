@@ -346,6 +346,34 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```shell
     ```
 
+!!! code "List modules"
+
+    ```shell
+    ls rpi/etc/modules
+    ```
+
+    ```shell
+    
+    ```
+
+!!! abstract "Update `rpi/boot/firmware/config.txt`"
+
+    ```shell
+    [pi4]
+    initramfs initrd.img-4.19.97-v7l+ followkernel
+    ```
+
+!!! abstract "`rpi/etc/fstab`"
+
+    ```ini
+    
+    ```
+
+!!! abstract "`rpi/boot/firmware/cmdline.txt`"
+
+    ```ini
+    
+    ```
 ----
 
 ## Copy boot and root partitions to USB drive
