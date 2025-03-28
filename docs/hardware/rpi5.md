@@ -171,6 +171,12 @@ Install Raspberry Pi OS on an SD card.
     parted /dev/nvme0n1 set 2 lvm on
     ```
 
+!!! code "Make boot file system"
+
+    ```shell
+    mkfs.fat -F 32 -n bootfs-rpi /dev/nvme0n1p1
+    ```
+
 !!! code "Activate LVM volume group"
 
     ```shell
