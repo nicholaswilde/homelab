@@ -160,11 +160,13 @@ The main concept is as follows:
 
     I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
 
-## :computer: Host System
+### :computer: Host System
 
 Install Raspberry Pi OS on an SD card.
 
 ### :credit_card: SD Card
+
+Insert SD card into Pi and boot from SD card.
 
 !!! code "Update and install packages"
 
@@ -179,6 +181,32 @@ Install Raspberry Pi OS on an SD card.
 
     ```shell
     update-initramfs -u -k all
+    ```
+
+### :computer: Host System
+
+Shutdown Pi and plug SD card back into host.
+
+!!! code "Backup SD card"
+
+    ```shell
+    
+    ```
+
+Insert SD card into Pi and boot from SD card.
+
+### :credit_card: SD Card
+
+Boot back into SD card on Raspberry Pi.
+
+!!! code "Mount and copy files to NVMe"
+
+    ```shell
+    cd /mnt
+    mkdir -p rpi/boot/firmware
+    mount /dev/sda2 rpi
+    mount /dev/sda1 rpi/boot/firmware
+    tar -cvzf rpi.tar.gz -C rpi ./
     ```
 
 ### :credit_card: NVMe
