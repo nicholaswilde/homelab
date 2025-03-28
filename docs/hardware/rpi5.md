@@ -142,6 +142,14 @@ See [Raspberry Pi 4 8GB][4].
 
 ## [LVM][9]
 
+By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
+
+!!! code "Activate LVM volume group"
+
+    ```shell
+    vgchange -ay
+    ```
+
 !!! code
 
     ```shell
