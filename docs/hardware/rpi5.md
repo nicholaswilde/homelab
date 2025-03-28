@@ -156,11 +156,15 @@ The main concept is as follows:
 8. Modify boot on new drive
 9. Boot new drive.
 
-I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+!!! note
 
-### :credit_card: SD Card
+    I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+
+## :laptop: Host System
 
 Install Raspberry Pi OS on an SD card.
+
+### :credit_card: SD Card
 
 !!! code "Update and install packages"
 
@@ -170,6 +174,14 @@ Install Raspberry Pi OS on an SD card.
     apt install initramfs-tools
     apt install lvm2
     ```
+
+!!! code "Generate new `initramfs`"
+
+    ```shell
+    update-initramfs -u -k all
+    ```
+
+### :credit_card: NVMe
 
 !!! code "Check version of modules"
 
