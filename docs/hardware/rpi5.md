@@ -163,13 +163,15 @@ Install Raspberry Pi OS on an SD card.
     ls /lib/modules/
     ```
     
-    ```shell "Output"
+    ```shell
     4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
      ```
 
-!!! code "Add to `config.txt`"
+!!! abstract "Add to `/boot/config.txt`"
 
-    ```shell
+    ```ini
+    [pi5]
+    initramfs initrd.img-4.19.97-v7l+ followkernel
     ```
     
 !!! code "Check drive mount point"
