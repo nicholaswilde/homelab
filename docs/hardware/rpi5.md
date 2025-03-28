@@ -144,6 +144,22 @@ See [Raspberry Pi 4 8GB][4].
 
 By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
 
+I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+
+!!! code "Check drive mount point"
+
+    ```shell
+    lsblk
+    ```
+
+!!! code "Make partitions"
+
+    ```shell
+    parted /dev/nvme0n1 mkpart primary fat32 2048s 512MiB
+    parted /dev/nvme0n1 mkpart primary ext4 512MiB 100%
+    parted /dev/nvme0n1 set 2 lvm on
+    ```
+
 !!! code "Activate LVM volume group"
 
     ```shell
