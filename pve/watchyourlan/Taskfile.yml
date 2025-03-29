@@ -3,7 +3,7 @@ version: '3'
 
 tasks:
     update:
-    desc: Update ChangeDetection
+    desc: Update WakeYourLAN
     cmds:
      - ./update.sh
   export:
