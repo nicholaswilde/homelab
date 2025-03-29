@@ -43,6 +43,7 @@ function update_script() {
     if [[ ! -f /lib/systemd/system/watchyourlan.service ]]; then
         raise_error "No ${APP} Installation Found!"
     fi
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(armhf\)\(64\)\?.*/\1\2hf/' -e 's/aarch64$/arm64/')"
     print_text "Updating $APP"
     systemctl stop watchyourlan.service
     cp -R /data/config.yaml config.yaml
