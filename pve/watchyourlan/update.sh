@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+
+function print_text(){
+  echo "${blue}==> ${white}${bold}${1}${normal}"
+}
+
+function raise_error(){
+  printf "${red}%s\n" "${1}"
+  exit 1
+}
  
 function update_script() {
   if [[ ! -f /etc/systemd/system/semaphore.service ]]; then
