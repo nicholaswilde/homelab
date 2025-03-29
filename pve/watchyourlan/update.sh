@@ -39,25 +39,21 @@ function raise_error(){
 }
  
 function update_script() {
-    header_info
-    check_container_storage
-    check_container_resources
+    APP="WatchYourLAN"
     if [[ ! -f /lib/systemd/system/watchyourlan.service ]]; then
-        msg_error "No ${APP} Installation Found!"
-        exit
+        raise_error "No ${APP} Installation Found!"
     fi
-    msg_info "Updating $APP"
+    print_text "Updating $APP"
     systemctl stop watchyourlan.service
     cp -R /data/config.yaml config.yaml
     RELEASE=$(curl -s https://api.github.com/repos/aceberg/WatchYourLAN/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d '"' -f 4)
-    wget -q https://github.com/aceberg/WatchYourLAN/releases/download/$RELEASE/watchyourlan_${RELEASE}_linux_amd64.deb
-    dpkg -i watchyourlan_${RELEASE}_linux_amd64.deb
+    wget -q https://github.com/aceberg/WatchYourLAN/releases/download/$RELEASE/watchyourlan_${RELEASE}_linux_arm64.deb
+    dpkg -i watchyourlan_${RELEASE}_linux_arm64.deb
     cp -R config.yaml /data/config.yaml
     sed -i 's|/etc/watchyourlan/config.yaml|/data/config.yaml|' /lib/systemd/system/watchyourlan.service
-    rm watchyourlan_${RELEASE}_linux_amd64.deb config.yaml
+    rm watchyourlan_${RELEASE}_linux_arm64.deb config.yaml
     systemctl enable -q --now watchyourlan.service
-    msg_ok "Updated $APP"
-    exit
+    print_text "Updated $APP"
 }
 
 update_script
