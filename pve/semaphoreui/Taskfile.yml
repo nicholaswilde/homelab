@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  update:
+    desc: Update Semaphore
+    cmds:
+     - ./update.sh
   export:
     desc: Export the task list
     cmds:
