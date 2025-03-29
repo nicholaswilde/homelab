@@ -2,7 +2,7 @@
 version: '3'
 
 tasks:
-    update:
+  update:
     desc: Update WakeYourLAN
     cmds:
      - ./update.sh
