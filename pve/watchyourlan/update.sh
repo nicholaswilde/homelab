@@ -39,35 +39,25 @@ function raise_error(){
 }
  
 function update_script() {
-  if [[ ! -f /etc/systemd/system/semaphore.service ]]; then
-    raise_error "No ${APP} Installation Found!"
+    header_info
+    check_container_storage
+    check_container_resources
+    if [[ ! -f /lib/systemd/system/watchyourlan.service ]]; then
+        msg_error "No ${APP} Installation Found!"
+        exit
+    fi
+    msg_info "Updating $APP"
+    systemctl stop watchyourlan.service
+    cp -R /data/config.yaml config.yaml
+    RELEASE=$(curl -s https://api.github.com/repos/aceberg/WatchYourLAN/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d '"' -f 4)
+    wget -q https://github.com/aceberg/WatchYourLAN/releases/download/$RELEASE/watchyourlan_${RELEASE}_linux_amd64.deb
+    dpkg -i watchyourlan_${RELEASE}_linux_amd64.deb
+    cp -R config.yaml /data/config.yaml
+    sed -i 's|/etc/watchyourlan/config.yaml|/data/config.yaml|' /lib/systemd/system/watchyourlan.service
+    rm watchyourlan_${RELEASE}_linux_amd64.deb config.yaml
+    systemctl enable -q --now watchyourlan.service
+    msg_ok "Updated $APP"
     exit
-  fi
-  RELEASE=$(curl -s https://api.github.com/repos/semaphoreui/semaphore/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-  if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
-    print_text "Stopping Service"
-    systemctl stop semaphore
-    print_text "Stopped Service"
-
-    print_text "Updating ${APP} to v${RELEASE}"
-    cd /opt
-    wget -q https://github.com/semaphoreui/semaphore/releases/download/v${RELEASE}/semaphore_${RELEASE}_linux_amd64.deb
-    $STD dpkg -i semaphore_${RELEASE}_linux_amd64.deb
-    echo "${RELEASE}" >"/opt/${APP}_version.txt"
-    echo "Updated ${APP} to v${RELEASE}"
-
-    print_text "Starting Service"
-    systemctl start semaphore
-    print_text "Started Service"
-
-    print_text "Cleaning up"
-    rm -rf /opt/semaphore_${RELEASE}_linux_amd64.deb
-    print_text "Cleaned"
-    print_text "Updated Successfully"
-  else
-    print_text "No update required. ${APP} is already at v${RELEASE}."
-  fi
-  exit
 }
 
 update_script
