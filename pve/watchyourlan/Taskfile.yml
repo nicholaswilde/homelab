@@ -2,6 +2,10 @@
 version: '3'
 
 tasks:
+    update:
+    desc: Update ChangeDetection
+    cmds:
+     - ./update.sh
   export:
     desc: Export the task list
     cmds:
