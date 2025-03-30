@@ -296,7 +296,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     lsblk
     ```
 
-    ```shell
+    ```shell title="Output"
     NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
     mmcblk0      179:0    0 119.1G  0 disk 
     ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
@@ -317,7 +317,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
 !!! success "Check that the partitions were created successfully"
 
-    ```shell
+    ```shell title="Output"
     NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
     mmcblk0      179:0    0 119.1G  0 disk 
     ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
@@ -325,7 +325,6 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     nvme0n1      259:0    0 465.8G  0 disk 
     ├─nvme0n1p1  259:1    0   511M  0 part 
     └─nvme0n1p2  259:2    0 465.3G  0 part
-      └─pve-root 254:0    0    70G  0 lvm 
     ```
 
 !!! code "Format and label the FAT partition"
@@ -351,7 +350,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     lsblk
     ```
 
-    ```shell
+    ```shell title="Output"
     NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
     mmcblk0      179:0    0 119.1G  0 disk 
     ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
@@ -386,53 +385,13 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ls rpi
     ```
 
-    ```shell
+    ```shell title="Output"
     bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
     ```
 
-!!! code "List modules"
+!!! note
 
-    ```shell
-    ls ./rpi/lib/modules
-    ```
-
-    ```shell
-    6.6.51+rpt-rpi-2712  6.6.51+rpt-rpi-v8  6.6.74+rpt-rpi-2712  6.6.74+rpt-rpi-v8
-    ```
-
-!!! code "Check current kernel"
-
-    ```shell
-    uname -r
-    ```
-
-    ```shell
-    6.6.74+rpt-rpi-2712
-    ```
-
-!!! code "Check kernel files"
-
-    ```shell
-    ls ./rpi/boot
-    ```
-
-    ```shell
-    cmdline.txt                 initrd.img-6.6.51+rpt-rpi-2712  System.map-6.6.51+rpt-rpi-v8
-    config-6.6.51+rpt-rpi-2712  initrd.img-6.6.51+rpt-rpi-v8    System.map-6.6.74+rpt-rpi-2712
-    config-6.6.51+rpt-rpi-v8    initrd.img-6.6.74+rpt-rpi-2712  System.map-6.6.74+rpt-rpi-v8
-    config-6.6.74+rpt-rpi-2712  initrd.img-6.6.74+rpt-rpi-v8    vmlinuz-6.6.51+rpt-rpi-2712
-    config-6.6.74+rpt-rpi-v8    issue.txt                       vmlinuz-6.6.51+rpt-rpi-v8
-    config.txt                  overlays                        vmlinuz-6.6.74+rpt-rpi-2712
-    firmware                    System.map-6.6.51+rpt-rpi-2712  vmlinuz-6.6.74+rpt-rpi-v8
-    ```
-
-!!! abstract "Update `rpi/boot/firmware/config.txt` and comment out `auto_initramfs`"
-
-    ```ini
-    # Automatically load initramfs files, if found
-    #auto_initramfs=1
-    initramfs initrd.img-6.6.74+rpt-rpi-2712 followkernel
-    ```
+    Don't seem to need to change `config.txt` with `initramfs`.
 
 !!! abstract "`./rpi/etc/fstab`"
 
@@ -459,7 +418,10 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     === "Automatic"
 
         ```shell
-        sed -i 's/root=PARTUUID=[a-z0-9]*-02/root=\/dev\/pve\/root/' /mnt/rpi/boot/firmware/cmdline.txt
+        (
+          sed -i 's/root=PARTUUID=[a-z0-9]*-02/root=\/dev\/pve\/root/' /mnt/rpi/boot/firmware/cmdline.txt && \
+          cat /mnt/rpi/boot/firmware/cmdline.txt
+        )
         ```
 
     === "Manual"
@@ -483,6 +445,54 @@ Reboot and hold the `spacebar` to get to the boot menu. Choose `6` for NVMe.
 
 If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 
+### :broom: [Swap][10]
+
+!!! code "Create the LVM2 logical volume"
+
+    ```shell
+    lvm lvcreate pve -n swap -L 8G
+    ```
+
+!!! code "Format the new swap space"
+
+    ```shell
+    mkswap /dev/pve/swap
+    ```
+
+!!! success "Check that the volume was created"
+
+    ```shell
+    lvdisplay
+    ```
+
+    ```shell title="Output"
+    
+    ```
+
+!!! abstract "`/etc/fstab`"
+
+    === "Manual"
+    
+        ```ini
+         /dev/pve/swap swap swap defaults 0 0 
+        ```
+
+!!! code "Enable the extended logical volume"
+
+    ```shell
+    swapon -va
+    ```
+
+!!! success "est that the logical volume has been extended properly"
+
+    ```shell
+    cat /proc/swaps # free
+    ```
+
+    ```shell title="Output"
+
+    ```
+
 ### :stethoscope: Troubleshooting
 
 !!! code "Activate LVM volume group"
@@ -491,7 +501,7 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
     vgchange -ay
     ```
 
-!!! code
+??? code
 
     ```shell
     foo@pi23:/wrk $ cat sdlvm
@@ -552,3 +562,4 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
 [9]: <https://forums.raspberrypi.com/viewtopic.php?t=366552>
+[10]: <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/system_administration_guide/adding_swap_space-creating_an_lvm2_logical_volume_for_swap#Adding_Swap_Space-Creating_an_LVM2_Logical_Volume_for_Swap>
