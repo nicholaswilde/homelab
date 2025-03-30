@@ -172,7 +172,11 @@ The following equipment was used:
 
 !!! note
 
-    I have an nvme drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1`
+    I have an NVMe drive on my Pi, therefore my commnds below are with respect to `/dev/nvme0n1` when working with it.
+
+!!! note
+
+    When working with my SD card mounted on my host system, the drive location is `/dev/mmcblk0`
 
 !!! note
 
@@ -232,14 +236,20 @@ Remove the SD card from the Pi and insert it back into the host system.
     sudo su
     cd /mnt
     mkdir -p rpi/boot/firmware
-    mount /dev/nvme0n1p2 rpi
-    mount /dev/nvme0n1p1 rpi/boot/firmware
+    mount /dev/mmcblk0p2 ./rpi
+    mount /dev/mmcblk0p1 ./rpi/boot/firmware
     tar -cvzf rpi.tar.gz -C rpi ./
-    umount /rpi/boot/firmware
-    umount /rpi
+    umount ./rpi/boot/firmware
+    umount ./rpi
     ```
 
 The SD card is not archived into the `/mnt/rpi.tar.gz` file on the host system.
+
+!!! success "Check the `tar` file before using it"
+
+    ```shell
+    tar -tvf /mnt/rpi.tar.gz
+    ```
 
 ### :credit_card: SD Card
 
@@ -287,23 +297,35 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```
 
     ```shell
+    NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    mmcblk0      179:0    0 119.1G  0 disk 
+    ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
+    └─mmcblk0p2  179:2    0 118.6G  0 part /
+    nvme0n1      259:0    0 465.8G  0 disk 
     ```
     
 !!! code "Create a 500MB FAT32 partition and the remainder of the disk as an LVM partition"
 
     ```shell
-    parted /dev/nvme0n1 mkpart primary fat32 2048s 512MiB
-    parted /dev/nvme0n1 mkpart primary ext4 512MiB 100%
-    parted /dev/nvme0n1 set 2 lvm on
+    (
+      parted /dev/nvme0n1 mkpart primary fat32 2048s 512MiB && \
+      parted /dev/nvme0n1 mkpart primary ext4 512MiB 100% && \
+      parted /dev/nvme0n1 set 2 lvm on && \
+      lsblk
+    )
     ```
 
 !!! success "Check that the partitions were created successfully"
 
     ```shell
-    lsblk
-    ```
-
-    ```shell
+    NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    mmcblk0      179:0    0 119.1G  0 disk 
+    ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
+    └─mmcblk0p2  179:2    0 118.6G  0 part /
+    nvme0n1      259:0    0 465.8G  0 disk 
+    ├─nvme0n1p1  259:1    0   511M  0 part 
+    └─nvme0n1p2  259:2    0 465.3G  0 part
+      └─pve-root 254:0    0    70G  0 lvm 
     ```
 
 !!! code "Format and label the FAT partition"
@@ -312,13 +334,32 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     mkfs.fat -F 32 -n bootfs-rpi /dev/nvme0n1p1
     ```
 
-!!! code "Setup LVM on the USB drive, create and format the root volume"
+!!! code "Setup LVM on the NVMe drive, create and format the root volume"
 
     ```shell
-    pvcreate /dev/nvme0n1p2
-    vgcreate usb-rpi /dev/nvme0n1p2
-    lvcreate -L 30G -n rootfs usb-rpi
-    mke2fs -t ext4 -L rootfs-rpi /dev/usb-rpi/rootfs
+    (
+      pvcreate /dev/nvme0n1p2 && \
+      vgcreate pve /dev/nvme0n1p2 && \
+      lvcreate -L 70G -n root pve && \
+      mke2fs -t ext4 -L pve /dev/pve/root
+    )
+    ```
+
+!!! success "Check that the volumes were created successfully"
+
+    ```shell
+    lsblk
+    ```
+
+    ```shell
+    NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    mmcblk0      179:0    0 119.1G  0 disk 
+    ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
+    └─mmcblk0p2  179:2    0 118.6G  0 part /
+    nvme0n1      259:0    0 465.8G  0 disk 
+    ├─nvme0n1p1  259:1    0   511M  0 part 
+    └─nvme0n1p2  259:2    0 465.3G  0 part 
+      └─pve-root 254:0    0    30G  0 lvm
     ```
 
 !!! code "Transfer the archived tar file from the host system using SCP"
@@ -326,20 +367,17 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```shell
     scp user@hostip:/mnt/rpi.tar.gz /mnt
     ```
-!!! success "Check the `tar` file before using it"
-
-    ```shell
-    tar -tvf /mnt/rpi.tar.gz
-    ```
 
 !!! code "Mount the USB partitions and restore the contents"
 
     ```shell
-    cd /mnt
-    mkdir -p rpi/boot/firmware
-    mount /dev/usb-rpi/rootfs rpi
-    mount /dev/nvme0n1p1 rpi/boot/firmware
-    tar -xvzf rpi.tar.gz -C rpi
+    (
+      cd /mnt && \
+      mkdir -p ./rpi/boot/firmware && \
+      mount /dev/pve/pve-root rpi && \
+      mount /dev/nvme0n1p1 ./rpi/boot/firmware && \
+      tar -xvzf rpi.tar.gz -C ./rpi
+    )
     ```
 
 !!! success "Check that the contents transferred successfully"
@@ -349,55 +387,103 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     ```
 
     ```shell
-    
+    bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
     ```
 
 !!! code "List modules"
 
     ```shell
-    ls rpi/etc/modules
+    ls ./rpi/lib/modules
     ```
 
     ```shell
-    4.19.97+  4.19.97-v7+  4.19.97-v7l+  4.19.97-v8+
+    6.6.51+rpt-rpi-2712  6.6.51+rpt-rpi-v8  6.6.74+rpt-rpi-2712  6.6.74+rpt-rpi-v8
     ```
 
-!!! abstract "Update `rpi/boot/firmware/config.txt`"
+!!! code "Check current kernel"
+
+    ```shell
+    uname -r
+    ```
+
+    ```shell
+    6.6.74+rpt-rpi-2712
+    ```
+
+!!! code "Check kernel files"
+
+    ```shell
+    ls ./rpi/boot
+    ```
+
+    ```shell
+    cmdline.txt                 initrd.img-6.6.51+rpt-rpi-2712  System.map-6.6.51+rpt-rpi-v8
+    config-6.6.51+rpt-rpi-2712  initrd.img-6.6.51+rpt-rpi-v8    System.map-6.6.74+rpt-rpi-2712
+    config-6.6.51+rpt-rpi-v8    initrd.img-6.6.74+rpt-rpi-2712  System.map-6.6.74+rpt-rpi-v8
+    config-6.6.74+rpt-rpi-2712  initrd.img-6.6.74+rpt-rpi-v8    vmlinuz-6.6.51+rpt-rpi-2712
+    config-6.6.74+rpt-rpi-v8    issue.txt                       vmlinuz-6.6.51+rpt-rpi-v8
+    config.txt                  overlays                        vmlinuz-6.6.74+rpt-rpi-2712
+    firmware                    System.map-6.6.51+rpt-rpi-2712  vmlinuz-6.6.74+rpt-rpi-v8
+    ```
+
+!!! abstract "Update `rpi/boot/firmware/config.txt` and comment out `auto_initramfs`"
 
     ```ini
-    [pi4]
-    initramfs initrd.img-4.19.97-v7l+ followkernel
+    # Automatically load initramfs files, if found
+    #auto_initramfs=1
+    initramfs initrd.img-6.6.74+rpt-rpi-2712 followkernel
     ```
 
-!!! abstract "`rpi/etc/fstab`"
+!!! abstract "`./rpi/etc/fstab`"
 
-    === "Manual"
-    
-        ```ini
-        LABEL=rootfs-rpi  /
-        LABEL=bootfs-rpi  /boot/firmware
+    === "Automatic"
+
+        ```shell
+        (
+          sed -i 's/^PARTUUID=[a-z0-9]*-01/\/dev\/nvme0n1p1/' /mnt/rpi/etc/fstab && \
+          sed -i 's/^PARTUUID=[a-z0-9]*-02/\/dev\/pve\/root/' /mnt/rpi/etc/fstab && \
+          cat /mnt/rpi/etc/fstab
+        )
         ```
 
-!!! abstract "`rpi/boot/firmware/cmdline.txt`"
+    === "Manual"
+    
+        ```ini
+        proc            /proc           proc    defaults          0       0
+        /dev/nvme0n1p1  /boot/firmware  vfat    defaults          0       2
+        /dev/pve/root  /               ext4    defaults,noatime  0       1
+        ```
+
+!!! abstract "`./rpi/boot/firmware/cmdline.txt`"
+
+    === "Automatic"
+
+        ```shell
+        sed -i 's/root=PARTUUID=[a-z0-9]*-02/root=\/dev\/pve\/root/' /mnt/rpi/boot/firmware/cmdline.txt
+        ```
 
     === "Manual"
     
         ```ini
-        root=LABEL=rootfs-rpi
+        console=serial0,115200 console=tty1 root=/dev/pve/root rootfstype=ext4 fsck.repair=yes rootwait cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
         ```
 
 !!! code "Unmount the partitions"
 
     ```shell
-    cd /mnt
-    umount rpi/boot/firmware
-    umount rpi
-    rm -r rpi
+    (
+      cd /mnt && \
+      umount ./rpi/boot/firmware/ && \
+      umount ./rpi/ && \
+      rm -r rpi/
+    )
     ```
 
-Optionally use `raspi-config` to set the boot order to be USB drive first.
+Reboot and hold the `spacebar` to get to the boot menu. Choose `6` for NVMe.
 
-### Troubleshooting
+If successful, use `raspi-config` to set the boot order to be NVMe drive first.
+
+### :stethoscope: Troubleshooting
 
 !!! code "Activate LVM volume group"
 
