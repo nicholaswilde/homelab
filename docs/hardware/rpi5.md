@@ -103,6 +103,22 @@ If `apt` is slow, it might be due to the pi reducing the power input.
     PSU_MAX_CURRENT=5000
     ```
 
+### :tv: [Set Resolution][12]
+
+!!! abstract "`/boot/firmware/cmdline.txt`"
+
+    === "Automatic"
+
+        ```env
+        sed -i `1s/$/ video=HDMI-A-1:1920x1080M@60D/' /boot/firmware/cmdline.txt
+        ```
+
+    === "Manual"
+
+        ```env
+        video=HDMI-A-1:1920x1080M@60D
+        ```
+
 ## :simple-proxmox: Proxmox
 
 See [Raspberry Pi 4 8GB][4].
@@ -443,6 +459,24 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
 Reboot and hold the `spacebar` to get to the boot menu. Choose `6` for NVMe.
 
+!!! success "Verify that it's booting from the NVMe"
+
+    ```shell
+    lsblk
+    ```
+    
+    ```shell title="Output"
+    NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    mmcblk0      179:0    0 119.1G  0 disk 
+    ├─mmcblk0p1  179:1    0   512M  0 part 
+    └─mmcblk0p2  179:2    0 118.6G  0 part 
+    nvme0n1      259:0    0 465.8G  0 disk 
+    ├─nvme0n1p1  259:1    0   511M  0 part /boot/firmware
+    └─nvme0n1p2  259:2    0 465.3G  0 part 
+      ├─pve-swap 254:0    0     8G  0 lvm  
+      └─pve-root 254:1    0    70G  0 lvm  /
+    ```
+
 If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 
 ### :broom: [Swap][10]
@@ -466,7 +500,22 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
     ```
 
     ```shell title="Output"
-    
+      --- Logical volume ---
+      LV Path                /dev/pve/swap
+      LV Name                swap
+      VG Name                pve
+      LV UUID                Gb7n93-OBv9-YtPu-vz7K-GeXK-G5fY-W2QQ3T
+      LV Write Access        read/write
+      LV Creation host, time raspberrypi, 2025-03-30 05:11:22 +0100
+      LV Status              available
+      # open                 0
+      LV Size                8.00 GiB
+      Current LE             2048
+      Segments               1
+      Allocation             inherit
+      Read ahead sectors     auto
+      - currently set to     256
+      Block device           254:0    
     ```
 
 !!! abstract "`/etc/fstab`"
@@ -477,20 +526,47 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
          /dev/pve/swap swap swap defaults 0 0 
         ```
 
+!!! code "Disable dphys-swapfile"
+
+    ```shell
+    dphys-swapfile swapoff
+    ```
+
 !!! code "Enable the extended logical volume"
 
     ```shell
     swapon -va
     ```
 
-!!! success "est that the logical volume has been extended properly"
+!!! success "Test that the swap has been extended properly"
 
     ```shell
     cat /proc/swaps # free
     ```
 
     ```shell title="Output"
+    Filename                                Type            Size            Used            Priority
+    /dev/dm-0                               partition       8388592         0               -2
+    ```
 
+### :pinching_hand: [LVM Thin][11]
+
+!!! code
+
+    ```shell
+    (
+      lvcreate -L 100G -n data pve && \
+      lvconvert --type thin-pool pve/data
+    )
+    ```
+
+??? abstract "`/etc/pve/storage.cfg`"
+
+    ```ini
+    lvmthin: local-lvm
+             thinpool data
+             vgname pve
+             content rootdir,images
     ```
 
 ### :stethoscope: Troubleshooting
@@ -563,3 +639,5 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
 [9]: <https://forums.raspberrypi.com/viewtopic.php?t=366552>
 [10]: <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/system_administration_guide/adding_swap_space-creating_an_lvm2_logical_volume_for_swap#Adding_Swap_Space-Creating_an_LVM2_Logical_Volume_for_Swap>
+[11]: <https://pve.proxmox.com/wiki/Storage:_LVM_Thin>
+[12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>

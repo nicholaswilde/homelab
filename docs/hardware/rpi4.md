@@ -340,6 +340,10 @@ Finally, you can connect to the admin web interface (`https://youripaddress:8006
 
 #### Missing `vmbr0`
 
+!!! warning
+
+    This should be done before reboot, else you won't be able to connect to the network!
+
 !!! abstract "Create `vmbr0` network interface in GUI"
 
     ```yaml
@@ -348,6 +352,23 @@ Finally, you can connect to the admin web interface (`https://youripaddress:8006
     IPv4: 192.168.1.192/24
     Gateweay: 192.168.1.1 
     Bridge Ports: eth0
+    ```
+
+!!! abstract "`/etc/network/interfaces`"
+
+    ```ini
+    auto lo
+    iface lo inet loopback
+    
+    iface eth0 inet manual
+    
+    auto vmbr0
+    iface vmbr0 inet static
+            address 192.168.2.192/24
+            gateway 192.168.2.1
+            bridge-ports eth0
+            bridge-stp off
+            bridge-fd 0
     ```
 
 Where `eth0` is the current existing network interface
