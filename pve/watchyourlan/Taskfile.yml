@@ -2,6 +2,15 @@
 version: '3'
 
 tasks:
+  init:
+    desc: Init
+    cmds:
+      - 'echo "$(pwd)/update.sh" > /usr/local/bin/update'
+      - 'chmod +x /usr/local/bin/update'
+  update:
+    desc: Update WakeYourLAN
+    cmds:
+     - ./update.sh
   export:
     desc: Export the task list
     cmds:

@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  update:
+    desc: Update Semaphore
+    cmds:
+     - ./update.sh
   export:
     desc: Export the task list
     cmds:
@@ -45,6 +49,8 @@ tasks:
     cmds:
       - cp .env.tmpl .env
       - cp config.json.tmpl config.json
+      - 'echo "$(pwd)/update.sh" > /usr/local/bin/update'
+      - 'chmod +x /usr/local/bin/update'
   decrypt:
     desc: Decrypt files using SOPS
     cmds:
