@@ -103,10 +103,9 @@ How to reset cluster. Useful if the node IP isn't matching during join.
 
     ```shell
     (
-      rm /etc/corosync/*  && \
-      rm -r /etc/corosync/*  && \
-      rm -r /etc/pve/corosync.conf  && \ 
-      killall pmxcfs && \
+      rm -rf /etc/corosync/*
+      rm -rf /etc/pve/corosync.conf 
+      killall pmxcfs
       systemctl start pve-cluster
     )
     ```
