@@ -110,6 +110,40 @@ How to reset cluster. Useful if the node IP isn't matching during join.
     )
     ```
 
+!!! code "The node is now separated from the cluster. You can deleted it from any remaining node of the cluster"
+
+    ```shell
+    pvecm delnode oldnode
+    ```
+
+!!! tip "If the command fails due to a loss of quorum in the remaining node, set the `expected` votes to `1` as a workaround"
+
+    ```shell
+    pvecm expected 1
+    ```
+
+And then repeat the `pvecm delnode` command.
+
+Now switch back to the separated node and delete all the remaining cluster files on it. This ensures that the node can be added to another cluster again without problems.
+
+!!! code "Separated node"
+
+    ```shell
+    rm /var/lib/corosync/*
+    ```
+
+As the configuration files from the other nodes are still in the cluster file system, you may want to clean those up too. After making absolutely sure that you have the correct node name, you can simply remove the entire directory recursively from `/etc/pve/nodes/NODENAME`.
+
+!!! code
+
+    ```shell
+    rm -rf /etc/pve/nodes/NODENAME
+    ```
+
+!!! warning
+
+    The node’s SSH keys will remain in the authorized_key file. This means that the nodes can still connect to each other with public key authentication. You should fix this by removing the respective keys from the `/etc/pve/priv/authorized_keys` file.
+
 ## :material-ip-network: Static IP
 
 ### :gear: Node
@@ -305,7 +339,7 @@ WIP
 - <https://pve.proxmox.com/wiki/>
 
 [1]: <https://www.proxmox.com/en/>
-[2]: <https://forum.proxmox.com/threads/remove-or-reset-cluster-configuration.114260/#post-493906>
+[2]: <https://pve.proxmox.com/pve-docs/chapter-pvecm.html#pvecm_separate_node_without_reinstall>
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
