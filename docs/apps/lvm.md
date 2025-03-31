@@ -4,7 +4,7 @@ tags:
 ---
 # :floppy_disk: [LVM][9]
 
-By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
+By default, Raspberry Pi OS does not come with [LVM][13]. However, LVM is useful for taking snapshots in Proxmox.
 
 ## :gear: Setup
 
@@ -437,7 +437,7 @@ Create an LVM thin pool which allocates blocks when they are written, thereby sa
              content rootdir,images
     ```
 
-### :stethoscope: Troubleshooting
+## :stethoscope: Troubleshooting
 
 !!! code "Activate LVM volume group"
 
@@ -507,3 +507,4 @@ Create an LVM thin pool which allocates blocks when they are written, thereby sa
 [10]: <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/system_administration_guide/adding_swap_space-creating_an_lvm2_logical_volume_for_swap#Adding_Swap_Space-Creating_an_LVM2_Logical_Volume_for_Swap>
 [11]: <https://pve.proxmox.com/wiki/Storage:_LVM_Thin>
 [12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>
+[13]: <https://en.wikipedia.org/wiki/Logical_volume_management>
