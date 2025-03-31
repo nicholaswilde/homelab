@@ -20,7 +20,7 @@ The main setup concept is as follows:
 8. Modify boot on new drive.
 9. Boot new drive.
 
-### Equipment
+### :toolbox: Equipment
 
 The following equipment was used:
 
