@@ -129,7 +129,7 @@ Now switch back to the separated node and delete all the remaining cluster files
 !!! code "Separated node"
 
     ```shell
-    rm /var/lib/corosync/*
+    rm -rf /var/lib/corosync/*
     ```
 
 As the configuration files from the other nodes are still in the cluster file system, you may want to clean those up too. After making absolutely sure that you have the correct node name, you can simply remove the entire directory recursively from `/etc/pve/nodes/NODENAME`.
