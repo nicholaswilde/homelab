@@ -526,10 +526,28 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
          /dev/pve/swap swap swap defaults 0 0 
         ```
 
-!!! code "Disable dphys-swapfile"
+!!! code "Disable dphys-swapfile temporarily"
 
     ```shell
     dphys-swapfile swapoff
+    ```
+
+!!! code "Stop the service"
+
+    ```shell
+    systemctl stop dphys-swapfile
+    ```
+
+!!! code "Disable the service"
+
+    ```shell
+    systemctl disable dphys-swapfile
+    ```
+
+!!! code "Remove the swap file to save disk space"
+
+    ```shell
+    rm /var/swap
     ```
 
 !!! code "Enable the extended logical volume"
@@ -550,6 +568,8 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
     ```
 
 ### :pinching_hand: [LVM Thin][11]
+
+Create an LVM thin pool which allocates blocks when they are written, thereby saving disk space.
 
 !!! code
 

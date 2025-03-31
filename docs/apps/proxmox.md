@@ -332,6 +332,132 @@ WIP
     kill -9 <process id>
     ```
 
+## :bell: [Email Notifications using Gmail][9]
+
+!!! code "Install dependencies"
+
+    ```bash
+    (
+      apt update
+      apt install -y libsasl2-modules mailutils
+    )
+    ```
+
+Enable 2FA for the gmail account that will be used by going to [security settings](https://myaccount.google.com/security).
+
+Create app password for the account.
+
+1. Go to [App Passwords](https://security.google.com/settings/security/apppasswords)
+2. Select app: `Mail`
+3. Select device: `Other`
+4. Type in: `Proxmox` or whatever you want here
+  
+!!! code "Write gmail credentials to file and hash it"
+
+    ```bash
+    echo "smtp.gmail.com youremail@gmail.com:yourpassword" > /etc/postfix/sasl_passwd
+    ```
+
+!!! code "Set file permissions to u=rw"
+    ```shell    
+    chmod 600 /etc/postfix/sasl_passwd
+    ```
+    
+!!! code "Generate `/etc/postfix/sasl_passwd.db`"
+    
+    ```shell
+    postmap hash:/etc/postfix/sasl_passwd
+    ```
+
+!!! warning
+
+    Comment out the existing line containing just `relayhost=` since we are using this key in our configuration we just pasted in.
+
+!!! abstract "Append the following to the end of the file: `/etc/postfix/main.cf` and comment out `relayhost=`"
+
+    ```ini
+    mydestination = $myhostname, localhost.$mydomain, localhost
+    # relayhost = 
+    mynetworks = 127.0.0.0/8
+    inet_interfaces = loopback-only
+    recipient_delimiter = +
+    
+    compatibility = 2
+    
+    relayhost = smtp.gmail.com:587
+    smtp_use_tls = yes
+    smtp_sasl_auth_enable = yes
+    smtp_sasl_security_options =
+    smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+    smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
+    smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
+    smtp_tls_session_cache_timeout = 3600s
+    ```
+
+??? info "Example Screenshot"
+
+    ![Screen Shot 2022-09-26 at 10 36 42 AM](https://user-images.githubusercontent.com/12147036/192343565-3d4c0235-07f7-4a82-8381-72e654368425.png)
+
+!!! code "Reload postfix"
+
+    ```shell
+    postfix reload
+    ```
+
+!!! success "Test to make sure everything is hunky-dory"
+
+    ```bash
+    echo "sample message" | mail -s "sample subject" anotheremail@gmail.com
+    ```
+
+### :incoming_envelope: [SMTP Setup][8]
+
+!!! example "Proxmox GUI"
+
+    Server: `smtp.gmail.com`
+
+    Encryption: `STARTTLS`
+
+    Port: `587`
+
+    Authenticate: :white_check_mark:
+
+    Username: `username@gmail.com`
+
+    Password: `password`
+
+    From Address: `username@gmail.com`
+
+    Recipient(s): `root@pam`
+
+    Addtional Recipient(s): `email@gmail.com`
+
+![test](https://pve.proxmox.com/pve-docs/images/screenshot/gui-datacenter-notification-smtp.png)
+
+??? abstract "`/etc/pve/notifications.cfg`"
+
+    ```ini
+    smtp: example
+            mailto-user root@pam
+            mailto-user admin@pve
+            mailto max@example.com
+            from-address pve1@example.com
+            username pve1
+            server mail.example.com
+            mode starttls
+    ```
+
+??? abstract "The matching entry in `/etc/pve/priv/notifications.cfg`, containing the secret token"
+
+    ```ini
+    smtp: example
+            password somepassword
+    ```
+
+### :material-bullseye-arrow: Targets to notify
+
+WIP
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
@@ -339,9 +465,11 @@ WIP
 - <https://pve.proxmox.com/wiki/>
 
 [1]: <https://www.proxmox.com/en/>
-[2]: <https://pve.proxmox.com/pve-docs/chapter-pvecm.html#pvecm_separate_node_without_reinstall>
+[2]: <https://pve.proxmox.com/wiki/Cluster_Manager#_remove_a_cluster_node>
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
 [6]: <https://pve.proxmox.com/wiki/Logical_Volume_Manager_(LVM)>
 [7]: <https://forum.proxmox.com/threads/backup-job-is-stuck-and-i-cannot-stop-it-or-even-kill-it.120835/#post-524962>
+[8]: <https://pve.proxmox.com/wiki/Notifications#notification_targets>
+[9]: <https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3>
