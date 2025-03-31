@@ -6,7 +6,9 @@ tags:
 
 By default, Raspberry Pi OS does not come with LVM. However, LVM is useful for taking snapshots in Proxmox.
 
-The main concept is as follows:
+## :gear: Setup
+
+The main setup concept is as follows:
 
 1. Create an SD card with a stock Raspberry Pi OS on a host system.
 2. Install necessary packages on SD card.
@@ -325,7 +327,7 @@ Reboot and hold the `spacebar` to get to the boot menu. Choose `6` for NVMe.
 
 If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 
-### :broom: [Swap][10]
+## :broom: [Swap][10]
 
 !!! code "Create the LVM2 logical volume"
 
@@ -413,7 +415,7 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
     /dev/dm-0                               partition       8388592         0               -2
     ```
 
-### :pinching_hand: [LVM Thin][11]
+## :pinching_hand: [LVM Thin][11]
 
 Create an LVM thin pool which allocates blocks when they are written, thereby saving disk space.
 
