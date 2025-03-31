@@ -37,6 +37,7 @@ nav:
       - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
+      - LVM: apps/lvm.md
       - mailrise: apps/mailrise.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
