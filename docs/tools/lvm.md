@@ -97,17 +97,44 @@ Insert SD card into Pi and boot from SD card.
 
 Remove the SD card from the Pi and insert it back into the host system.
 
-!!! code "Mount the SD card partitions and archive the contents to a `tar` file"
+!!! code "Switch to `root`"
 
     ```shell
     sudo su
-    cd /mnt
-    mkdir -p rpi/boot/firmware
-    mount /dev/mmcblk0p2 ./rpi
-    mount /dev/mmcblk0p1 ./rpi/boot/firmware
-    tar -cvzf rpi.tar.gz -C rpi ./
-    umount ./rpi/boot/firmware
-    umount ./rpi
+    ```
+
+!!! code "Get the `/dev` drive location"
+
+    ```shell
+    lsblk
+    ```
+
+    ```shell title="Output"
+    NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    mmcblk0      179:0    0 119.1G  0 disk 
+    ├─mmcblk0p1  179:1    0   512M  0 part /boot/firmware
+    └─mmcblk0p2  179:2    0 118.6G  0 part /
+    nvme0n1      259:0    0 465.8G  0 disk
+    ```
+
+!!! code "Set the drive location"
+
+    ```shell
+    DRIVE=mmcblk0
+    ```
+
+!!! code "Mount the SD card partitions and archive the contents to a `tar` file"
+
+    ```shell
+    (
+      cd /mnt
+      mount /dev/${DRIVE}p2 ./rpi
+      mkdir -p rpi/boot/firmware
+      mount /dev/${DRIVE}p1 ./rpi/boot/firmware
+      tar -cvzf rpi.tar.gz -C rpi ./
+      umount ./rpi/boot/firmware
+      umount ./rpi
+    )
     ```
 
 The SD card is not archived into the `/mnt/rpi.tar.gz` file on the host system.
@@ -128,11 +155,22 @@ Using `parted`, remove all partitions from the NVMe.
 
     THIS DESTROYS ALL EXISTING DATA ON THE NVMe
 
-!!! code
+!!! code "Switch to `root`"
 
     ```shell
     sudo su
-    parted /dev/nvme0n1
+    ```
+
+!!! code "Set the drive location"
+
+    ```shell
+    DRIVE=nvme0n1
+    ```
+
+!!! code
+
+    ```shell
+    parted /dev/${DRIVE}
     ```
 
 Identify the partition number: Once inside the parted interactive shell (you'll see a (parted) prompt), use the print command to list the partitions on the selected disk and find the number of the one you want to delete.
@@ -175,9 +213,9 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
     ```shell
     (
-      parted /dev/nvme0n1 mkpart primary fat32 2048s 512MiB && \
-      parted /dev/nvme0n1 mkpart primary ext4 512MiB 100% && \
-      parted /dev/nvme0n1 set 2 lvm on && \
+      parted /dev/${DRIVE} mkpart primary fat32 2048s 512MiB && \
+      parted /dev/${DRIVE} mkpart primary ext4 512MiB 100% && \
+      parted /dev/${DRIVE} set 2 lvm on && \
       lsblk
     )
     ```
@@ -197,15 +235,15 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 !!! code "Format and label the FAT partition"
 
     ```shell
-    mkfs.fat -F 32 -n bootfs-rpi /dev/nvme0n1p1
+    mkfs.fat -F 32 -n bootfs-rpi /dev/${DRIVE}p1
     ```
 
 !!! code "Setup LVM on the NVMe drive, create and format the root volume"
 
     ```shell
     (
-      pvcreate /dev/nvme0n1p2 && \
-      vgcreate pve /dev/nvme0n1p2 && \
+      pvcreate /dev/${DRIVE}p2 && \
+      vgcreate pve /dev/${DRIVE}p2 && \
       lvcreate -L 70G -n root pve && \
       mke2fs -t ext4 -L pve /dev/pve/root
     )
@@ -241,7 +279,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
       cd /mnt && \
       mkdir -p ./rpi/boot/firmware && \
       mount /dev/pve/root rpi && \
-      mount /dev/nvme0n1p1 ./rpi/boot/firmware && \
+      mount /dev/${DRIVE}p1 ./rpi/boot/firmware && \
       tar -xvzf rpi.tar.gz -C ./rpi
     )
     ```
