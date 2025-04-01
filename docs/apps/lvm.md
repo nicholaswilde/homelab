@@ -237,7 +237,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
     (
       cd /mnt && \
       mkdir -p ./rpi/boot/firmware && \
-      mount /dev/pve/pve-root rpi && \
+      mount /dev/pve/root rpi && \
       mount /dev/nvme0n1p1 ./rpi/boot/firmware && \
       tar -xvzf rpi.tar.gz -C ./rpi
     )
