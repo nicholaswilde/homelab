@@ -66,15 +66,19 @@ Insert SD card into Pi and boot from SD card.
 !!! code "Update the Pi"
 
     ```shell
-    apt update
-    apt full-upgrade
+    (
+      apt update
+      apt full-upgrade
+    )
     ```
 
 !!! code "Install `lvm2` and `initramfs-tools`"
 
     ```shell
-    apt install initramfs-tools
-    apt install lvm2 -y
+    (
+      apt install initramfs-tools
+      apt install lvm2 -y
+    )
     ```
 
 !!! code "Update `initramfs`"
@@ -120,17 +124,21 @@ Remove the SD card from the Pi and insert it back into the host system.
 !!! code "Set the drive location"
 
     ```shell
-    DRIVE=mmcblk0
+    DRIVE=mmcblk0p
     ```
+
+!!! note
+
+    The `p` needs to be added to the end of the drive if using an SD card or NVMe drive.
 
 !!! code "Mount the SD card partitions and archive the contents to a `tar` file"
 
     ```shell
     (
       cd /mnt
-      mount /dev/${DRIVE}p2 ./rpi
+      mount /dev/${DRIVE}2 ./rpi
       mkdir -p rpi/boot/firmware
-      mount /dev/${DRIVE}p1 ./rpi/boot/firmware
+      mount /dev/${DRIVE}1 ./rpi/boot/firmware
       tar -cvzf rpi.tar.gz -C rpi ./
       umount ./rpi/boot/firmware
       umount ./rpi
@@ -164,13 +172,17 @@ Using `parted`, remove all partitions from the NVMe.
 !!! code "Set the drive location"
 
     ```shell
-    DRIVE=nvme0n1
+    DRIVE=nvme0n1p
     ```
+
+!!! note
+
+    The `p` needs to be added to the end of the drive if using an SD card or NVMe drive.
 
 !!! code
 
     ```shell
-    parted /dev/${DRIVE}
+    parted /dev/${DRIVE%p}
     ```
 
 Identify the partition number: Once inside the parted interactive shell (you'll see a (parted) prompt), use the print command to list the partitions on the selected disk and find the number of the one you want to delete.
@@ -213,14 +225,17 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
     ```shell
     (
-      parted /dev/${DRIVE} mkpart primary fat32 2048s 512MiB && \
-      parted /dev/${DRIVE} mkpart primary ext4 512MiB 100% && \
-      parted /dev/${DRIVE} set 2 lvm on && \
-      lsblk
+      parted /dev/${DRIVE%p} mkpart primary fat32 2048s 512MiB && \
+      parted /dev/${DRIVE%p} mkpart primary ext4 512MiB 100% && \
+      parted /dev/${DRIVE%p} set 2 lvm on
     )
     ```
 
 !!! success "Check that the partitions were created successfully"
+
+    ```shell
+    lsblk
+    ```
 
     ```shell title="Output"
     NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
@@ -235,15 +250,15 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 !!! code "Format and label the FAT partition"
 
     ```shell
-    mkfs.fat -F 32 -n bootfs-rpi /dev/${DRIVE}p1
+    mkfs.fat -F 32 -n bootfs-rpi /dev/${DRIVE}1
     ```
 
 !!! code "Setup LVM on the NVMe drive, create and format the root volume"
 
     ```shell
     (
-      pvcreate /dev/${DRIVE}p2 && \
-      vgcreate pve /dev/${DRIVE}p2 && \
+      pvcreate /dev/${DRIVE}2 && \
+      vgcreate pve /dev/${DRIVE}2 && \
       lvcreate -L 70G -n root pve && \
       mke2fs -t ext4 -L pve /dev/pve/root
     )
@@ -279,7 +294,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
       cd /mnt && \
       mkdir -p ./rpi/boot/firmware && \
       mount /dev/pve/root rpi && \
-      mount /dev/${DRIVE}p1 ./rpi/boot/firmware && \
+      mount /dev/${DRIVE}1 ./rpi/boot/firmware && \
       tar -xvzf rpi.tar.gz -C ./rpi
     )
     ```
