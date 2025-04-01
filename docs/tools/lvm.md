@@ -479,6 +479,7 @@ Create an LVM thin pool which allocates blocks when they are written, thereby sa
 ## :link: References
 
 - <https://github.com/MikeJansen/rpi-boot-lvm>
+- <https://raspberrypi.stackexchange.com/questions/85958/easy-backups-and-snapshots-of-a-running-system-with-lvm>
 
 [1]: <../apps/adguard.md>
 [2]: <https://www.raspberrypi.com/software/>
