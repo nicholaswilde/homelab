@@ -332,7 +332,11 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 
 ## :broom: [Swap][10]
 
-!!! code "Create the LVM2 logical volume"
+This sets up a logical volume for swap instead of using the default Raspberry Pi OS file swap.
+
+Disable `dphys-swapfile` [file swap][14].
+
+!!! code "Create the LVM2 logical volume of 8GB"
 
     ```shell
     lvm lvcreate pve -n swap -L 8G
@@ -376,30 +380,6 @@ If successful, use `raspi-config` to set the boot order to be NVMe drive first.
         ```ini
          /dev/pve/swap swap swap defaults 0 0 
         ```
-
-!!! code "Disable dphys-swapfile temporarily"
-
-    ```shell
-    dphys-swapfile swapoff
-    ```
-
-!!! code "Stop the service"
-
-    ```shell
-    systemctl stop dphys-swapfile
-    ```
-
-!!! code "Disable the service"
-
-    ```shell
-    systemctl disable dphys-swapfile
-    ```
-
-!!! code "Remove the swap file to save disk space"
-
-    ```shell
-    rm /var/swap
-    ```
 
 !!! code "Enable the extended logical volume"
 
@@ -511,3 +491,4 @@ Create an LVM thin pool which allocates blocks when they are written, thereby sa
 [11]: <https://pve.proxmox.com/wiki/Storage:_LVM_Thin>
 [12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>
 [13]: <https://en.wikipedia.org/wiki/Logical_volume_management>
+[14]: <../hardware/rpi5.md#disable-permanently>

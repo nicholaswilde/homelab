@@ -37,7 +37,6 @@ nav:
       - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
-      - LVM: apps/lvm.md
       - mailrise: apps/mailrise.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
@@ -66,8 +65,9 @@ nav:
   - Tools:
       - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
-      - jinja2-cli: tools/jinja2-cli.md
       - .env Files: tools/env-files.md
+      - jinja2-cli: tools/jinja2-cli.md
+      - LVM: tools/lvm.md
       - micro: tools/micro.md
       - SOPS: tools/sops.md
       - Task: tools/task.md
