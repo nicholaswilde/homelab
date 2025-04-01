@@ -1,6 +1,9 @@
 ---
 tags:
   - proxmox
+  - rpi
+  - rpi4
+  - rpi5
 ---
 # :floppy_disk: [LVM][9]
 
