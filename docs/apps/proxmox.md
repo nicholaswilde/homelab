@@ -227,6 +227,10 @@ WIP
     pvdisplay
     ```
 
+    ```shell title="Output"
+    
+    ```
+
 !!! code "Instruct LVM that disk size has changed"
 
     ```shell
@@ -237,6 +241,10 @@ WIP
 
     ```shell
     pvdisplay
+    ```
+
+    ```shell title="Output"
+    
     ```
 
 ### :brain: Step 3: Extend Logical volume
@@ -259,6 +267,10 @@ WIP
     lvdisplay
     ```
 
+    ```shell title="Output"
+    
+    ```
+
 ### :open_file_folder: Step 4: Resize Filesystem
 
 !!! code "Resize Filesystem"
@@ -271,6 +283,10 @@ WIP
 
     ```shell
     fdisk -l
+    ```
+
+    ```shell title="Output"
+    
     ```
 
 ## :key: [private key /root/.ssh/id_rsa contents do not match][5]
@@ -320,9 +336,7 @@ WIP
     ps awxf | grep vzdump
     ```
 
-!!! note ""
-
-    ```shell
+    ```shell title="Output"
     2444287 ?        Ds     0:00 task UPID:server_name:00254BFF:06D36C31:63BB7524:vzdump::root@pam:
     ```
 
@@ -359,6 +373,7 @@ Create app password for the account.
     ```
 
 !!! code "Set file permissions to u=rw"
+
     ```shell    
     chmod 600 /etc/postfix/sasl_passwd
     ```
