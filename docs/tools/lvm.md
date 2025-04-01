@@ -319,7 +319,7 @@ Identify the partition number: Once inside the parted interactive shell (you'll 
 
         ```shell
         (
-          sed -i 's/^PARTUUID=[a-z0-9]*-01/\/dev\/nvme0n1p1/' /mnt/rpi/etc/fstab && \
+          sed -i 's/^PARTUUID=[a-z0-9]*-01/\/dev\/'"${DRIVE}"'1/' /mnt/rpi/etc/fstab && \
           sed -i 's/^PARTUUID=[a-z0-9]*-02/\/dev\/pve\/root/' /mnt/rpi/etc/fstab && \
           cat /mnt/rpi/etc/fstab
         )
