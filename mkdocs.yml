@@ -52,6 +52,7 @@ nav:
       - Unbound: apps/unbound.md
       - Uptime Kuma: apps/uptime-kuma.md
       - Vaultwarden: apps/vaultwarden.md
+      - Vaultwarden Backup: apps/vaultwarden-backup.md
       - Ventoy: apps/ventoy.md
       - WatchYourLAN: apps/watchyourlan.md
   - Hardware:
