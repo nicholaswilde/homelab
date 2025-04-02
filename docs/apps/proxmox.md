@@ -103,13 +103,46 @@ How to reset cluster. Useful if the node IP isn't matching during join.
 
     ```shell
     (
-      rm /etc/corosync/*  && \
-      rm -r /etc/corosync/*  && \
-      rm -r /etc/pve/corosync.conf  && \ 
-      killall pmxcfs && \
+      rm -rf /etc/corosync/*
+      rm -rf /etc/pve/corosync.conf 
+      killall pmxcfs
       systemctl start pve-cluster
     )
     ```
+
+!!! code "The node is now separated from the cluster. You can deleted it from any remaining node of the cluster"
+
+    ```shell
+    pvecm delnode oldnode
+    ```
+
+!!! tip "If the command fails due to a loss of quorum in the remaining node, set the `expected` votes to `1` as a workaround"
+
+    ```shell
+    pvecm expected 1
+    ```
+
+And then repeat the `pvecm delnode` command.
+
+Now switch back to the separated node and delete all the remaining cluster files on it. This ensures that the node can be added to another cluster again without problems.
+
+!!! code "Separated node"
+
+    ```shell
+    rm -rf /var/lib/corosync/*
+    ```
+
+As the configuration files from the other nodes are still in the cluster file system, you may want to clean those up too. After making absolutely sure that you have the correct node name, you can simply remove the entire directory recursively from `/etc/pve/nodes/NODENAME`.
+
+!!! code
+
+    ```shell
+    rm -rf /etc/pve/nodes/NODENAME
+    ```
+
+!!! warning
+
+    The node’s SSH keys will remain in the authorized_key file. This means that the nodes can still connect to each other with public key authentication. You should fix this by removing the respective keys from the `/etc/pve/priv/authorized_keys` file.
 
 ## :material-ip-network: Static IP
 
@@ -194,6 +227,10 @@ WIP
     pvdisplay
     ```
 
+    ```shell title="Output"
+    
+    ```
+
 !!! code "Instruct LVM that disk size has changed"
 
     ```shell
@@ -204,6 +241,10 @@ WIP
 
     ```shell
     pvdisplay
+    ```
+
+    ```shell title="Output"
+    
     ```
 
 ### :brain: Step 3: Extend Logical volume
@@ -226,6 +267,10 @@ WIP
     lvdisplay
     ```
 
+    ```shell title="Output"
+    
+    ```
+
 ### :open_file_folder: Step 4: Resize Filesystem
 
 !!! code "Resize Filesystem"
@@ -238,6 +283,10 @@ WIP
 
     ```shell
     fdisk -l
+    ```
+
+    ```shell title="Output"
+    
     ```
 
 ## :key: [private key /root/.ssh/id_rsa contents do not match][5]
@@ -287,9 +336,7 @@ WIP
     ps awxf | grep vzdump
     ```
 
-!!! note ""
-
-    ```shell
+    ```shell title="Output"
     2444287 ?        Ds     0:00 task UPID:server_name:00254BFF:06D36C31:63BB7524:vzdump::root@pam:
     ```
 
@@ -299,6 +346,133 @@ WIP
     kill -9 <process id>
     ```
 
+## :bell: [Email Notifications using Gmail][9]
+
+!!! code "Install dependencies"
+
+    ```bash
+    (
+      apt update
+      apt install -y libsasl2-modules mailutils
+    )
+    ```
+
+Enable 2FA for the gmail account that will be used by going to [security settings](https://myaccount.google.com/security).
+
+Create app password for the account.
+
+1. Go to [App Passwords](https://security.google.com/settings/security/apppasswords)
+2. Select app: `Mail`
+3. Select device: `Other`
+4. Type in: `Proxmox` or whatever you want here
+  
+!!! code "Write gmail credentials to file and hash it"
+
+    ```bash
+    echo "smtp.gmail.com youremail@gmail.com:yourpassword" > /etc/postfix/sasl_passwd
+    ```
+
+!!! code "Set file permissions to u=rw"
+
+    ```shell    
+    chmod 600 /etc/postfix/sasl_passwd
+    ```
+    
+!!! code "Generate `/etc/postfix/sasl_passwd.db`"
+    
+    ```shell
+    postmap hash:/etc/postfix/sasl_passwd
+    ```
+
+!!! warning
+
+    Comment out the existing line containing just `relayhost=` since we are using this key in our configuration we just pasted in.
+
+!!! abstract "Append the following to the end of the file: `/etc/postfix/main.cf` and comment out `relayhost=`"
+
+    ```ini
+    mydestination = $myhostname, localhost.$mydomain, localhost
+    # relayhost = 
+    mynetworks = 127.0.0.0/8
+    inet_interfaces = loopback-only
+    recipient_delimiter = +
+    
+    compatibility = 2
+    
+    relayhost = smtp.gmail.com:587
+    smtp_use_tls = yes
+    smtp_sasl_auth_enable = yes
+    smtp_sasl_security_options =
+    smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+    smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
+    smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
+    smtp_tls_session_cache_timeout = 3600s
+    ```
+
+??? info "Example Screenshot"
+
+    ![Screen Shot 2022-09-26 at 10 36 42 AM](https://user-images.githubusercontent.com/12147036/192343565-3d4c0235-07f7-4a82-8381-72e654368425.png)
+
+!!! code "Reload postfix"
+
+    ```shell
+    postfix reload
+    ```
+
+!!! success "Test to make sure everything is hunky-dory"
+
+    ```bash
+    echo "sample message" | mail -s "sample subject" anotheremail@gmail.com
+    ```
+
+### :incoming_envelope: [SMTP Setup][8]
+
+!!! example "Proxmox GUI"
+
+    Server: `smtp.gmail.com`
+
+    Encryption: `STARTTLS`
+
+    Port: `587`
+
+    Authenticate: :white_check_mark:
+
+    Username: `username@gmail.com`
+
+    Password: `password`
+
+    From Address: `username@gmail.com`
+
+    Recipient(s): `root@pam`
+
+    Addtional Recipient(s): `email@gmail.com`
+
+![test](https://pve.proxmox.com/pve-docs/images/screenshot/gui-datacenter-notification-smtp.png)
+
+??? abstract "`/etc/pve/notifications.cfg`"
+
+    ```ini
+    smtp: example
+            mailto-user root@pam
+            mailto-user admin@pve
+            mailto max@example.com
+            from-address pve1@example.com
+            username pve1
+            server mail.example.com
+            mode starttls
+    ```
+
+??? abstract "The matching entry in `/etc/pve/priv/notifications.cfg`, containing the secret token"
+
+    ```ini
+    smtp: example
+            password somepassword
+    ```
+
+### :material-bullseye-arrow: Targets to notify
+
+WIP
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
@@ -306,9 +480,11 @@ WIP
 - <https://pve.proxmox.com/wiki/>
 
 [1]: <https://www.proxmox.com/en/>
-[2]: <https://forum.proxmox.com/threads/remove-or-reset-cluster-configuration.114260/#post-493906>
+[2]: <https://pve.proxmox.com/wiki/Cluster_Manager#_remove_a_cluster_node>
 [3]: <https://forum.proxmox.com/threads/resize-ubuntu-vm-disk.117810/post-510089>
 [4]: <https://docs.goauthentik.io/integrations/services/proxmox-ve/>
 [5]: <https://forum.proxmox.com/threads/cant-connect-to-destination-address-using-public-key-task-error-migration-aborted.42390/post-663678>
 [6]: <https://pve.proxmox.com/wiki/Logical_Volume_Manager_(LVM)>
 [7]: <https://forum.proxmox.com/threads/backup-job-is-stuck-and-i-cannot-stop-it-or-even-kill-it.120835/#post-524962>
+[8]: <https://pve.proxmox.com/wiki/Notifications#notification_targets>
+[9]: <https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3>

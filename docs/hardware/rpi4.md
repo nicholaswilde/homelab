@@ -47,7 +47,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
     sudo raspi-config
     ```
 
-    ```
+    ```shell title="GUI"
     Advanced Options -> Boot Order -> B2 NVMe/USB
     ```
 
@@ -55,11 +55,42 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
     sudo reboot
     ```
 
-    ```shell title="Get vendorId and deviceId"
-    dmesg
+Sometimes, the USB adapter is slow and disconnections. The [device quirks][11] may need to be set.
+
+!!! code "Get `vendorId` and `deviceId`"
+
+    ```shell
+    sudo dmesg | grep usb
     ```
 
-!!! abstract "/boot/firmware/cmdline.txt"
+    ```shell title="Output"
+    [1.301989] usb 2-1: new SuperSpeed Gen 1 USB device number 2 using xhci_hcd
+    [1.332965] usb 2-1: New USB device found, idVendor=152d, idProduct=1561, bcdDevice= 1.00
+    [1.332999] usb 2-1: New USB device strings: Mfr=2, Product=3, SerialNumber=1
+    [1.333026] usb 2-1: Product: ASM105x
+    [1.333048] usb 2-1: Manufacturer: ASMT
+    [1.333071] usb 2-1: SerialNumber: 123456789B79F
+    ```
+
+!!! success "Verify the `vendorId` and `deviceId`"
+
+    ```shell
+    sudo lsusb
+    ```
+
+    ```shell title="Output"
+    Bus 002 Device 002: ID 152d:1561 ASMedia Technology Inc. Name: ASM1051E SATA 6Gb/s bridge
+    ```
+
+Combine the `vendorId` and `deviceId` to get make up the `quirks`.
+
+!!! example
+
+    ```ini
+    usb-storage.quirks=152d:1561:u
+    ```
+
+!!! abstract "Add the quirks to `/boot/firmware/cmdline.txt`"
 
     === "Automatic"
 
@@ -73,7 +104,7 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
         usb-storage.quirks=152d:1561:u console=serial0,115200 console=tty1 root=PARTUUID=fcf4cb94-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
         ```
 
-!!! abstract "/boot/firmware/config.txt"
+!!! abstract "`/boot/firmware/config.txt`"
 
     === "Automatic"
     
@@ -104,13 +135,25 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
 !!! code ""
 
-    ```shell
-    sudo raspi-config
-    sudo rpi-update
-    sudo raspi-config --expand-rootfs
-    ```
+    === "sudo"
+    
+        ```shell
+        sudo raspi-config
+        sudo rpi-update
+        sudo raspi-config --expand-rootfs
+        ```
+
+    === "root"
+    
+        ```shell
+        raspi-config
+        rpi-update
+        raspi-config --expand-rootfs
+        ```
 
 ## :simple-proxmox: Proxmox
+
+Setup [LVM][10] first
 
 ### Setup [Raspberry Pi OS][3].
 
@@ -373,15 +416,15 @@ Finally, you can connect to the admin web interface (`https://youripaddress:8006
 
 Where `eth0` is the current existing network interface
 
-## [Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Version' value from '' to '10.0' Error][5]
+## :x: [Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Version' value from '' to '10.0' Error][5]
 
 !!! code ""
 
-  ``` shell
-  apt --allow-releaseinfo-change update
-  ```
+    ``` shell
+    apt --allow-releaseinfo-change update
+    ```
 
-### :material-script-text: [Proxmox VE Helper-Scripts][4]
+## :material-script-text: [Proxmox VE Helper-Scripts][4]
 
 !!! code ""
 
@@ -441,11 +484,13 @@ See [Raspberry Pi 5 16GB][8].
 - <https://mirrors.apqa.cn/proxmox/isos/>
 
 [1]: <https://www.raspberrypi.com/products/raspberry-pi-4-model-b/>
-[3]: <https://www.raspberrypi.com/software/operating-systems/>
 [2]: <../apps/proxmox.md>
+[3]: <https://www.raspberrypi.com/software/operating-systems/>
 [4]: <https://community-scripts.github.io/ProxmoxVE/>
 [5]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
 [6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>>
 [7]: <https://mirrors.apqa.cn/proxmox/isos/>
 [8]: <./rpi5.md>
 [9]: <https://cdn.shopify.com/s/files/1/0556/1660/2177/files/Argon_Fan_Hat.pdf>
+[10]: <../tools/lvm.md>
+[11]: <https://jamesachambers.com/fixing-storage-adapters-for-raspberry-pi-via-firmware-updates/comment-page-1/>
