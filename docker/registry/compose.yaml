@@ -2,7 +2,7 @@
 services:
   registry:
     container_name: registry
-    image: library/registry:2.8.3
+    image: library/registry:3.0.0
     environment:
       - REGISTRY_STORAGE_DELETE_ENABLED=true
       - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
