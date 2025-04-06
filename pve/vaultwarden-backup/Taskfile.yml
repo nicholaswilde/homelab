@@ -22,18 +22,17 @@ tasks:
     cmds:
       - cp .env.tmpl .env
   decrypt:
-    desc: Decrypt .env using SOPS
+    desc: Decrypt backup.conf using SOPS
     cmds:
-      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d backup.conf.enc > backup.conf
   encrypt:
     desc: Encrypt .env using SOPS
     cmds:
-      - sops -e .env > .env.enc
+      - sops -e backup.conf > backup.conf.enc
   update:
     desc: Update running containers
     cmds:
-      - docker compose up --force-recreate --build -d
-      - docker image prune -a -f
+      - git -C {{ .INSTALL_DIR }} pull origin
   up:
     desc: Tun Docker compose in the foreground.
     cmds:
@@ -60,9 +59,10 @@ tasks:
     cmds:
       - systemctl start {{ .SERVICE_NAME }}.service
   mklinks:
-    desc: Make client symlinks
+    desc: Make symlinks to backup.conf
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+      - mv {{ .INSTALL_DIR }}/backup.conf {{ .INSTALL_DIR }}/backup.conf.bak
+      - ln -sf {{ .TASKFILE_DIR }}/backup.conf  {{ .INSTALL_DIR }}/backup.conf
   default:
     cmds:
       - task -l
