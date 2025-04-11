@@ -19,3 +19,5 @@ semaphore_db.bolt
 
 filebrowser.db
 **/filebrowser/settings.json
+
+backup.conf

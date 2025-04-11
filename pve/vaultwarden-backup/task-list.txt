@@ -1,10 +1,10 @@
 task: Available tasks for this project:
-* decrypt:       Decrypt .env using SOPS
+* decrypt:       Decrypt backup.conf using SOPS
 * enable:        Enable service
 * encrypt:       Encrypt .env using SOPS
 * export:        Export the task list
 * init:          Init
-* mklinks:       Make client symlinks
+* mklinks:       Make symlinks to backup.conf
 * restart:       Resart service
 * start:         Start service
 * status:        Service status
