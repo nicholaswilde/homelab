@@ -5,9 +5,9 @@
 # ----------------
 # Install Ventoy
 #
-# @author Nicholas Wilde, 0x08b7d7a3
+# @author Nicholas Wilde, 0xb299a622
 # @date 11 Feb 2025
-# @version 0.2.0
+# @version 0.2.1
 #
 ################################################################################
 
