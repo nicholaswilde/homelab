@@ -6,8 +6,8 @@
 # Update WatchYourLAN
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 29 Mar 2025
-# @version 0.1.0
+# @date 22 Apr 2025
+# @version 0.1.1
 #
 ################################################################################
 
