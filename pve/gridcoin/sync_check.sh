@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################################################################
 #
 # sync_check
 # ----------------
 # Check if Gridcoin wallet is in sync
 #
-# @author Nicholas Wilde, 0x08b7d7a3
-# @date 27 Jul 2024
-# @version 0.1.0
+# @author Nicholas Wilde, 0xb299a622
+# @date 22 Apr 2025
+# @version 0.1.1
 #
 ################################################################################
 
