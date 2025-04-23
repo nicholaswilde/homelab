@@ -11,6 +11,25 @@
 #
 ################################################################################
 
+# set -e
+# set -o pipefail
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+red=$(tput setaf 1)
+blue=$(tput setaf 4)
+default=$(tput setaf 9)
+white=$(tput setaf 7)
+yellow=$(tput setaf 3)
+
+readonly bold
+readonly normal
+readonly red
+readonly blue
+readonly default
+readonly white
+readonly yellow
+
 function print_text(){
   echo "${blue}==> ${white}${bold}${1}${normal}"
 }
@@ -35,9 +54,8 @@ function command_exists() {
 }
 
 function update_script() {
-   if [[ ! -f /usr/local/bin/gitea ]]; then
-      msg_error "No ${APP} Installation Found!"
-      exit
+   if ! command_exists gitea; then
+      raise_error "No gitea Installation Found!"
    fi
    RELEASE=$(curl -fsSL https://github.com/go-gitea/gitea/releases/latest | grep "title>Release" | cut -d " " -f 4 | sed 's/^v//')
    msg_info "Updating $APP to ${RELEASE}"
