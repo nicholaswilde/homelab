@@ -63,6 +63,12 @@ function check_url(){
   fi
 }
 
+function check_curl(){
+  if ! command_exists curl; then
+    raise_error "curl is not installed"
+  fi
+}
+
 function update_script() {
    if ! command_exists gitea; then
       raise_error "No gitea Installation Found!"
@@ -79,4 +85,9 @@ function update_script() {
    exit 0
 }
 
-update_script "@"
+function main(){
+  check_curl
+  update_script
+}
+
+main "@"
