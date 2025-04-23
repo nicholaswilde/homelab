@@ -1,4 +1,15 @@
-
+#!/usr/bin/env bash
+################################################################################
+#
+# update
+# ----------------
+# Update gitea
+#
+# @author Nicholas Wilde, 0xb299a622
+# @date 23 Apr 2025
+# @version 0.1.0
+#
+################################################################################
 
 function update_script() {
    if [[ ! -f /usr/local/bin/gitea ]]; then
@@ -14,5 +25,7 @@ function update_script() {
    chmod +x /usr/local/bin/gitea
    systemctl start gitea
    msg_ok "Updated $APP Successfully"
-   exit
+   exit 0
 }
+
+update_script "@"
