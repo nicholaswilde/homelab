@@ -53,6 +53,16 @@ function command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+function check_url(){
+  local url="${1}"
+  local status=$(curl -sSL -o /dev/null -w "${http_code}" "${url}")
+  if [[ "${status}" -ge 200 && "${status}" -lt 400 ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 function update_script() {
    if ! command_exists gitea; then
       raise_error "No gitea Installation Found!"
