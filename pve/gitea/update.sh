@@ -11,6 +11,29 @@
 #
 ################################################################################
 
+function print_text(){
+  echo "${blue}==> ${white}${bold}${1}${normal}"
+}
+
+function show_warning(){
+  printf "${yellow}%s\n" "${1}${normal}"
+}
+
+function raise_error(){
+  printf "${red}%s\n" "${1}${normal}"
+  exit 1
+}
+
+# Check if variable is set
+# Returns false if empty
+function is_set(){
+  [ -n "${1}" ]
+}
+
+function command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
 function update_script() {
    if [[ ! -f /usr/local/bin/gitea ]]; then
       msg_error "No ${APP} Installation Found!"
