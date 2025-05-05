@@ -17,7 +17,7 @@ services:
       - ./etc:/app/etc
     restart: always
   redis:
-    image: redis:4-alpine
+    image: redis:8-alpine
     volumes:
       - redis_data:/data
 volumes:
