@@ -15,6 +15,7 @@ Emoji that are used on this site.
 | `## :simple-task: Task` | :simple-task: Task List |
 | `## :simple-traefikproxy: Traefik` | :simple-traefikproxy: Traefik |
 | `## :rocket: Upgrade` | :rocket: Upgrade |
+| `## :stethoscope: Troubleshooting` | :stethoscope: Troubleshooting |
 | `## :link: Reference` | :link: Reference |
 
 ## :link: Reference
