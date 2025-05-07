@@ -32,8 +32,7 @@ tasks:
   update:
     desc: Update running containers
     cmds:
-      - docker compose up --force-recreate --build -d
-      - docker image prune -a -f
+      - ./update.sh
   up:
     desc: Tun Docker compose in the foreground.
     cmds:
