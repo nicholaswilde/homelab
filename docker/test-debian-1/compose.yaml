@@ -1,0 +1,9 @@
+---
+services:
+  test-debian-1:
+    image: alpine:latest # Replace with your_image_name:tag
+    # If your image already runs a continuous process (e.g., a web server),
+    # you might not need the 'command' below.
+    # This command is just an example to keep a basic image like 'alpine' running.
+    command: sh -c "while true; do echo 'Service is running at $(date)'; sleep 60; done"
+    restart: unless-stopped
