@@ -13,7 +13,7 @@ tags:
 
 !!! example ""
 
-    :material-console-network: Default Port: 8383
+    :material-console-network: Default Port: 8945
 
     :material-information-outline: Configuration path: 
 
