@@ -41,6 +41,7 @@ nav:
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
       - OpenMediaVault: apps/openmediavault.md
+      - Pinchflat: apps/pinchflat.yaml
       - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
