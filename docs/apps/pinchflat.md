@@ -7,6 +7,8 @@ tags:
 ---
 # Pinchflat
 
+[Pinchflat][1] is a self-hosted app for downloading YouTube content built using [`yt-dlp`][2].
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -62,3 +64,4 @@ tags:
 ## :link: References
 
 [1]: <https://github.com/kieraneglin/pinchflat>
+[2]: <>
