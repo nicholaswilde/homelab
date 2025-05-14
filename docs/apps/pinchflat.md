@@ -5,9 +5,11 @@ tags:
   - proxmox
   - docker
 ---
-# Pinchflat
+# :film_frames: Pinchflat
 
 [Pinchflat][1] is a self-hosted app for downloading YouTube content built using [`yt-dlp`][2].
+
+This app is being used to automatically download videos from YouTube and store them on my NFS share so that I can stream the videos to my Apple TV via Infuse without having to watch commercials and take up bandwidth every time a video is rewatched.
 
 ## :hammer_and_wrench: Installation
 
