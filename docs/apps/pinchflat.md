@@ -17,8 +17,6 @@ This app is being used to automatically download videos from YouTube and store t
 
     :material-console-network: Default Port: 8945
 
-    :material-information-outline: Configuration path: 
-
 !!! code "`homelab/docker/pinchflat`"
 
     === "Task"
