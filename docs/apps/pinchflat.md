@@ -9,7 +9,7 @@ tags:
 
 [Pinchflat][1] is a self-hosted app for downloading YouTube content built using [`yt-dlp`][2].
 
-This app is being used to automatically download videos from YouTube and store them on my NFS share so that I can stream the videos to my Apple TV via [Infuse][3] without having to watch commercials and take up bandwidth every time a video is rewatched.
+This app is being used to automatically download videos from YouTube and store them on my [NFS share][4] so that I can stream the videos to my Apple TV via [Infuse][3] without having to watch commercials and take up bandwidth every time a video is rewatched.
 
 ## :hammer_and_wrench: Installation
 
@@ -66,3 +66,4 @@ This app is being used to automatically download videos from YouTube and store t
 [1]: <https://github.com/kieraneglin/pinchflat>
 [2]: <https://github.com/yt-dlp/yt-dlp>
 [3]: <https://firecore.com/infuse>
+[4]: <./openmediavault.md>
