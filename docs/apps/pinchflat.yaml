@@ -31,24 +31,24 @@ tags:
 
 ## :gear: Config
 
-!!! abstract "`homelab/docker/pincflat/.env`"
+!!! abstract "`homelab/docker/pinchflat/.env`"
 
     ```ini
     --8<-- "pinchflat/.env.tmpl"
     ```
 
-??? abstract "`homelab/docker/{{ APP_NAME_LOWER }}/compose.yaml`"
+??? abstract "`homelab/docker/pinchflat/compose.yaml`"
 
     ```yaml
-    --8<-- "{{ APP_NAME_LOWER }}/compose.yaml"
+    --8<-- "pinchflat/compose.yaml"
     ```
 
 ## :simple-traefikproxy: Traefik
 
-??? abstract "`homelab/pve/traefik/conf.d/{{ APP_NAME_LOWER }}.yaml`"
+??? abstract "`homelab/pve/traefik/conf.d/pinchflat.yaml`"
 
     ```yaml
-    --8<-- "traefik/conf.d/{{ APP_NAME_LOWER }}.yaml"
+    --8<-- "traefik/conf.d/pinchflat.yaml"
     ```
 
 ## :simple-task: Task List
@@ -56,10 +56,7 @@ tags:
 !!! example ""
 
     ```yaml
-    --8<-- "{{ APP_NAME_LOWER }}/task-list.txt"
+    --8<-- "pinchflat/task-list.txt"
     ```
 
 ## :link: References
-
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ APP_NAME_LOWER }}>
-- <https://pimox-scripts.com/scripts?id={{ APP_NAME_LOWER }}>
