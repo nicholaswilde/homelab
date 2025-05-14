@@ -1,0 +1,65 @@
+---
+tags:
+  - lxc
+  - vm
+  - proxmox
+  - docker
+---
+# pinchflat
+
+## :hammer_and_wrench: Installation
+
+!!! example ""
+
+    :material-console-network: Default Port: 8383
+
+    :material-information-outline: Configuration path: 
+
+!!! code "`homelab/docker/pinchflat`"
+
+    === "Task"
+
+        ```shell
+        task up
+        ```
+
+    === "Docker Compose"
+
+        ```shell
+        docker compose up
+        ```
+
+## :gear: Config
+
+!!! abstract "`homelab/docker/pincflat/.env`"
+
+    ```ini
+    --8<-- "pinchflat/.env.tmpl"
+    ```
+
+??? abstract "`homelab/docker/{{ APP_NAME_LOWER }}/compose.yaml`"
+
+    ```yaml
+    --8<-- "{{ APP_NAME_LOWER }}/compose.yaml"
+    ```
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/{{ APP_NAME_LOWER }}.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/{{ APP_NAME_LOWER }}.yaml"
+    ```
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "{{ APP_NAME_LOWER }}/task-list.txt"
+    ```
+
+## :link: References
+
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id={{ APP_NAME_LOWER }}>
+- <https://pimox-scripts.com/scripts?id={{ APP_NAME_LOWER }}>
