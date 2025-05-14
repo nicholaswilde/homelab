@@ -33,6 +33,8 @@ This app is being used to automatically download videos from YouTube and store t
 
 ## :gear: Config
 
+I am currently investigating how to format the metadata for Infuse to properly pickup the video automatically. I also need to figure out how to setup Infuse.
+
 !!! abstract "`homelab/docker/pinchflat/.env`"
 
     ```ini
