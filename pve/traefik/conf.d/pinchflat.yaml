@@ -1,0 +1,21 @@
+---
+http:
+ #region routers 
+  routers:
+    pinchflat:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`pinchflat.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: pinchflat
+#endregion
+#region services
+  services:
+    pinchflat:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.138:8945"
+        passHostHeader: true
