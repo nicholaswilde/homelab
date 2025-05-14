@@ -1,0 +1,16 @@
+---
+
+services:
+  pinchflat:
+    container_name: pinchflat
+    image: ghcr.io/kieraneglin/pinchflat:v2025.3.17
+    env_file:
+      - .env
+    environment:
+      - TZ=America/Los_Angeles
+    ports:
+      - '8945:8945'
+    restart: always
+    volumes:
+      - /root/git/nicholaswilde/homelab/docker/pinchflat/config:/config
+      - /mnt/storage/youtube:/downloads
