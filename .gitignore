@@ -21,3 +21,5 @@ filebrowser.db
 **/filebrowser/settings.json
 
 backup.conf
+
+**/pinchflat/config/
