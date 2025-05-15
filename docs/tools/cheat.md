@@ -17,15 +17,9 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
 
 !!! code ""
 
-    === "AMD64"
-
-        ```shell
-        ```
-
-    === "ARM64"
-
-        ```shell
-        ```
+    ```shell
+    curl https://installer.l.nicholaswilde.io/cheat/cheat?type=script | bash
+    ```
 
 ## :gear: Config
 
