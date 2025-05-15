@@ -144,10 +144,3 @@
     - VS Code:
         icon: mdi-microsoft-visual-studio-code
         href: https://code.l.nicholaswilde.io/
-- Automation:
-    - Kestra:
-        icon: sh-kestra.svg
-        href: https://kestra.l.nicholaswilde.io
-    - Semaphore:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/semaphore-ui-light.svg
-        href: https://semaphore.l.nicholaswilde.io

@@ -26,7 +26,7 @@ I also have a Raspberry Pi Zero W running and NTP server.
 
 ## :hammer_and_wrench: Setup & Maintenance
 
-My homelab is setup and maintained using [Ansible][5] and [Semaphore UI][7], which is documented [here][6].
+My homelab is setup and maintained using [Ansible][5], which is documented [here][6].
 
 ---
 
@@ -52,4 +52,3 @@ Check out the [Development](./reference/development.md) page.
 
 [5]: <https://www.redhat.com/en/ansible-collaborative>
 [6]: <https://github.com/nicholaswilde/homelab-playbooks>
-[7]: <https://semaphoreui.com/>
