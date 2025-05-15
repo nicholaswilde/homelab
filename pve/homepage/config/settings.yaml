@@ -19,10 +19,6 @@ layout:
     style: row
     columns: 3
     icon: mdi-wall-fire
-  Automation:
-    style: row
-    columns: 2
-    icon: mdi-robot
   Media:
     style: row
     columns: 4
