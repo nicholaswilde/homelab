@@ -27,6 +27,14 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
         ```shell
         ```
 
+## :pencil: Usage
+
+!!! example
+
+    ```shell
+    cheat gpg
+    ```
+
 ## :link: References
 
 [1]: <https://github.com/cheat/cheat>
