@@ -65,6 +65,7 @@ nav:
   - Tools:
       - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
+      - cheat: tools/cheat.md
       - .env Files: tools/env-files.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
