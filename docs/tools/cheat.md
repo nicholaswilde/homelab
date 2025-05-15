@@ -32,7 +32,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
 
     === "Manual"
 
-        ```shell
+        ```yaml
         # conf.yml
         cheatpaths:
           - name: personal
