@@ -27,6 +27,20 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
         ```shell
         ```
 
+## :gear: Config
+
+!!! abstract ""
+
+    === "Automated"
+
+        ```shell
+        ```
+
+    === "Manual"
+
+        ```shell
+        ```
+        
 ## :pencil: Usage
 
 !!! example
