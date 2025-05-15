@@ -54,10 +54,16 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
         
 ## :pencil: Usage
 
-!!! example
+!!! code "Show gpg cheatsheet"
 
     ```shell
     cheat gpg
+    ```
+
+!!! code "Edit gpg cheatsheet"
+
+    ```shell
+    cheat -e gpg
     ```
 
 ## :link: References
