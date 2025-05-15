@@ -23,7 +23,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
 
 ## :gear: Config
 
-!!! abstract ""
+!!! abstract "~/.config/cheat/conf.yml"
 
     === "Automated"
 
@@ -33,7 +33,6 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
     === "Manual"
 
         ```yaml
-        # conf.yml
         cheatpaths:
           - name: personal
             path: /mnt/storage/cheat/cheatsheets/personal  # this is a separate directory and repository than above
