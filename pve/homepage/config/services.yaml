@@ -132,9 +132,6 @@
         icon: https://a.fsdn.com/allura/p/ventoy/icon?83b3cf3559dee8e8a1302821225c2e6076b1e2fded2a1ddc8c229a99eb9efd5a?&w=90
         href: https://ventoy.l.nicholaswilde.io/
 - Development Tools:
-    - cheat.sh:
-        icon: mdi-laptop
-        href: https://cheatsh.l.nicholaswilde.io
     - DeepSeek:
         icon: sh-deepseek.svg
         href: https://deepseek.l.nicholaswilde.io
