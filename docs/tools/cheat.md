@@ -1,10 +1,10 @@
 ---
 tags:
   - lxc
-  - vm
   - proxmox
+  - tool
 ---
-# cheat
+# :clipboard: cheat
 
 [`cheat`][1] allows you to create and view interactive cheatsheets on the
 command-line. It was designed to help remind *nix system administrators
