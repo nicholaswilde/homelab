@@ -34,6 +34,19 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
     === "Automated"
 
         ```shell
+        cat > ~/.config/cheat/conf.yml <<EOF
+        ---
+        cheatpaths:
+          - name: community                
+            path: mnt/storage/cheat/cheatsheets/community
+            tags: [ community ]            
+            readonly: true
+
+          - name: personal
+            path: /mnt/storage/cheat/cheatsheets/personal  # this is a separate directory and repository than above
+            tags: [ personal ]
+            readonly: false
+        EOF
         ```
 
     === "Manual"
