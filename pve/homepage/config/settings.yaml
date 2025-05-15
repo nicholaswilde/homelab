@@ -25,7 +25,7 @@ layout:
     icon: mdi-robot
   Media:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-camera-iris
   Development Tools:
     style: row

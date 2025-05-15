@@ -70,6 +70,9 @@
     - Paperless:
         icon: si-paperlessngx
         href: https://paperless.l.nicholaswilde.io
+    - Pinchflat:
+        icon: sh-pinchflat.png
+        href: https://pinchflat.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
