@@ -23,6 +23,12 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
 
 ## :gear: Config
 
+!!! code "Make the config dir"
+
+    ```shell
+    mkdir -p ~/.config/cheat
+    ```
+
 !!! abstract "~/.config/cheat/conf.yml"
 
     === "Automated"
