@@ -39,7 +39,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
             path: /mnt/storage/cheat/cheatsheets/personal  # this is a separate directory and repository than above
             tags: [ personal ]
             readonly: false 
-            ```
+        ```
         
 ## :pencil: Usage
 
