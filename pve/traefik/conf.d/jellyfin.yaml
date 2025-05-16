@@ -1,0 +1,21 @@
+---
+http:
+ #region routers 
+  routers:
+    jellyfin:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`jellyfin.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: jellyfin
+#endregion
+#region services
+  services:
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.140:8096"
+        passHostHeader: true
