@@ -38,7 +38,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
         ---
         cheatpaths:
           - name: community                
-            path: mnt/storage/cheat/cheatsheets/community
+            path: /mnt/storage/cheat/cheatsheets/community
             tags: [ community ]            
             readonly: true
 
@@ -55,7 +55,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
         ---
         cheatpaths:
           - name: community                
-            path: mnt/storage/cheat/cheatsheets/community
+            path: /mnt/storage/cheat/cheatsheets/community
             tags: [ community ]            
             readonly: true
 
@@ -64,7 +64,16 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
             tags: [ personal ]
             readonly: false 
         ```
-        
+
+!!! code "Download cheatsheets locally"
+
+    ```shell
+    (
+      mkdir -p /mnt/storage/cheat/cheatsheets
+      git clone git@github.com:nicholaswilde/cheatsheets /mnt/storage/cheat/cheatsheets/personal
+    )
+    ```
+
 ## :pencil: Usage
 
 !!! code "Show gpg cheatsheet"
