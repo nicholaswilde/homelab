@@ -32,7 +32,7 @@ readonly white
 
 dists=(debian ubuntu)
 debian_codenames=(bullseye bookworm)
-ubuntu_codenames=(noble oracular)
+ubuntu_codenames=(noble oracular jammy)
 usernames=(getsops go-task)
 apps=(sops task)
 
@@ -113,7 +113,7 @@ function get_latest_version(){
 
 function get_current_version(){
   APP_NAME="${1}"
-  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list oracular "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
+  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
   export CURRENT_VERSION
   print_text "Current version: ${CURRENT_VERSION}"
 }
@@ -124,6 +124,7 @@ function add_package(){
   wget "${PACKAGE_URL}" -q -O "${FILEPATH}"
   reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb oracular "${FILEPATH}"
   reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb noble "${FILEPATH}"
+  reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb jammy "${FILEPATH}"
   reprepro -b /srv/reprepro/debian/ includedeb bookworm "${FILEPATH}"
   reprepro -b /srv/reprepro/debian/ includedeb bullseye "${FILEPATH}"
 }
