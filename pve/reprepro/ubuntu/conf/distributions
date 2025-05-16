@@ -17,3 +17,13 @@ Description: Apt repository for Ubuntu stable - Noble
 DebOverride: override.noble
 DscOverride: override.noble
 SignWith: 089C9FAF 
+
+Origin: Ubuntu
+Label: Jammy apt repository
+Codename: jammy
+Architectures: amd64 arm64  
+Components: main  
+Description: Apt repository for Ubuntu stable - Jammy
+DebOverride: override.jammy
+DscOverride: override.jammy
+SignWith: 089C9FAF 
