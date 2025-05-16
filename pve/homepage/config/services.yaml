@@ -61,6 +61,9 @@
         icon: si-wireguard
         href: https://wireguard.l.nicholaswilde.io
 - Media:
+    - Jellyfin:
+        icon: si-jellyfin
+        href: https://jellyfin.l.nicholaswilde.io
     - Excalidraw:
         icon: si-excalidraw
         href: https://draw.l.nicholaswilde.io
