@@ -60,7 +60,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
             readonly: true
 
           - name: personal
-            path: /mnt/storage/cheat/cheatsheets/personal  # this is a separate directory and repository than above
+            path: /mnt/storage/cheat/cheatsheets/personal
             tags: [ personal ]
             readonly: false 
         ```
@@ -70,7 +70,7 @@ I use this rather than [cheat.sh][2] because I can more easily add and edit my o
     ```shell
     (
       mkdir -p /mnt/storage/cheat/cheatsheets
-      git clone git@github.com:nicholaswilde/cheatsheets /mnt/storage/cheat/cheatsheets/personal
+      git clone git@github.com:nicholaswilde/cheatsheets.git /mnt/storage/cheat/cheatsheets/personal
     )
     ```
 
