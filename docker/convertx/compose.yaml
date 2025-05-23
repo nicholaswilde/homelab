@@ -1,0 +1,16 @@
+---
+services:
+  convertx:
+    container_name: "${CONTAINER_NAME}"
+    image: "ghcr.io/c4illin/convertx:v0.13.0"
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    restart: always
+    environment:
+      - HTTP_ALLOWED=true
+      - ALLOW_UNAUTHENTICATED=true
+      # - "JWT_SECRET=${JWT_SECRET}"
+    volumes:
+      - ./data:/app/data
