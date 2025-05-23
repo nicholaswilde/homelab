@@ -29,7 +29,25 @@ tags:
 
 ## :gear: Config
 
-WIP
+!!! abstract "`homelab/docker/cyberkeygen/.env`"
+
+    ```ini
+    --8<-- "cyberkeygen/.env.tmpl"
+    ```
+
+??? abstract "`homelab/docker/cyberkeygen/compose.yaml`"
+
+    ```yaml
+    --8<-- "cyberkeygen/compose.yaml"
+    ```
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/cyberkeygen.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/cyberkeygen.yaml"
+    ```
 
 ## :simple-task: Task List
 
