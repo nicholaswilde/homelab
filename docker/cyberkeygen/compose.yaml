@@ -1,11 +1,12 @@
 ---
-
 services:
   cyberkeygen:
-    container_name: cyberkeygen
-    image: ghcr.io/username/cyberkeygen:1.0.0
+    container_name: "${CONTAINER_NAME}"
+    image: "nginx:1.28.0"
     env_file:
       - .env
     ports:
-      - '8000:8000'
+      - '8080:80'
     restart: always
+    volumes:
+      - "${CONFIG_DIR}:/usr/share/nginx/html"

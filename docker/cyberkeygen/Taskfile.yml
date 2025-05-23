@@ -21,10 +21,26 @@ tasks:
     desc: Docker container status
     cmds:
       - docker container ps
-  init:
+  deps:
+    desc: Install dependencies
+    cmds:
+      - sudo apt update
+      - sudo apt install npm git -y
+  init-env:
     desc: Init .env file
     cmds:
       - cp .env.tmpl .env
+  init:
+    desc: Init everything
+    cmds:
+      - rm -rf {{ .INSTALL_DIR }}
+      - mkdir -p {{ .INSTALL_DIR }}
+      - git clone https://github.com/karthik558/CyberKeyGen.git {{ .INSTALL_DIR }}
+      - npm install --prefix {{ .INSTALL_DIR }} -D vite
+  build:
+    desc: Build
+    cmds:
+      - npm run --prefix {{ .INSTALL_DIR }} build
   decrypt:
     desc: Decrypt .env using SOPS
     cmds:
@@ -36,6 +52,8 @@ tasks:
   update:
     desc: Update running containers
     cmds:
+      - git -C {{ .INSTALL_DIR }} pull origin
+      - task: build
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f
   up:
