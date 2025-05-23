@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    cyberkeygen:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`cyberkeygen.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: cyberkeygen
+#endregion
+#region services
+  services:
+    cyberkeygen:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.104:8080"
+        passHostHeader: true
+#endregion
