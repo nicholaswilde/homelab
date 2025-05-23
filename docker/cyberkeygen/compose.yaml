@@ -1,0 +1,11 @@
+---
+
+services:
+  cyberkeygen:
+    container_name: cyberkeygen
+    image: ghcr.io/username/cyberkeygen:1.0.0
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    restart: always
