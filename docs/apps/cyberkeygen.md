@@ -2,6 +2,7 @@
 tags:
   - lxc
   - proxmox
+  - docker
 ---
 # ![cyberkeygen](https://raw.githubusercontent.com/karthik558/CyberKeyGen/refs/heads/main/public/favicon.png){ width="32" } CyberKeyGen
 
@@ -14,6 +15,11 @@ tags:
     :material-console-network: Default Port: `8080`
 
     :material-information-outline: Configuration path: `/opt/cyberkeygen`
+
+For this installation of CyberKeyGen, the LXC is used to both build and serve the static site. The reason for this to
+make it easier to build and deploy the site.
+
+[`npm`][2] and [`vite`][3] are used to build the site and an nginx Docker container is used to serve the site.
 
 !!! code ""
 
@@ -62,3 +68,5 @@ tags:
 - <https://github.com/karthik558/CyberKeyGen>
 
 [1]: <https://github.com/karthik558/CyberKeyGen>
+[2]: <https://www.npmjs.com/>
+[3]: <https://vite.dev/>
