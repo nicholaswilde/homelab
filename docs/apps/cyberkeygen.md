@@ -21,6 +21,7 @@ tags:
       cd ~
       git clone https://github.com/karthik558/CyberKeyGen.git
       cd CyberKeyGen
+      npm install -D vite
       npm run build
       docker run -it --rm -d -p 8080:80 --name web -v ~/CyberKeyGen/dist:/usr/share/nginx/html nginx
     )
