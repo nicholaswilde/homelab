@@ -23,3 +23,5 @@ filebrowser.db
 backup.conf
 
 **/pinchflat/config/
+
+**/convertx/data/
