@@ -1,0 +1,17 @@
+task: Available tasks for this project:
+* build:          Build
+* decrypt:        Decrypt .env using SOPS
+* deps:           Install dependencies
+* encrypt:        Encrypt .env using SOPS
+* export:         Export the task list
+* init:           Init everything
+* init-env:       Init .env file
+* pull:           Pull docker images
+* restart:        Restart Docker containers
+* status:         Docker container status
+* stop:           Stop Docker containers
+* up:             Run Docker compose in the foreground.
+* up-d:           Run Docker compose in the background.
+* update:         Update running containers
+* upgrade:        Upgrade Docker containers
+* watch:          Watch Docker container logs
