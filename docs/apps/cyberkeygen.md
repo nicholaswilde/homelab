@@ -55,6 +55,32 @@ make it easier to build and deploy the site after an update.
     --8<-- "traefik/conf.d/cyberkeygen.yaml"
     ```
 
+## :rocket: Upgrade
+
+!!! warning
+
+    The below commands purge any unused Docker images! Use at your own risk!
+
+!!! code "`homelab/docker/cyberkeygen`"
+
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        (
+          git pull origin
+          git -C /opt/cyberkeygen pull origin
+          npm run --prefix /opt/cyberkeygen build
+          docker compose up --force-recreate --build -d
+          docker image prune -a -f
+        )
+        ```
+
 ## :simple-task: Task List
 
 !!! example ""
