@@ -80,9 +80,6 @@
     - Authentik:
         icon: si-authentik
         href: http://authentik.l.nicholaswilde.io:9000/
-    - Password Generator:
-        icon: mdi-form-textbox-password
-        href: https://passgen.l.nicholaswilde.io/
     - CyberKeyGen:
         icon: https://raw.githubusercontent.com/karthik558/CyberKeyGen/refs/heads/main/public/icon-192x192-dark.png
         href: https://cyberkeygen.l.nicholaswilde.io
