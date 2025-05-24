@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    convertx:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`convertx.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: convertx
+#endregion
+#region services
+  services:
+    convertx:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.144:3000"
+        passHostHeader: true
+#endregion
