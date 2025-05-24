@@ -49,6 +49,7 @@ nav:
       - Registry: apps/registry.md
       - reprepro: apps/reprepro.md
       - Shlink: apps/shlink.md
+      - Stirling PDF: apps/stirling-pdf.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
       - Uptime Kuma: apps/uptime-kuma.md
