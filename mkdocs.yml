@@ -24,6 +24,7 @@ nav:
       - Beszel: apps/beszel.md
       - BOINC: apps/boinc.md
       - ChangeDetection: apps/changedetection.md
+      - ConvertX: apps/convertx.md
       - CyberKeyGen: apps/cyberkeygen.md
       - DeepSeek: apps/deepseek.md
       - Excalidraw: apps/excalidraw.md
