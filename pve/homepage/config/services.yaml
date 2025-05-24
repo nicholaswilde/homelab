@@ -76,6 +76,9 @@
     - Pinchflat:
         icon: sh-pinchflat.png
         href: https://pinchflat.l.nicholaswilde.io/
+    - ConvertX:
+        icon: https://raw.githubusercontent.com/C4illin/ConvertX/refs/heads/main/public/android-chrome-192x192.png
+        href: https://convertx.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
