@@ -5,6 +5,8 @@ tags:
 ---
 # ![Stirling PDF](https://cdn.jsdelivr.net/gh/selfhst/icons/webp/stirling-pdf.webp){ width="32" } Stirling PDF
 
+[Stirling PDF][1] is a locally hosted web application that allows you to perform various operations on PDF files.
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -43,3 +45,5 @@ Make symlinks to repo.
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=stirling-pdf>
 - <https://pimox-scripts.com/scripts?id=stirling-pdf>
+
+[1]: <https://github.com/Stirling-Tools/Stirling-PDF>
