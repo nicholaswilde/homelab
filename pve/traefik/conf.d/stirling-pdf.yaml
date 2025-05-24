@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    stirling-pdf:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`stirling-pdf.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: stirling-pdf
+#endregion
+#region services
+  services:
+    stirling-pdf:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.146:8080"
+        passHostHeader: true
+#endregion
