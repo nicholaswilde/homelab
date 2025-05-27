@@ -1,19 +1,17 @@
 ---
-# In this Docker Compose example, it assumes that you maintain a reverse proxy externally (or chose not to).
-# The only two exposed ports here are from minio (:9000) and the app itself (:3000).
-# If these ports are changed, ensure that the env vars passed to the app are also changed accordingly.
-
 services:
   # Database (Postgres)
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
@@ -22,7 +20,7 @@ services:
 
   # Storage (for image uploads)
   minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2025-05-24T17-08-30Z
     restart: unless-stopped
     command: server /data
     ports:
@@ -30,8 +28,8 @@ services:
     volumes:
       - minio_data:/data
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
 
   # Chrome Browser (for printing and previews)
   chrome:
@@ -42,12 +40,12 @@ services:
     environment:
       TIMEOUT: 10000
       CONCURRENT: 10
-      TOKEN: chrome_token
-      EXIT_ON_HEALTH_FAILURE: "true"
-      PRE_REQUEST_HEALTH_CHECK: "true"
+      TOKEN: "${CHROME_TOKEN}"
+      EXIT_ON_HEALTH_FAILURE: true
+      PRE_REQUEST_HEALTH_CHECK: true
 
-  app:
-    image: amruthpillai/reactive-resume:latest
+  reactive-resume:
+    image: ghcr.io/amruthpillai/reactive-resume:v4.4.5
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -55,6 +53,8 @@ services:
       - postgres
       - minio
       - chrome
+    env_file:
+      - .env
     environment:
       # -- Environment Variables --
       PORT: 3000
@@ -65,15 +65,15 @@ services:
       STORAGE_URL: http://192.168.2.147:9000/default
 
       # -- Printer (Chrome) --
-      CHROME_TOKEN: chrome_token
+      CHROME_TOKEN: "${CHROME_TOKEN}"
       CHROME_URL: ws://chrome:3000
 
       # -- Database (Postgres) --
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
 
       # -- Auth --
-      ACCESS_TOKEN_SECRET: access_token_secret
-      REFRESH_TOKEN_SECRET: refresh_token_secret
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
 
       # -- Emails --
       MAIL_FROM: noreply@localhost
@@ -82,12 +82,12 @@ services:
       # -- Storage (Minio) --
       STORAGE_ENDPOINT: minio
       STORAGE_PORT: 9000
-      STORAGE_REGION: us-east-1 # Optional
+      STORAGE_REGION: us-west-1 # Optional
       STORAGE_BUCKET: default
-      STORAGE_ACCESS_KEY: minioadmin
-      STORAGE_SECRET_KEY: minioadmin
-      STORAGE_USE_SSL: "false"
-      STORAGE_SKIP_BUCKET_CHECK: "false"
+      STORAGE_ACCESS_KEY: "${STORAGE_ACCESS_KEY}"
+      STORAGE_SECRET_KEY: "${STORAGE_SECRET_KEY}"
+      STORAGE_USE_SSL: false
+      STORAGE_SKIP_BUCKET_CHECK: false
 
       # -- Crowdin (Optional) --
       # CROWDIN_PROJECT_ID:
