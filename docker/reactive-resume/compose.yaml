@@ -44,6 +44,18 @@ services:
       EXIT_ON_HEALTH_FAILURE: true
       PRE_REQUEST_HEALTH_CHECK: true
 
+  # https://offen.github.io/docker-volume-backup/
+  backup:
+    image: offen/docker-volume-backup:v2.43.3
+    environment:
+      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+    volumes:
+      - postgres_data:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME}/backups:/archive
+      
   reactive-resume:
     image: ghcr.io/amruthpillai/reactive-resume:v4.4.5
     restart: unless-stopped
