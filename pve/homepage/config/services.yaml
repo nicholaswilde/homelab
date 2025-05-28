@@ -84,7 +84,7 @@
         href: https://stirling-pdf.l.nicholaswilde.io/
     - Reactive Resume:
         icon: https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/refs/heads/main/apps/artboard/public/favicon.png
-        href: https://resume.l.nicholaswilde.io
+        href: https://resume.l.nicholaswilde.io/dashboard/resumes
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
