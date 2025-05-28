@@ -46,6 +46,7 @@ nav:
       - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
+      - Reactive Resume: apps/reactive-resume.md
       - Registry: apps/registry.md
       - reprepro: apps/reprepro.md
       - Shlink: apps/shlink.md
