@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  backup:
+    desc: Backup volume data
+    cmds:
+      - docker exec {{ .CONTAINER_NAME }}-backup-1 backup
   export:
     desc: Export the task list
     cmds:
