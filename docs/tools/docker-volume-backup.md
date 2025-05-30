@@ -6,7 +6,7 @@ tags:
 ---
 # :simple-docker: docker-volume-backup
 
-[docker-volume-backup][1] (dvb) is used to backup Docker volumes locally or to any S3, WebDAV, Azure Blob Storage, Dropbox
+[docker-volume-backup][1] (`dvb`) is used to backup Docker volumes locally or to any S3, WebDAV, Azure Blob Storage, Dropbox
 or SSH compatible storage.
 
 ## :hammer_and_wrench: Installation
