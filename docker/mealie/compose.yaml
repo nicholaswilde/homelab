@@ -13,7 +13,7 @@ services:
         limits:
           memory: 1000M
     volumes:
-      - mealie-data:/app/data/
+      - data:/app/data/
     environment:
       # Set Backend ENV Variables Here
       ALLOW_SIGNUP: "false"
@@ -27,5 +27,22 @@ services:
       SMTP_HOST: "smtp.gmail.com"
       SMTP_PORT: 465
       SMTP_AUTH_STRATEGY: "SSL"
+      # https://offen.github.io/docker-volume-backup/
+  backup: &backup_service
+    image: offen/docker-volume-backup:v2.43.3
+    environment: &backup_environment
+      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: backup-
+      BACKUP_RETENTION_DAYS: '14'
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      BACKUP_STOP_DURING_BACKUP_LABEL: service
+    volumes:
+      - data:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME}/backups:/archive
+      # - /mnt/storage/backup/reactive-resume:/archive
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 volumes:
-  mealie-data:
+  data:
