@@ -23,9 +23,9 @@ This example backs up [two volumes][2] in the same compose volume, `postgres_dat
     --8<-- "reactive-resume/compose.yaml:1:2,47:79,154:"
     ```
 
-## Usage
+## :pencil: Usage
 
-!!! code
+!!! code "Backup Manually"
 
     ```shell
     docker exec <container_ref> backup
