@@ -128,6 +128,9 @@
     - Aria2:
         icon: mdi-download
         href: https://aria2.l.nicholaswilde.io    
+    - File Browser:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/file-browser.svg
+        href: https://fb.l.nicholaswilde.io/
     - Gitea:
         icon: si-gitea
         href: https://gitea.l.nicholaswilde.io/
