@@ -1,4 +1,5 @@
 task: Available tasks for this project:
+* backup:        Backup volume data
 * decrypt:       Decrypt .env using SOPS
 * encrypt:       Encrypt .env using SOPS
 * export:        Export the task list

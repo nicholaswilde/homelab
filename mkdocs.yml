@@ -46,6 +46,7 @@ nav:
       - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
+      - Reactive Resume: apps/reactive-resume.md
       - Registry: apps/registry.md
       - reprepro: apps/reprepro.md
       - Shlink: apps/shlink.md
@@ -69,6 +70,7 @@ nav:
       - apprise: tools/apprise.md
       - Autofs: tools/autofs.md
       - cheat: tools/cheat.md
+      - docker-volume-backup: tools/docker-volume-backup.md
       - .env Files: tools/env-files.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md

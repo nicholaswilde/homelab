@@ -5,6 +5,11 @@ dotenv:
   - .env
 
 tasks:
+  backup:
+    desc: Backup volume data
+    cmds:
+      - docker exec {{ .CONTAINER_NAME }}-backup_minio-1 backup
+      - docker exec {{ .CONTAINER_NAME }}-backup_postgres-1 backup
   export:
     desc: Export the task list
     cmds:
