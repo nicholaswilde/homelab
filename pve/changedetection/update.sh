@@ -25,9 +25,9 @@ function update_script() {
     echo "Updated Dependencies"
   fi
 
-  pipx install changedetection.io --upgrade
+  pipx upgrade changedetection.io
 
-  pipx install playwright --upgrade
+  pipx upgrade playwright
 
   if [[ -f /etc/systemd/system/browserless.service ]]; then
     echo "Updating Browserless (Patience)"
