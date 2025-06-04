@@ -203,6 +203,38 @@ WIP
     lvcreate -L 80G -T -n vmstore vmdata
     ```
 
+## :material-harddisk-plus: [Resize LXC Disks][10]
+
+!!! tip
+
+    This can be done from the GUI, but sometimes the LXC doesn't register the change.
+    
+From node
+
+!!! code "Stop the LXC"
+
+    ```shell
+    pct stop 108
+    ```
+
+!!! code "Increase the absolute size to 20G"
+
+    ```shell
+    pct resize 108 rootfs 20G
+    ```
+
+!!! code "Resize the file system (optional)"
+
+    ```shell
+    resize2fs /dev/pve/vm-108-disk-0
+    ```
+
+!!! code "Start the LXC"
+
+    ```shell
+    pct start 108
+    ```
+
 ## :material-harddisk-plus: [Resize VM Disks][3]
 
 ### :frame_photo: Step 1: Increase/resize disk from GUI console
@@ -488,3 +520,4 @@ WIP
 [7]: <https://forum.proxmox.com/threads/backup-job-is-stuck-and-i-cannot-stop-it-or-even-kill-it.120835/#post-524962>
 [8]: <https://pve.proxmox.com/wiki/Notifications#notification_targets>
 [9]: <https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3>
+[10]: <https://pakstech.com/blog/proxmox-increase-lxc-disk/>
