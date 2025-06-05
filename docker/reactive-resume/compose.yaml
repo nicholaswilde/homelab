@@ -33,7 +33,7 @@ services:
 
   # Chrome Browser (for printing and previews)
   chrome:
-    image: ghcr.io/browserless/chromium:v2.18.0 # Upgrading to newer versions causes issues
+    image: ghcr.io/browserless/chromium:v2.31.0 # Upgrading to newer versions causes issues
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
