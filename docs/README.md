@@ -38,7 +38,7 @@ Check out the [Development](./reference/development.md) page.
 
 ## :balance_scale: License
 
-​[​Apache License 2.0](../LICENSE)
+​[​Apache License 2.0](https://raw.githubusercontent.com/nicholaswilde/homelab/refs/heads/main/docs/LICENSE)
 
 ---
 
