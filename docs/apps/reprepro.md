@@ -256,7 +256,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 !!! code "Download gpg key"
 
     ```shell
-    wget  http://deb.l.nicholaswilde.io/public.gpg.key -O /etc/apt/trusted.gpg.d/reprepro.asc
+    curl -fsSL http://deb.l.nicholaswilde.io/public.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/reprepro.gpg
     ```
 
 Add repo and install.
