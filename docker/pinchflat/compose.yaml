@@ -3,7 +3,7 @@
 services:
   pinchflat:
     container_name: pinchflat
-    image: ghcr.io/kieraneglin/pinchflat:v2025.3.17
+    image: ghcr.io/kieraneglin/pinchflat:v2025.6.6
     env_file:
       - .env
     environment:
