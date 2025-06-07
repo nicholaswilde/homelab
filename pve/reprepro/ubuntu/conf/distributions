@@ -1,7 +1,7 @@
 Origin: Ubuntu
 Label: Oracular apt repository
 Codename: oracular
-Architectures: amd64 arm64  
+Architectures: amd64 arm64 armhf
 Components: main  
 Description: Apt repository for Ubuntu stable - Oracular
 DebOverride: override.oracular
@@ -11,7 +11,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Noble apt repository
 Codename: noble
-Architectures: amd64 arm64  
+Architectures: amd64 arm64 armhf
 Components: main  
 Description: Apt repository for Ubuntu stable - Noble
 DebOverride: override.noble
@@ -21,7 +21,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Jammy apt repository
 Codename: jammy
-Architectures: amd64 arm64  
+Architectures: amd64 arm64 armhf
 Components: main  
 Description: Apt repository for Ubuntu stable - Jammy
 DebOverride: override.jammy
