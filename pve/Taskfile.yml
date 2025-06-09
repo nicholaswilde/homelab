@@ -13,6 +13,7 @@ tasks:
       - mkdir {{ .APP_NAME_LOWER }}
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/.env.tmpl.j2 > ./{{ .APP_NAME_LOWER }}/.env.tmpl
+      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/update.sh.j2 > ./{{ .APP_NAME_LOWER }}/update.sh
       - cp ./.template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/Taskfile.yml
   default:
     cmds:
