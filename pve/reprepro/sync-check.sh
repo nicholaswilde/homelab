@@ -87,17 +87,23 @@ function set_vars(){
   
   PACKAGE_URL_AMD64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("amd64.deb")) | .browser_download_url')
   PACKAGE_URL_ARM64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("arm64.deb")) | .browser_download_url')
+  PACKAGE_URL_ARM=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("arm.deb")) | .browser_download_url')
   BASENAME_AMD64=$(basename "${PACKAGE_URL_AMD64}")
   BASENAME_ARM64=$(basename "${PACKAGE_URL_ARM64}")
+  BASENAME_ARM=$(basename "${PACKAGE_URL_ARM}")
   FILEPATH_AMD64="${TEMP_PATH}/${BASENAME_AMD64}"
   FILEPATH_ARM64="${TEMP_PATH}/${BASENAME_ARM64}"
+  FILEPATH_ARM="${TEMP_PATH}/${BASENAME_ARM}"
   export API_URL
   export PACKAGE_URL_AMD64
   export PACKAGE_URL_ARM64 
+  export PACKAGE_URL_ARM
   export BASENAME_ARM64
   export BASENAME_AMD64
+  export BASENAME_AMD
   export FILEPATH_AMD64
   export FILEPATH_ARM64
+  export FILEPATH_ARM
 }
 
 
@@ -134,7 +140,10 @@ function check_version(){
   if [[ "${LATEST_VERSION2}" != "${CURRENT_VERSION}" ]]; then
     print_text "New version available: ${LATEST_VERSION2}"
     add_package "${PACKAGE_URL_AMD64}" "${FILEPATH_AMD64}"
-    add_package "${PACKAGE_URL_ARM64}" "${FILEPATH_ARM64}" 
+    add_package "${PACKAGE_URL_ARM64}" "${FILEPATH_ARM64}"
+    if [[ -n "${PACKAGE_URL_ARM}" ]]; then
+      add_package "${PACKAGE_URL_ARM}" "${FILEPATH_ARM}"
+    fi
     MESSAGE="Added ${APP_NAME} deb files: ${LATEST_VERSION2}"
   else
     MESSAGE="${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
