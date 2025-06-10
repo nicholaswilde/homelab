@@ -32,6 +32,7 @@ nav:
       - Excalidraw: apps/excalidraw.md
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
+      - Gotify: apps/gotify.md
       - Gridcoin: apps/gridcoin.md
       - Home Assistant OS: apps/home-assistant-os.md
       - homepage: apps/homepage.md
