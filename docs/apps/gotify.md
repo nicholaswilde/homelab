@@ -3,7 +3,7 @@ tags:
   - lxc
   - proxmox
 ---
-# ![gotify](https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png){ "width"=32 } Gotify
+# ![gotify](https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png){ width="32" } Gotify
 
 ## :hammer_and_wrench: Installation
 
