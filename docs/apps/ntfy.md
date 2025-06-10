@@ -32,10 +32,10 @@ tags:
 
 ## :gear: Config
 
-!!! abstract "`homelab/docker/{{ APP_NAME_LOWER }}/.env`"
+!!! abstract "`homelab/docker/ntfy/.env`"
 
     ```ini
-    --8<-- "{{ APP_NAME_LOWER }}/.env.tmpl"
+    --8<-- "ntfy/.env.tmpl"
     ```
 
 ??? abstract "`homelab/pve/ntfy/client.yml`"
