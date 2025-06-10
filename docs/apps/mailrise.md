@@ -1,6 +1,7 @@
 ---
 tags:
   - lxc
+  - notifications
   - proxmox
   - docker
 ---
