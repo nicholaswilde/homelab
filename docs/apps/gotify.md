@@ -6,6 +6,8 @@ tags:
 ---
 # ![gotify](https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png){ width="32" } Gotify
 
+[Gotify][1] is a simple server for sending and receiving messages
+
 ## :hammer_and_wrench: Installation
 
 !!! example ""
@@ -44,3 +46,5 @@ Make symlinks to repo.
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=gotify>
 - <https://pimox-scripts.com/scripts?id=gotify>
+
+[1]: <https://gotify.net/>
