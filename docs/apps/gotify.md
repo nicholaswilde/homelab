@@ -12,7 +12,7 @@ tags:
 
     :material-console-network: Default Port: `80`
 
-    :material-information-outline: Configuration path: `/etc/gotify/config.yml`
+    :material-information-outline: Configuration path: `/opt/gotify/config.yml`
 
 !!! code ""
 
