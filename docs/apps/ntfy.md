@@ -12,6 +12,7 @@ tags:
 
     :material-console-network: Default Port: `80`
 
+    :material-information-outline: Configuration path: `/etc/ntfy/`
 
 !!! code ""
 
