@@ -1,0 +1,84 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  enable:
+    desc: Enable service
+    cmds:
+      - systemctl enable {{ .SERVICE_NAME }}.service
+  status:
+    desc: Service status
+    cmds:
+      - sudo systemctl status {{ .SERVICE_NAME }}.service
+  init:
+    desc: Init
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env.tmpl
+      - test -f {{ .TASKFILE_DIR }}/config.yml.tmpl
+    cmds:
+      - cp .env.tmpl .env
+      - cp config.yml.tmpl config.yml
+  decrypt:
+    desc: Decrypt .env using SOPS
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env.enc
+      - test -f {{ .TASKFILE_DIR }}/config.yml.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type yaml --output-type yaml config.yml.enc > config.yml
+  encrypt:
+    desc: Encrypt .env using SOPS
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env
+      - test -f {{ .TASKFILE_DIR }}/config.yml
+    cmds:
+      - sops -e .env > .env.enc
+      - sops -e --input-type yaml --output-type yaml config.yml > config.yml.enc
+  update:
+    desc: Update running containers
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/update.sh
+    cmds:
+      - ./update.sh
+  up:
+    desc: Tun Docker compose in the foreground.
+    cmds:
+      - docker compose up
+  up-d:
+    desc: Run Docker compose in the background.
+    cmds:
+      - docker compose up -d --remove-orphans
+  restart:
+    desc: Resart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  upgrade:
+    desc: upgrade
+    cmds:
+      - git pull origin
+      - task: update
+  stop:
+    desc: Stop service
+    cmds:
+      - sudo systemctl stop {{ .SERVICE_NAME }}.service
+  start:
+    desc: Start service
+    cmds:
+      - sudo systemctl start {{ .SERVICE_NAME }}.service
+  mklinks:
+    desc: Make client symlinks
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/config.yml
+    cmds:
+      - sudo ln -sf {{ .TASKFILE_DIR }}/config.yml  {{ .CONFIG_DIR }}/config.yml
+  default:
+    cmds:
+      - task -l
+    silent: true

@@ -28,3 +28,5 @@ backup.conf
 
 **/ntfy/client.yml
 **/ntfy/server.yml
+
+**/gotify/config.yml
