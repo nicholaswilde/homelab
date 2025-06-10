@@ -1,7 +1,7 @@
 ---
 tags:
   - lxc
-  - vm
+  - notifications
   - proxmox
 ---
 # :simple-ntfy: ntfy
