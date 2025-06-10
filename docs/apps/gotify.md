@@ -32,7 +32,17 @@ tags:
 
 ## :gear: Config
 
-Make symlinks to repo.
+!!! abstract "`homelab/docker/gotify/.env`"
+
+    ```ini
+    --8<-- "gotify/.env.tmpl"
+    ```
+
+??? abstract "`homelab/pve/gotify/config.yml`"
+
+    ```yaml
+    --8<-- "gotify/config.yml.tmpl"
+    ```
 
 ## :simple-task: Task List
 
