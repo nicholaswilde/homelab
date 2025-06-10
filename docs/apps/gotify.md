@@ -1,6 +1,7 @@
 ---
 tags:
   - lxc
+  - notifications
   - proxmox
 ---
 # ![gotify](https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png){ width="32" } Gotify
