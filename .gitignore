@@ -25,3 +25,6 @@ backup.conf
 **/pinchflat/config/
 
 **/convertx/data/
+
+**/ntfy/client.yml
+**/ntfy/server.yml
