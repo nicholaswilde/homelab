@@ -32,22 +32,26 @@ tags:
 
 ## :gear: Config
 
+### :desktop_computer: Server
+
 !!! abstract "`homelab/docker/ntfy/.env`"
 
     ```ini
     --8<-- "ntfy/.env.tmpl"
     ```
 
-??? abstract "`homelab/pve/ntfy/client.yml`"
-
-    ```yaml
-    --8<-- "ntfy/client.yml.tmpl"
-    ```
-
 ??? abstract "`homelab/pve/ntfy/server.yml`"
 
     ```yaml
     --8<-- "ntfy/server.yml.tmpl"
+    ```
+
+### :computer: Client
+
+??? abstract "`homelab/pve/ntfy/client.yml`"
+
+    ```yaml
+    --8<-- "ntfy/client.yml.tmpl"
     ```
 
 ## :simple-traefikproxy: Traefik
