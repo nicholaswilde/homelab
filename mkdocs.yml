@@ -43,6 +43,7 @@ nav:
       - mailrise: apps/mailrise.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
+      - ntfy: apps/ntfy.md
       - OpenMediaVault: apps/openmediavault.md
       - Pinchflat: apps/pinchflat.md
       - Prometheus: apps/prometheus.md
