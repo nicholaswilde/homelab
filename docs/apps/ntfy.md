@@ -32,7 +32,31 @@ tags:
 
 ## :gear: Config
 
-Make symlinks to repo.
+!!! abstract "`homelab/docker/{{ APP_NAME_LOWER }}/.env`"
+
+    ```ini
+    --8<-- "{{ APP_NAME_LOWER }}/.env.tmpl"
+    ```
+
+??? abstract "`homelab/pve/ntfy/client.yml`"
+
+    ```yaml
+    --8<-- "ntfy/client.yml.tmpl"
+    ```
+
+??? abstract "`homelab/pve/ntfy/server.yml`"
+
+    ```yaml
+    --8<-- "ntfy/server.yml.tmpl"
+    ```
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/ntfy.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/ntfy.yaml"
+    ```
 
 ## :simple-task: Task List
 
