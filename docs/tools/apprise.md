@@ -1,6 +1,7 @@
 ---
 tags:
   - tool
+  - notifications
 ---
 # :mailbox: apprise
 
