@@ -12,61 +12,73 @@ tasks:
   enable:
     desc: Enable service
     cmds:
-      - systemctl enable {{ .SERVICE_NAME }}.service
+      - sudo systemctl enable {{ .SERVICE_NAME }}.service
   status:
     desc: Service status
     cmds:
-      - systemctl status {{ .SERVICE_NAME }}.service
+      - sudo systemctl status {{ .SERVICE_NAME }}.service
   init:
     desc: Init
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env.tmpl
+      - test -f {{ .TASKFILE_DIR }}/client.yml.tmpl
+      - test -f {{ .TASKFILE_DIR }}/server.yml.tmpl
     cmds:
       - cp .env.tmpl .env
+      - cp client.yml.tmpl client.yml
+      - cp server.yml.tmpl server.yml
   decrypt:
-    desc: Decrypt .env using SOPS
+    desc: Decrypt config files using SOPS
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env.tmpl
+      - test -f {{ .TASKFILE_DIR }}/server.yml.enc
+      - test -f {{ .TASKFILE_DIR }}/client.yml.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
       - sops -d --input-type yaml --output-type yaml client.yml.enc > client.yml
       - sops -d --input-type yaml --output-type yaml server.yml.enc > server.yml
   encrypt:
-    desc: Encrypt .env using SOPS
+    desc: Encrypt config files using SOPS
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env
+      - test -f {{ .TASKFILE_DIR }}/server.yml
+      - test -f {{ .TASKFILE_DIR }}/client.yml
     cmds:
       - sops -e .env > .env.enc
       - sops -e --input-type yaml --output-type yaml client.yml > client.yml.enc
       - sops -e --input-type yaml --output-type yaml server.yml > server.yml.enc
   update:
-    desc: Update running containers
+    desc: Update app
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/update.sh
     cmds:
       - ./update.sh
-  up:
-    desc: Tun Docker compose in the foreground.
-    cmds:
-      - docker compose up
-  up-d:
-    desc: Run Docker compose in the background.
-    cmds:
-      - docker compose up -d --remove-orphans
   restart:
     desc: Resart service
     cmds:
-      - systemctl restart {{ .SERVICE_NAME }}.service
+      - sudo systemctl restart {{ .SERVICE_NAME }}.service
   upgrade:
-    desc: upgrade
+    desc: Upgrade
     cmds:
       - git pull origin
       - task: update
   stop:
     desc: Stop service
     cmds:
-      - systemctl stop {{ .SERVICE_NAME }}.service
+      - sudo systemctl stop {{ .SERVICE_NAME }}.service
   start:
     desc: Start service
     cmds:
-      - systemctl start {{ .SERVICE_NAME }}.service
+      - sudo systemctl start {{ .SERVICE_NAME }}.service
   mklinks:
     desc: Make client symlinks
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/client.yml
+      - test -f {{ .TASKFILE_DIR }}/server.yml
+      - test -d {{ .CONFIG_DIR }}
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/client.yml  {{ .CONFIG_DIR }}/client.yml
-      - ln -sf {{ .TASKFILE_DIR }}/server.yml  {{ .CONFIG_DIR }}/server.yml
+      - sudo ln -sf {{ .TASKFILE_DIR }}/client.yml  {{ .CONFIG_DIR }}/client.yml
+      - sudo ln -sf {{ .TASKFILE_DIR }}/server.yml  {{ .CONFIG_DIR }}/server.yml
   default:
     cmds:
       - task -l

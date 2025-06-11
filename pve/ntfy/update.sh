@@ -29,7 +29,6 @@ readonly blue
 readonly default
 readonly white
 readonly yellow
-readonly APP
 
 function print_text(){
   echo "${blue}==> ${white}${bold}${1}${normal}"
@@ -75,17 +74,10 @@ function update_script() {
   if ! command_exists ntfy; then
     raise_error "No ntfy Installation Found!"
   fi
-  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(armhf\)\(64\)\?.*/\1\2hf/' -e 's/aarch64$/arm64/')"
-  # RELEASE=$(curl -fsSL https://github.com/go-gitea/ntfy/releases/latest | grep "title>Release" | cut -d " " -f 4 | sed 's/^v//')
-  RELEASE=$(curl -fsSL https://api.github.com/repos/go-gitea/ntfy/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d '"' -f 4 | sed 's/^v//')
-  print_text "Updating ${APP} to ${RELEASE}"
-  curl -fsSL "https://github.com/go-gitea/ntfy/releases/download/v$RELEASE/gitea-$RELEASE-linux-${ARCH}" -o $(basename "https://github.com/go-gitea/ntfy/releases/download/v$RELEASE/gitea-$RELEASE-linux-${ARCH}")
-  sudo systemctl stop ntfy
-  sudo rm -rf /usr/local/bin/ntfy
-  sudo mv gitea* /usr/local/bin/ntfy
-  sudo chmod +x /usr/local/bin/ntfy
-  sudo systemctl start ntfy
-  print_text "Updated ntfy Successfully"
+  print_text "Updating ${APP}"
+  sudo apt update
+  sudo apt upgrade ntfy -y
+  print_text "${APP} update finished!"
 }
 
 function main(){
