@@ -43,6 +43,12 @@ tags:
     --8<-- "mailrise/compose.yaml"
     ```
 
+??? abstract "`homelab/docker/mailrise/mailrise.yaml`"
+
+    ```yaml
+    --8<-- "mailrise/mailrise.yaml"
+    ```
+
 ## :test_tube: Test
 
 !!! code
