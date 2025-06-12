@@ -71,7 +71,7 @@ nav:
       - Raspberry Pi 4: hardware/rpi4.md
       - Raspberry Pi 5: hardware/rpi5.md
   - Tools:
-      - apprise: tools/apprise.md
+      - Apprise: tools/apprise.md
       - Autofs: tools/autofs.md
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
