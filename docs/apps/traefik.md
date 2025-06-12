@@ -43,7 +43,7 @@ All internal URLs use an `l` sub domain so that only one certificate is needed f
     === "Automatic"
 
         ```shell
-        cat > /etc/systemd/system/ventoy.service <<EOF
+        cat > /etc/systemd/system/traefik.service <<EOF
         --8<-- "traefik/traefik.service"
         EOF
         ```
