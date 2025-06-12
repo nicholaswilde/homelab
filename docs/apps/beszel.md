@@ -55,9 +55,17 @@ WIP
 
 !!! code ""
 
-    ```shell
-    ./beszel update
-    ```
+    === "Task"
+
+        ```shell
+        task update
+        ```
+    
+    === "Manual"
+    
+        ```shell
+        ./beszel update
+        ```
 
 ## :simple-task: Task List
 
