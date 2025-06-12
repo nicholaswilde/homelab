@@ -30,6 +30,8 @@ tags:
 
 ## :gear: Config
 
+All internal URLs use an `l` sub domain so that only one certificate is needed from letsencrypt. E.g. `https://app.l.nicholaswilde.io/`
+
 !!! note
 
     Paths in config file should be absolute.
