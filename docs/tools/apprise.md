@@ -27,6 +27,10 @@ tags:
 
 ### :mailbox: [Email](https://github.com/caronc/apprise/wiki/Notify_email)
 
+!!! note
+
+    Google Users using the 2 Step Verification Process will be required to generate an app-password from [here][3] that you can use in the {password} field.
+
 !!! code "Notification URL List"
 
     ```shell
@@ -39,3 +43,4 @@ tags:
 
 [1]: <https://github.com/caronc/apprise>
 [2]: <https://github.com/caronc/apprise/wiki/config>
+[3]: <https://security.google.com/settings/security/apppasswords>
