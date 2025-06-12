@@ -25,6 +25,8 @@ tags:
     apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
     ```
 
+### :mailbox: [Email](https://github.com/caronc/apprise/wiki/Notify_email)
+
 !!! code "Notification URL List"
 
     ```shell
