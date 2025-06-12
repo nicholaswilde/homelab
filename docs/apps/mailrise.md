@@ -78,6 +78,6 @@ tags:
 
 ## :link: References
 
-- <https://hub.docker.com/r/yoryan/mailrise>
+- <https://github.com/YoRyan/mailrise>
 
 [1]: <https://github.com/YoRyan/mailrise>
