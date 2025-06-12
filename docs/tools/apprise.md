@@ -3,9 +3,9 @@ tags:
   - tool
   - notifications
 ---
-# :mailbox: apprise
+# :mailbox: Apprise
 
-[apprise][1] is used as a notification app that supports multiple protocols and integrations.
+[Apprise][1] is used as a notification app that supports multiple protocols and integrations.
 
 ## :hammer_and_wrench: Installation
 
@@ -17,7 +17,7 @@ tags:
         apt install apprise
         ```
 
-## :gear: Config
+## :gear: [Config][2]
 
 !!! example
 
@@ -38,3 +38,4 @@ tags:
 - <https://github.com/caronc/apprise>
 
 [1]: <https://github.com/caronc/apprise>
+[2]: <https://github.com/caronc/apprise/wiki/config>
