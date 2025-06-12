@@ -38,13 +38,13 @@ tags:
 !!! success "Test"
 
     ```shell
-    apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
+    apprise -vv -t 'my title' -b 'my notification body' 'mailto://user:passkey@gmail.com'
     ```
 
 !!! abstract "Notification URL List"
 
     ```shell
-    mailto://email:passkey@gmail.com
+    mailto://user:passkey@gmail.com
     ```
 
 ## :simple-traefikproxy: Traefik
