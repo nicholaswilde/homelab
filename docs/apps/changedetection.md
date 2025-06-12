@@ -67,6 +67,12 @@ tags:
     )
     ```
 
+## :bell: Notifications
+
+1. [Apprise][2]
+2. [ntfy][3]
+3. [Gotify][4]
+
 ## :simple-task: Task List
 
 !!! example ""
@@ -82,3 +88,6 @@ tags:
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=changedetection>
 
 [1]: <https://changedetection.io/>
+[2]: <../tools/apprise.md>
+[3]: <./ntfy.md>
+[4]: <./gotify.md>
