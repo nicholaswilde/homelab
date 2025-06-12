@@ -43,6 +43,23 @@ tags:
     --8<-- "mailrise/compose.yaml"
     ```
 
+## Test
+
+!!! code
+
+    ```shell
+    curl --url 'smtp://smtp.l.nicholaswilde.io:8025' \
+         --mail-from 'test@example.com' \
+         --mail-rcpt 'email@mailrise.xyz' \
+         --upload-file - <<EOF
+    From: Test Sender <test@example.com>
+    To: telegram@mailrise.xyz
+    Subject: This is a test email
+    
+    This is the body of the test email from curl.
+    EOF
+    ```
+
 ## :simple-traefikproxy: Traefik
 
 ??? abstract "`homelab/pve/traefik/conf.d/mailrise.yaml`"
