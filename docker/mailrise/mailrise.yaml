@@ -7,6 +7,20 @@ configs:
       title_template: "${subject}"
       body_template: "${body}"
       body_format: text
+  ntfy:
+    urls:
+      - !env_var NTFY_URL
+    mailrise:
+      title_template: "${subject}"
+      body_template: "${body}"
+      body_format: text
+  gotify:
+    urls:
+      - !env_var GOTIFY_URL
+    mailrise:
+      title_template: "${subject}"
+      body_template: "${body}"
+      body_format: text
 
 # smtp:
 #   auth:
