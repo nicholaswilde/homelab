@@ -41,6 +41,12 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/beszel.yaml"
     ```
 
+## :bell: Notifications
+
+1. [mailrise][2] via `smtp`.
+2. [ntfy][3] via webhook.
+3. [Gotify][4] via webhook.
+
 ## :pencil: Usage
 
 WIP
@@ -64,3 +70,7 @@ WIP
 ## :link: References
 
 [1]: <https://beszel.dev/>
+[2]: <./mailrise.md>
+[3]: <./ntfy.md>
+[4]: <./gotify.md>
+
