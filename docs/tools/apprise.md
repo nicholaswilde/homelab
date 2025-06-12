@@ -19,22 +19,24 @@ tags:
 
 ## :gear: [Config][2]
 
-!!! example
-
-    ```shell
-    apprise -vv -t 'my title' -b 'my notification body' 'mailto://email:passkey@gmail.com'
-    ```
-
 ### :mailbox: [Email](https://github.com/caronc/apprise/wiki/Notify_email)
 
 !!! note
 
-    Google Users using the 2 Step Verification Process will be required to generate an app-password from [here][3] that you can use in the {password} field.
+    Google Users using the 2 Step Verification Process will be required to generate an app-password from [here][3] that you can use in the `passkey` field.
 
 !!! code "Notification URL List"
 
     ```shell
-    mailto://email:passkey@gmail.com
+    mailto://user:passkey@gmail.com
+    ```
+
+## :pencil: Usage
+
+!!! example
+
+    ```shell
+    apprise -vv -t 'my title' -b 'my notification body' 'mailto://user:passkey@gmail.com'
     ```
 
 ## :link: References
