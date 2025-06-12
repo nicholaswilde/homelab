@@ -43,7 +43,7 @@ tags:
     --8<-- "mailrise/compose.yaml"
     ```
 
-## Test
+## :test_tube: Test
 
 !!! code
 
@@ -53,7 +53,7 @@ tags:
          --mail-rcpt 'email@mailrise.xyz' \
          --upload-file - <<EOF
     From: Test Sender <test@example.com>
-    To: telegram@mailrise.xyz
+    To: email@mailrise.xyz
     Subject: This is a test email
     
     This is the body of the test email from curl.
