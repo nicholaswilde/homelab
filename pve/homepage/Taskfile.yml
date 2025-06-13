@@ -1,0 +1,71 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  export:
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  enable:
+    desc: Enable service
+    cmds:
+      - systemctl enable {{ .SERVICE_NAME }}.service
+  status:
+    desc: Service status
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}.service
+  init:
+    desc: Init
+    preconditions:
+      - test -f .env.tmpl
+    cmds:
+      - cp .env.tmpl .env
+  decrypt:
+    desc: Decrypt .env using SOPS
+    preconditions:
+      - test -f .env.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  encrypt:
+    desc: Encrypt .env using SOPS
+    preconditions:
+      - test -f .env
+    cmds:
+      - sops -e .env > .env.enc
+  update:
+    desc: Update running containers
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
+  restart:
+    desc: Resart service
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  upgrade:
+    desc: Upgrade app
+    cmds:
+      - git pull origin
+      - task: update
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
+  mklinks:
+    desc: Make client symlinks
+    preconditions:
+      - test -d {{ .CONFIG_DIR }}
+      - test -f {{ .TASKFILE_DIR }}/.env
+    cmds:
+      - ln -sf {{ .TASKFILE_DIR }}/.env  {{ .CONFIG_DIR }}/.env
+  default:
+    cmds:
+      - task -l
+    silent: true
