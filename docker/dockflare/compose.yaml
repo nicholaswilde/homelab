@@ -1,0 +1,47 @@
+---
+services:
+  dockflare:
+    image: alplat/dockflare:stable # Or :unstable for the latest features
+    container_name: dockflare
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      - STATE_FILE_PATH=/app/data/state.json
+      - TZ=Europe/Zurich
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - data:/app/data
+    networks:
+      - cloudflare-net
+    # Optional labels to expose DockFlare itself via DockFlare
+    # labels:
+    #   - cloudflare.tunnel.enable=true
+    #   - cloudflare.tunnel.hostname=dockflare.yourdomain.tld
+    #   - cloudflare.tunnel.service=http://dockflare:5000
+    #   - cloudflare.tunnel.access.policy=authenticate # Example: require login
+    # https://offen.github.io/docker-volume-backup/
+  backup: &backup_service
+    image: offen/docker-volume-backup:v2.43.3
+    environment: &backup_environment
+      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: backup-
+      BACKUP_RETENTION_DAYS: '14'
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      BACKUP_STOP_DURING_BACKUP_LABEL: service
+    volumes:
+      - data:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ${HOME}/backups:/archive
+      - /mnt/storage/backup/reactive-resume:/archive
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+volumes:
+  data:
+networks:
+  cloudflare-net:
+    name: cloudflare-net
