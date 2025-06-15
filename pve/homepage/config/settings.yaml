@@ -29,7 +29,7 @@ layout:
     icon: mdi-robot
   Files & Downloads:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-download-box
   IoT:
     style: row
