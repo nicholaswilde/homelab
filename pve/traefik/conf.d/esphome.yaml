@@ -18,6 +18,6 @@ http:
     esphome:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.143:6052"
+          - url: "http://192.168.2.88:6052"
         passHostHeader: true
 #endregion

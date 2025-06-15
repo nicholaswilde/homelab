@@ -18,6 +18,6 @@ http:
     zwave:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.143:8091"
+          - url: "http://192.168.2.88:8091"
         passHostHeader: true
 #endregion
