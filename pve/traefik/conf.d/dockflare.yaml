@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    dockflare:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`dockflare.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: dockflare
+#endregion
+#region services
+  services:
+    dockflare:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.151:5000"
+        passHostHeader: true
+#endregion
