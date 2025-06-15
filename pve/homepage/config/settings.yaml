@@ -17,7 +17,7 @@ layout:
     icon: mdi-dns
   Networking:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-wall-fire
   Media:
     style: row
@@ -41,11 +41,11 @@ layout:
     icon: mdi-shield-key
   Finance:
     style: row
-    columns: 3
+    columns: 2
     icon: mdi-currency-usd
   Monitoring & Analytics:
     style: row
-    columns: 4
+    columns: 3
     icon: mdi-chart-line
   Developer:
     style: row

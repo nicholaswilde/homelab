@@ -54,6 +54,9 @@
     - Wireguard:
         icon: si-wireguard
         href: https://wireguard.l.nicholaswilde.io
+    - Dockflare:
+        icon: si-cloudflare
+        href: https://dockflare.l.nicholaswilde.io
 - Media:
     - Jellyfin:
         icon: si-jellyfin
