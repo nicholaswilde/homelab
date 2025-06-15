@@ -32,12 +32,6 @@
     - ESPHome:
         icon: si-esphome
         href: https://esphome.l.nicholaswilde.io/
-    - Node-RED:
-        icon: si-nodered
-        href: https://nodered.l.nicholaswilde.io/
-    - Portainer:
-        icon: si-portainer
-        href: https://portainer.l.nicholaswilde.io/
     - Z-Wave JS UI:
         icon: sh-z-wave-js-ui.png
         href: https://zwave.l.nicholaswilde.io/
