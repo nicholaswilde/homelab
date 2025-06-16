@@ -1,0 +1,66 @@
+---
+services:
+  tdarr:
+    container_name: tdarr
+    image: ghcr.io/haveagitgat/tdarr:2.43.01
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 8265:8265  # webUI port
+      - 8266:8266  # server port
+    environment:
+      - TZ=Europe/London
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK_SET=002
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - ffmpegVersion=7
+      - nodeName=MyInternalNode
+      - auth=false
+      - openBrowser=true
+      - maxLogSizeMB=10
+      - cronPluginUpdate=
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - server:/app/server
+      - configs:/app/configs
+      - logs:/app/logs
+      - /media:/media
+      - /transcode_cache:/temp
+    # devices:
+      # - /dev/dri:/dev/dri
+    # deploy:
+      # resources:
+        # reservations:
+          # devices:
+            # - driver: nvidia
+              # count: all
+              # capabilities: [gpu]
+  # https://offen.github.io/docker-volume-backup/
+  backup: &backup_service
+    image: offen/docker-volume-backup:v2.43.3
+    environment: &backup_environment
+      BACKUP_FILENAME: server-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: server-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: server-
+      BACKUP_RETENTION_DAYS: '14'
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      BACKUP_STOP_DURING_BACKUP_LABEL: service
+    volumes:
+      - server:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME}/backups:/archive
+      # - /mnt/storage/backup/reactive-resume:/archive
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+volumes:
+  data:
+  server:
+  configs:
+  logs:
