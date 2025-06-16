@@ -1,22 +1,18 @@
 ---
 tags:
-  - bare-metal
-  - home-assistant
-  - docker
+  - hardware
+  - proxmox
   - amd64
 ---
 # :simple-intel: Intel NUC
 
-My [Intel NUC][2] is used as my home automation hardware. It mainly consists of Docker containers running Home Assistant
-(HA) add-ons.
-
-I'm thinking of converting the NUC to a Proxmox node and run HAOS as a VM.
+I'm in the process of converting my [Intel NUC][2] to be used as another `amd64` Proxmox node.
 
 ## :gear: Config
 
 !!! example ""
 
-    OS: [Ubuntu Server][1]
+    OS: [Proxmox][1]
 
     Generation: `10`
 
@@ -28,5 +24,5 @@ I'm thinking of converting the NUC to a Proxmox node and run HAOS as a VM.
 
 ## :link: References
 
-[1]: <https://ubuntu.com/download/server>
+[1]: <https://www.proxmox.com/en/>
 [2]: <https://www.intel.com/content/dam/support/us/en/documents/intel-nuc/NUC10i357FN_TechProdSpec.pdf>

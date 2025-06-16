@@ -1,11 +1,16 @@
 ---
 tags:
-  - proxmox
+  - home-assistant
   - rpi
   - arm64
 ---
 # :simple-raspberrypi: Raspberry Pi 4 8GB
-I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
+
+I recently converted my [Raspberry Pi 4 8GB][1] to run [Home Assistant][12] so that I can use my [NUC][13] as another Proxmox node.
+
+!!! warning
+
+    Everything listed below is out of date and needs to be moved to relevant pages or deleted.
 
 ### :clipboard: TL;DR
 
@@ -35,9 +40,11 @@ I use my [Raspberry Pi 4 8GB][1] as another [Proxmox][2] server.
 
     RAM: `8GB`
 
-    HAT: `none`
+    HAT1: [`Argon Fan HAT for Raspberry Pi 4`][15]
 
-    DRIVE: `USB 500GB SSD`
+    HAT2: [`GeeekPi M.2 NVME SSD Storage Expansion Board for Raspberry Pi 4 (52Pi EP-0171)`][14]
+
+    DRIVE: `500GB NVMe`
 
 ### :material-usb-flash-drive: [Raspberry Pi 4 boot from usb][6]
 
@@ -494,3 +501,7 @@ See [Raspberry Pi 5 16GB][8].
 [9]: <https://cdn.shopify.com/s/files/1/0556/1660/2177/files/Argon_Fan_Hat.pdf>
 [10]: <../tools/lvm.md>
 [11]: <https://jamesachambers.com/fixing-storage-adapters-for-raspberry-pi-via-firmware-updates/comment-page-1/>
+[12]: <https://www.home-assistant.io/>
+[13]: <./nuc.md>
+[14]: <https://wiki.52pi.com/index.php?title=EP-0171>
+[15]: <https://argon40.com/products/argon-fan-hat>
