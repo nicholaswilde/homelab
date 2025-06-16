@@ -223,10 +223,10 @@ From node
     pct resize 108 rootfs 20G
     ```
 
-!!! code "Resize the file system"
+!!! code "Check the file system"
 
     ```shell
-    resize2fs /dev/pve/vm-108-disk-0
+    e2fsck -f /dev/pve/vm-108-disk-0
     ```
 
 !!! code "Resize the file system (optional)"
