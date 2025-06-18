@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    rustserver:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`rustdesk.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: rustserver
+#endregion
+#region services
+  services:
+    rustserver:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.155:21114"
+        passHostHeader: true
+#endregion
