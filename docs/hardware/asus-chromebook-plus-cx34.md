@@ -7,5 +7,9 @@ tags:
 
 !!! example ""
 
+    OS: `Chrome OS`
+
+    Manufacturer: `ASUS`
+
 ## :link: References
 
