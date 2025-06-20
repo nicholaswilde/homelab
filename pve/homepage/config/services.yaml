@@ -57,6 +57,9 @@
     - Dockflare:
         icon: si-cloudflare
         href: https://dockflare.l.nicholaswilde.io
+    - Apache Guacamole:
+        icon: si-apacheguacamole
+        href: https://guac.l.nicholaswilde.io
 - Media:
     - Jellyfin:
         icon: si-jellyfin
