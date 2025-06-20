@@ -62,6 +62,7 @@ nav:
       - Vaultwarden Backup: apps/vaultwarden-backup.md
       - Ventoy: apps/ventoy.md
       - WatchYourLAN: apps/watchyourlan.md
+      - Windows 11: apps/w11.md
   - Hardware:
       - Dell Studio 1537: hardware/dell-studio-1537.md
       - HP Pro desk 600 G3: hardware/hp-prodesk-600-g3.md
