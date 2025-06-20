@@ -65,7 +65,7 @@ nav:
       - WatchYourLAN: apps/watchyourlan.md
       - Windows 11: apps/w11.md
   - Hardware:
-      - ASUS Chromebook Plus CX34: asus-chromebook-plus-cx34.md
+      - ASUS Chromebook Plus CX34: hardware/asus-chromebook-plus-cx34.md
       - Dell Studio 1537: hardware/dell-studio-1537.md
       - HP Pro desk 600 G3: hardware/hp-prodesk-600-g3.md
       - Intel NUC: hardware/nuc.md
