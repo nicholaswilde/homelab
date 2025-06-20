@@ -4,7 +4,7 @@ tags:
 ---
 # :computer: Lenovo ChromeBook Flex 5
 
-This chromebook was inherited and is used when I'm away from my homelab network.
+This chromebook was inherited and is used when I'm away from my homelab network. I use it the same way as my [ASUS Chromebook][2].
 
 !!! example ""
 
@@ -34,3 +34,4 @@ I'm using two external monitors that are connected via a [USC C to Dual DisplayP
 - <https://www.lenovo.com/us/en/p/laptops/lenovo/lenovo-edu-chromebooks/ideapad-f5-cb-13cml-05/88ipfc51448>
 
 [1]: <https://www.amazon.com/dp/B09NXFG1MP>
+[2]: <>
