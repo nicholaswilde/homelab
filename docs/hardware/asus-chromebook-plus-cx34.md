@@ -11,5 +11,9 @@ tags:
 
     Manufacturer: `ASUS`
 
+    Model: `CX3402CBA-DH386-WH`
+
+    Drive: `256GB`
+
 ## :link: References
 
