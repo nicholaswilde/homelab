@@ -30,11 +30,11 @@ pilot progarm. Since then, I've used Chromebooks as my main laptop and used othe
 The reason for going with a Chromebook is to use a simple OS that does the basics of browsing the web and enabling me
 to SSH into other systems.
 
-## Penguin Terminal
+## :penguin: Penguin Terminal
 
 I only use the built in [Penguin Terminal][1] when I'm away from my home network.
 
-## SSH Client
+## :closed_lock_with_key: SSH Client
 
 I use the [Secure Shell extension by Google][2] as my main SSH client to connect to all of my other machines. This client is
 lightweight and syncs with my other Chrome browser sessions, which is handy.
