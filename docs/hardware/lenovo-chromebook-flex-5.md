@@ -34,4 +34,4 @@ I'm using two external monitors that are connected via a [USC C to Dual DisplayP
 - <https://www.lenovo.com/us/en/p/laptops/lenovo/lenovo-edu-chromebooks/ideapad-f5-cb-13cml-05/88ipfc51448>
 
 [1]: <https://www.amazon.com/dp/B09NXFG1MP>
-[2]: <>
+[2]: <./asus-chromebook-plus-cx34.md>
