@@ -66,7 +66,14 @@ tags:
 !!! info
 
     Domain should match the hostname of the W11 computer.
-    
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/apache-guacamole.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/apache-guacamole.yaml"
+    ```
 
 ## :simple-task: Task List
 
