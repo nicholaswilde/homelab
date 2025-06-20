@@ -70,11 +70,11 @@ function check_curl(){
 }
 
 function update_script() {
-   if ! command_exists gitea; then
-      raise_error "No gitea Installation Found!"
-   fi
-   RELEASE=$(curl -fsSL https://github.com/go-gitea/gitea/releases/latest | grep "title>Release" | cut -d " " -f 4 | sed 's/^v//')
-   msg_info "Updating $APP to ${RELEASE}"
+  if ! command_exists gitea; then
+    raise_error "No gitea Installation Found!"
+  fi
+  RELEASE=$(curl -fsSL https://github.com/go-gitea/gitea/releases/latest | grep "title>Release" | cut -d " " -f 4 | sed 's/^v//')
+  print_text "Updating $APP to ${RELEASE}"
    curl -fsSL "https://github.com/go-gitea/gitea/releases/download/v$RELEASE/gitea-$RELEASE-linux-amd64" -o $(basename "https://github.com/go-gitea/gitea/releases/download/v$RELEASE/gitea-$RELEASE-linux-amd64")
    sudo systemctl stop gitea
    sudo rm -rf /usr/local/bin/gitea
