@@ -1,6 +1,7 @@
 ---
 tags:
   - chromeos
+  - hardware
 ---
 # :computer: Lenovo ChromeBook Flex 5
 
