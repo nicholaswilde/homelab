@@ -37,7 +37,36 @@ tags:
 
 ## :gear: Config
 
-Make symlinks to repo.
+### ![windows](https://cdn.jsdelivr.net/gh/selfhst/icons/png/microsoft-windows.png){ width="16" } Windows 11
+
+!!! example "Connections"
+
+    === "Edit Connection"
+    
+        Name: `w11`
+
+        Location: `Root`
+
+        Protocol: `RDP`
+
+    === "Network"
+
+        Hostname: `192.168.2.154`
+
+        Port: `3389`
+
+    === "Authentication"
+
+        Username: `username`
+
+        Password: `password`
+
+        Domain: `W11`
+
+!!! info
+
+    Domain should match the hostname of the W11 computer.
+    
 
 ## :simple-task: Task List
 
