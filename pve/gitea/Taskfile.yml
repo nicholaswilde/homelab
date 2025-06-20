@@ -30,7 +30,13 @@ tasks:
   update:
     desc: Update running containers
     cmds:
-      - bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
+      - ./update.sh
+      # - bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
+  upgrade:
+    desc: Upgrade app
+    cmds:
+      - git pull origin
+      - task: update
   stop:
     desc: Stop service
     cmds:

@@ -55,7 +55,7 @@ http:
     proxmox03:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.198:8006"
+          - url: "https://192.168.2.143:8006"
         passHostHeader: true
     proxmox04:
       loadBalancer:
