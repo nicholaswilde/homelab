@@ -1,0 +1,58 @@
+---
+services:
+  web:
+    image: haedlessdev/portnote:1.2.0
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}  # Replace with a secure random string
+      USER_SECRET: ${USER_SECRET}  # Replace with a secure random string
+      LOGIN_USERNAME: ${LOGIN_USERNAME}  # Replace with a username
+      LOGIN_PASSWORD: ${LOGIN_PASSWORD}  # Replace with a custom password
+      DATABASE_URL: "postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_DATABASE_NAME}"
+    depends_on:
+      db:
+        condition: service_started
+
+  agent:
+    image: haedlessdev/portnote-agent:1.2.0
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_DATABASE_NAME}"
+    depends_on:
+      db:
+        condition: service_started
+
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  # https://offen.github.io/docker-volume-backup/
+  backup: &backup_service
+    image: offen/docker-volume-backup:v2.43.3
+    environment: &backup_environment
+      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: backup-
+      BACKUP_RETENTION_DAYS: '14'
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      BACKUP_STOP_DURING_BACKUP_LABEL: service
+    volumes:
+      - data:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ${HOME}/backups:/archive
+      - /mnt/storage/backup/portnote:/archive
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+volumes:
+  data:
