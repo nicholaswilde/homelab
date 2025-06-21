@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    portnote:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`portnote.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: portnote
+#endregion
+#region services
+  services:
+    portnote:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.159:3000"
+        passHostHeader: true
+#endregion
