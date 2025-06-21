@@ -58,7 +58,6 @@ nav:
       - Stirling PDF: apps/stirling-pdf.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
-      - Uptime Kuma: apps/uptime-kuma.md
       - Vaultwarden: apps/vaultwarden.md
       - Vaultwarden Backup: apps/vaultwarden-backup.md
       - Ventoy: apps/ventoy.md
