@@ -5,5 +5,13 @@
   ],
   "ignoreDeps": [
     "ghcr.io/browserless/chromium"
-  ]
+  ],
+  "docker-compose": {
+    "fileMatch": [
+    // Default patterns for docker-compose files
+    "(^|/)(?:docker-)?compose[^/]*\\.ya?ml$",
+    // Add your custom pattern for .j2 files
+    "^compose\\.ya?ml(?:\\.j2)?$"
+    ]
+  }
 }
