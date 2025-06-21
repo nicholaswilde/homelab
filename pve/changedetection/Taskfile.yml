@@ -60,6 +60,15 @@ tasks:
     desc: Update ChangeDetection
     cmds:
      - ./update.sh
+  upgrade:
+    desc: Upgrade ChangeDetection
+    cmds:
+      - git pull origin
+      - task: update
+  clean:
+    desc: Clean node_modules
+    cmds:
+      - rm -rf {{ CONFIG_DIR }}/node_modules/.* {{ CONFIG_DIR }}/node_modules/@*/.*
   default:
     cmds:
       - task -l
