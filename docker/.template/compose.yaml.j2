@@ -12,7 +12,7 @@ services:
     restart: always
   # https://offen.github.io/docker-volume-backup/
   backup: &backup_service
-    image: offen/docker-volume-backup:v2.43.3
+    image: offen/docker-volume-backup:v2.43.4
     environment: &backup_environment
       BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
       BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
