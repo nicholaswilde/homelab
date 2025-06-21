@@ -60,6 +60,9 @@
     - Apache Guacamole:
         icon: si-apacheguacamole
         href: https://guac.l.nicholaswilde.io
+    - PortNote:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/portnote.png
+        href: https://portnote.l.nicholaswilde.io/
 - Media:
     - Jellyfin:
         icon: si-jellyfin
