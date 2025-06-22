@@ -20,8 +20,8 @@ services:
       PUID: 0
       PGID: 0
       TZ: America/Los_Angeles
-      BASE_URL: https://mealie.l.nicholaswilde.io
-      OIDC_AUTH_ENABLED: true
+      BASE_URL: https://mealie.nicholaswilde.io
+      OIDC_AUTH_ENABLED: false
       OIDC_SIGNUP_ENABLED: true
       OIDC_CONFIGURATION_URL: http://authentik.l.nicholaswilde.io:9000/application/o/mealie/.well-known/openid-configuration
       SMTP_HOST: "smtp.gmail.com"
@@ -40,8 +40,8 @@ services:
     volumes:
       - data:/backup/my-app-backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ${HOME}/backups:/archive
-      - /mnt/storage/backup/mealie:/archive
+      - ${HOME}/backups:/archive
+      # - /mnt/storage/backup/mealie:/archive
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 volumes:
