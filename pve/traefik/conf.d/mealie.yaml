@@ -17,6 +17,6 @@ http:
     mealie: 
       loadBalancer: 
         servers: 
-          - url: "http://192.168.2.97:9925" 
+          - url: "http://192.168.2.161:9925" 
         passHostHeader: true 
 #endregion 
