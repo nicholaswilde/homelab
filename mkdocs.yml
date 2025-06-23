@@ -16,6 +16,7 @@ edit_uri: "edit/main/docs/"
 nav:
   - Home: index.md
   - About:
+      - Development: about/development.md
       - Future: about/future.md
   - Apps:
       - Adguard Home Sync: apps/adguard-sync.md
@@ -81,9 +82,9 @@ nav:
       - LVM: tools/lvm.md
       - micro: tools/micro.md
       - SOPS: tools/sops.md
+      - Syncthing: tools/syncthing.md
       - Task: tools/task.md
   - Reference:
-      - Development: reference/development.md
       - Emoji: reference/emoji.md
       - Tags: reference/tags.md
 

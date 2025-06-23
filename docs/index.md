@@ -39,7 +39,7 @@ My homelab is setup and maintained using [Ansible][5], which is documented [here
 
 ## :construction: Development
 
-Check out the [Development](./reference/development.md) page.
+Check out the [Development](./about/development.md) page.
 
 ## :scales: License
 

@@ -1,6 +1,6 @@
 ---
 tags:
-  - reference
+  - about
 ---
 # :construction: Development
 
@@ -67,6 +67,10 @@ If the tool is only available to download as a binary file, I'll use my [`instal
 
 Config files are backed up into this repo so that can be replicated or referenced when lost.
 
+### :lock: Keys
+
+Keys are syncronized across containers using [Syncthing][15] so that I don't have to manually copy them over.
+
 ## :floppy_disk: Backups
 
 The original files are copied into the original config location with a `.bak` extension before making any changes to them.
@@ -116,6 +120,8 @@ Encrypted files will end in `.enc` and are encrypted using [SOPS][13] and age.
 
 [.env][14] files are used to store variables and secrets. There are used whenever possible.
 
+`.env` files are ignored in this repo so that secrets aren't commited.
+
 ### :material-content-copy: Template Files
 
 Template files end in `.tmpl` and are not used by the app and are meant to be copied.
@@ -128,20 +134,21 @@ Template files end in `.tmpl` and are not used by the app and are meant to be co
 
 ## :twisted_rightwards_arrows: Workflow
 
+My general workflow when creating a new LXC or VM.
+
 1. Create VM or LXC container.
-2. Ensure that python3 is installed on the container.
-3. Run setup playbook.
-4. Add to Ansible inventory.
-6. Setup app.
-7. Backup config files to repo on cintainer.
-8. Add to [AdGuardHome][1].
-9. Run [AdGuardHome sync][2].
-10. Add to [Traefik][4].
-11. Add to [homepage][5].
-12. Add to homelab docs.
-13. Add to [WatchYourLAN][6].
-14. Add to [Beszel][7].
-15. Add to [authentik][12].
+2. Run `homelab-pull`.
+3. Add to Ansible inventory.
+4. Setup app.
+5. Backup config files to repo on cintainer.
+6. Add to [AdGuardHome][1].
+7. Run [AdGuardHome sync][2].
+8. Add to [Traefik][4].
+9. Add to [homepage][5].
+10. Add to homelab docs.
+11. Add to [WatchYourLAN][6].
+12. Add to [Beszel][7].
+13. Add to [authentik][12].
 
 ## :page_facing_up: New Document Pages
 
@@ -269,3 +276,4 @@ Logs are used to debug applications. They may be looked at once or followed get 
 [12]: <../apps/authentik.md>
 [13]: <../tools/sops.md>
 [14]: <../tools/env-files.md>
+[15]: <../tools/syncthing.md>
