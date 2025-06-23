@@ -72,7 +72,7 @@ function check_curl(){
 
 function update_script() {
   APP=qbittorrent-nox
-  if ! command_exists qbittorrent-nox; then
+  if ! command_exists /opt/qbittorrent/qbittorrent-nox; then
     raise_error "No qbittorrent-nox Installation Found!"
   fi
   FULLRELEASE=$(curl -fsSL https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
