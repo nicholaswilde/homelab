@@ -46,6 +46,7 @@ tasks:
   update:
     desc: Update running containers
     cmds:
+      - docker pull alplat/dockflare:latest
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f
   up:
