@@ -267,7 +267,7 @@ Add repo and install.
     
         ```shell
         (
-          echo "deb http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list && \  
+          echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list && \  
           apt update && \
           apt install sops
         )
@@ -276,7 +276,7 @@ Add repo and install.
     === "Manual"
 
         ```ini
-        deb http://deb.l.nicholaswilde.io/debian bookworm main
+        deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bookworm main
         ```
 
         ```shell
