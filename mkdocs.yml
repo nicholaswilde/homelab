@@ -39,7 +39,6 @@ nav:
       - homepage: apps/homepage.md
       - Immich: apps/immich.md
       - Immich-Go: apps/immich-go.md
-      - InfluxDB: apps/influxdb.md
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
       - mailrise: apps/mailrise.md
@@ -48,7 +47,6 @@ nav:
       - ntfy: apps/ntfy.md
       - OpenMediaVault: apps/openmediavault.md
       - Pinchflat: apps/pinchflat.md
-      - Prometheus: apps/prometheus.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
       - Reactive Resume: apps/reactive-resume.md
