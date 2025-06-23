@@ -18,6 +18,24 @@ The other concern is the number of ports, which I like to keep connected to RJ45
 
 :question: Do I disconnect the ports that I'm not using from the patch panel and figure out a solution when I need them :thinking:?
 
+## :cd: OS
+
+### :desktop_computer: Desktop
+
+I don't use many desktop environments. When I do, it's either ChromeOS or Windows 11.
+
+I don't have a desire at the moment to try anything new.
+
+### :material-server: Server
+
+My favorite server OS is Debian which I got used to when I started with Ubuntu. I prefer Debian over Ubuntu, at the moment, due to it's smaller size and just install the applications that I need.
+
+I tried Arch a while ago, but was too finicky to setup and time consuming.
+
+I haven't tried Alpine linux, other than when compiling my own Docker images.
+
+What I would like to try is [NixOS][4] because it's [infractructure as code][3] and it is easy to backup.
+
 ## :file_cabinet: NAS
 
 I'd like to have some type of NAS to properly store my files as well has some kind of backup.
@@ -29,3 +47,5 @@ the the speeds may suffer due to the RPi's 1 Gbit speeds. :question: Do I actual
 
 [1]: <../hardware/hp-prodesk-600-g3.md>
 [2]: <https://radxa.com/products/accessories/penta-sata-hat/>
+[3]: <https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac>
+[4]: <https://nixos.org/>
