@@ -49,9 +49,9 @@ layout:
     icon: mdi-chart-line
   Developer:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-cog
   Icons & Emoji:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-emoticon

@@ -3,6 +3,9 @@
     - Homelab:
         - icon: mdi-home
           href: https://nicholaswilde.io/homelab
+    - Homelab Pull:
+        - icon: mdi-arm-flex
+          href: https://nicholaswilde.io/homelab-pull/
     - Repositories:
         - icon: si-github
           href: https://github.com/nicholaswilde?tab=repositories
