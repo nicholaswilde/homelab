@@ -1,17 +1,39 @@
 ---
 services:
   filebrowser:
-    image: filebrowser/filebrowser:v2.33.10
+    image: filebrowser/filebrowser:v2.33.10-s6
     container_name: ${CONTAINER_NAME}
     env_file:
       - .env
     volumes:
       - /mnt/storage:/srv
-      - ${PWD}/filebrowser.db:/database.db"
-      - ${PWD}/settings.json:/.filebrowser.json
+      - data:/database
+      - ./settings.json:/config/settings.json
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      - PUID=$(id -u)
-      - PGID=$(id -g)
+      - PUID=0
+      - PGID=0
     ports:
       - 8095:80
-    restart: always
+    restart: unless-stopped
+  # https://offen.github.io/docker-volume-backup/
+  backup: &backup_service
+    image: offen/docker-volume-backup:v2.43.4
+    environment: &backup_environment
+      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: backup-
+      BACKUP_RETENTION_DAYS: '14'
+      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      BACKUP_STOP_DURING_BACKUP_LABEL: service
+    volumes:
+      - data:/backup/my-app-backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ${HOME}/backups:/archive
+      - /mnt/storage/backup/filebrowser:/archive
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+  
+volumes:
+  data:

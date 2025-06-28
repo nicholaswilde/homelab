@@ -5,6 +5,20 @@ dotenv:
   - .env
 
 tasks:
+  shell:
+    desc: Shell
+    cmds:
+      - docker exec -it {{ .CONTAINER_NAME }} sh
+  backup:
+    desc: Backup volume data
+    cmds:
+      - docker exec {{ .CONTAINER_NAME }}-backup-1 backup
+  rm:
+    desc: Remove container
+    cmds:
+      - docker container rm {{ .CONTAINER_NAME }}
+      - docker container rm {{ .CONTAINER_NAME }}-backup-1
+      - docker volume rm {{ .CONTAINER_NAME }}_data
   export:
     desc: Export the task list
     cmds:
@@ -25,7 +39,6 @@ tasks:
     desc: Init .env file
     cmds:
       - cp .env.tmpl .env
-      - "[ -f filebrowser.db ] || touch filebrowser.db"
       - cp settings.json.tmpl settings.json
     ignore_error: true
   decrypt:
@@ -33,12 +46,10 @@ tasks:
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
       - sops -d --input-type json --output-type json settings.json.enc > settings.json
-      - sops -d filebrowser.db.enc > filebrowser.db
   encrypt:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-      - sops -e filebrowser.db > filebrowser.db.enc
       - sops -e settings.json > settings.json.enc
   update:
     desc: Update running containers
