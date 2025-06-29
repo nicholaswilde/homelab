@@ -11,8 +11,8 @@
 #
 ################################################################################
 
-# set -e
-# set -o pipefail
+set -e
+set -o pipefail
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -29,7 +29,6 @@ readonly blue
 readonly default
 readonly white
 readonly yellow
-readonly APP
 
 function print_text(){
   echo "${blue}==> ${white}${bold}${1}${normal}"
@@ -75,11 +74,14 @@ function update_script() {
   if ! command_exists traefik; then
     raise_error "No traefik Installation Found!"
   fi
-  cd /tmp
+  cd /usr/bin
+  print_text "Stopping traefik service"
   sudo systemctl stop traefik
-  test -f /usr/local/bin/traefik && sudo rm -rf /usr/local/bin/traefik
-  curl -fsSL https://installer.l.nicholaswilde.io/traefik/traefik! | bash
+  test -f /usr/bin/traefik && sudo rm -rf /usr/bin/traefik
+  print_text "Upgrading traefik"
+  curl -fsSL http://192.168.2.26:3000/traefik/traefik | bash
   sudo chmod +x /usr/local/bin/traefik
+  print_text "Starting traefik service"
   sudo systemctl start traefik
   print_text "Updated traefik Successfully"
 }

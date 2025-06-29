@@ -5,6 +5,12 @@ env:
   APP_NAME: '{{ .APP_NAME }}'
 
 tasks:
+  update:
+    desc: Update running containers
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
   export:
     desc: Export the task list
     cmds:
