@@ -81,6 +81,7 @@ nav:
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
       - micro: tools/micro.md
+      - rclone: tools/rclone.md
       - SOPS: tools/sops.md
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md

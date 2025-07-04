@@ -32,7 +32,7 @@ tasks:
     cmds:
       - >-
         docker pull {{ .IMAGE }}
-
+        docker image prune -a -f
   up:
     desc: Start server
     cmds:
