@@ -1,7 +1,7 @@
 ---
 services:
   filebrowser:
-    image: filebrowser/filebrowser:v2.34.2-s6
+    image: filebrowser/filebrowser:v2.36.1-s6
     container_name: ${CONTAINER_NAME}
     env_file:
       - .env
