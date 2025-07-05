@@ -49,7 +49,30 @@ WIP
 
 ### :arrows_counterclockwise: HEIC Conversion
 
-WIP
+!!! example "Convert individual HEIC files"
+
+    ```shell
+    ./heic-converter.sh image.heic photo.heic
+    -f png photo.heic --extract-archives archive.zip
+    ```
+    
+!!! example "Process all files in directory and delete all HEIC files"
+
+    ```shell
+    ./heic-converter.sh -d ~/Pictures/MyHEICImages -f jpg --delete-heic-on-success --extract-archives
+    ```
+
+!!! example "Process all files in directory and deleta all mp4 files"
+
+    ```shell
+    ./heic-converter.sh -d ./my_media --delete-mp4 --extract-archives
+    ```
+
+!!! example "Extract archive files, such as zip or tar"
+
+    ```shell
+    ./heic-converter.sh --extract-archives my_photos.zip video_archive.tar.gz
+    ```
 
 ??? abstract "heic-converter.sh"
 
