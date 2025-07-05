@@ -47,7 +47,7 @@ WIP
 
 ### :pencil: Usage
 
-### HEIC Conversion
+### :arrows_counterclockwise: HEIC Conversion
 
 ??? abstract "heic-converter.sh"
 
