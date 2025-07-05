@@ -45,17 +45,17 @@ WIP
 
 WIP
 
-### :pencil: Usage
+## :pencil: Usage
 
 ### :arrows_counterclockwise: HEIC Conversion
+
+WIP
 
 ??? abstract "heic-converter.sh"
 
     ```bash
     --8<-- "digital-picture-frame/heic-converter.sh"
     ```
-
-WIP
 
 ## :link: References
 
