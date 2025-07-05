@@ -47,13 +47,17 @@ WIP
 
 ## :pencil: Usage
 
-### :arrows_counterclockwise: HEIC Conversion
+### :arrows_counterclockwise: HEIC Converter
 
 !!! example "Convert individual HEIC files"
 
     ```shell
     ./heic-converter.sh image.heic photo.heic
-    -f png photo.heic --extract-archives archive.zip
+    ```
+!!! example "Convert individual HEIC file to png and extract zip file"
+
+    ```shell
+    ./heic-converter.sh -f png photo.heic --extract-archives archive.zip
     ```
     
 !!! example "Process all files in directory and delete all HEIC files"
