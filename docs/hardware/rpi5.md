@@ -128,7 +128,7 @@ This is how to change the resolution on boot of the command line so that it can 
         video=HDMI-A-1:1920x1080M@60D
         ```
 
-## :simple-proxmox: Proxmox
+## :simple-proxmox: PXVIRT
 
 Setup [LVM][9] first
 
@@ -229,7 +229,7 @@ Is the container summary memory usage and swap usage always shows `0`?
 
 Unmount SD card, plug into the Raspberry Pi and boot
 
-### Proxmox Installation
+### PXVIRT Installation
 
 !!! tip
 
@@ -295,15 +295,15 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
     192.168.1.192
     ```
 
-### :floppy_disk: Install Proxmox VE
+### :floppy_disk: Install PXVIRT
 
 !!! warning
 
     Proxmox-Port has now been replaced by [PXVIRT][15]! The information below may be out of date!
 
-##### :octicons-repo-24: Add the Proxmox VE repository
+##### :octicons-repo-24: Add the PXVIRT repository
 
-!!! abstract "/etc/apt/sources.list.d/pveport.list"
+!!! abstract "/etc/apt/sources.list.d/pxvirt.list"
 
     === "Automatic"
     
@@ -313,11 +313,11 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
 
     === "Manual"
 
-        ```shell title="/etc/apt/sources.list.d/pxvirt.list"
+        ```shell
         deb https://download.lierfang.com/pxcloud/pxvirt bookworm main
         ```
 
-!!! code "Add the Proxmox VE repository key"
+!!! code "Add the PXVIRT repository key"
 
     ```shell
     curl -L https://mirrors.lierfang.com/proxmox/debian/pveport.gpg -o /etc/apt/trusted.gpg.d/pveport.gpg 
@@ -329,7 +329,7 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
     apt update && apt full-upgrade
     ```
 
-!!! code "Install `ifupdown2` and Proxmox VE packages"
+!!! code "Install `ifupdown2` and PXVIRT packages"
 
     ```shell
     apt install --allow-downgrades -y ifupdown2 pxvirt pve-manager=8.3.5-1+port2 qemu-server=8.3.8+port5 postfix open-iscsi
@@ -504,19 +504,6 @@ See [LVM](../tools/lvm.md).
 
 [10]: <https://community-scripts.github.io/ProxmoxVE/> 
 [11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/> 
-[13]: <https://mirrors.apqa.cn/proxmox/isos/> 
+[13]: <https://download.lierfang.com/isos/> 
 [14]: <https://www.raspberrypi.com/products/active-cooler/>
 [15]: <https://github.com/jiangcuo/pxvirt>
-
-<!-- [1]: <https://www.raspberrypi.com/products/raspberry-pi-4-model-b/> -->
-<!-- [2]: <../apps/proxmox.md> -->
-<!-- [3]: <https://www.raspberrypi.com/software/operating-systems/> -->
-<!-- [6]: <https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/>> -->
-<!-- [8]: <./rpi5.md> -->
-<!-- [9]: <https://cdn.shopify.com/s/files/1/0556/1660/2177/files/Argon_Fan_Hat.pdf> -->
-<!-- [10]: <../tools/lvm.md> -->
-<!-- [11]: <https://jamesachambers.com/fixing-storage-adapters-for-raspberry-pi-via-firmware-updates/comment-page-1/> -->
-<!-- [12]: <https://www.home-assistant.io/> -->
-<!-- [13]: <./nuc.md> -->
-<!-- [14]: <https://wiki.52pi.com/index.php?title=EP-0171> -->
-<!-- [15]: <https://argon40.com/products/argon-fan-hat> -->
