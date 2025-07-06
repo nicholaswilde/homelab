@@ -297,6 +297,10 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
 
 ### :floppy_disk: Install Proxmox VE
 
+!!! warning
+
+    Proxmox-Port has now been replaced by [PXVIRT][15]! The information below may be out of date!
+
 ##### :octicons-repo-24: Add the Proxmox VE repository
 
 !!! abstract "/etc/apt/sources.list.d/pveport.list"
@@ -304,19 +308,19 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
     === "Automatic"
     
         ```shell
-        echo 'deb [arch=arm64] https://mirrors.apqa.cn/proxmox/debian/pve bookworm port'>/etc/apt/sources.list.d/pveport.list
+        echo 'deb https://download.lierfang.com/pxcloud/pxvirt bookworm main'>/etc/apt/sources.list.d/pxvirt.list
         ```
 
     === "Manual"
 
-        ```shell
-        https://mirrors.apqa.cn/proxmox/debian/pve bookworm port
+        ```shell title="/etc/apt/sources.list.d/pxvirt.list"
+        deb https://download.lierfang.com/pxcloud/pxvirt bookworm main
         ```
 
 !!! code "Add the Proxmox VE repository key"
 
     ```shell
-    curl -L https://mirrors.apqa.cn/proxmox/debian/pveport.gpg -o /etc/apt/trusted.gpg.d/pveport.gpg 
+    curl -L https://mirrors.lierfang.com/proxmox/debian/pveport.gpg -o /etc/apt/trusted.gpg.d/pveport.gpg 
     ```
 
 !!! code "Update repository and system"
@@ -328,7 +332,7 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
 !!! code "Install `ifupdown2` and Proxmox VE packages"
 
     ```shell
-    apt install ifupdown2 proxmox-ve postfix open-iscsi
+    apt install --allow-downgrades -y ifupdown2 pxvirt pve-manager=8.3.5-1+port2 qemu-server=8.3.8+port5 postfix open-iscsi
     ```
 
 Configure packages which require user input on installation according to your needs (e.g. Samba asking about WINS/DHCP
@@ -502,6 +506,7 @@ See [LVM](../tools/lvm.md).
 [11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/> 
 [13]: <https://mirrors.apqa.cn/proxmox/isos/> 
 [14]: <https://www.raspberrypi.com/products/active-cooler/>
+[15]: <https://github.com/jiangcuo/pxvirt>
 
 <!-- [1]: <https://www.raspberrypi.com/products/raspberry-pi-4-model-b/> -->
 <!-- [2]: <../apps/proxmox.md> -->
