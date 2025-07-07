@@ -210,6 +210,15 @@ WIP
         omv-upgrade
         ```
 
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "openmediavault/task-list.txt"
+    ```
+
 ## :link: References
 
 - https://www.youtube.com/watch?v=Bce7VT3kJ4g
