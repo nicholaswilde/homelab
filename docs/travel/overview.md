@@ -8,6 +8,7 @@ My network setup when traveling.
 
 ## :toolbox: Equipment
 
+- [Fire TV Stick Lite][3]
 - [TP-Link AC750 Wireless Portable Nano Travel Router][1]
 - [CableGeeker Ethernet Splitter 1 to 2 High Speed 1000Mbps][2]
 
@@ -15,3 +16,4 @@ My network setup when traveling.
 
 [1]: <https://a.co/d/4sFXb9O>
 [2]: <https://a.co/d/h5E08TW>
+[3]: <https://a.co/d/iRXi3Ef>
