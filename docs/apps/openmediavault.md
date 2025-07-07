@@ -166,7 +166,7 @@ Mounted after reinstall and not before.
     )
     ```
 
-## NFS Failure Notification Script
+## :bell: NFS Failure Notification Script
 
 A simple utility to send a notification to mailrise on an NFS service failure.
 
