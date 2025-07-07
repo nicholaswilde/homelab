@@ -9,7 +9,7 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-- [Download][2] ISO into Proxmox
+### [Download][2] ISO into Proxmox
 
 !!! code "pve"
 
@@ -24,7 +24,7 @@ tags:
     )
     ```
 
-- Create new VM
+### Create new VM
 
 !!! example "General"
 
@@ -56,7 +56,7 @@ tags:
     lsblk
     ```
 
-- Install omv into VM.
+### Install omv into VM.
 
 ## :fontawesome-solid-universal-access: Default Access
 
@@ -151,7 +151,7 @@ Mounted after reinstall and not before.
         storage -fstype=nfs4,rw,insecure 192.168.2.19:/storage
         ```
 
-!!! example "Test"
+!!! success "Test"
 
     ```shell
     showmount -e 192.168.2.19
@@ -165,6 +165,18 @@ Mounted after reinstall and not before.
       systemctl status autofs.service
     )
     ```
+
+## NFS Failure Notification Script
+
+A simple utility to send a notification to mailrise on an NFS service failure.
+
+??? abstract "homelab/vm/openmediavault/notify-nfs-failure.sh"
+
+    ```bash
+    --8<-- "openmediavault/notify-nfs-failure.sh"
+    ```
+
+WIP
 
 ## :rocket: Upgrade
 

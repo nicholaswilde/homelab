@@ -5,20 +5,6 @@ vars:
   IMAGE: nicholaswilde/mkdocs-material
   PORT: 8000
 
-# includes:
-#   traefik:
-#     taskfile: ./pve/traefik/Taskfile.yml
-#     dir: ./pve/traefik
-#   docs:
-#     taskfile: ./docs/Taskfile.yml
-#     dir: ./docs
-#   mailrise:
-#     taskfile: ./docker/mailrise/Taskfile.yml
-#     dir: ./docker/mailrise
-#   docker:
-#     taskfile: ./docker/Taskfile.yml
-#     flatten: true
-
 tasks:
   build:
     desc: Build documentation using Docker and mkdocs-material
@@ -30,9 +16,8 @@ tasks:
   update:
     desc: Update docker container
     cmds:
-      - >-
-        docker pull {{ .IMAGE }}
-        docker image prune -a -f
+      - docker pull {{ .IMAGE }}
+      - docker image prune -a -f
   up:
     desc: Start server
     cmds:
