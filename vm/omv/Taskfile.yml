@@ -5,6 +5,18 @@ dotenv:
   - .env
 
 tasks:
+  create-nfs-override:
+    desc: "Creates or updates the systemd override file for nfs-server.service"
+    cmds:
+      - |
+        sudo bash -c '
+        mkdir -p /etc/systemd/system/nfs-server.service.d/
+        cat <<EOF > /etc/systemd/system/nfs-server.service.d/override.conf
+        [Service]
+        OnFailure={{ .TASKFILE_DIR }}/notify-nfs-failure.sh
+        EOF
+        '
+      - sudo systemctl daemon-reload
   id-nfs-service:
     desc: Identify NFS service
     cmds:
