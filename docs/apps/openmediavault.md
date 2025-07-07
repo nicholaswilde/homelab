@@ -170,6 +170,22 @@ Mounted after reinstall and not before.
 
 A simple utility to send a notification to mailrise on an NFS service failure.
 
+### :hammer_and_wrench: Installation
+
+!!! code ""
+
+    === "task"
+
+        ```shell
+        
+        ```
+
+    === "Manual"
+
+        ```shell
+        
+        ```
+
 ??? abstract "homelab/vm/openmediavault/notify-nfs-failure.sh"
 
     ```bash
