@@ -177,7 +177,7 @@ A simple utility to send a notification to mailrise on an NFS service failure.
     === "task"
 
         ```shell
-        
+        task create-nfs-override
         ```
 
     === "Automatic"
@@ -187,7 +187,7 @@ A simple utility to send a notification to mailrise on an NFS service failure.
         mkdir -p /etc/systemd/system/nfs-server.service.d/
         cat <<EOF > /etc/systemd/system/nfs-server.service.d/override.conf
         [Service]
-        OnFailure={{ .TASKFILE_DIR }}/notify-nfs-failure.sh
+        OnFailure=/root/git/nicholaswilde/homelab/vm/openmediavault/notify-nfs-failure.sh
         EOF
         ```
 
