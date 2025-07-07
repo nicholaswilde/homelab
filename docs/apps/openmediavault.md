@@ -170,9 +170,17 @@ Mounted after reinstall and not before.
 
 !!! code
 
-    ```shell
-    omv-upgrade
-    ```
+    === "Task"
+
+        ```shell
+        task upgrade
+        ```
+
+    === "Manual"
+    
+        ```shell
+        omv-upgrade
+        ```
 
 ## :link: References
 
