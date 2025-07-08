@@ -73,8 +73,6 @@ nav:
       - Raspberry Pi 2: hardware/rpi2.md
       - Raspberry Pi 4: hardware/rpi4.md
       - Raspberry Pi 5: hardware/rpi5.md
-  - Travel:
-      - Overview: travel/overview.md
   - Tools:
       - Apprise: tools/apprise.md
       - Autofs: tools/autofs.md
@@ -89,6 +87,7 @@ nav:
       - SOPS: tools/sops.md
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md
+  - Travel: travel.md
   - Reference:
       - Emoji: reference/emoji.md
       - Tags: reference/tags.md
@@ -191,7 +190,7 @@ markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
-          class: mermaid-experimental
+          class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
