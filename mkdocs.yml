@@ -81,6 +81,7 @@ nav:
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
       - .env Files: tools/env-files.md
+      - Gemini: tools/gemini.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
       - micro: tools/micro.md
