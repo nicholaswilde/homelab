@@ -11,8 +11,10 @@ tags:
 Because I mainly work on headless servers, I need to perform this remote setup when verifying the account.
 
 ### Configuring using rclone authorize
-On the headless box run rclone config but answer N to the Use auto config? question.
 
+On the headless box run `rclone config` but answer `N` to the `Use auto config?` question.
+
+```shell
 Use auto config?
  * Say Y if not sure
  * Say N if you are working on a remote or headless machine
@@ -28,14 +30,13 @@ For more help and alternate methods see: https://rclone.org/remote_setup/
 Execute the following on the machine with the web browser (same rclone
 version recommended):
 
-```shell
 rclone authorize "onedrive"
 Then paste the result.
 Enter a value.
 config_token>
 ```
 
-Then on your main desktop machine
+Then on your main desktop machine, enable port forwarding of `53682` for the ssh terminal and then:
 
 ```shell
 rclone authorize "onedrive"
