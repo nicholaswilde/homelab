@@ -14,56 +14,62 @@ Because I mainly work on headless servers, I need to perform this remote setup w
 
 On the headless box run `rclone config` but answer `N` to the `Use auto config?` question.
 
-```shell
-Use auto config?
- * Say Y if not sure
- * Say N if you are working on a remote or headless machine
+!!! code ""
 
-y) Yes (default)
-n) No
-y/n> n
+    ```shell
+    Use auto config?
+     * Say Y if not sure
+     * Say N if you are working on a remote or headless machine
 
-Option config_token.
-For this to work, you will need rclone available on a machine that has
-a web browser available.
-For more help and alternate methods see: https://rclone.org/remote_setup/
-Execute the following on the machine with the web browser (same rclone
-version recommended):
+    y) Yes (default)
+    n) No
+    y/n> n
 
-rclone authorize "onedrive"
-Then paste the result.
-Enter a value.
-config_token>
-```
+    Option config_token.
+    For this to work, you will need rclone available on a machine that has
+    a web browser available.
+    For more help and alternate methods see: https://rclone.org/remote_setup/
+    Execute the following on the machine with the web browser (same rclone
+    version recommended):
+
+    rclone authorize "onedrive"
+    Then paste the result.
+    Enter a value.
+    config_token>
+    ```
 
 Then on your main desktop machine, enable port forwarding of `53682` for the ssh terminal and then:
 
-```shell
-rclone authorize "onedrive"
-If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
-Waiting for code...
-Got code
-Paste the following into your remote machine --->
-SECRET_TOKEN
-<---End paste
+!!! code ""
+
+    ```shell
+    rclone authorize "onedrive"
+    If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
+    Log in and authorize rclone for access
+    Waiting for code...
+    Got code
+    Paste the following into your remote machine --->
+    SECRET_TOKEN
+    <---End paste
 ```
 
 Then back to the headless box, paste in the code
 
-```shell
-config_token> SECRET_TOKEN
---------------------
-[acd12]
-client_id = 
-client_secret = 
-token = SECRET_TOKEN
---------------------
-y) Yes this is OK
-e) Edit this remote
-d) Delete this remote
-y/e/d>
-```
+!!! code ""
+
+    ```shell
+    config_token> SECRET_TOKEN
+    --------------------
+    [acd12]
+    client_id = 
+    client_secret = 
+    token = SECRET_TOKEN
+    --------------------
+    y) Yes this is OK
+    e) Edit this remote
+    d) Delete this remote
+    y/e/d>
+    ```
 
 ## ![gdrive](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-drive.png){ width="24" } [Google Drive][3]
 
