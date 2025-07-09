@@ -17,6 +17,8 @@ My network setup when traveling.
 
 ## :bar_chart: Diagrams
 
+The purpose of these diagrams and tables are for me to visualize and count the number of items I need to pack.
+
 ### :globe_with_meridians: Ethernet
 
 ``` mermaid
