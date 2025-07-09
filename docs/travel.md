@@ -50,7 +50,7 @@ graph TD
 
     Power1 -- "USB C to C Cable" --> Phone1
     Power2 -- "USB C to C Cable" --> Phone2
-    Power3 -- "USB C to Micro Cable" --> FireTV
+    Power3 -- "USB A to Micro Cable" --> FireTV
     Power4 -- "USB C to Micro Cable" --> Monitor
 ```
 
@@ -60,7 +60,7 @@ graph TD
 |:---------:|:-------:|:------:|:---:|-----------------------|
 | USB       | C       | C      | 2   | Phones                |
 | USB       | A       | C      | 1   | Splitter              |
-| USB       | A       | Micro  | 2   | Router & Baby Monitor |
+| USB       | A       | Micro  | 3   | Router & Baby Monitor |
 | USB       | C       | -      | 1   | Watch                 |
 | Ethernet  | RJ45    | RJ45   | 3   | Router                |
 | Charger   | A       | -      | 2   | -                     |
