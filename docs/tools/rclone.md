@@ -14,7 +14,7 @@ Because I mainly work on headless servers, I need to perform this remote setup w
 
 On the headless box run `rclone config` but answer `N` to the `Use auto config?` question.
 
-!!! code ""
+!!! code "headless box"
 
     ```shell
     Use auto config?
@@ -40,7 +40,7 @@ On the headless box run `rclone config` but answer `N` to the `Use auto config?`
 
 Then on your main desktop machine, enable port forwarding of `53682` for the ssh terminal and then:
 
-!!! code ""
+!!! code "desktop machine"
 
     ```shell
     rclone authorize "onedrive"
@@ -51,11 +51,11 @@ Then on your main desktop machine, enable port forwarding of `53682` for the ssh
     Paste the following into your remote machine --->
     SECRET_TOKEN
     <---End paste
-```
+    ```
 
 Then back to the headless box, paste in the code
 
-!!! code ""
+!!! code "headless box"
 
     ```shell
     config_token> SECRET_TOKEN
