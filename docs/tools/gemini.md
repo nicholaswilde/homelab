@@ -6,6 +6,8 @@ tags:
 
 [Google Gemini][1] is used as an AI agent that can be used directly in a terminal.
 
+I use the Gemini cli to help generate bash script files and markdown documents for mkdocs-material.
+
 ## :hammer_and_wrench: Installation
 
 !!! code ""
@@ -44,6 +46,10 @@ tags:
         ```shell
         export GEMINI_API_KEY="YOUR_API_KEY"
         ```
+
+## Syntax Files
+
+Syntax files are used to customize the iutput from Gemini.
 
 ## :pencil: Usage
 
