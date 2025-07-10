@@ -2,11 +2,11 @@
 tags:
   - tool
 ---
-# ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Gemini
+# ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Gemini CLI
 
-[Google Gemini][1] is used as an AI agent that can be used directly in a terminal.
+[Google Gemini CLI][1] is used as an AI agent that can be used directly in a terminal.
 
-I use the Gemini cli to help generate bash script files and markdown documents for mkdocs-material.
+I use the Gemini CLI to help generate bash script files and markdown documents for mkdocs-material.
 
 ## :hammer_and_wrench: Installation
 
