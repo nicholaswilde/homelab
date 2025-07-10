@@ -61,7 +61,7 @@ Syntax files are used to customize the iutput from Gemini.
     --8<-- "GEMINI.md"
     ```
 
-??? abstract "GEMINI.md"
+??? abstract "docs/GEMINI.md"
 
     ```markdown
     --8<-- "docs/GEMINI.md"
