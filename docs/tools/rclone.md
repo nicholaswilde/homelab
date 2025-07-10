@@ -79,15 +79,17 @@ I use Google Drive as an offsite backup for some of my sensative data, such as [
 
 The initial setup for drive involves getting a token from Google drive which you need to do in your browser. rclone config walks you through it.
 
+!!! note
+
+    The remote is called `remote` in this example and so all relevant commands must use the name `remote`.
+
 !!! code "How to make a remote called remote"
 
     ```shell
     rclone config
     ```
 
-This will guide you through an interactive setup process:
-
-!!! code ""
+!!! code "This will guide you through an interactive setup process"
 
     ```shell
     No remotes found, make a new one?
