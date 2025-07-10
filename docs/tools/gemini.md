@@ -10,6 +10,10 @@ I use the Gemini cli to help generate bash script files and markdown documents f
 
 ## :hammer_and_wrench: Installation
 
+!!! example ""
+    
+    :material-information-outline: Config path: `~/.gemini/`
+    
 !!! code ""
 
     === "npx"
