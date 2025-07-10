@@ -55,12 +55,18 @@ I use the Gemini cli to help generate bash script files and markdown documents f
 
 Syntax files are used to customize the iutput from Gemini.
 
-??? abstract ""
+??? abstract "GEMINI.md"
 
     ```markdown
     --8<-- "GEMINI.md"
     ```
 
+??? abstract "GEMINI.md"
+
+    ```markdown
+    --8<-- "docs/GEMINI.md"
+    ```
+    
 ## :pencil: Usage
 
 !!! example
