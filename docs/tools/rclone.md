@@ -10,7 +10,7 @@ tags:
 
 Because I mainly work on headless servers, I need to perform this remote setup when verifying the account.
 
-### Configuring using rclone authorize
+### :gear: Configuring using rclone authorize
 
 On the headless box run `rclone config` but answer `N` to the `Use auto config?` question.
 
