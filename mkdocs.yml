@@ -186,6 +186,7 @@ markdown_extensions:
         - ./pve
         - ./docker
         - ./vm
+        - ./docs
   - pymdownx.smartsymbols
   - pymdownx.superfences:
       custom_fences:
