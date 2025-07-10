@@ -47,7 +47,7 @@ I use the Gemini cli to help generate bash script files and markdown documents f
         export GEMINI_API_KEY="YOUR_API_KEY"
         ```
 
-## Syntax Files
+## :writing_hand: Syntax Files
 
 Syntax files are used to customize the iutput from Gemini.
 
