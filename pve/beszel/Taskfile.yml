@@ -6,6 +6,7 @@ dotenv:
 
 tasks:
   export:
+    silent: true
     desc: Export the task list
     cmds:
       - task --list > task-list.txt
@@ -25,15 +26,7 @@ tasks:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-  update:
-    desc: Update running containers
-    cmds:
-      - docker compose up --force-recreate --build -d
-      - docker image prune -a -f
-  up:
-    desc: Tun Docker compose in the foreground.
-    cmds:
-      - docker compose up
+  
   restart:
     desc: Restart service
     cmds:

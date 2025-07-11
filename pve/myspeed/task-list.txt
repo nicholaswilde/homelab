@@ -9,7 +9,4 @@ task: Available tasks for this project:
 * start:         Start service
 * status:        Service status
 * stop:          Stop service
-* up:            Tun Docker compose in the foreground.
-* up-d:          Run Docker compose in the background.
-* update:        Update running containers
 * upgrade:       upgrade

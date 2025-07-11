@@ -1,0 +1,15 @@
+task: Available tasks for this project:
+* create-nfs-override:       Creates or updates the systemd override file for nfs-server.service
+* decrypt:                   Decrypt .env using SOPS
+* enable:                    Enable service
+* encrypt:                   Encrypt .env using SOPS
+* export:                    Export the task list
+* id-nfs-service:            Identify NFS service
+* init:                      Init
+* mklinks:                   Make client symlinks
+* restart:                   Resart service
+* start:                     Start service
+* status:                    Service status
+* stop:                      Stop service
+* update:                    Update vm
+* upgrade:                   Upgrade app

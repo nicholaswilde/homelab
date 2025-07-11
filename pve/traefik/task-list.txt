@@ -3,4 +3,5 @@ task: Available tasks for this project:
 * new:           Create a new config file
 * restart:       Restart Traefik
 * status:        View the Traefik service status
+* update:        Update running containers
 * watch:         Watch the log file

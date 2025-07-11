@@ -22,6 +22,7 @@ tasks:
     cmds:
       - systemctl list-unit-files --type=service | grep nfs
   export:
+    silent: true
     desc: Export the task list
     cmds:
       - task --list > task-list.txt

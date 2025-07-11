@@ -6,15 +6,16 @@ dotenv:
 
 tasks:
   export:
-    desc: Export the task list
+    silent: true
+    desc: Export the task list to `task-list.txt`.
     cmds:
       - task --list > task-list.txt
   enable:
-    desc: Enable service
+    desc: Enable the application's systemd service.
     cmds:
       - systemctl enable {{ .SERVICE_NAME }}.service
   status:
-    desc: Service status
+    desc: Check the status of the application's systemd service.
     cmds:
       - systemctl status {{ .SERVICE_NAME }}.service
   init:
@@ -29,19 +30,7 @@ tasks:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-  update:
-    desc: Update running containers
-    cmds:
-      - docker compose up --force-recreate --build -d
-      - docker image prune -a -f
-  up:
-    desc: Tun Docker compose in the foreground.
-    cmds:
-      - docker compose up
-  up-d:
-    desc: Run Docker compose in the background.
-    cmds:
-      - docker compose up -d --remove-orphans
+  
   restart:
     desc: Resart service
     cmds:

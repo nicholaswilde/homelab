@@ -2,6 +2,8 @@ task: Available tasks for this project:
 * decrypt:       Decrypt scan.db using SOPS
 * encrypt:       Encrypt scan.db using SOPS
 * export:        Export the task list
+* init:          Init
 * mklinks:       Make soft links
 * restart:       Restart the service
 * stop:          Stop the service
+* update:        Update WakeYourLAN

@@ -5,10 +5,4 @@ task: Available tasks for this project:
 * init:          Init
 * mklinks:       Make client symlinks
 * reload:        Reload Prometheus
-* restart:       Restart Docker containers
 * status:        Status
-* stop:          Stop registry container
-* up:            Tun Docker compose in the foreground.
-* up-d:          Run Docker compose in the background.
-* update:        Update running containers
-* upgrade:       upgrade

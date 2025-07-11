@@ -6,6 +6,7 @@ dotenv:
 
 tasks:
   export:
+    silent: true
     desc: Export the task list
     cmds:
       - task --list > task-list.txt
@@ -47,14 +48,7 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/update.sh
     cmds:
       - ./update.sh
-  up:
-    desc: Tun Docker compose in the foreground.
-    cmds:
-      - docker compose up
-  up-d:
-    desc: Run Docker compose in the background.
-    cmds:
-      - docker compose up -d --remove-orphans
+  
   restart:
     desc: Resart service
     cmds:

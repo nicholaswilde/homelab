@@ -1,11 +1,12 @@
 task: Available tasks for this project:
 * bootstrap:             Bootstrap 
-* decrypt:               Decrypt .env using SOPS
-* encrypt:               Encrypt .env using SOPS
-* export:                Export the task list
-* init:                  Init
+* decrypt:               Decrypt sensitive configuration files using SOPS.
+* default:               List all available tasks.
+* encrypt:               Encrypt sensitive configuration files using SOPS.
+* export:                Export the task list to `task-list.txt`.
+* init:                  Initialize the application's environment and configuration files.
 * install:               Install 
-* install-service:       Install service
-* restart:               Restart service
-* start:                 Start service
-* stop:                  Stop service
+* install-service:       Install the application's systemd service.
+* restart:               Restart the application's systemd service.
+* start:                 Start the application's systemd service.
+* stop:                  Stop the application's systemd service.

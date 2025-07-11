@@ -6,7 +6,7 @@ dotenv:
 
 tasks:
   pull:
-    desc: Pull docker images
+    desc: Pull Docker images for the application.
     cmds:
       - docker compose pull
   deepseek:
@@ -14,7 +14,8 @@ tasks:
     cmds:
       - 'docker exec -it deepseek bash -c "ollama pull deepseek-r1:1.5b"'
   export:
-    desc: Export the task list
+    silent: true
+    desc: Export the task list to `task-list.txt`.
     cmds:
       - task --list > task-list.txt
   prune:
@@ -23,48 +24,49 @@ tasks:
       - docker image prune -a -f
       - docker system prune -a -f
   status:
-    desc: Status
+    desc: Check the status of the application's Docker containers.
     cmds:
       - docker compose ps
   init:
-    desc: Init .env
+    desc: Initialize the application's environment and configuration files.
     cmds:
       - cp .env.tmpl .env
   decrypt:
-    desc: Decrypt .env using SOPS
+    desc: Decrypt sensitive configuration files using SOPS.
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   encrypt:
-    desc: Encrypt .env using SOPS
+    desc: Encrypt sensitive configuration files using SOPS.
     cmds:
       - sops -e .env > .env.enc
   update:
-    desc: Update running containers
+    desc: Update the application or its running containers.
     cmds:
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f
   up:
-    desc: Tun Docker compose in the foreground.
+    desc: Run Docker Compose in the foreground.
     cmds:
       - docker compose up
   up-d:
-    desc: Run Docker compose in the background.
+    desc: Run Docker Compose in the background.
     cmds:
       - docker compose up -d --remove-orphans
   restart:
-    desc: Restart Docker containers
+    desc: Restart the application's Docker containers.
     cmds:
       - docker compose restart
   upgrade:
-    desc: upgrade
+    desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
       - git pull origin
       - task: update
   stop:
-    desc: Stop registry container
+    desc: Stop the application's Docker containers.
     cmds:
       - docker compose stop
   default:
     cmds:
       - task -l
     silent: true
+    desc: List all available tasks.

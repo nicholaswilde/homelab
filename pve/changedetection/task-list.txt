@@ -1,5 +1,6 @@
 task: Available tasks for this project:
 * backup:        Backup ChangeDetection
+* clean:         Clean node_modules
 * decrypt:       Decrypt scan.db using SOPS
 * deps:          Install dependencies
 * encrypt:       Encrypt scan.db using SOPS
@@ -10,3 +11,4 @@ task: Available tasks for this project:
 * start:         Start ChangeDetection service
 * stop:          Stop changedetection service
 * update:        Update ChangeDetection
+* upgrade:       Upgrade ChangeDetection

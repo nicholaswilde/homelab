@@ -8,3 +8,4 @@ task: Available tasks for this project:
 * status:        Status
 * stop:          Stop service
 * update:        Update running containers
+* upgrade:       Upgrade app

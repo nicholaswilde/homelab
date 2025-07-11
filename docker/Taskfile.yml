@@ -16,7 +16,7 @@ tasks:
       - jinja2 -D APP_NAME={{ shellQuote .APP_NAME}} -D USER_NAME={{ shellQuote .USER_NAME }} ./.template/compose.yaml.j2 > ./{{ .APP_NAME_LOWER }}/compose.yaml
       - cp .template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/
   update-d:
-    # desc: Update running containers
+    desc: Update the application or its running containers.
     cmds:
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f

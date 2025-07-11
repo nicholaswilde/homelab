@@ -1,15 +1,12 @@
 task: Available tasks for this project:
 * decrypt:       Decrypt .env using SOPS
-* enable:        Enable service
+* enable:        Enable the application's systemd service.
 * encrypt:       Encrypt .env using SOPS
-* export:        Export the task list
+* export:        Export the task list to `task-list.txt`.
 * init:          Init
 * mklinks:       Make client symlinks
 * restart:       Resart service
 * start:         Start service
-* status:        Service status
+* status:        Check the status of the application's systemd service.
 * stop:          Stop service
-* up:            Tun Docker compose in the foreground.
-* up-d:          Run Docker compose in the background.
-* update:        Update running containers
 * upgrade:       upgrade

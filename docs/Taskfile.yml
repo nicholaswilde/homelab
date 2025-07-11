@@ -18,3 +18,4 @@ tasks:
     cmds:
       - task -l
     silent: true
+    desc: List all available tasks.

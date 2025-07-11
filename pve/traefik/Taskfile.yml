@@ -12,6 +12,7 @@ tasks:
     cmds:
       - ./update.sh
   export:
+    silent: true
     desc: Export the task list
     cmds:
       - task --list > task-list.txt
