@@ -46,3 +46,11 @@ Make symlinks to repo.
 ## :link: References
 
 [1]: <https://www.qbittorrent.org/>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "qbittorrent/task-list.txt"
+    ```

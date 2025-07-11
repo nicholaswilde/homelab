@@ -1,67 +1,94 @@
 ---
 tags:
-  - cli
-  - google
-  - gemini
   - tools
 ---
-# :gem: Google Gemini CLI
+# ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Gemini CLI
 
-The [Google Gemini CLI][1] is a powerful, open-source tool that brings the capabilities of the Gemini models directly to the command-line interface. This allows for interaction with Gemini for a wide range of tasks, from code generation and bug fixing to content creation and in-depth research, all within the familiar terminal environment.
+[Google Gemini CLI][1] is used as an AI agent that can be used directly in a terminal.
+
+I use the Gemini CLI to help generate bash script files and markdown documents for mkdocs-material.
 
 ## :hammer_and_wrench: Installation
 
-### :white_check_mark: Prerequisites
-
-- Node.js (version 20 or higher)
-
-### :rocket: Instructions
-
-Run the CLI directly using `npx` or install it globally with `npm`.
-
+!!! example ""
+    
+    :material-information-outline: Config path: `~/.gemini/`
+    
 !!! code ""
 
     === "npx"
-    
+
         ```shell
         npx https://github.com/google-gemini/gemini-cli
         ```
 
     === "npm"
-        
+    
         ```shell
-        npm install -g @google/gemini-cli
+        sudo npm install -g @google/gemini-cli
         ```
+
+    ```shell
+    gemini
+    ```
 
 ## :gear: Config
 
-Upon first execution, the CLI will prompt for authentication. Sign in with a personal Google account, which provides a generous free tier of requests. For more demanding use cases, authentication can also be done using a Gemini API key or a Vertex AI API key.
+1. Generate a key from [Google AI Studio][2].
+2. Set it as an environment variable in your terminal. Replace `YOUR_API_KEY` with your generated key.
 
+!!! code ""
+
+    === ".env"
+  
+        ```ini
+        export GEMINI_API_KEY="YOUR_API_KEY"
+        ```
+
+    === "Manual"
+    
+        ```shell
+        export GEMINI_API_KEY="YOUR_API_KEY"
+        ```
+
+## :writing_hand: Syntax Files
+
+Syntax files are used to customize the iutput from Gemini.
+
+??? abstract "docs/GEMINI.md"
+
+    ```markdown
+    --8<-- "GEMINI.md"
+    ```
+    
 ## :pencil: Usage
 
 Once installed and authenticated, start interacting with Gemini from the shell.
 
-### :speech_balloon: Start a chat
+!!! example
 
-```shell
-gemini chat
-```
+    ```shell
+    git clone https://github.com/google-gemini/gemini-cli
+    cd gemini-cli
+    gemini
+    > Give me a summary of all of the changes that went in yesterday
+    ```
 
-### :page_facing_up: Use a file as context
+!!! example "Start a chat"
 
-```shell
-gemini chat "Explain the content of this file" -f README.md
-```
+    ```shell
+    gemini
+    ```
 
-### :arrow_right: Pipe content to the CLI
+!!! example "Pipe content to the CLI from `stdin`"
 
-```shell
-cat main.py | gemini chat "what is the purpose of this python script?"
-```
+    ```shell
+    echo "Explain the content of this file docs/README.md" | gemini -p
+    ```
 
 ## :link: References
 
 - <https://github.com/google-gemini/gemini-cli>
-- <https://developers.google.com/gemini/cli>
 
-[1]: https://github.com/google-gemini/gemini-cli
+[1]: <https://github.com/google-gemini/gemini-cli>
+[2]: <https://aistudio.google.com/apikey>

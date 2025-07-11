@@ -112,3 +112,11 @@ Compare to [current block count][1].
 - <https://www.gridcoinstats.eu/faucet> - 30 min
 
 [1]: <https://www.gridcoinstats.eu/block>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "gridcoin/task-list.txt"
+    ```

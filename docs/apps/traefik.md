@@ -148,3 +148,11 @@ All internal URLs use an `l` sub domain so that only one certificate is needed f
         ```
 
 [1]: <https://traefik.io/traefik/>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "traefik/task-list.txt"
+    ```

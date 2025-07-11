@@ -76,3 +76,11 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
 
 [1]: <https://gethomepage.dev/>
 [2]: <https://chromewebstore.google.com/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "homepage/task-list.txt"
+    ```

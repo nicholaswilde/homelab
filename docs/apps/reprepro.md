@@ -333,3 +333,11 @@ A cronjob can be setup to run every night to check the released versions.
   - <https://wikitech.wikimedia.org/wiki/Reprepro>
   
 [1]: <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "reprepro/task-list.txt"
+    ```

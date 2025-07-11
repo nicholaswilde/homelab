@@ -178,3 +178,11 @@ Then update the USB drive from the Web GUI.
 - <https://www.ventoy.net/en/index.html>
 
 [1]: <https://www.ventoy.net/en/index.html>
+
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "ventoy/task-list.txt"
+    ```
