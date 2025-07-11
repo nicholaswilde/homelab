@@ -1,0 +1,32 @@
+---
+name: Task Export
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 0"
+
+jobs:
+  task-export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x scripts/run_task_export.sh
+
+      - name: Run task export script
+        run: ./scripts/run_task_export.sh
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ./**/task-list.txt
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(tasks): update task exports"
+            git push
+          fi
