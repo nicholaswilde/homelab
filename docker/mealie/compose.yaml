@@ -21,7 +21,7 @@ services:
       PGID: 0
       TZ: America/Los_Angeles
       BASE_URL: https://mealie.nicholaswilde.io
-      ALLOW_SIGNUP: true
+      # ALLOW_SIGNUP: true
       OIDC_AUTH_ENABLED: false
       OIDC_SIGNUP_ENABLED: true
       OIDC_CONFIGURATION_URL: http://authentik.l.nicholaswilde.io:9000/application/o/mealie/.well-known/openid-configuration
