@@ -4,8 +4,7 @@ name: "terminus"
 services:
   web:
     init: true
-    build:
-      context: .
+    image: ghcr.io/usetrmnl/terminus:0.17.0
     environment:
       HANAMI_PORT: ${HANAMI_PORT}
       API_URI: ${API_URI}
@@ -48,31 +47,41 @@ services:
           cpus: "1.0"
 
   # https://offen.github.io/docker-volume-backup/
-  backup: &backup_service
+  backup-database-data: &backup_service
     image: offen/docker-volume-backup:v2.43.4
-    environment: &backup_environment
-      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
-      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
-      BACKUP_PRUNING_PREFIX: backup-
+    environment:
+      BACKUP_FILENAME: database-data-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: database-data-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: database-data-
       BACKUP_RETENTION_DAYS: '14'
       AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
       BACKUP_STOP_DURING_BACKUP_LABEL: service
     volumes:
-      - database-data:/backup/database-data:ro
-      - web-assets-screens:/backup/web-assets-screens:ro
-      - web-uploads:/backup/web-uploads:ro
+      - database-data:/backup/my-app-backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${HOME}/backups:/archive
-      # - /mnt/storage/backup/reactive-resume:/archive
+      - /mnt/storage/backup/terminus:/archive
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+
+  backup-web-asset-screens:
+    <<: *backup_service
+    environment:
+      BACKUP_FILENAME: web-asset-screens-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: web-asset-screens-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: web-asset-screens-
+    volumes:
+      - web-assets-screens:/backup/my-app-backup:ro
+
+  backup-web-uploads:
+    <<: *backup_service
+    environment: &backup_environment
+      BACKUP_FILENAME: web-uploads-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: web-uploads-latest.tar.gz
+      BACKUP_PRUNING_PREFIX: web-uploads-
+    volumes:
+      - web-uploads:/backup/my-app-backup:ro
 
 volumes:
   database-data:
   web-assets-screens:
   web-uploads:
-
-networks:
-  default:
-    name: homelab
-    external: true
