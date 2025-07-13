@@ -20,10 +20,43 @@ Instructions on how to install the application or tool.
         brew install arduino-cli
         ```
     
-!!! code "esp32 tools"
+!!! code "Install esp32 core"
 
     ```shell
     arduino-cli core install esp32:esp32
+    ```
+
+!!! success "Verify installed core properly"
+
+    ```shell
+    arduino-cli core list
+    ```
+    
+    ```shell title="Output"
+    ID          Installed Latest Name
+    esp32:esp32 3.2.1     3.2.1  esp32
+    ```
+
+!!! abstract ".arduino15/arduino-cli.yaml"
+
+    ```yaml
+    library:
+      enable_unsafe_install: true
+    ```
+
+!!! code "Dependencies"
+
+    ```shell
+    (
+      arduino-cli lib install --git-url https://github.com/mathertel/OneButton.git
+      arduino-cli lib install --git-url https://github.com/FastLED/FastLED
+    )
+    ```
+
+!!! code "Compile"
+
+    ```shell
+    arduino-cli compile --fqbn esp32:esp32:esp32s3 USB-MSC.ino
     ```
 
 ## :gear: Config
@@ -61,6 +94,12 @@ Instructions on how to install the application or tool.
 ## :pencil: Usage
 
 Here are some common `arduino-cli` commands.
+
+!!! code ""
+
+    ```shell
+    arduino-cli upload --port /dev/ttyACM0 --fqbn esp32:esp32:esp32s3 USB-MSC.ino
+    ```
 
 ### Core Commands
 
