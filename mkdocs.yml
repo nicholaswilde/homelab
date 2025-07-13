@@ -12,6 +12,9 @@ repo_name: nicholaswilde/homelab
 repo_url: https://github.com/nicholaswilde/homelab
 edit_uri: "edit/main/docs/"
 
+exclude:
+  - GEMINI.md
+
 # Page tree
 nav:
   - Home: index.md
@@ -75,6 +78,7 @@ nav:
       - Raspberry Pi 5: hardware/rpi5.md
   - Tools:
       - Apprise: tools/apprise.md
+      - Arduino CLI: tools/arduino-cli.md
       - Autofs: tools/autofs.md
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
@@ -145,8 +149,7 @@ theme:
 
 plugins:
   - search
-  - tags:
-      tags_file: reference/tags.md
+  - tags
   - minify:
       minify_html: true
 
