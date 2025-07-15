@@ -119,8 +119,29 @@ Here are some common `arduino-cli` commands.
 - `arduino-cli compile`: Compile a sketch.
 - `arduino-cli upload`: Upload a sketch to a board.
 
+## :stethoscope: Troubleshooting
+
+### [Error during install: context deadline exceeded][2]
+
+!!! warning ""
+
+    ```shell
+    $ arduino-cli core install esp32:esp32
+    Downloading packages...
+    arduino:dfu-util@0.11.0-arduino5 arduino:dfu-util@0.11.0-arduino5 already downloaded
+    esp32:esp-rv32@2411 context deadline exceeded (Client.Timeout or context cancellation while reading body)                                                                       
+    Error during install: context deadline exceeded (Client.Timeout or context cancellation while reading body)
+    ```
+
+!!! success ""
+
+    ```shell
+    arduino-cli config set network.connection_timeout 600s
+    ```
+
 ## :link: References
 
 - <https://arduino.github.io/arduino-cli/>
 
 [1]: <https://arduino.github.io/arduino-cli/>
+[2]: <https://forum.arduino.cc/t/error-during-install-context-deadline-exceeded/1384509/2>
