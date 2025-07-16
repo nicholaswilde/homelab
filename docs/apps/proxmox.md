@@ -256,7 +256,7 @@ From node
 !!! code "Extend physical drive partition"
 
     ```shell
-    growpart /dev/sda3
+    growpart /dev/sda 3
     ```
 
 !!! code "See physical drive"
