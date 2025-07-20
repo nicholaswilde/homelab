@@ -80,12 +80,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-
+ 
   backup-web-uploads:
     <<: *backup_service
-    environment: &backup_environment
+    environment:
       <<: *backup_environment
       BACKUP_FILENAME: web-uploads-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_LATEST_SYMLINK: web-uploads-latest.tar.gz
       BACKUP_PRUNING_PREFIX: web-uploads-
     volumes:
       - web-uploads:/backup/my-app-backup:ro
