@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    terminus:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`terminus.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: terminus
+#endregion
+#region services
+  services:
+    terminus:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.168:2300"
+        passHostHeader: true
+#endregion
