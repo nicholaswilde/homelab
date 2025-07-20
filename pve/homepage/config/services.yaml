@@ -35,6 +35,9 @@
     - Z-Wave JS UI:
         icon: sh-z-wave-js-ui.png
         href: https://zwave.l.nicholaswilde.io/
+    - Terminus:
+        icon: https://usetrmnl.com/assets/trmnl--logo--mobile-fd77ffa1253e170dfc7096731ae701f52f3e27ade4d408d35bd31efd56315f4a.svg
+        href: https://terminus.l.nicholaswilde.io
 - Networking:
     - Apt-Cacher NG:
         icon: mdi-package-variant
