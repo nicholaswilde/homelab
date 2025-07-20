@@ -49,7 +49,7 @@ services:
   # https://offen.github.io/docker-volume-backup/
   backup-database-data: &backup_service
     image: offen/docker-volume-backup:v2.43.4
-    environment:
+    environment: &backup_environment
       BACKUP_FILENAME: database-data-%Y-%m-%dT%H-%M-%S.tar.gz
       BACKUP_LATEST_SYMLINK: database-data-latest.tar.gz
       BACKUP_PRUNING_PREFIX: database-data-
@@ -65,21 +65,34 @@ services:
 
   backup-web-asset-screens:
     <<: *backup_service
+    # image: offen/docker-volume-backup:v2.43.4
     environment:
+      <<: *backup_environment
       BACKUP_FILENAME: web-asset-screens-%Y-%m-%dT%H-%M-%S.tar.gz
       BACKUP_LATEST_SYMLINK: web-asset-screens-latest.tar.gz
       BACKUP_PRUNING_PREFIX: web-asset-screens-
+      # BACKUP_RETENTION_DAYS: '14'
+      # AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
+      # BACKUP_STOP_DURING_BACKUP_LABEL: service
     volumes:
       - web-assets-screens:/backup/my-app-backup:ro
+      - /mnt/storage/backup/terminus:/archive
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   backup-web-uploads:
     <<: *backup_service
     environment: &backup_environment
+      <<: *backup_environment
       BACKUP_FILENAME: web-uploads-%Y-%m-%dT%H-%M-%S.tar.gz
-      BACKUP_LATEST_SYMLINK: web-uploads-latest.tar.gz
       BACKUP_PRUNING_PREFIX: web-uploads-
     volumes:
       - web-uploads:/backup/my-app-backup:ro
+      - /mnt/storage/backup/terminus:/archive
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   database-data:

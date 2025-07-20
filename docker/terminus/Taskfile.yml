@@ -9,7 +9,7 @@ tasks:
     desc: Backup the application's volume data.
     cmds:
       - docker exec {{.CONTAINER_NAME}}-backup-database-data-1 backup
-      - docker exec {{.CONTAINER_NAME}}-backup-web-uploads-1 backup
+      # - docker exec {{.CONTAINER_NAME}}-backup-web-uploads-1 backup
       - docker exec {{.CONTAINER_NAME}}-backup-web-asset-screens-1 backup
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
