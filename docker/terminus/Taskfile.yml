@@ -5,6 +5,14 @@ dotenv:
   - .env
 
 tasks:
+  hanami:
+    desc: Bring up a hanami console
+    cmds:
+      - docker exec -it terminus-web-1 bundle exec hanami console
+  console:
+    desc: Bring up a console
+    cmds:
+      - docker exec -it terminus-web-1 bash
   backup:
     desc: Backup the application's volume data.
     cmds:
