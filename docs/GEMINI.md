@@ -101,7 +101,7 @@ Instructions on how to configure the application or tool.
     example of yaml config file
     ```
 
-## :pencel: Usage
+## :pencil: Usage
 
 Instructions on how to use the application or tool.
 
