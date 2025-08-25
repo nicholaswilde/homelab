@@ -63,10 +63,12 @@ Syntax files are used to customize the iutput from Gemini.
     
 [AGENTS.md files][] can also be used to enable the use of other AI agents.
 
+Enable `gemini-cli` to use `AGENTS.md` files.
+
 !!! abstact "~/.gemini/settings.json"
 
     ```json
-    
+    { "contextFileName": "AGENTS.md" }
     ```
     
 ## :pencil: Usage
