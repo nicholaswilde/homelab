@@ -3,7 +3,7 @@
 services:
   shlink:
     container_name: shlink-backend
-    image: shlinkio/shlink:4.4.6
+    image: shlinkio/shlink:4.5.2
     env_file:
       - .env
     environment:
