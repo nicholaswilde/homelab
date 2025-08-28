@@ -188,6 +188,8 @@ You can then use it like this,
 
 ## ![gphotos](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-photos.png){ width="24" } Google Photos
 
+I use Google Photos to create a shared album and sync the album with my digital picture frame via [FrameFi](../apps/frame-fi.md).
+
 !!! warning
 
     Rclone can only download photos from albums that were *created by rclone itself*. It cannot download from albums created directly in Google Photos or by other applications.
@@ -263,7 +265,7 @@ You can then use it like this,
     y/e/d> y
     ```
 
-## Making your own client_id
+## Making your own `client_id`
 
 When you use rclone with Google photos in its default configuration you are using rclone's client_id. This is shared between all the rclone users. There is a global rate limit on the number of queries per second that each client_id can do set by Google.
 
