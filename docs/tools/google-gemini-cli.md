@@ -2,7 +2,7 @@
 tags:
   - tools
 ---
-# ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Gemini CLI
+# ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Google Gemini CLI
 
 [Google Gemini CLI][1] is used as an AI agent that can be used directly in a terminal.
 
@@ -61,7 +61,7 @@ Syntax files are used to customize the iutput from Gemini.
     --8<-- "GEMINI.md"
     ```
     
-[AGENTS.md files][] can also be used to enable the use of other AI agents.
+[AGENTS.md files][3] can also be used to enable the use of other AI agents.
 
 Enable `gemini-cli` to use `AGENTS.md` files.
 
