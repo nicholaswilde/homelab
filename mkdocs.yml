@@ -32,6 +32,7 @@ nav:
       - CyberKeyGen: apps/cyberkeygen.md
       - DeepSeek: apps/deepseek.md
       - Excalidraw: apps/excalidraw.md
+      - FrameFi: apps/frame-fi.md
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
       - Gotify: apps/gotify.md

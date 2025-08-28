@@ -30,3 +30,21 @@ backup.conf
 **/ntfy/server.yml
 
 **/gotify/config.yml
+
+# Exclude image and video files in pve/frame-fi/pictures/ but allow .gitkeep
+pve/frame-fi/pictures/*.jpg
+pve/frame-fi/pictures/*.jpeg
+pve/frame-fi/pictures/*.png
+pve/frame-fi/pictures/*.gif
+pve/frame-fi/pictures/*.bmp
+pve/frame-fi/pictures/*.tiff
+pve/frame-fi/pictures/*.webp
+pve/frame-fi/pictures/*.svg
+pve/frame-fi/pictures/*.mp4
+pve/frame-fi/pictures/*.mov
+pve/frame-fi/pictures/*.avi
+pve/frame-fi/pictures/*.mkv
+pve/frame-fi/pictures/*.webm
+pve/frame-fi/pictures/*.flv
+pve/frame-fi/pictures/*.wmv
+!pve/frame-fi/pictures/.gitkeep
