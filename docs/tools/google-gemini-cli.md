@@ -58,7 +58,7 @@ Syntax files are used to customize the iutput from Gemini.
 ??? abstract "docs/GEMINI.md"
 
     ```markdown
-    --8<-- "GEMINI.md"
+    --8<-- "AGENTS.md"
     ```
     
 [AGENTS.md files][3] can also be used to enable the use of other AI agents.
