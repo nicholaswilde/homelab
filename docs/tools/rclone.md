@@ -262,7 +262,21 @@ You can then use it like this,
     d) Delete this remote
     y/e/d> y
     ```
-    
+
+## Making your own client_id
+
+When you use rclone with Google photos in its default configuration you are using rclone's client_id. This is shared between all the rclone users. There is a global rate limit on the number of queries per second that each client_id can do set by Google.
+
+If there is a problem with this client_id (eg quota too low or the client_id stops working) then you can make your own.
+
+Please follow the steps in the google drive docs. You will need these scopes instead of the drive ones detailed:
+
+```bash
+https://www.googleapis.com/auth/photoslibrary.appendonly
+https://www.googleapis.com/auth/photoslibrary.readonly.appcreateddata
+https://www.googleapis.com/auth/photoslibrary.edit.appcreateddata
+```
+
 ## :link: References
 
 - <https://rclone.org/remote_setup/>
