@@ -8,7 +8,7 @@ tags:
 
 [FrameFi][1] is an application used to display pictures on my digital picture frame using a [LILYGO T-Dongle S3][2]. This documentation focuses on how to download images from a Google Photos album using `rclone` so that the photos can then be synced with the frame.
 
-## Workflow
+## :chains: Workflow
 
 1. Add pictures to Google Photos album.
 2. Download pictures from album to homelab.
