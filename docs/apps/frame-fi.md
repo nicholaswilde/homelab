@@ -51,7 +51,7 @@ The `download.sh` script assumes an `rclone` remote named `gphotos` is configure
 
     Rclone can only download photos from albums that were *created by rclone itself*. It cannot download from albums created directly in Google Photos or by other applications.
 
-### Creating Google Photos Albums with Rclone
+### :frame_photo: Creating Google Photos Albums with Rclone
 
 To create a new Google Photos album that rclone can later download from, use the following command:
 
