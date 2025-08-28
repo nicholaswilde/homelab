@@ -190,7 +190,7 @@ You can then use it like this,
 
 !!! warning
 
-    Unfortunately, Google has recently [removed a large portion of the API access to Google Photos][2] and so I am not using `rclone` to sync photo albums with my homelab.
+    Rclone can only download photos from albums that were *created by rclone itself*. It cannot download from albums created directly in Google Photos or by other applications.
 
 ## :link: References
 
