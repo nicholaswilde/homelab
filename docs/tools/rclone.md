@@ -186,6 +186,10 @@ You can then use it like this,
     rclone copy /home/source remote:backup
     ```
 
+## Making your own `client_id`
+
+Please follow the steps in the [google drive docs][6]. You will need these scopes:
+
 ```shell
 https://www.googleapis.com/auth/docs
 https://www.googleapis.com/auth/drive
@@ -273,11 +277,11 @@ I use Google Photos to create a shared album and sync the album with my digital 
 
 ## Making your own `client_id`
 
-When you use rclone with Google photos in its default configuration you are using rclone's client_id. This is shared between all the rclone users. There is a global rate limit on the number of queries per second that each client_id can do set by Google.
+When you use `rclone` with Google photos in its default configuration you are using rclone's `client_id`. This is shared between all the `rclone` users. There is a global rate limit on the number of queries per second that each `client_id` can do set by Google.
 
-If there is a problem with this client_id (eg quota too low or the client_id stops working) then you can make your own.
+If there is a problem with this `client_id` (eg quota too low or the `client_id` stops working) then you can make your own.
 
-Please follow the steps in the google drive docs. You will need these scopes instead of the drive ones detailed:
+Please follow the steps in the [google drive docs][6]. You will need these scopes instead of the drive ones detailed:
 
 ```bash
 https://www.googleapis.com/auth/photoslibrary.appendonly
@@ -297,3 +301,4 @@ https://www.googleapis.com/auth/photoslibrary.edit.appcreateddata
 [3]: <https://rclone.org/drive/>
 [4]: <https://rclone.org/remote_setup/>
 [5]: <../apps/vaultwarden.md>
+[6]: <https://rclone.org/drive/#making-your-own-client-id>
