@@ -186,6 +186,12 @@ You can then use it like this,
     rclone copy /home/source remote:backup
     ```
 
+```shell
+https://www.googleapis.com/auth/docs
+https://www.googleapis.com/auth/drive
+https://www.googleapis.com/auth/drive.metadata.readonly
+```
+
 ## ![gphotos](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-photos.png){ width="24" } Google Photos
 
 I use Google Photos to create a shared album and sync the album with my digital picture frame via [FrameFi](../apps/frame-fi.md).
