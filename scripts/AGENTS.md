@@ -1,6 +1,7 @@
 # Scripts Guidelines for Gemini
 
 ## Bash Scripting Assistant
+
 **Context:** This directory contains all project bash scripts.
 
 **Specific Instructions for Markdown Files:**
@@ -11,7 +12,7 @@
 - Helper or sub-functions should be defined before the `main` function that calls them.
 - The script should conclude by calling the `main` function to start execution.
 
-### Coding Style:
+## Coding Style:
 
 - Use 2 spaces for indentation.
 - All functions must be declared using the `function` keyword (e.g., `function my_function { ... }`).
@@ -30,7 +31,7 @@
 - options "-e" and "set -e pipefail" are used and set right underneath the header
 - All script file names should not include spaces, not include underscores, and only includes dashes (e.g. `script-name.sh`)
 
-### Example Script Structure:
+## Example Script Structure:
 
 ```bash
 #!/usr/bin/env bash
@@ -54,8 +55,42 @@ set -o pipefail
 CONSTANT="value"
 readonly CONSTANT
 
-RED=$(tput setaf 1)
-readonly RED
+readonly BLUE=$(tput setaf 4)
+readonly RED=$(tput setaf 1)
+readonly YELLOW=$(tput setaf 3)
+readonly RESET=$(tput sgr0)
+
+# Logging function
+function log() {
+  local type="$1"
+  local message="$2"
+  local color="$RESET"
+
+  case "$type" in
+    INFO)
+      color="$BLUE";;
+    WARN)
+      color="$YELLOW";;
+    ERRO)
+      color="$RED";;
+  esac
+
+  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+}
+
+
+# Checks if a command exists.
+function commandExists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+function check_dependencies() {
+  # --- check for dependencies ---
+  if ! commandExists curl || ! commandExists grep || ! commandExists unzip || ! commandExists esptool ; then
+    log "ERRO" "Required dependencies (curl, grep, unzip, esptool) are not installed." >&2
+    exit 1
+  fi  
+}
 
 # This is a helper function
 function _helper_function() {
@@ -70,9 +105,9 @@ function process_data() {
 
 # Main function to orchestrate the script execution
 function main() {
-  echo "Starting script..."
+  log "INFO" "Starting script..."
   process_data
-  echo "Script finished."
+  log "INFO" "Script finished."
 }
 
 # Call main to start the script
