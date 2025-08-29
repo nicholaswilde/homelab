@@ -75,6 +75,10 @@ tasks:
     desc: Download images from Google Photos album.
     cmds:
       - ./download.sh
+  create-crontab:
+    desc: Create a daily crontab job to download images.
+    cmds:
+      - ./create-crontab.sh
   clean:
     desc: Remove all downloaded images from the local destination.
     cmds:

@@ -96,6 +96,43 @@ This will execute the `download.sh` script, which will:
 
 6. Use `rclone sync` to download images from the specified Google Photos album to the local destination.
 
+## :calendar: Automated Downloads (Crontab)
+
+To automate the daily download of images, a crontab job can be created using the `create-crontab.sh` script.
+
+### :gear: Create Crontab Job
+
+Run the following command to create a daily crontab job that executes the `download.sh` script at 3:00 AM.
+
+!!! code "Create Crontab Job"
+
+    ```shell
+    ./create-crontab.sh
+    ```
+
+### :mag: Verify Crontab Job
+
+To verify that the crontab job has been successfully added, you can list your current crontab entries:
+
+!!! code "List Crontab Jobs"
+
+    ```shell
+    crontab -l
+    ```
+
+### :x: Remove Crontab Job
+
+If you need to remove the crontab job, you can edit your crontab and delete the relevant line:
+
+!!! code "Edit Crontab Jobs"
+
+    ```shell
+    crontab -e
+    ```
+
+    Locate and delete the line containing `download.sh`.
+
+
 ## :simple-task: Task List
 
 !!! example ""

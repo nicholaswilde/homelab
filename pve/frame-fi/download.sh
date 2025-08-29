@@ -44,10 +44,82 @@ function command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# Checks if Mailrise host is online.
+function is_mailrise_online() {
+  if [[ -n "${MAILRISE_HOST}" && -n "${MAILRISE_PORT}" ]]; then
+    # Use nc (netcat) to check if the port is open
+    if command_exists nc;
+ then
+      nc -z -w 5 "${MAILRISE_HOST}" "${MAILRISE_PORT}" &>/dev/null
+      return $?
+    elif command_exists ping;
+ then
+      ping -c 1 -W 5 "${MAILRISE_HOST}" &>/dev/null
+      return $?
+    else
+      log "WARN" "Neither 'nc' nor 'ping' found. Cannot check Mailrise host availability."
+      return 1
+    fi
+  fi
+  return 1
+}
+
+# Sends a notification via Mailrise.
+function send_mailrise_notification() {
+  local subject="$1"
+  local body="$2"
+  local type="$3" # INFO, WARN, ERRO
+
+  if is_mailrise_online;
+ then
+    log "INFO" "Attempting to send Mailrise notification..."
+    local color_code=""
+    case "$type" in
+      INFO)
+        color_code="#007bff";; # Blue
+      WARN)
+        color_code="#ffc107";; # Yellow
+      ERRO)
+        color_code="#dc3545";; # Red
+      *)
+        color_code="#6c757d";; # Grey (default)
+    esac
+
+    local json_payload
+    json_payload=$(cat <<EOF
+{
+  "from": "${MAILRISE_FROM}",
+  "to": "${MAILRISE_TO}",
+  "subject": "${subject}",
+  "text": "${body}",
+  "html": "<html><body><p style=\"color:${color_code};\">${body}</p></body></html>"
+  $(if [[ -n "${MAILRISE_API_KEY}" ]]; then echo ',"api_key": "'"${MAILRISE_API_KEY}"'"'; fi)
+}
+EOF
+)
+
+    if curl -s -X POST "http://${MAILRISE_HOST}:${MAILRISE_PORT}/api/v1/send" \
+      -H "Content-Type: application/json" \
+      -d "${json_payload}" &>/dev/null;
+ then
+      log "INFO" "Mailrise notification sent successfully."
+    else
+      log "ERRO" "Failed to send Mailrise notification."
+    fi
+  else
+    log "WARN" "Mailrise host is not online or configuration is incomplete. Skipping notification."
+  fi
+}
+
+
 function check_dependencies() {
   log "INFO" "Checking for required dependencies..."
   if ! command_exists rclone; then
     log "ERRO" "Required dependency 'rclone' is not installed. Please install rclone to proceed." >&2
+    exit 1
+  fi
+  if ! command_exists curl; then
+    log "ERRO" "Required dependency 'curl' is not installed. Please install curl to proceed." >&2
     exit 1
   fi
   log "INFO" "All dependencies found."
@@ -81,6 +153,20 @@ function load_env_variables() {
   if [[ -z "${RCLONE_DOWNLOAD_DESTINATION}" ]]; then
     log "ERRO" "RCLONE_DOWNLOAD_DESTINATION is not set in .env. This is the local directory to save the photos." >&2
     exit 1
+  fi
+
+  # Check if Mailrise variables are set (optional, but good for sending notifications)
+  if [[ -z "${MAILRISE_HOST}" ]]; then
+    log "WARN" "MAILRISE_HOST is not set in .env. Mailrise notifications will be disabled."
+  fi
+  if [[ -z "${MAILRISE_PORT}" ]]; then
+    log "WARN" "MAILRISE_PORT is not set in .env. Mailrise notifications will be disabled."
+  fi
+  if [[ -z "${MAILRISE_FROM}" ]]; then
+    log "WARN" "MAILRISE_FROM is not set in .env. Mailrise notifications will be disabled."
+  fi
+  if [[ -z "${MAILRISE_TO}" ]]; then
+    log "WARN" "MAILRISE_TO is not set in .env. Mailrise notifications will be disabled."
   fi
 }
 
@@ -148,12 +234,18 @@ function download_images() {
 # Main function to orchestrate the script execution
 function main() {
   log "INFO" "Starting Google Photos download script..."
+
+  # Trap errors for notification
+  trap 'send_mailrise_notification "Google Photos Download Failed" "The Google Photos download script encountered an error." "ERRO"' ERR
+
   check_dependencies
   load_env_variables
   configure_rclone_gphotos
   create_gphotos_album_if_not_exists
   download_images
   log "INFO" "Google Photos download script finished."
+
+  send_mailrise_notification "Google Photos Download Complete" "Images from album '${RCLONE_GPHOTOS_ALBUM_NAME}' have been successfully downloaded to '${RCLONE_DOWNLOAD_DESTINATION}'." "INFO"
 }
 
 # Call main to start the script
