@@ -44,6 +44,7 @@ nav:
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
       - mailrise: apps/mailrise.md
+      - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
       - ntfy: apps/ntfy.md
