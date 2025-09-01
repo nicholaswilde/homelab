@@ -49,13 +49,6 @@ tags:
 
     Disable DNSSEC
 
-## :link: References
-
-- <https://medium.com/@life-is-short-so-enjoy-it/homelab-adguard-setup-unbound-as-iterative-dns-6048d5072276>
-
-[1]: <https://cdn.jsdelivr.net/gh/selfhst/icons/svg/unbound.svg>
-[2]: <https://www.nlnetlabs.nl/projects/unbound/about/>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -63,3 +56,10 @@ tags:
     ```yaml
     --8<-- "unbound/task-list.txt"
     ```
+
+## :link: References
+
+- <https://medium.com/@life-is-short-so-enjoy-it/homelab-adguard-setup-unbound-as-iterative-dns-6048d5072276>
+
+[1]: <https://cdn.jsdelivr.net/gh/selfhst/icons/svg/unbound.svg>
+[2]: <https://www.nlnetlabs.nl/projects/unbound/about/>

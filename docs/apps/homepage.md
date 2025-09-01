@@ -69,14 +69,6 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
     --8<-- "traefik/conf.d/homepage.yaml"
     ```
 
-## :link: References
-
-- <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
-- <https://pimox-scripts.com/scripts?id=Homepage>
-
-[1]: <https://gethomepage.dev/>
-[2]: <https://chromewebstore.google.com/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -84,3 +76,11 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
     ```yaml
     --8<-- "homepage/task-list.txt"
     ```
+
+## :link: References
+
+- <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
+- <https://pimox-scripts.com/scripts?id=Homepage>
+
+[1]: <https://gethomepage.dev/>
+[2]: <https://chromewebstore.google.com/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna>

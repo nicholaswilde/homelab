@@ -43,10 +43,6 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/qbittorrent.yaml"
     ```
 
-## :link: References
-
-[1]: <https://www.qbittorrent.org/>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -54,3 +50,7 @@ Make symlinks to repo.
     ```yaml
     --8<-- "qbittorrent/task-list.txt"
     ```
+
+## :link: References
+
+[1]: <https://www.qbittorrent.org/>

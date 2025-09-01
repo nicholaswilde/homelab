@@ -326,14 +326,6 @@ A cronjob can be setup to run every night to check the released versions.
         0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh
         ```
         
-## :link: References
-
-  - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
-  - <https://wiki.debian.org/DebianRepository/SetupWithReprepro>
-  - <https://wikitech.wikimedia.org/wiki/Reprepro>
-  
-[1]: <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -341,3 +333,11 @@ A cronjob can be setup to run every night to check the released versions.
     ```yaml
     --8<-- "reprepro/task-list.txt"
     ```
+
+## :link: References
+
+  - <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
+  - <https://wiki.debian.org/DebianRepository/SetupWithReprepro>
+  - <https://wikitech.wikimedia.org/wiki/Reprepro>
+  
+[1]: <https://santi-bassett.blogspot.com/2014/07/setting-up-apt-repository-with-reprepro.html?m=1>
