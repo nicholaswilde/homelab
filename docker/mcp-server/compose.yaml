@@ -22,23 +22,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 5s
-  # https://offen.github.io/docker-volume-backup/
-  # backup: &backup_service
-    # image: offen/docker-volume-backup:v2.43.4
-    # environment: &backup_environment
-      # BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
-      # BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
-      # BACKUP_PRUNING_PREFIX: backup-
-      # BACKUP_RETENTION_DAYS: '14'
-      # AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
-      # BACKUP_STOP_DURING_BACKUP_LABEL: service
-    # volumes:
-      # - data:/backup/my-app-backup:ro
-      # - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ${HOME}/backups:/archive
-      # # - /mnt/storage/backup/reactive-resume:/archive
-      # - /etc/timezone:/etc/timezone:ro
-      # - /etc/localtime:/etc/localtime:ro
-# 
-# volumes:
-  # data:
