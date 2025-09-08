@@ -2,7 +2,7 @@
 services:
   mcp-server:
     container_name: ${CONTAINER_NAME}
-    image: ghcr.io/nicholaswilde/mcp-server:0.3.0
+    image: ghcr.io/nicholaswilde/mcp-server:0.10.0
     env_file:
       - .env
     ports:
