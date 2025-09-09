@@ -2,7 +2,7 @@
 services:
   tdarr:
     container_name: tdarr
-    image: ghcr.io/haveagitgat/tdarr:2.45.01
+    image: ghcr.io/haveagitgat/tdarr:2.46.01
     restart: unless-stopped
     network_mode: bridge
     ports:
