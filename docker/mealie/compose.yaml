@@ -1,7 +1,7 @@
 ---
 services:
   mealie:
-    image: ghcr.io/mealie-recipes/mealie:v3.1.2
+    image: ghcr.io/mealie-recipes/mealie:v3.2.0
     container_name: ${CONTAINER_NAME}
     restart: always
     env_file:
