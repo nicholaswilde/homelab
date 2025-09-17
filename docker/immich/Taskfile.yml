@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  watch:
+    desc: Watch the docker logs
+    cmds:
+      - docker compose logs -f
   export:
     silent: true
     desc: Export the task list to `task-list.txt`.
