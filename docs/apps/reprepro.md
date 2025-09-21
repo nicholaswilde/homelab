@@ -3,6 +3,7 @@
           wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepro/debian/conf/override.bookworm
           wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepro/ubuntu/conf/override.oracular
           wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepro/ubuntu/conf/override.noble
+          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.forky -O /srv/reprepro/debian/conf/override.forky
         )
         ```
 
@@ -14,7 +15,8 @@
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepro/debian/conf/override.bullseye
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepro/debian/conf/override.bookworm
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepo/ubuntu/conf/override.oracular
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepo/ubuntu/conf/override.noble
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepro/ubuntu/conf/override.noble
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.forky /srv/reprepro/debian/conf/override.forky
         )
         ```
 
@@ -27,6 +29,7 @@
           touch /srv/reprepro/debian/conf/override.trixie
           touch /srv/reprepro/debian/conf/override.bookworm
           touch /srv/reprepro/debian/conf/override.bullseye
+          touch /srv/reprepro/debian/conf/override.forky
         )
         ```
 
@@ -52,7 +55,7 @@
           reprepro -b /srv/reprepro/ubuntu/ includedeb noble sops_3.9.4_amd64.deb
           reprepro -b /srv/reprepro/debian/ includedeb trixie sops_3.9.4_amd64.deb
           reprepro -b /srv/reprepro/debian/ includedeb bookworm sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/debian/ includedeb bullseye sops_3.9.4_amd64.deb
+          reprepro -b /srv/reprepro/debian/ includedeb forky sops_3.9.4_amd64.deb
         )
         ```
 
@@ -100,6 +103,16 @@ Add repo and install.
             )
             ```
 
+        === "Forky"
+
+            ```shell
+            (
+              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian forky main" >> /etc/apt/sources.list.d/reprepro.list && \
+              apt update && \
+              apt install sops
+            )
+            ```
+
     === "Manual"
 
         === "Trixie"
@@ -128,6 +141,17 @@ Add repo and install.
 
             ```ini
             deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bullseye main
+            ```
+
+            ```shell
+            apt update && \
+            apt install sops
+            ```
+
+        === "Forky"
+
+            ```ini
+            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian forky main
             ```
 
             ```shell

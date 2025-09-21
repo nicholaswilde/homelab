@@ -31,7 +31,7 @@ readonly white
 # Set the URL for the GitHub releases API
 
 dists=(debian ubuntu)
-debian_codenames=(bullseye bookworm)
+debian_codenames=(bullseye bookworm trixie forky)
 ubuntu_codenames=(noble oracular jammy)
 usernames=(getsops go-task)
 apps=(sops task)
@@ -133,6 +133,8 @@ function add_package(){
   reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb jammy "${FILEPATH}"
   reprepro -b /srv/reprepro/debian/ includedeb bookworm "${FILEPATH}"
   reprepro -b /srv/reprepro/debian/ includedeb bullseye "${FILEPATH}"
+  reprepro -b /srv/reprepro/debian/ includedeb trixie "${FILEPATH}"
+  reprepro -b /srv/reprepro/debian/ includedeb forky "${FILEPATH}"
 }
 
 function check_version(){
