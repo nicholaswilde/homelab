@@ -18,6 +18,10 @@ tasks:
     desc: Check and sync released versions of SOPS and Taks
     cmds:
       - ./sync-check.sh
+  download:
+    desc: Download SOPS and Task .deb files
+    cmds:
+      - ./download.sh
 
   default:
     cmds:
