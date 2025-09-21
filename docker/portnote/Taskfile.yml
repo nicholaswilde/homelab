@@ -32,6 +32,10 @@ tasks:
       - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+      - sed -i 's|JWT_SECRET=.*|JWT_SECRET='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|USER_SECRET=.*|USER_SECRET='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|LOGIN_PASSWORD=.*|LOGIN_PASSWORD='"$(openssl rand -hex 16)"'|g' .env
+      - sed -i 's|DB_PASSWORD=.*|DB_PASSWORD='"$(openssl rand -hex 32)"'|g' .env      
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:

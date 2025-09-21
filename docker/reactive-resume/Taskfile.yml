@@ -29,8 +29,16 @@ tasks:
       - docker container ps
   init:
     desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+      - sed -i 's|POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|MINIO_ROOT_PASSWORD=.*|MINIO_ROOT_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|ACCESS_TOKEN_SECRET=.*|ACCESS_TOKEN_SECRET='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|REFRESH_TOKEN_SECRET=.*|REFRESH_TOKEN_SECRET='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|STORAGE_ACCESS_KEY=.*|STORAGE_ACCESS_KEY='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|STORAGE_SECRET_KEY=.*|STORAGE_SECRET_KEY='"$(openssl rand -hex 32)"'|g' .env
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     cmds:

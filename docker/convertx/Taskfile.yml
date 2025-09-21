@@ -24,8 +24,11 @@ tasks:
       - task --list > task-list.txt
   init:
     desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+      - sed -i 's|JWT_SECRET=.*|JWT_SECRET='"$(openssl rand -hex 32)"'|g' .env
   pull:
     desc: Pull Docker images for the application.
     cmds:

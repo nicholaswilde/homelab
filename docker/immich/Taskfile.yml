@@ -16,8 +16,11 @@ tasks:
       - task --list > task-list.txt
   init:
     desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+      - sed -i 's|DB_PASSWORD=.*|DB_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     cmds:
