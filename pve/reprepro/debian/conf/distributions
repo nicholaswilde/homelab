@@ -16,4 +16,14 @@ Components: main
 Description: Apt repository for Debian stable - Bullseye  
 DebOverride: override.bullseye
 DscOverride: override.bullseye
-SignWith: 089C9FAF 
+SignWith: 089C9FAF
+
+Origin: Debian
+Label: Trixie apt repository
+Codename: trixie
+Architectures: i386 amd64 arm64 armhf
+Components: main
+Description: Apt repository for Debian stable - Trixie
+DebOverride: override.trixie
+DscOverride: override.trixie
+SignWith: 089C9FAF
