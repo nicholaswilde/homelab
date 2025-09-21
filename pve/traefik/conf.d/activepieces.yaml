@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    activepieces:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`ap.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: activepieces
+#endregion
+#region services
+  services:
+    activepieces:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.179:8080"
+        passHostHeader: true
+#endregion
