@@ -5,6 +5,35 @@ dotenv:
   - .env
 
 tasks:
+  install:
+    desc: Install
+    cmds:
+      - git clone 
+  clean:
+    desc: Clean the dir
+    cmds:
+      - rm -rf {{ .INSTALL_DIR }}/build
+      - mkdir -p {{ .INSTALL_DIR }}/build
+      - cd {{ .INSTALL_DIR }}/build
+      - cmake ..
+      - cmake --build .
+  download:
+    desc: Download the specified model
+    cmds:
+      - llama-cli -hf {{ .LLAMA_MODEL }}
+# ./bin/llama-cli -hf TheBloke/deepseek-coder-6.7B-instruct-GGUF
+# TheBloke/deepseek-coder-6.7B-instruct-GGUF
+# wget -c https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q5_K_M.gguf
+# Or download and run a model directly from Hugging Face
+# llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
+# Launch OpenAI-compatible API server
+# llama-server -hf ggml-org/gemma-3-1b-it-GGUF
+# ./bin/llama-server -m ../models/deepseek-coder-6.7b-instruct.Q5_K_M.gguf --host 0.0.0.0 --port 8080 -ngl 0
+      
+  deps:
+    desc: Install dependencies
+    cmds:
+      - apt update && apt install libcurl4-openssl-dev cmake
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -35,9 +64,13 @@ tasks:
   mklinks:
     desc: Create symbolic links for configuration files.
     preconditions:
-      - test -d {{ .CONFIG_DIR }}
+      - test -d {{ .INSTALL_DIR }}/build/bin
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-server /usr/local/bin/llama-server
+      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-cli /usr/local/bin/llama-cli
+      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-bench /usr/local/bin/llama-bench
+      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-run /usr/local/bin/llama-run
+      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-simple /usr/local/bin/llama-simple
   restart:
     desc: Restart the application's systemd service.
     cmds:
