@@ -6,6 +6,7 @@ dotenv:
 
 vars:
   BUILD_DIR: "{{ .INSTALL_DIR }}/build"
+  CACHE_DIR: "/home/nicholas/.cache/llama.cpp/"
     
 tasks:
   prepare:
