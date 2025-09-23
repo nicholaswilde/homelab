@@ -4,19 +4,32 @@ version: '3'
 dotenv:
   - .env
 
+vars:
+  BUILD_DIR: "{{ .INSTALL_DIR }}/build"
+    
 tasks:
+  prepare:
+    desc: "Prepares the build directory"
+    # This internal task just creates the directory
+    internal: true
+    cmds:
+      - mkdir -p "{{.BUILD_DIR}}"
   install:
     desc: Install
     cmds:
-      - git clone 
+      - 'sudo git clone https://github.com/ggerganov/llama.cpp.git {{ .INSTALL_DIR }}'
+  build:
+    desc: build
+    dir: '{{ .BUILD_DIR }}'
+    deps: [prepare]
+    cmds:
+      - "cmake .. -DLLAMA_METAL=OFF"
+      - "cmake --build ."  
   clean:
     desc: Clean the dir
     cmds:
       - rm -rf {{ .INSTALL_DIR }}/build
       - mkdir -p {{ .INSTALL_DIR }}/build
-      - cd {{ .INSTALL_DIR }}/build
-      - cmake ..
-      - cmake --build .
   download:
     desc: Download the specified model
     cmds:
@@ -33,7 +46,8 @@ tasks:
   deps:
     desc: Install dependencies
     cmds:
-      - apt update && apt install libcurl4-openssl-dev cmake
+      - sudo apt update
+      - sudo apt install libcurl4-openssl-dev cmake ccache -y
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -66,11 +80,11 @@ tasks:
     preconditions:
       - test -d {{ .INSTALL_DIR }}/build/bin
     cmds:
-      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-server /usr/local/bin/llama-server
-      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-cli /usr/local/bin/llama-cli
-      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-bench /usr/local/bin/llama-bench
-      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-run /usr/local/bin/llama-run
-      - ln -sf {{ .INSTALL_DIR }}/build/bin/llama-simple /usr/local/bin/llama-simple
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-server' /usr/local/bin/llama-server
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-cli' /usr/local/bin/llama-cli
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-bench' /usr/local/bin/llama-bench
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-run' /usr/local/bin/llama-run
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-simple' /usr/local/bin/llama-simple
   restart:
     desc: Restart the application's systemd service.
     cmds:
