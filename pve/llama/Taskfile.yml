@@ -31,10 +31,10 @@ tasks:
     cmds:
       - rm -rf {{ .INSTALL_DIR }}/build
       - mkdir -p {{ .INSTALL_DIR }}/build
-  download:
-    desc: Download the specified model
-    cmds:
-      - llama-cli -hf {{ .LLAMA_MODEL }}
+  # download:
+  #   desc: Download the specified model
+  #   cmds:
+  #     - llama-cli -hf {{ .LLAMA_MODEL }}
 # ./bin/llama-cli -hf TheBloke/deepseek-coder-6.7B-instruct-GGUF
 # TheBloke/deepseek-coder-6.7B-instruct-GGUF
 # wget -c https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q5_K_M.gguf
