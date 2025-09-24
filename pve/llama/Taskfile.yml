@@ -6,9 +6,17 @@ dotenv:
 
 vars:
   BUILD_DIR: "{{ .INSTALL_DIR }}/build"
-  CACHE_DIR: "/home/nicholas/.cache/llama.cpp/"
+  CACHE_DIR: "${HOME}/.cache/llama.cpp"
     
 tasks:
+  choose:
+    desc: Choose which model
+    cmds:
+      - "sudo find {{ .CACHE_DIR }}/ -type f -name '*.gguf' | fzf"
+  run:
+    desc: Run the model
+    cmds:
+      - "llama-server -m {{ .CACHE_DIR }}/TheBloke_deepseek-coder-6.7B-instruct-GGUF_deepseek-coder-6.7b-instruct.Q5_K_M.gguf -c 4096 -t 1 --host 0.0.0.0 --port 8080 -ngl 0 --cont-batching --jinja"
   prepare:
     desc: "Prepares the build directory"
     # This internal task just creates the directory
