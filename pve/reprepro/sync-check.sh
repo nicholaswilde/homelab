@@ -172,6 +172,7 @@ function main(){
   make_temp_dir
   update_app "task" "go-task"
   update_app "sops" "getsops"
+  update_app "bat" "sharkdp"
 }
 
 main "$@"
