@@ -5,6 +5,24 @@ dotenv:
   - .env
 
 tasks:
+  init:
+    desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
+    cmds:
+      - cp .env.tmpl .env
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env
+    cmds:
+      - sops -e .env > .env.enc
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   export:
     silent: true
     desc: Export the task list
@@ -17,12 +35,15 @@ tasks:
   sync-check:
     desc: Check and sync released versions of SOPS and Taks
     cmds:
-      - ./sync-check.sh
+      - sudo ./sync-check.sh
   download:
     desc: Download SOPS and Task .deb files
     cmds:
       - ./download.sh
-
+  clear:
+    desc: Remove all packages from all distributions
+    cmds:
+      - sudo ./clear.sh
   default:
     cmds:
       - task -l

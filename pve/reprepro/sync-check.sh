@@ -29,12 +29,15 @@ readonly default
 readonly white
 
 # Set the URL for the GitHub releases API
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+debian_codenames=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
+ubuntu_codenames=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 
 dists=(debian ubuntu)
-debian_codenames=(bullseye bookworm trixie forky)
+debian_codenames=(bullseye bookworm trixie)
 ubuntu_codenames=(noble oracular jammy)
-usernames=(getsops go-task)
-apps=(sops task)
+usernames=(getsops go-task sharkdp sharkdp)
+apps=(sops task fd bat)
 
 function print_text(){
   echo "${blue}==> ${white}${bold}${1}${normal}"
@@ -81,35 +84,67 @@ function make_temp_dir(){
 }
 
 function set_vars(){
+  unset PACKAGE_URL_AMD64 PACKAGE_URL_ARM64 PACKAGE_URL_ARM PACKAGE_URL_ARMHF
+  unset BASENAME_AMD64 BASENAME_ARM64 BASENAME_ARM BASENAME_ARMHF
+  unset FILEPATH_AMD64 FILEPATH_ARM64 FILEPATH_ARM FILEPATH_ARMHF
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
   API_URL="https://api.github.com/repos/${2}/${1}/releases/latest"
-  
-  PACKAGE_URL_AMD64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("amd64.deb")) | .browser_download_url')
-  PACKAGE_URL_ARM64=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("arm64.deb")) | .browser_download_url')
-  PACKAGE_URL_ARM=$(curl -s "${API_URL}" | jq -r '.assets[] | select(.name | contains("arm.deb")) | .browser_download_url')
-  BASENAME_AMD64=$(basename "${PACKAGE_URL_AMD64}")
-  BASENAME_ARM64=$(basename "${PACKAGE_URL_ARM64}")
-  BASENAME_ARM=$(basename "${PACKAGE_URL_ARM}")
+
+  local curl_args=("-s")
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    curl_args+=("-H" "Authorization: Bearer ${GITHUB_TOKEN}")
+  fi
+
+  JSON_RESPONSE=$(curl "${curl_args[@]}" "${API_URL}")
+  export JSON_RESPONSE
+
+  # Check if the response contains an "assets" array. If not, something is wrong (e.g. rate limit)
+  if ! echo "${JSON_RESPONSE}" | jq -e '.assets | type == "array"' >/dev/null 2>&1; then
+      echo "${red}ERRO${default}[$(date +'%Y-%m-%d %H:%M:%S')] API response for ${API_URL} did not contain a valid 'assets' array."
+      # Try to print the message from the API response if it exists
+      API_MESSAGE=$(echo "${JSON_RESPONSE}" | jq -r '.message // ""')
+      [ -n "${API_MESSAGE}" ] && echo "${red}ERRO${default}[$(date +'%Y-%m-%d %H:%M:%S')] API Message: ${API_MESSAGE}"
+
+      # Set package URLs to empty to prevent further processing
+      PACKAGE_URL_AMD64=""
+      PACKAGE_URL_ARM64=""
+      PACKAGE_URL_ARM=""
+      PACKAGE_URL_ARMHF=""
+  else
+    PACKAGE_URL_AMD64=$(echo "${JSON_RESPONSE}" | jq -r '.assets[] | select(.name | contains("amd64") and endswith(".deb") and (contains("musl") | not)) | .browser_download_url')
+    PACKAGE_URL_ARM64=$(echo "${JSON_RESPONSE}" | jq -r '.assets[] | select(.name | contains("arm64") and endswith(".deb") and (contains("musl") | not)) | .browser_download_url')
+    PACKAGE_URL_ARM=$(echo "${JSON_RESPONSE}" | jq -r '.assets[] | select(.name | endswith("arm.deb") and (contains("musl") | not)) | .browser_download_url')
+    PACKAGE_URL_ARMHF=$(echo "${JSON_RESPONSE}" | jq -r '.assets[] | select(.name | contains("armhf") and endswith(".deb") and (contains("musl") | not)) | .browser_download_url')
+  fi
+
+  BASENAME_AMD64=$(basename "${PACKAGE_URL_AMD64}" | tr -d '\r\n')
+  BASENAME_ARM64=$(basename "${PACKAGE_URL_ARM64}" | tr -d '\r\n')
+  BASENAME_ARM=$(basename "${PACKAGE_URL_ARM}" | tr -d '\r\n')
+  BASENAME_ARMHF=$(basename "${PACKAGE_URL_ARMHF}" | tr -d '\r\n')
   FILEPATH_AMD64="${TEMP_PATH}/${BASENAME_AMD64}"
   FILEPATH_ARM64="${TEMP_PATH}/${BASENAME_ARM64}"
   FILEPATH_ARM="${TEMP_PATH}/${BASENAME_ARM}"
+  FILEPATH_ARMHF="${TEMP_PATH}/${BASENAME_ARMHF}"
   export API_URL
   export PACKAGE_URL_AMD64
-  export PACKAGE_URL_ARM64 
+  export PACKAGE_URL_ARM64
   export PACKAGE_URL_ARM
+  export PACKAGE_URL_ARMHF
   export BASENAME_ARM64
   export BASENAME_AMD64
-  export BASENAME_AMD
+  export BASENAME_ARM
+  export BASENAME_ARMHF
   export FILEPATH_AMD64
   export FILEPATH_ARM64
   export FILEPATH_ARM
+  export FILEPATH_ARMHF
 }
 
 
 # Get the latest release version from the API
 function get_latest_version(){
-  LATEST_VERSION=$(curl -s "$API_URL" | grep '"tag_name":' | cut -d '"' -f 4)
+  LATEST_VERSION=$(echo "${JSON_RESPONSE}" | jq -r .tag_name)
   # Remove the "v" prefix from the version string
   LATEST_VERSION2=${LATEST_VERSION#v}
   print_text "Latest version: ${LATEST_VERSION2}"
@@ -127,14 +162,17 @@ function get_current_version(){
 function add_package(){
   PACKAGE_URL="${1}"
   FILEPATH="${2}"
-  wget "${PACKAGE_URL}" -q -O "${FILEPATH}"
-  reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb oracular "${FILEPATH}"
-  reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb noble "${FILEPATH}"
-  reprepro --confdir /srv/reprepro/ubuntu/conf/ includedeb jammy "${FILEPATH}"
-  reprepro -b /srv/reprepro/debian/ includedeb bookworm "${FILEPATH}"
-  reprepro -b /srv/reprepro/debian/ includedeb bullseye "${FILEPATH}"
-  reprepro -b /srv/reprepro/debian/ includedeb trixie "${FILEPATH}"
-  reprepro -b /srv/reprepro/debian/ includedeb forky "${FILEPATH}"
+  print_text "Downloading ${PACKAGE_URL}"
+  if ! wget -q "${PACKAGE_URL}" -O "${FILEPATH}"; then
+    raise_error "Failed to download ${PACKAGE_URL}"
+    return 1
+  fi
+  for codename in "${ubuntu_codenames[@]}"; do
+    reprepro -b /srv/reprepro/ubuntu includedeb "${codename}" "${FILEPATH}"
+  done
+  for codename in "${debian_codenames[@]}"; do
+    reprepro -b /srv/reprepro/debian includedeb "${codename}" "${FILEPATH}"
+  done
 }
 
 function check_version(){
@@ -145,6 +183,9 @@ function check_version(){
     add_package "${PACKAGE_URL_ARM64}" "${FILEPATH_ARM64}"
     if [[ -n "${PACKAGE_URL_ARM}" ]]; then
       add_package "${PACKAGE_URL_ARM}" "${FILEPATH_ARM}"
+    fi
+    if [[ -n "${PACKAGE_URL_ARMHF}" ]]; then
+      add_package "${PACKAGE_URL_ARMHF}" "${FILEPATH_ARMHF}"
     fi
     MESSAGE="Added ${APP_NAME} deb files: ${LATEST_VERSION2}"
   else
@@ -170,9 +211,9 @@ function main(){
   check_reprepro
   check_jq
   make_temp_dir
-  update_app "task" "go-task"
-  update_app "sops" "getsops"
-  update_app "bat" "sharkdp"
+  for i in "${!apps[@]}"; do
+    update_app "${apps[$i]}" "${usernames[$i]}"
+  done
 }
 
 main "$@"
