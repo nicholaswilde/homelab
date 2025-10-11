@@ -31,11 +31,15 @@ tasks:
   deps:
     desc: Install dependencies
     cmds:
-      - sudo apt install jq reprepro cron
+      - sudo apt install jq reprepro cron dpkg-dev
   sync-check:
-    desc: Check and sync released versions of SOPS and Taks
+    desc: Check and sync released versions of configured apps
     cmds:
       - sudo ./sync-check.sh
+  sync-fzf:
+    desc: Check and sync fzf releases
+    cmds:
+      - sudo ./package-fzf.sh
   download:
     desc: Download SOPS and Task .deb files
     cmds:

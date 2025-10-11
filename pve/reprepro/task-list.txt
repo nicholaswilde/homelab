@@ -1,4 +1,10 @@
 task: Available tasks for this project:
+* clear:            Remove all packages from all distributions
+* decrypt:          Decrypt sensitive configuration files using SOPS.
 * deps:             Install dependencies
+* download:         Download SOPS and Task .deb files
+* encrypt:          Encrypt sensitive configuration files using SOPS.
 * export:           Export the task list
-* sync-check:       Check and sync released versions of SOPS and Taks
+* init:             Initialize the application's environment and configuration files.
+* sync-check:       Check and sync released versions of configured apps
+* sync-fzf:         Check and sync fzf releases

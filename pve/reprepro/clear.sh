@@ -11,55 +11,76 @@
 #
 ################################################################################
 
-set -e
-set -o pipefail
+# set -e
+# set -o pipefail
 
-readonly BLUE=$(tput setaf 4)
-readonly WHITE=$(tput setaf 7)
-readonly BOLD=$(tput bold)
-readonly NORMAL=$(tput sgr0)
+readonly RESET=$(tput sgr0)
 readonly RED=$(tput setaf 1)
+readonly YELLOW=$(tput setaf 3)
+readonly BLUE=$(tput setaf 4)
 
-function raise_error(){
-  printf "${RED}%s\n" "${1}"
-  exit 1
+DEBUG="false"
+
+# Logging function
+function log() {
+  local type="$1"
+  local message="$2"
+  local color="$RESET"
+
+  case "$type" in
+    INFO)
+      color="$BLUE";;
+    WARN)
+      color="$YELLOW";;
+    ERRO)
+      color="$RED";;
+  esac
+
+  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
 
 function check_root(){
   if [ "$UID" -ne 0 ]; then
-    raise_error "Please run as root or with sudo."
+    log "ERRO" "Please run as root or with sudo."
+    exit 1
   fi
 }
 
-function print_text(){
-  echo "${BLUE}==> ${WHITE}${BOLD}${1}${NORMAL}"
+function set_vars(){
+  SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
+  UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
+  [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
 }
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
-UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
-
 function clear_apps(){
-  print_text "--- Clearing Debian Repositories ---"
+  # Define the output target based on the DEBUG variable
+  if [ "${DEBUG}" = "true" ]; then
+    OUTPUT_TARGET="/dev/stdout" # Send output to the screen
+  else
+    OUTPUT_TARGET="/dev/null"   # Send output to the void
+  fi
+  log "INFO" "--- Clearing Debian Repositories ---"
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    print_text "Checking Debian $codename..."
-    for package in $(reprepro -b /srv/reprepro/debian/ list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
-      print_text "Removing $package from Debian $codename"
-      reprepro -b /srv/reprepro/debian/ remove "$codename" "$package" || true
+    log "INFO" "Checking Debian $codename..."
+    for package in $(reprepro -b "${BASE_DIR}/debian/" list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
+      log "INFO" "Removing $package from Debian $codename"
+      reprepro -b "${BASE_DIR}/debian/" remove "$codename" "$package" &> "${OUTPUT_TARGET}" || true
     done
   done
 
-  print_text "--- Clearing Ubuntu Repositories ---"
+  log "INFO" "--- Clearing Ubuntu Repositories ---"
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    print_text "Checking Ubuntu $codename..."
-    for package in $(reprepro -b /srv/reprepro/ubuntu/ list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
-      print_text "Removing $package from Ubuntu $codename"
-      reprepro -b /srv/reprepro/ubuntu/ remove "$codename" "$package" || true
+    log "INFO" "Checking Ubuntu $codename..."
+    for package in $(reprepro -b "${BASE_DIR}/ubuntu/" list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
+      log "INFO" "Removing $package from Ubuntu $codename"
+      reprepro -b "${BASE_DIR}/ubuntu/" remove "$codename" "$package" &> "${OUTPUT_TARGET}" || true
     done
   done
 }
 
 function main(){
+  set_vars
   check_root
   clear_apps
 }
