@@ -27,17 +27,6 @@ readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 
 BASE_DIR="/srv/reprepro"
-[ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
-
-apps=(fzf)
-github_repos=(junegunn/fzf)
-descriptions=("A command-line fuzzy finder")
-
-dists=(debian ubuntu)
-debian_codenames=(bullseye bookworm trixie)
-ubuntu_codenames=(noble oracular jammy)
-usernames=(getsops go-task sharkdp sharkdp)
-apps=(sops task fd bat)
 
 DEBUG="false"
 
@@ -60,6 +49,12 @@ function log() {
 
   echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
+
+if [ ! -f "${SCRIPT_DIR}/.env" ]; then
+  log "ERRO" "The .env file is missing. Please create it by running `task init`."
+  exit 1
+fi
+source "${SCRIPT_DIR}/.env"
 
 function usage() {
   cat <<EOF
@@ -193,8 +188,11 @@ function download_and_add() {
 }
 
 function update_app() {
-  local app_name="$1"
-  local username="$2"
+  local github_repo="$1"
+  local app_name
+  app_name=$(basename "${github_repo}")
+  local username
+  username=$(dirname "${github_repo}")
   export APP_NAME="${app_name}"
   export USERNAME="${username}"
 
@@ -298,8 +296,8 @@ function main() {
   check_dependencies
   make_temp_dir
 
-  for i in "${!apps[@]}"; do
-    update_app "${apps[$i]}" "${usernames[$i]}"
+  for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
+    update_app "${github_repo}"
   done
 
   log "INFO" "Script finished."

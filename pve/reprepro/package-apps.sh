@@ -27,7 +27,11 @@ readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 
 BASE_DIR="/srv/reprepro"
-[ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
+if [ ! -f "${SCRIPT_DIR}/.env" ]; then
+  echo "ERRO[$(date +'%Y-%m-%d %H:%M:%S')] The .env file is missing. Please create it." >&2
+  exit 1
+fi
+source "${SCRIPT_DIR}/.env"
 
 DEBUG="false"
 
@@ -320,8 +324,10 @@ function main() {
   check_dependencies
   make_temp_dir
 
-  for i in "${!PACKAGE_APPS_APPS[@]}"; do
-    update_app "${PACKAGE_APPS_APPS[$i]}" "${PACKAGE_APPS_GITHUB_REPOS[$i]}"
+  for github_repo in "${PACKAGE_APPS_GITHUB_REPOS[@]}"; do
+    local app_name
+    app_name=$(basename "${github_repo}")
+    update_app "${app_name}" "${github_repo}"
   done
 
   log "INFO" "Script finished."
