@@ -1,0 +1,128 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+vars:
+  BUILD_DIR: "{{ .INSTALL_DIR }}/build"
+  CACHE_DIR: "${HOME}/.cache/llama.cpp"
+    
+tasks:
+  choose:
+    desc: Choose which model
+    cmds:
+      - "sudo find {{ .CACHE_DIR }}/ -type f -name '*.gguf' | fzf"
+  run:
+    desc: Run the model
+    cmds:
+      - "llama-server -m {{ .CACHE_DIR }}/TheBloke_deepseek-coder-6.7B-instruct-GGUF_deepseek-coder-6.7b-instruct.Q5_K_M.gguf -c 4096 -t 1 --host 0.0.0.0 --port 8080 -ngl 0 --cont-batching --jinja"
+  prepare:
+    desc: "Prepares the build directory"
+    # This internal task just creates the directory
+    internal: true
+    cmds:
+      - mkdir -p "{{.BUILD_DIR}}"
+  install:
+    desc: Install
+    cmds:
+      - 'sudo git clone https://github.com/ggerganov/llama.cpp.git {{ .INSTALL_DIR }}'
+  build:
+    desc: build
+    dir: '{{ .BUILD_DIR }}'
+    deps: [prepare]
+    cmds:
+      - "cmake .. -DLLAMA_METAL=OFF"
+      - "cmake --build ."  
+  clean:
+    desc: Clean the dir
+    cmds:
+      - rm -rf {{ .INSTALL_DIR }}/build
+      - mkdir -p {{ .INSTALL_DIR }}/build
+  # download:
+  #   desc: Download the specified model
+  #   cmds:
+  #     - llama-cli -hf {{ .LLAMA_MODEL }}
+# ./bin/llama-cli -hf TheBloke/deepseek-coder-6.7B-instruct-GGUF
+# TheBloke/deepseek-coder-6.7B-instruct-GGUF
+# wget -c https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q5_K_M.gguf
+# Or download and run a model directly from Hugging Face
+# llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
+# Launch OpenAI-compatible API server
+# llama-server -hf ggml-org/gemma-3-1b-it-GGUF
+# ./bin/llama-server -m ../models/deepseek-coder-6.7b-instruct.Q5_K_M.gguf --host 0.0.0.0 --port 8080 -ngl 0
+      
+  deps:
+    desc: Install dependencies
+    cmds:
+      - sudo apt update
+      - sudo apt install libcurl4-openssl-dev cmake ccache -y
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  enable:
+    desc: Enable the application's systemd service.
+    cmds:
+      - systemctl enable {{ .SERVICE_NAME }}.service
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env
+    cmds:
+      - sops -e .env > .env.enc
+  export:
+    silent: true
+    desc: Export the task list to `task-list.txt`.
+    cmds:
+      - task --list > task-list.txt
+  init:
+    desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
+    cmds:
+      - cp .env.tmpl .env
+  mklinks:
+    desc: Create symbolic links for configuration files.
+    preconditions:
+      - test -d {{ .INSTALL_DIR }}/build/bin
+    cmds:
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-server' /usr/local/bin/llama-server
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-cli' /usr/local/bin/llama-cli
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-bench' /usr/local/bin/llama-bench
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-run' /usr/local/bin/llama-run
+      - sudo ln -sf '{{ .INSTALL_DIR }}/build/bin/llama-simple' /usr/local/bin/llama-simple
+  restart:
+    desc: Restart the application's systemd service.
+    cmds:
+      - systemctl restart {{ .SERVICE_NAME }}.service
+  start:
+    desc: Start the application's systemd service.
+    cmds:
+      - systemctl start {{ .SERVICE_NAME }}.service
+  status:
+    desc: Check the status of the application's systemd service.
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}.service
+  stop:
+    desc: Stop the application's systemd service.
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
+  update:
+    desc: Update the application or its running containers.
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
+  upgrade:
+    desc: Upgrade the application by pulling the latest changes and updating.
+    cmds:
+      - git pull origin
+      - task: update
+  default:
+    cmds:
+      - task -l
+    silent: true
+    desc: List all available tasks.

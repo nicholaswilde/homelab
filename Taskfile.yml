@@ -2,6 +2,7 @@
 version: '3'
 
 vars:
+  VER: '2.5'
   IMAGE: nicholaswilde/mkdocs-material
   PORT: 8000
 
@@ -64,6 +65,28 @@ tasks:
         docker run --rm -it -v ${PWD}:${PWD} -w ${PWD}
         programmerassistant/yamllint yamllint .
     ignore_error: true
+
+  gpro:
+    desc: Run gemini with gemini-2.5-pro model
+    cmds:
+      - gemini -m gemini-{{ .VER }}-pro
+
+  gflash:
+    desc: Run gemini with flash model
+    cmds:
+      - gemini -m gemini-{{ .VER }}-flash
+
+  glite:
+    desc: Run gemini with lite model
+    cmds:
+      - gemini -m gemini-{{ .VER }}-lite
+
+  generate-docs-nav:
+    desc: Generate MkDocs navigation from content
+    cmds:
+      - scripts/.venv/bin/python3 scripts/generate_mkdocs_nav.py
+    deps:
+      - scripts:deps
 
   default:
     cmds:

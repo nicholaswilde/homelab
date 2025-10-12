@@ -56,6 +56,10 @@ tasks:
     desc: Stop the application's Docker containers.
     cmds:
       - docker compose stop
+  watch:
+    desc: Watch the application's Docker container logs.
+    cmds:
+      - docker compose logs -f
   mklinks:
     desc: Create symbolic links for configuration files.
     cmds:

@@ -186,11 +186,108 @@ You can then use it like this,
     rclone copy /home/source remote:backup
     ```
 
+## Making your own `client_id`
+
+Please follow the steps in the [google drive docs][6]. You will need these scopes:
+
+```shell
+https://www.googleapis.com/auth/docs
+https://www.googleapis.com/auth/drive
+https://www.googleapis.com/auth/drive.metadata.readonly
+```
+
 ## ![gphotos](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-photos.png){ width="24" } Google Photos
+
+I use Google Photos to create a shared album and sync the album with my digital picture frame via [FrameFi](../apps/frame-fi.md).
 
 !!! warning
 
-    Unfortunately, Google has recently [removed a large portion of the API access to Google Photos][2] and so I am not using `rclone` to sync photo albums with my homelab.
+    Rclone can only download photos from albums that were *created by rclone itself*. It cannot download from albums created directly in Google Photos or by other applications.
+
+!!! code "How to make a remote called remote"
+
+    ```shell
+    rclone config
+    ```
+
+!!! code "This will guide you through an interactive setup process"
+
+    ```shell
+    No remotes found, make a new one?
+    n) New remote
+    s) Set configuration password
+    q) Quit config
+    n/s/q> n
+    name> remote
+    Type of storage to configure.
+    Enter a string value. Press Enter for the default ("").
+    Choose a number from below, or type in your own value
+    [snip]
+    XX / Google Photos
+       \ "google photos"
+    [snip]
+    Storage> google photos
+    ** See help for google photos backend at: https://rclone.org/googlephotos/ **
+
+    Google Application Client Id
+    Leave blank normally.
+    Enter a string value. Press Enter for the default ("").
+    client_id> 
+    Google Application Client Secret
+    Leave blank normally.
+    Enter a string value. Press Enter for the default ("").
+    client_secret> 
+    Set to make the Google Photos backend read only.
+
+    If you choose read only then rclone will only request read only access
+    to your photos, otherwise rclone will request full access.
+    Enter a boolean value (true or false). Press Enter for the default ("false").
+    read_only> 
+    Edit advanced config? (y/n)
+    y) Yes
+    n) No
+    y/n> n
+    Remote config
+    Use web browser to automatically authenticate rclone with remote?
+     * Say Y if the machine running rclone has a web browser you can use
+     * Say N if running rclone on a (remote) machine without web browser access
+    If not sure try Y. If Y failed, try N.
+    y) Yes
+    n) No
+    y/n> y
+    If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
+    Log in and authorize rclone for access
+    Waiting for code...
+    Got code
+
+    *** IMPORTANT: All media items uploaded to Google Photos with rclone
+    *** are stored in full resolution at original quality.  These uploads
+    *** will count towards storage in your Google Account.
+
+    Configuration complete.
+    Options:
+    - type: google photos
+    - token: {"access_token":"XXX","token_type":"Bearer","refresh_token":"XXX","expiry":"2019-06-28T17:38:04.644930156+01:00"}
+    Keep this "remote" remote?
+    y) Yes this is OK
+    e) Edit this remote
+    d) Delete this remote
+    y/e/d> y
+    ```
+
+## Making your own `client_id`
+
+When you use `rclone` with Google photos in its default configuration you are using rclone's `client_id`. This is shared between all the `rclone` users. There is a global rate limit on the number of queries per second that each `client_id` can do set by Google.
+
+If there is a problem with this `client_id` (eg quota too low or the `client_id` stops working) then you can make your own.
+
+Please follow the steps in the [google drive docs][6]. You will need these scopes instead of the drive ones detailed:
+
+```bash
+https://www.googleapis.com/auth/photoslibrary.appendonly
+https://www.googleapis.com/auth/photoslibrary.readonly.appcreateddata
+https://www.googleapis.com/auth/photoslibrary.edit.appcreateddata
+```
 
 ## :link: References
 
@@ -204,3 +301,4 @@ You can then use it like this,
 [3]: <https://rclone.org/drive/>
 [4]: <https://rclone.org/remote_setup/>
 [5]: <../apps/vaultwarden.md>
+[6]: <https://rclone.org/drive/#making-your-own-client-id>

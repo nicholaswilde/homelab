@@ -9,29 +9,6 @@ tasks:
     desc: Backup the application's volume data.
     cmds:
       - docker exec {{ .CONTAINER_NAME }}-backup-1 backup
-  export:
-    silent: true
-    desc: Export the task list to `task-list.txt`.
-    cmds:
-      - task --list > task-list.txt
-  watch:
-    desc: Watch the application's Docker container logs.
-    cmds:
-      - docker compose logs -f
-  pull:
-    desc: Pull Docker images for the application.
-    cmds:
-      - docker compose pull
-  status:
-    desc: Check the status of the application's Docker containers.
-    cmds:
-      - docker container ps
-  init:
-    desc: Initialize the application's environment and configuration files.
-    preconditions:
-      - test -f .env.tmpl
-    cmds:
-      - cp .env.tmpl .env
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -44,11 +21,33 @@ tasks:
       - test -f .env
     cmds:
       - sops -e .env > .env.enc
-  update:
-    desc: Update the application or its running containers.
+  export:
+    silent: true
+    desc: Export the task list to `task-list.txt`.
     cmds:
-      - docker compose up --force-recreate --build -d
-      - docker image prune -a -f
+      - task --list > task-list.txt
+  init:
+    desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
+    cmds:
+      - cp .env.tmpl .env
+  pull:
+    desc: Pull Docker images for the application.
+    cmds:
+      - docker compose pull
+  restart:
+    desc: Restart the application's Docker containers.
+    cmds:
+      - docker compose restart
+  status:
+    desc: Check the status of the application's Docker containers.
+    cmds:
+      - docker container ps
+  stop:
+    desc: Stop the application's Docker containers.
+    cmds:
+      - docker compose stop
   up:
     desc: Run Docker Compose in the foreground.
     cmds:
@@ -57,19 +56,20 @@ tasks:
     desc: Run Docker Compose in the background.
     cmds:
       - docker compose up -d --remove-orphans
-  restart:
-    desc: Restart the application's Docker containers.
+  update:
+    desc: Update the application or its running containers.
     cmds:
-      - docker compose restart
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
       - git pull origin
       - task: update
-  stop:
-    desc: Stop the application's Docker containers.
+  watch:
+    desc: Watch the application's Docker container logs.
     cmds:
-      - docker compose stop
+      - docker compose logs -f
   default:
     cmds:
       - task -l

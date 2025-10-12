@@ -261,12 +261,27 @@ From node
 
 !!! code "See physical drive"
 
-    ```shell
-    pvdisplay
-    ```
-
-    ```shell title="Output"
+    === "root"
+        ```shell
+        pvdisplay
+        ```
+    === "sudo"
     
+        ```shell
+        sudo pvdisplay
+        ```
+    
+    ```shell title="Output"
+      --- Physical volume ---
+      PV Name               /dev/sda3
+      VG Name               ubuntu-vg
+      PV Size               <30.25 GiB / not usable 16.50 KiB
+      Allocatable           yes
+      PE Size               4.00 MiB
+      Total PE              7743
+      Free PE               2048
+      Allocated PE          5695
+      PV UUID               nE8Q94-dVYI-8ZP3-VEar-vONW-Vday-L0JofP
     ```
 
 !!! code "Instruct LVM that disk size has changed"

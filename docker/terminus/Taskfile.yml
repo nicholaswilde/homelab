@@ -42,6 +42,7 @@ tasks:
       - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+      - sed -i 's|PG_PASSWORD=.*|PG_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
   pull:
     desc: Pull Docker images for the application.
     cmds:

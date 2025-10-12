@@ -1,0 +1,81 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  backup:
+    desc: Backup the application's volume data.
+    cmds:
+      - docker exec {{ .CONTAINER_NAME }}-backup-1 backup
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env
+    cmds:
+      - sops -e .env > .env.enc
+  export:
+    silent: true
+    desc: Export the task list to `task-list.txt`.
+    cmds:
+      - task --list > task-list.txt
+  init:
+    desc: Initialize the application's environment and configuration files.
+    preconditions:
+      - test -f .env.tmpl
+    cmds:
+      - cp .env.tmpl .env
+      - sed -i 's|AP_API_KEY=.*|AP_API_KEY='"$(openssl rand -hex 64)"'|g' .env
+      - sed -i 's|AP_POSTGRES_PASSWORD=.*|AP_POSTGRES_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|AP_JWT_SECRET=.*|AP_JWT_SECRET='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|ENCRYPTION_KEY=.*|ENCRYPTION_KEY='"$(openssl rand -hex 16)"'|g' .env
+  pull:
+    desc: Pull Docker images for the application.
+    cmds:
+      - docker compose pull
+  restart:
+    desc: Restart the application's Docker containers.
+    cmds:
+      - docker compose restart
+  status:
+    desc: Check the status of the application's Docker containers.
+    cmds:
+      - docker container ps
+  stop:
+    desc: Stop the application's Docker containers.
+    cmds:
+      - docker compose stop
+  up:
+    desc: Run Docker Compose in the foreground.
+    cmds:
+      - docker compose up
+  up-d:
+    desc: Run Docker Compose in the background.
+    cmds:
+      - docker compose up -d --remove-orphans
+  update:
+    desc: Update the application or its running containers.
+    cmds:
+      - docker compose up --force-recreate --build -d
+      - docker image prune -a -f
+  upgrade:
+    desc: Upgrade the application by pulling the latest changes and updating.
+    cmds:
+      - git pull origin
+      - task: update
+  watch:
+    desc: Watch the application's Docker container logs.
+    cmds:
+      - docker compose logs -f
+  default:
+    cmds:
+      - task -l
+    silent: true
+    desc: List all available tasks.

@@ -12,9 +12,6 @@ repo_name: nicholaswilde/homelab
 repo_url: https://github.com/nicholaswilde/homelab
 edit_uri: "edit/main/docs/"
 
-exclude:
-  - GEMINI.md
-
 # Page tree
 nav:
   - Home: index.md
@@ -35,6 +32,7 @@ nav:
       - CyberKeyGen: apps/cyberkeygen.md
       - DeepSeek: apps/deepseek.md
       - Excalidraw: apps/excalidraw.md
+      - FrameFi: apps/frame-fi.md
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
       - Gotify: apps/gotify.md
@@ -46,6 +44,7 @@ nav:
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
       - mailrise: apps/mailrise.md
+      - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
       - ntfy: apps/ntfy.md

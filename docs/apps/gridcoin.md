@@ -104,6 +104,14 @@ Compare to [current block count][1].
     gridcoinresearchd listaddressgroupings
     ```
 
+## :simple-task: Task List
+
+!!! example ""
+
+    ```yaml
+    --8<-- "gridcoin/task-list.txt"
+    ```
+
 ## :link: References
 
 - <https://gridcoin.us/wiki/rpc.html>
@@ -112,11 +120,3 @@ Compare to [current block count][1].
 - <https://www.gridcoinstats.eu/faucet> - 30 min
 
 [1]: <https://www.gridcoinstats.eu/block>
-
-## :simple-task: Task List
-
-!!! example ""
-
-    ```yaml
-    --8<-- "gridcoin/task-list.txt"
-    ```

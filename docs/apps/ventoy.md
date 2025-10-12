@@ -173,12 +173,6 @@ The app may be installed and updated on the USB drive via the web app.
 
 Then update the USB drive from the Web GUI.
 
-## :link: References
-
-- <https://www.ventoy.net/en/index.html>
-
-[1]: <https://www.ventoy.net/en/index.html>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -186,3 +180,9 @@ Then update the USB drive from the Web GUI.
     ```yaml
     --8<-- "ventoy/task-list.txt"
     ```
+
+## :link: References
+
+- <https://www.ventoy.net/en/index.html>
+
+[1]: <https://www.ventoy.net/en/index.html>

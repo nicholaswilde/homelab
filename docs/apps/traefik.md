@@ -147,8 +147,6 @@ All internal URLs use an `l` sub domain so that only one certificate is needed f
         tail -n10 /var/log/traefik/traefik.log
         ```
 
-[1]: <https://traefik.io/traefik/>
-
 ## :simple-task: Task List
 
 !!! example ""
@@ -156,3 +154,7 @@ All internal URLs use an `l` sub domain so that only one certificate is needed f
     ```yaml
     --8<-- "traefik/task-list.txt"
     ```
+
+## :link: References
+
+[1]: <https://traefik.io/traefik/>

@@ -47,15 +47,39 @@
 - **Installation:** Create an installation section.
 - This section should show instructions for both amd64 and arm64 architectures.
 - **Usage:** Create a usage section
+- **Upgrade:** Create an upgrade section.
+
+## File Naming Conventions:
+
+- **Applications:** Files in `docs/apps/` should be named `app-name.md` (e.g., `adguard.md`).
+- **Tools:** Files in `docs/tools/` should be named `tool-name.md` (e.g., `sops.md`).
+- **Hardware:** Files in `docs/hardware/` should be named `hardware-name.md` (e.g., `rpi5.md`).
+
+## Content Structure:
+
+All markdown files should follow a consistent structure to ensure readability and maintainability. The recommended sections are:
+
+-   **Front Matter:** (Optional) Includes `tags` for categorization.
+-   **Title:** H1 heading with an appropriate emoji and the name of the application, tool, or hardware.
+-   **Description:** A brief overview of the item, often including a hyperlink to its official source.
+-   **Installation:** Instructions on how to install the item, typically with code blocks for different architectures or methods (e.g., `amd64`, `arm64`, `Docker`, `Task`).
+-   **Config:** Details on how to configure the item, including relevant file paths and example configurations.
+-   **Usage:** Instructions and examples on how to use the item.
+-   **Upgrade:** Instructions on how to upgrade the item, often with `Task` or manual commands.
+-   **Troubleshooting:** (Optional) Common issues and their solutions.
+-   **References:** A list of relevant external links, with numbered references at the bottom of the document.
 
 ## docs/apps/
 
-- This directory contains apps that are installed in my homelab.
-- Instructions should be given for installing the app.
+This directory contains documentation for applications installed in the homelab. Each application's markdown file should provide comprehensive instructions for installation, configuration, usage, and upgrading, adhering to the general content structure.
 
 ## docs/tools/
 
-- This directory contains tools that are used in my homelab.
+This directory contains documentation for various tools used in the homelab. Each tool's markdown file should detail its installation, configuration, and usage, following the general content structure.
+
+## docs/hardware/
+
+This directory contains documentation for hardware components in the homelab. Each hardware's markdown file should include its specifications, configuration details, and any specific setup or usage instructions, following the general content structure.
 
 ## Regarding Dependencies:
 
@@ -101,7 +125,7 @@ Instructions on how to configure the application or tool.
     example of yaml config file
     ```
 
-## :pencel: Usage
+## :pencil: Usage
 
 Instructions on how to use the application or tool.
 
