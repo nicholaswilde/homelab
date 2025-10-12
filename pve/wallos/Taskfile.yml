@@ -26,7 +26,16 @@ tasks:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-  
+
+  update:
+    desc: Update Wallos
+    cmds:
+      - bash -c /usr/bin/update
+  upgrade:
+    desc: Upgrade Wallos
+    cmds:
+      - git pull origin
+      - task: update  
   mklinks:
     desc: Make client symlinks
     cmds:
