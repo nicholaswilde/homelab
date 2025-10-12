@@ -50,6 +50,14 @@ function log() {
   echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
 
+# Cleanup function to remove temporary directory
+function cleanup() {
+  if [ -d "${TEMP_PATH}" ]; then
+    log "INFO" "Cleaning up temporary directory: ${TEMP_PATH}"
+    rm -rf "${TEMP_PATH}"
+  fi
+}
+
 # Check if variable is set
 # Returns false if empty
 function is_set(){
@@ -157,11 +165,46 @@ function get_latest_version(){
   export LATEST_VERSION2
 }
 
+# function get_latest_version() {
+#   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
+#   local curl_args=('-s')
+#   if [ -n "${GITHUB_TOKEN}" ]; then
+#     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+#   fi
+# 
+#   json_response=$(curl "${curl_args[@]}" "${api_url}")
+#   export json_response
+# 
+#   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
+#     log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
+#     echo "${json_response}"
+#     # Don't exit, just return so we can continue with other apps
+#     return 1
+#   fi
+# 
+#   TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
+#   LATEST_VERSION=${TAG_NAME#v}
+#   PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
+#   SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
+#   export TAG_NAME
+#   export LATEST_VERSION
+#   export SOURCE_DATE_EPOCH
+#   log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION} (tag: ${TAG_NAME})"
+# }
+
+
+# function get_current_version(){
+#   APP_NAME="${1}"
+#   CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
+#   export CURRENT_VERSION
+#   log "INFO" "Current version: ${CURRENT_VERSION}"
+# }
+
 function get_current_version(){
   APP_NAME="${1}"
-  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" | grep 'amd64'| awk '{print $NF}')
+  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" 2>/dev/null | grep 'amd64'| awk '{print $NF}' || true)
   export CURRENT_VERSION
-  log "INFO" "Current version: ${CURRENT_VERSION}"
+  log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
 
 function add_package(){
@@ -207,11 +250,16 @@ function check_version(){
 }
 
 function update_app(){
-  APP_NAME="${1}"
-  USERNAME="${2}"
-  export APP_NAME
-  log "INFO" "Checking ${APP_NAME} ..."
-  get_current_version "${APP_NAME}"
+  export APP_NAME="${1}"
+  export USERNAME="${2}"
+
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing application: ${APP_NAME}"
+  log "INFO" "--------------------------------------------------"
+
+  if ! get_latest_version "${APP_NAME}"; then
+    return
+  fi
   set_vars "${APP_NAME}" "${USERNAME}"
   [ -n "${PACKAGE_URL_AMD64}" ] || return
   get_latest_version "${APP_NAME}"
@@ -219,6 +267,8 @@ function update_app(){
 }
 
 function main(){
+  trap cleanup EXIT
+  log "INFO" "Starting sync checking script..."
   check_root
   check_reprepro
   check_jq

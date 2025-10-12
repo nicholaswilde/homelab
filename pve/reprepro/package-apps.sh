@@ -59,6 +59,14 @@ function log() {
   echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
 
+# Cleanup function to remove temporary directory
+function cleanup() {
+  if [ -d "${TEMP_PATH}" ]; then
+    log "INFO" "Cleaning up temporary directory: ${TEMP_PATH}"
+    rm -rf "${TEMP_PATH}"
+  fi
+}
+
 # Checks if a command exists.
 function command_exists() {
   command -v "$1" >/dev/null 2>&1
@@ -159,7 +167,10 @@ function package_and_add() {
   mkdir -p "${package_dir}/DEBIAN"
 
   log "INFO" "Extracting ${APP_NAME} binary..."
-  tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${APP_NAME}"
+  if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${APP_NAME}"; then
+    log "ERRO" "Failed to extract ${tarball_name}"
+    return 1
+  fi
 
   log "INFO" "Creating control file..."
   cat << EOF > "${package_dir}/DEBIAN/control"
@@ -180,7 +191,10 @@ EOF
   fi
   log "INFO" "Building .deb package..."
   local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
-  dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}"
+  if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}"; then
+    log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"
+    return 1
+  fi
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
@@ -238,12 +252,16 @@ function update_app() {
         continue;;
     esac
 
-    package_and_add "${github_arch}" "${debian_arch}"
+    if ! package_and_add "${github_arch}" "${debian_arch}"; then
+      log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
+      continue
+    fi
   done
 }
 
 # Main function to orchestrate the script execution
 function main() {
+  trap cleanup EXIT
   log "INFO" "Starting application packaging script..."
   check_root
   check_dependencies

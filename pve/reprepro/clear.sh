@@ -60,7 +60,9 @@ function clear_apps(){
   else
     OUTPUT_TARGET="/dev/null"   # Send output to the void
   fi
-  log "INFO" "--- Clearing Debian Repositories ---"
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Clearing Debian Repositories"
+  log "INFO" "--------------------------------------------------"
   for codename in "${DEBIAN_CODENAMES[@]}"; do
     log "INFO" "Checking Debian $codename..."
     for package in $(reprepro -b "${BASE_DIR}/debian/" list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
@@ -69,7 +71,10 @@ function clear_apps(){
     done
   done
 
-  log "INFO" "--- Clearing Ubuntu Repositories ---"
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Clearing Ubuntu Repositories"
+  log "INFO" "--------------------------------------------------"
+
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     log "INFO" "Checking Ubuntu $codename..."
     for package in $(reprepro -b "${BASE_DIR}/ubuntu/" list "$codename" | awk -F': ' '{print $2}' | awk '{print $1}' | sort -u); do
