@@ -41,13 +41,6 @@ apps=(sops task fd bat)
 
 DEBUG="false"
 
-# Define the output target based on the DEBUG variable
-if [ "${DEBUG}" = "true" ]; then
-  OUTPUT_TARGET="/dev/stdout" # Send output to the screen
-else
-  OUTPUT_TARGET="/dev/null"   # Send output to the void
-fi
-
 # Logging function
 function log() {
   local type="$1"
@@ -66,6 +59,19 @@ function log() {
   esac
 
   echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+}
+
+function usage() {
+  cat <<EOF
+Usage: $0 [options]
+
+Downloads application .deb files and adds them to reprepro.
+
+Options:
+  -d, --debug         Enable debug mode, which prints more info.
+  -r, --remove <pkg>  Remove a package from the repository.
+  -h, --help          Display this help message.
+EOF
 }
 
 # Cleanup function to remove temporary directory
@@ -177,12 +183,6 @@ function download_and_add() {
     return 1
   fi
 
-  # Define the output target based on the DEBUG variable
-  if [ "${DEBUG}" = "true" ]; then
-    OUTPUT_TARGET="/dev/stdout" # Send output to the screen
-  else
-    OUTPUT_TARGET="/dev/null"   # Send output to the void
-  fi
   log "INFO" "Adding ${package_name} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${package_path}" &> "${OUTPUT_TARGET}" || true
@@ -252,8 +252,49 @@ function update_app() {
 # Main function to orchestrate the script execution
 function main() {
   trap cleanup EXIT
+  local package_to_remove=""
+
+  # Parse command-line arguments
+  while [[ "$#" -gt 0 ]]; do
+    case $1 in
+      -d|--debug)
+        DEBUG="true"
+        shift;;
+      -r|--remove)
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+          package_to_remove="$2"
+          shift 2 # past argument and value
+        else
+          log "ERRO" "Error: Argument for $1 is missing" >&2
+          usage
+          exit 1
+        fi;;
+      -h|--help)
+        usage
+        exit 0;;
+      *)
+        log "ERRO" "Unknown parameter passed: $1"
+        usage
+        exit 1;;
+    esac
+  done
+
+  # Define the output target based on the DEBUG variable
+  if [ "${DEBUG}" = "true" ]; then
+    OUTPUT_TARGET="/dev/stdout" # Send output to the screen
+  else
+    OUTPUT_TARGET="/dev/null"   # Send output to the void
+  fi
+
   log "INFO" "Starting sync checking script..."
   check_root
+
+  if [ -n "${package_to_remove}" ]; then
+    remove_package "${package_to_remove}"
+    log "INFO" "Script finished."
+    exit 0
+  fi
+
   check_dependencies
   make_temp_dir
 
