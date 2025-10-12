@@ -29,10 +29,6 @@ readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/
 BASE_DIR="/srv/reprepro"
 [ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
 
-apps=(fzf)
-github_repos=(junegunn/fzf)
-descriptions=("A command-line fuzzy finder")
-
 DEBUG="false"
 
 # Logging function
@@ -215,10 +211,8 @@ EOF
 function update_app() {
   local app_name="$1"
   local github_repo="$2"
-  local description="$3"
   export APP_NAME="${app_name}"
   export GITHUB_REPO="${github_repo}"
-  export DESCRIPTION="${description}"
 
   log "INFO" "--------------------------------------------------"
   log "INFO" "Processing application: ${APP_NAME}"
@@ -326,8 +320,8 @@ function main() {
   check_dependencies
   make_temp_dir
 
-  for i in "${!apps[@]}"; do
-    update_app "${apps[$i]}" "${github_repos[$i]}" "${descriptions[$i]}"
+  for i in "${!PACKAGE_APPS_APPS[@]}"; do
+    update_app "${PACKAGE_APPS_APPS[$i]}" "${PACKAGE_APPS_GITHUB_REPOS[$i]}"
   done
 
   log "INFO" "Script finished."
