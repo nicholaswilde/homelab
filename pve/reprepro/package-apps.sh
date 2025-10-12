@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 ################################################################################
 #
-# Script Name: package-fzf.sh
+# Script Name: package-apps.sh
 # ----------------
-# Downloads fzf tar.gz files, packages them as .deb files, and adds to reprepro.
+# Downloads application tar.gz files, packages them as .deb files, and adds to
+# reprepro.
 #
 # @author Nicholas Wilde, 0xb299a622
 # @date 11 Oct 2025
-# @version 0.1.0
+# @version 0.2.0
 #
 ################################################################################
 
@@ -23,7 +24,13 @@ readonly RESET=$(tput sgr0)
 readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
-readonly GITHUB_REPO="junegunn/fzf"
+
+BASE_DIR="/srv/reprepro"
+[ -f "${SCRIPT_DIR}/.env" ] && source "${SCRIPT_DIR}/.env"
+
+apps=(fzf)
+github_repos=(junegunn/fzf)
+descriptions=("A command-line fuzzy finder")
 
 DEBUG="false"
 
@@ -80,7 +87,7 @@ function make_temp_dir(){
   log "INFO" "Temp path: ${TEMP_PATH}"
 }
 
-function get_latest_fzf_version() {
+function get_latest_version() {
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local curl_args=('-s')
   if [ -n "${GITHUB_TOKEN}" ]; then
@@ -91,24 +98,26 @@ function get_latest_fzf_version() {
   export json_response
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
-    log "ERRO" "Failed to get latest version from GitHub API."
+    log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
     echo "${json_response}"
-    exit 1
+    # Don't exit, just return so we can continue with other apps
+    return 1
   fi
 
-  LATEST_VERSION=$(echo "${json_response}" | jq -r '.tag_name' | sed 's/^v//')
+  TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
+  LATEST_VERSION=${TAG_NAME#v}
   PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
   SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
+  export TAG_NAME
   export LATEST_VERSION
   export SOURCE_DATE_EPOCH
-  log "INFO" "Latest fzf version: ${LATEST_VERSION}"
+  log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION} (tag: ${TAG_NAME})"
 }
 
 function get_current_version(){
-  APP_NAME="fzf"
   CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" 2>/dev/null | grep 'amd64'| awk '{print $NF}' || true)
   export CURRENT_VERSION
-  log "INFO" "Current fzf version in reprepro: ${CURRENT_VERSION}"
+  log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
 
 function remove_package() {
@@ -116,16 +125,16 @@ function remove_package() {
   log "INFO" "Forcefully removing existing '${package_name}' packages from reprepro to ensure a clean state..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Ubuntu ${codename}"
-    reprepro -b /srv/reprepro/ubuntu remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Debian ${codename}"
-    reprepro -b /srv/reprepro/debian remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
   done
 
   log "INFO" "Searching for and removing old '${package_name}' .deb files from the pool..."
-  find /srv/reprepro/debian/pool/ -name "${package_name}_*.deb" -delete
-  find /srv/reprepro/ubuntu/pool/ -name "${package_name}_*.deb" -delete
+  find "${BASE_DIR}/debian/pool/" -name "${package_name}_*.deb" -delete
+  find "${BASE_DIR}/ubuntu/pool/" -name "${package_name}_*.deb" -delete
   log "INFO" "Pool cleanup complete."
 }
 
@@ -135,8 +144,8 @@ function package_and_add() {
 
   log "INFO" "Processing architecture: ${arch_github}"
 
-  local download_url="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/fzf-${LATEST_VERSION}-linux_${arch_github}.tar.gz"
-  local tarball_name="fzf-${LATEST_VERSION}-linux_${arch_github}.tar.gz"
+  local download_url="https://github.com/${GITHUB_REPO}/releases/download/${TAG_NAME}/${APP_NAME}-${LATEST_VERSION}-linux_${arch_github}.tar.gz"
+  local tarball_name="${APP_NAME}-${LATEST_VERSION}-linux_${arch_github}.tar.gz"
   local tarball_path="${TEMP_PATH}/${tarball_name}"
 
   log "INFO" "Downloading ${tarball_name}..."
@@ -145,22 +154,22 @@ function package_and_add() {
     return 1
   fi
 
-  local package_dir="${TEMP_PATH}/fzf_${LATEST_VERSION}_${arch_debian}"
+  local package_dir="${TEMP_PATH}/${APP_NAME}_${LATEST_VERSION}_${arch_debian}"
   mkdir -p "${package_dir}/usr/local/bin"
   mkdir -p "${package_dir}/DEBIAN"
 
-  log "INFO" "Extracting fzf binary..."
-  tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" fzf
+  log "INFO" "Extracting ${APP_NAME} binary..."
+  tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${APP_NAME}"
 
   log "INFO" "Creating control file..."
   cat << EOF > "${package_dir}/DEBIAN/control"
-Package: fzf
+Package: ${APP_NAME}
 Version: ${LATEST_VERSION}
 Section: utils
 Priority: optional
 Architecture: ${arch_debian}
 Maintainer: Nicholas Wilde <noreply@email.com>
-Description: A command-line fuzzy finder
+Description: ${DESCRIPTION}
 EOF
 
   # Define the output target based on the DEBUG variable
@@ -170,42 +179,49 @@ EOF
     OUTPUT_TARGET="/dev/null"   # Send output to the void
   fi
   log "INFO" "Building .deb package..."
-  local deb_file="fzf_${LATEST_VERSION}_${arch_debian}.deb"
+  local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
   dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}"
-  echo $?
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    reprepro -b /srv/reprepro/ubuntu includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    reprepro -b /srv/reprepro/debian includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
   done
 }
 
-# Main function to orchestrate the script execution
-function main() {
-  log "INFO" "Starting fzf packaging script..."
-  check_root
-  check_dependencies
-  make_temp_dir
-  get_latest_fzf_version
+function update_app() {
+  local app_name="$1"
+  local github_repo="$2"
+  local description="$3"
+  export APP_NAME="${app_name}"
+  export GITHUB_REPO="${github_repo}"
+  export DESCRIPTION="${description}"
+
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing application: ${APP_NAME}"
+  log "INFO" "--------------------------------------------------"
+
+  if ! get_latest_version; then
+    return
+  fi
   get_current_version
 
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "fzf is already up-to-date: ${CURRENT_VERSION}"
-    exit 0
+    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    return
   fi
 
   log "INFO" "New version available: ${LATEST_VERSION}"
 
-  remove_package "fzf"
+  remove_package "${APP_NAME}"
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | test("linux.*.tar.gz$")) | .name')
 
   for tarball in ${linux_tarballs}; do
     local github_arch
-    github_arch=$(echo "${tarball}" | sed -n "s/fzf-${LATEST_VERSION}-linux_\(.*\)\.tar\.gz/\1/p")
+    github_arch=$(echo "${tarball}" | sed -n "s/${APP_NAME}-${LATEST_VERSION}-linux_\(.*\)\.tar\.gz/\1/p")
 
     local debian_arch=""
     case "${github_arch}" in
@@ -224,7 +240,18 @@ function main() {
 
     package_and_add "${github_arch}" "${debian_arch}"
   done
+}
 
+# Main function to orchestrate the script execution
+function main() {
+  log "INFO" "Starting application packaging script..."
+  check_root
+  check_dependencies
+  make_temp_dir
+
+  for i in "${!apps[@]}"; do
+    update_app "${apps[$i]}" "${github_repos[$i]}" "${descriptions[$i]}"
+  done
 
   log "INFO" "Script finished."
 }

@@ -36,10 +36,10 @@ tasks:
     desc: Check and sync released versions of configured apps
     cmds:
       - sudo ./sync-check.sh
-  sync-fzf:
-    desc: Check and sync fzf releases
+  package-apps:
+    desc: Check and sync app releases
     cmds:
-      - sudo ./package-fzf.sh
+      - sudo ./package-apps.sh
   download:
     desc: Download SOPS and Task .deb files
     cmds:
