@@ -250,22 +250,26 @@ function update_app() {
 
   for tarball in ${linux_tarballs}; do
     local github_arch
-    github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^_]+(?=\.tar\.gz)')
-    
+    if [[ "${APP_NAME}" == "eza" ]]; then
+      github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^-]*')
+    elif [[ "${APP_NAME}" == "ripgrep" ]]; then
+      github_arch=$(echo "${tarball}" | grep -oP '.*-\K[^-]+(?=-unknown-linux-gnu)')
+    else
+      github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^_]+(?=\.tar\.gz)')
+    fi
+
     local debian_arch=""
     case "${github_arch}" in
-      "amd64")
+      "amd64"|"x86_64")
         debian_arch="amd64";;
-      "arm64")
+      "arm64"|"aarch64")
         debian_arch="arm64";;
-      "armv7")
+      "armv7"|"armhf"|"arm")
         debian_arch="armhf";;
       "386")
         debian_arch="i386";;
-      "armhf")
-        debian_arch="armhf";;
-      "arm")
-        debian_arch="arm";;
+      # "arm")
+        # debian_arch="arm";;
       *)
         log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
         continue;;
@@ -359,17 +363,14 @@ function main() {
           log "ERRO" "Error: Argument for $1 is missing" >&2
           usage
           exit 1
-        fi
-        ;;
+        fi;;
       -h|--help)
         usage
-        exit 0
-        ;;
+        exit 0;;
       *)
         log "ERRO" "Unknown parameter passed: $1"
         usage
-        exit 1
-        ;;
+        exit 1;;
     esac
   done
 
@@ -398,7 +399,7 @@ function main() {
     update_app "${app_name}" "${github_repo}"
   done
 
-  update_eza
+  # update_eza
 
   log "INFO" "Script finished."
 }
