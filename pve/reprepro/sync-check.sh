@@ -220,19 +220,20 @@ function update_app() {
   for deb in ${linux_debs}; do
     local github_arch
     github_arch=$(echo "${deb}" | grep -oP '(?<=_)[^_]+(?=\.deb)')
+    if [ -z "${github_arch}" ]; then
+      github_arch=$(echo "${deb}" | grep -oP '(?<=-linux-).*(?=\.deb)' | sed 's/-//g')
+    fi
 
     local debian_arch=""
     case "${github_arch}" in
-      "amd64")
+      "amd64"|"x8664")
         debian_arch="amd64";;
       "arm64")
         debian_arch="arm64";;
-      "armv7")
+      "armv7"|"armhf")
         debian_arch="armhf";;
       "386")
         debian_arch="i386";;
-      "armhf")
-        debian_arch="armhf";;
       "arm")
         debian_arch="arm";;
       *)
