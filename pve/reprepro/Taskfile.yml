@@ -28,6 +28,12 @@ tasks:
     desc: Export the task list
     cmds:
       - task --list > task-list.txt
+  bootstrap:
+    desc: Bootstrap the reprepro environment
+    cmds:
+      - task: deps
+      - task: dirs
+      - task: symlinks
   deps:
     desc: Install dependencies
     cmds:
@@ -48,6 +54,33 @@ tasks:
     desc: Remove all packages from all distributions
     cmds:
       - sudo ./clear.sh
+  dirs:
+    desc: Create reprepro directories
+    cmds:
+      - sudo mkdir -p {{.BASE_DIR}}/debian/conf
+      - sudo mkdir -p {{.BASE_DIR}}/ubuntu/conf
+  symlinks:
+    desc: Create reprepro symlinks
+    cmds:
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/distributions {{.BASE_DIR}}/debian/conf/distributions
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/distributions {{.BASE_DIR}}/ubuntu/conf/distributions
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/options {{.BASE_DIR}}/debian/conf/options
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/options {{.BASE_DIR}}/ubuntu/conf/options
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye {{.BASE_DIR}}/debian/conf/override.bullseye
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm {{.BASE_DIR}}/debian/conf/override.bookworm
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie {{.BASE_DIR}}/debian/conf/override.trixie
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular {{.BASE_DIR}}/ubuntu/conf/override.oracular
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble {{.BASE_DIR}}/ubuntu/conf/override.noble
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy {{.BASE_DIR}}/ubuntu/conf/override.jammy
+  list:
+    desc: List all packages in all distributions
+    cmds:
+      - sudo reprepro -b {{.BASE_DIR}}/debian list bullseye
+      - sudo reprepro -b {{.BASE_DIR}}/debian list bookworm
+      - sudo reprepro -b {{.BASE_DIR}}/debian list trixie
+      - sudo reprepro -b {{.BASE_DIR}}/ubuntu list oracular
+      - sudo reprepro -b {{.BASE_DIR}}/ubuntu list noble
+      - sudo reprepro -b {{.BASE_DIR}}/ubuntu list jammy
   default:
     cmds:
       - task -l

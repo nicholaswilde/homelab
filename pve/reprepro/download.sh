@@ -6,8 +6,8 @@
 # Downloads all task and sops installation files to a new /tmp directory.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 21 Sep 2025
-# @version 0.1.0
+# @date 13 Oct 2025
+# @version 0.2.0
 #
 ################################################################################
 
@@ -19,7 +19,11 @@ set -o pipefail
 readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
+readonly PURPLE=$(tput setaf 5)
 readonly RESET=$(tput sgr0)
+readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+DEBUG="false"
 
 # Logging function
 function log() {
@@ -34,11 +38,38 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
+    DEBU)
+      color="$PURPLE";;
   esac
 
   echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
 
+if [ ! -f "${SCRIPT_DIR}/.env" ]; then
+  log "ERRO" "The .env file is missing. Please create it by running \`task init\`."
+  exit 1
+fi
+source "${SCRIPT_DIR}/.env"
+
+function usage() {
+  cat <<EOF
+Usage: $0 [options]
+
+Downloads application .deb files.
+
+Options:
+  -d, --debug         Enable debug mode, which prints more info.
+  -h, --help          Display this help message.
+EOF
+}
+
+# Cleanup function to remove temporary directory
+function cleanup() {
+  if [ -d "${TEMP_PATH}" ]; then
+    log "INFO" "Cleaning up temporary directory: ${TEMP_PATH}"
+    rm -rf "${TEMP_PATH}"
+  fi
+}
 
 # Checks if a command exists.
 function command_exists() {
@@ -46,7 +77,6 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  # --- check for dependencies ---
   if ! command_exists curl || ! command_exists jq; then
     log "ERRO" "Required dependencies (curl, jq) are not installed."
     exit 1
@@ -63,45 +93,120 @@ function make_temp_dir(){
   log "INFO" "Temp path: ${TEMP_PATH}"
 }
 
+function get_latest_version() {
+  local api_url="https://api.github.com/repos/${USERNAME}/${APP_NAME}/releases/latest"
+  local curl_args=('-s')
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+  fi
+
+  json_response=$(curl "${curl_args[@]}" "${api_url}")
+  export json_response
+
+  if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
+    log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
+    echo "${json_response}"
+    # Don't exit, just return so we can continue with other apps
+    return 1
+  fi
+
+  TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
+  LATEST_VERSION=${TAG_NAME#v}
+  PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
+  SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
+  export TAG_NAME
+  export LATEST_VERSION
+  export SOURCE_DATE_EPOCH
+  log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION} (tag: ${TAG_NAME})"
+}
+
 function download_release() {
-  local app_name=$1
-  local user_name=$2
-  local arch=$3
+  local package_name=$1
+  
+  log "INFO" "Processing package: ${package_name}"
 
-  local api_url="https://api.github.com/repos/${user_name}/${app_name}/releases/latest"
-  local package_url
-  package_url=$(curl -s "${api_url}" | jq -r ".assets[] | select(.name | contains(\"${arch}.deb\")) | .browser_download_url")
+  local download_url
+  download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$package_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
 
-  if [ -z "${package_url}" ]; then
-    log "WARN" "No ${arch} package found for ${app_name}"
+  if [ -z "${download_url}" ]; then
+    log "ERRO" "Failed to get download url for ${package_name}"
+    return 1
+  fi
+
+  local package_path="${TEMP_PATH}/${package_name}"
+
+  log "INFO" "Downloading ${package_name}..."
+  if ! wget -q "${download_url}" -O "${package_path}"; then
+    log "ERRO" "Failed to download ${package_name}"
+    return 1
+  fi
+}
+
+function download_app() {
+  local github_repo="$1"
+  local app_name
+  app_name=$(basename "${github_repo}")
+  local username
+  username=$(dirname "${github_repo}")
+  export APP_NAME="${app_name}"
+  export USERNAME="${username}"
+
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing application: ${APP_NAME}"
+  log "INFO" "--------------------------------------------------"
+
+  if ! get_latest_version; then
     return
   fi
 
-  local file_name
-  file_name=$(basename "${package_url}")
-  local file_path="${TEMP_PATH}/${file_name}"
+  local linux_debs
+  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
 
-  log "INFO" "Downloading ${file_name} to ${file_path}"
-  wget -q "${package_url}" -O "${file_path}"
+  for deb in ${linux_debs}; do
+    if ! download_release "${deb}"; then
+      log "ERRO" "Skipping ${APP_NAME} ${deb} due to download error."
+      continue
+    fi
+  done
 }
-
 
 # Main function to orchestrate the script execution
 function main() {
-  log "INFO" "Starting script..."
+  trap cleanup EXIT
+
+  # Parse command-line arguments
+  while [[ "$#" -gt 0 ]]; do
+    case $1 in
+      -d|--debug)
+        DEBUG="true"
+        shift;; 
+      -h|--help)
+        usage
+        exit 0;; 
+      *)
+        log "ERRO" "Unknown parameter passed: $1"
+        usage
+        exit 1;; 
+    esac
+  done
+
+  # Define the output target based on the DEBUG variable
+  if [ "${DEBUG}" = "true" ]; then
+    OUTPUT_TARGET="/dev/stdout" # Send output to the screen
+  else
+    OUTPUT_TARGET="/dev/null"   # Send output to the void
+  fi
+
+  log "INFO" "Starting download script..."
+
   check_dependencies
   make_temp_dir
 
-  apps=(sops task)
-  users=(getsops go-task)
-  arches=(amd64 arm64 armhf)
-
-  for i in "${!apps[@]}"; do
-    for arch in "${arches[@]}"; do
-      download_release "${apps[$i]}" "${users[$i]}" "${arch}"
-    done
+  for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
+    download_app "${github_repo}"
   done
 
+  log "INFO" "Downloads are in ${TEMP_PATH}"
   log "INFO" "Script finished."
 }
 

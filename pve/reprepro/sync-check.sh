@@ -133,7 +133,7 @@ function get_latest_version() {
 }
 
 function get_current_version(){
-  CURRENT_VERSION=$(reprepro --confdir /srv/reprepro/ubuntu/conf/ list jammy "${APP_NAME}" 2>/dev/null | grep 'amd64'| awk '{print $NF}' || true)
+  CURRENT_VERSION=$(reprepro --confdir ${BASE_DIR}/ubuntu/conf/ list jammy "${APP_NAME}" 2>/dev/null | grep 'amd64'| awk '{print $NF}' || true)
   export CURRENT_VERSION
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
@@ -246,11 +246,18 @@ function update_app() {
       continue
     fi
   done
+
+  get_current_version
+  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" ]]; then
+    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}. Current version is ${CURRENT_VERSION}."
+  else
+    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+  fi
 }
 
 # Main function to orchestrate the script execution
 function main() {
-  trap cleanup EXIT
+  # trap cleanup EXIT
   local package_to_remove=""
 
   # Parse command-line arguments

@@ -282,70 +282,9 @@ function update_app() {
   done
 }
 
-function update_eza() {
-  export APP_NAME="eza"
-  export GITHUB_REPO="eza-community/eza"
-
-  log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing application: ${APP_NAME}"
-  log "INFO" "--------------------------------------------------"
-
-  if ! get_latest_version; then
-    return
-  fi
-  get_current_version
-
-  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    return
-  fi
-
-  log "INFO" "New version available: ${LATEST_VERSION}"
-
-  # remove_package "${APP_NAME}"
-
-  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-
-  local linux_tarballs
-  linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("musl") | not) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not) and (contains("no_libgit") | not)) | .name')
-
-  for tarball in ${linux_tarballs}; do
-    log "DEBU" "tarball: ${tarball}"
-    local github_arch
-    if [[ "${tarball}" == *"x86_64"* ]]; then
-      github_arch="x86_64"
-    elif [[ "${tarball}" == *"aarch64"* ]]; then
-      github_arch="aarch64"
-    elif [[ "${tarball}" == *"arm-unknown-linux-gnueabihf"* ]]; then
-      github_arch="armhf"
-    else
-      log "WARN" "Unsupported architecture for eza found in: ${tarball}. Skipping."
-      continue
-    fi
-
-    local debian_arch=""
-    case "${github_arch}" in
-      "x86_64")
-        debian_arch="amd64";;
-      "aarch64")
-        debian_arch="arm64";;
-      "armhf")
-        debian_arch="armhf";;
-      *)
-        log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
-        continue;;
-    esac
-
-    if ! package_and_add "${github_arch}" "${debian_arch}" "${tarball}"; then
-      log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
-      continue
-    fi
-  done
-}
-
 # Main function to orchestrate the script execution
 function main() {
-  trap cleanup EXIT
+  # trap cleanup EXIT
   local package_to_remove=""
 
   # Parse command-line arguments
@@ -398,8 +337,6 @@ function main() {
     app_name=$(basename "${github_repo}")
     update_app "${app_name}" "${github_repo}"
   done
-
-  # update_eza
 
   log "INFO" "Script finished."
 }

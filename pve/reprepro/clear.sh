@@ -21,6 +21,8 @@ readonly BLUE=$(tput setaf 4)
 
 DEBUG="false"
 
+BASE_DIR="/srv/reprepro"
+
 # Logging function
 function log() {
   local type="$1"
