@@ -10,6 +10,7 @@ tasks:
     cmds:
       - sudo rm -rf {{.BASE_DIR}}/debian/pool {{.BASE_DIR}}/debian/db {{.BASE_DIR}}/debian/dists
       - sudo rm -rf {{.BASE_DIR}}/ubuntu/pool {{.BASE_DIR}}/ubuntu/db {{.BASE_DIR}}/ubuntu/dists
+      - sudo rm -rf {{.BASE_DIR}}/pool {{.BASE_DIR}}/db {{.BASE_DIR}}/dists
   init:
     desc: Initialize the application's environment and configuration files.
     preconditions:
@@ -69,8 +70,10 @@ tasks:
     cmds:
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/distributions {{.BASE_DIR}}/debian/conf/distributions
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/distributions {{.BASE_DIR}}/ubuntu/conf/distributions
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/conf/distributions {{.BASE_DIR}}/conf/distributions
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/options {{.BASE_DIR}}/debian/conf/options
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/options {{.BASE_DIR}}/ubuntu/conf/options
+      - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/conf/options {{.BASE_DIR}}/conf/options
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye {{.BASE_DIR}}/debian/conf/override.bullseye
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm {{.BASE_DIR}}/debian/conf/override.bookworm
       - sudo ln -s $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie {{.BASE_DIR}}/debian/conf/override.trixie
