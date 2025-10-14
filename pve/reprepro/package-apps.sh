@@ -159,7 +159,15 @@ function package_and_add() {
   local arch_github=$1
   local arch_debian=$2
   local tarball_name=$3
+  local folder_name="${tarball_name%.tar.gz}"
+
+  if [[ "${APP_NAME}" == "ripgrep" ]]; then
+    BIN_NAME="rg"
+  else
+    BIN_NAME="${APP_NAME}"
+  fi
   
+  log "DEBU" "folder_name: ${folder_name}"
   log "INFO" "Processing architecture: ${arch_github}"
 
   local download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$tarball_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
@@ -167,7 +175,7 @@ function package_and_add() {
     log "ERRO" "Failed to get download url for ${package_name}"
     return 1
   fi
-    
+  
   local tarball_path="${TEMP_PATH}/${tarball_name}"
 
   log "INFO" "Downloading ${tarball_name}..."
@@ -182,12 +190,17 @@ function package_and_add() {
 
   log "INFO" "Extracting ${APP_NAME} binary..."
   if [[ "${APP_NAME}" == "eza" ]]; then
-    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/"; then
+    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/"  &> "${OUTPUT_TARGET}"; then
+      log "ERRO" "Failed to extract ${tarball_name}"
+      return 1
+    fi
+  elif [[ "${APP_NAME}" == "sd" || "${APP_NAME}" == "ripgrep" ]]; then
+    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" --strip-components=1 "${folder_name}/${BIN_NAME}" &> "${OUTPUT_TARGET}"; then
       log "ERRO" "Failed to extract ${tarball_name}"
       return 1
     fi
   else
-    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${APP_NAME}"; then
+    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${BIN_NAME}" &> "${OUTPUT_TARGET}"; then
       log "ERRO" "Failed to extract ${tarball_name}"
       return 1
     fi
@@ -246,12 +259,15 @@ function update_app() {
   export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
-  linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("musl") | not) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not)) | .name')
+  linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
+  # linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("musl") | not) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not)) | .name')
 
   for tarball in ${linux_tarballs}; do
     local github_arch
     if [[ "${APP_NAME}" == "eza" ]]; then
       github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^-]*')
+    elif [[ "${APP_NAME}" == "sd" ]]; then
+      github_arch=$(echo "${tarball}" | grep -oP '.*-\K[^-]+(?=-unknown-linux)')
     elif [[ "${APP_NAME}" == "ripgrep" ]]; then
       github_arch=$(echo "${tarball}" | grep -oP '.*-\K[^-]+(?=-unknown-linux-gnu)')
     else
@@ -268,8 +284,6 @@ function update_app() {
         debian_arch="armhf";;
       "386")
         debian_arch="i386";;
-      # "arm")
-        # debian_arch="arm";;
       *)
         log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
         continue;;
