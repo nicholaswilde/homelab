@@ -155,27 +155,58 @@ function remove_package() {
   log "INFO" "Pool cleanup complete."
 }
 
+function extract_binary() {
+  local extract_type="$1"
+  local tarball_path="$2"
+  local package_dir="$3"
+  local folder_name="$4"
+  local bin_name="$5"
+  local output_target="$6"
+
+  log "INFO" "Extracting ${APP_NAME} binary using strategy: ${extract_type}"
+
+  local extract_dest="${package_dir}/usr/local/bin/"
+
+  case "${extract_type}" in
+    "all")
+      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" &> "${output_target}"; then
+        log "ERRO" "Failed to extract ${tarball_path}"
+        return 1
+      fi;;
+    "file_strip")
+      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" &> "${output_target}"; then
+        log "ERRO" "Failed to extract ${tarball_path}"
+        return 1
+      fi;;
+    "file")
+      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" "${bin_name}" &> "${output_target}"; then
+        log "ERRO" "Failed to extract ${tarball_path}"
+        return 1
+      fi;;
+    *)
+      log "ERRO" "Unknown extraction type: ${extract_type}"
+      return 1;;
+  esac
+  return 0
+}
+
 function package_and_add() {
   local arch_github=$1
   local arch_debian=$2
   local tarball_name=$3
+  local extract_type=$4
+  local bin_name=$5
   local folder_name="${tarball_name%.tar.gz}"
 
-  if [[ "${APP_NAME}" == "ripgrep" ]]; then
-    BIN_NAME="rg"
-  else
-    BIN_NAME="${APP_NAME}"
-  fi
-  
-  log "DEBU" "folder_name: ${folder_name}"
   log "INFO" "Processing architecture: ${arch_github}"
 
-  local download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$tarball_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
+  local download_url
+  download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$tarball_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
   if [ -z "${download_url}" ]; then
-    log "ERRO" "Failed to get download url for ${package_name}"
+    log "ERRO" "Failed to get download url for ${tarball_name}"
     return 1
   fi
-  
+
   local tarball_path="${TEMP_PATH}/${tarball_name}"
 
   log "INFO" "Downloading ${tarball_name}..."
@@ -188,22 +219,8 @@ function package_and_add() {
   mkdir -p "${package_dir}/usr/local/bin"
   mkdir -p "${package_dir}/DEBIAN"
 
-  log "INFO" "Extracting ${APP_NAME} binary..."
-  if [[ "${APP_NAME}" == "eza" ]]; then
-    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/"  &> "${OUTPUT_TARGET}"; then
-      log "ERRO" "Failed to extract ${tarball_name}"
-      return 1
-    fi
-  elif [[ "${APP_NAME}" == "sd" || "${APP_NAME}" == "ripgrep" ]]; then
-    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" --strip-components=1 "${folder_name}/${BIN_NAME}" &> "${OUTPUT_TARGET}"; then
-      log "ERRO" "Failed to extract ${tarball_name}"
-      return 1
-    fi
-  else
-    if ! tar -xzf "${tarball_path}" -C "${package_dir}/usr/local/bin/" "${BIN_NAME}" &> "${OUTPUT_TARGET}"; then
-      log "ERRO" "Failed to extract ${tarball_name}"
-      return 1
-    fi
+  if ! extract_binary "${extract_type}" "${tarball_path}" "${package_dir}" "${folder_name}" "${bin_name}" "${OUTPUT_TARGET}"; then
+    return 1
   fi
 
   log "INFO" "Creating control file..."
@@ -235,6 +252,8 @@ EOF
 function update_app() {
   local app_name="$1"
   local github_repo="$2"
+  local extract_type="$3"
+  local bin_name="$4"
   export APP_NAME="${app_name}"
   export GITHUB_REPO="${github_repo}"
 
@@ -256,7 +275,8 @@ function update_app() {
 
   # remove_package "${APP_NAME}"
 
-  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION
+  DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
@@ -289,7 +309,7 @@ function update_app() {
         continue;;
     esac
 
-    if ! package_and_add "${github_arch}" "${debian_arch}" "${tarball}"; then
+    if ! package_and_add "${github_arch}" "${debian_arch}" "${tarball}" "${extract_type}" "${bin_name}"; then
       log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
       continue
     fi
@@ -346,10 +366,25 @@ function main() {
   check_dependencies
   make_temp_dir
 
-  for github_repo in "${PACKAGE_APPS_GITHUB_REPOS[@]}"; do
+  if [ -z "${PACKAGE_APPS-}" ]; then
+    log "ERRO" "PACKAGE_APPS is not defined in .env. Please define it as an array of 'github_repo:extraction_type:binary_name'."
+    log "ERRO" "Example: PACKAGE_APPS=(\"user/repo:all\" \"user/repo2:file_strip:rg\")"
+    log "ERRO" "Extraction types: all, file, file_strip. The binary_name is optional."
+    exit 1
+  fi
+
+  for app_config in "${PACKAGE_APPS[@]}"; do
+    IFS=':' read -r github_repo extract_type bin_name <<< "${app_config}"
     local app_name
     app_name=$(basename "${github_repo}")
-    update_app "${app_name}" "${github_repo}"
+    if [ -z "${extract_type}" ]; then
+      extract_type="file" # Default extraction type
+      log "WARN" "No extraction type for ${github_repo}, using default: ${extract_type}"
+    fi
+    if [ -z "${bin_name}" ]; then
+      bin_name="${app_name}"
+    fi
+    update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}"
   done
 
   log "INFO" "Script finished."
