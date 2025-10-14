@@ -25,6 +25,8 @@ readonly RESET=$(tput sgr0)
 readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
+readonly UBUNTU_ARCHITECTURES=($(grep -oP '(?<=Architectures: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
+readonly DEBIAN_ARCHITECTURES=($(grep -oP '(?<=Architectures: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 
 BASE_DIR="/srv/reprepro"
 
@@ -83,6 +85,10 @@ function command_exists() {
 }
 
 function check_dependencies() {
+  if ! command_exists reprepro; then
+    log "ERRO" "reprepro is not installed."
+    exit 1
+  fi
   if ! command_exists curl || ! command_exists jq || ! command_exists dpkg-deb; then
     log "ERRO" "Required dependencies (curl, jq, dpkg-deb) are not installed."
     exit 1
@@ -96,12 +102,11 @@ function check_root(){
 }
 
 function make_temp_dir(){
-  TEMP_PATH=$(mktemp -d)
+  export TEMP_PATH=$(mktemp -d)
   if [ ! -d "${TEMP_PATH}" ]; then
     log "ERRO" "Could not create temp dir"
     exit 1
   fi
-  export TEMP_PATH
   log "INFO" "Temp path: ${TEMP_PATH}"
 }
 
@@ -112,8 +117,7 @@ function get_latest_version() {
     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
 
-  json_response=$(curl "${curl_args[@]}" "${api_url}")
-  export json_response
+  export json_response=$(curl "${curl_args[@]}" "${api_url}")
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
@@ -122,19 +126,15 @@ function get_latest_version() {
     return 1
   fi
 
-  TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
-  LATEST_VERSION=${TAG_NAME#v}
-  PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
-  SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
-  export TAG_NAME
-  export LATEST_VERSION
-  export SOURCE_DATE_EPOCH
+  export TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
+  export LATEST_VERSION=${TAG_NAME#v}
+  export PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
+  export SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
   log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION} (tag: ${TAG_NAME})"
 }
 
 function get_current_version(){
-  CURRENT_VERSION=$(reprepro --confdir ${BASE_DIR}/ubuntu/conf/ list jammy "${APP_NAME}" 2>/dev/null | grep 'amd64'| awk '{print $NF}' || true)
-  export CURRENT_VERSION
+  export CURRENT_VERSION=$(reprepro --confdir ${BASE_DIR}/ubuntu/conf/ list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
 
@@ -226,16 +226,14 @@ function update_app() {
 
     local debian_arch=""
     case "${github_arch}" in
-      "amd64"|"x8664")
+      "amd64"|"x8664"|"x86_64")
         debian_arch="amd64";;
       "arm64")
         debian_arch="arm64";;
-      "armv7"|"armhf")
+      "armv7"|"armhf"|"arm")
         debian_arch="armhf";;
       "386")
         debian_arch="i386";;
-      "arm")
-        debian_arch="arm";;
       *)
         log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
         continue;;
@@ -303,7 +301,7 @@ function main() {
 
   check_dependencies
   make_temp_dir
-
+  
   for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
     update_app "${github_repo}"
   done
