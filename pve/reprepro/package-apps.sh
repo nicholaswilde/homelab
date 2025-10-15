@@ -33,13 +33,17 @@ if [ ! -f "${SCRIPT_DIR}/.env" ]; then
 fi
 source "${SCRIPT_DIR}/.env"
 
-DEBUG="false"
+DEBUG="true"
 
 # Logging function
 function log() {
   local type="$1"
   local message="$2"
   local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return
+  fi
 
   case "$type" in
     INFO)
@@ -161,6 +165,7 @@ function extract_binary() {
   local folder_name="$4"
   local bin_name="$5"
   local output_target="$6"
+  local arch_github="$7"
 
   log "INFO" "Extracting ${APP_NAME} binary using strategy: ${extract_type}"
 
@@ -182,6 +187,30 @@ function extract_binary() {
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
+    "file_path")
+      local full_bin_path="${bin_name//\$\{ARCH\}/${arch_github}}"
+      local dir_path
+      dir_path=$(dirname "${full_bin_path}")
+      local strip_components=0
+      if [ "${dir_path}" != "." ]; then
+        strip_components=$(echo "${dir_path}" | awk -F'/' '{print NF}')
+      fi
+
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components="${strip_components}" "${full_bin_path}" &> "${output_target}"; then
+        log "ERRO" "Failed to extract ${full_bin_path} from ${tarball_path}"
+        return 1
+      fi
+      
+      local extracted_bin_name
+      extracted_bin_name=$(basename "${full_bin_path}")
+      if [ "${extracted_bin_name}" != "${APP_NAME}" ]; then
+        log "INFO" "Renaming extracted binary from ${extracted_bin_name} to ${APP_NAME}"
+        if ! mv "${extract_dest}/${extracted_bin_name}" "${extract_dest}/${APP_NAME}"; then
+          log "ERRO" "Failed to rename binary."
+          return 1
+        fi
+      fi
+      ;;
     *)
       log "ERRO" "Unknown extraction type: ${extract_type}"
       return 1;;
@@ -220,7 +249,9 @@ function package_and_add() {
   mkdir -p "${package_dir}/usr/local/bin"
   mkdir -p "${package_dir}/DEBIAN"
 
-  if ! extract_binary "${extract_type}" "${tarball_path}" "${package_dir}" "${folder_name}" "${bin_name}" "${OUTPUT_TARGET}"; then
+  log "DEBU" "${extract_type} ${tarball_path} ${package_dir} ${folder_name} ${bin_name} ${OUTPUT_TARGET} ${arch_github}"
+
+  if ! extract_binary "${extract_type}" "${tarball_path}" "${package_dir}" "${folder_name}" "${bin_name}" "${OUTPUT_TARGET}" "${arch_github}"; then
     return 1
   fi
 
