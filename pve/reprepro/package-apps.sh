@@ -168,17 +168,17 @@ function extract_binary() {
 
   case "${extract_type}" in
     "all")
-      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" &> "${output_target}"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
     "file_strip")
-      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" &> "${output_target}"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
     "file")
-      if ! tar -xzf "${tarball_path}" -C "${extract_dest}" "${bin_name}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}" &> "${output_target}"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
@@ -196,7 +196,8 @@ function package_and_add() {
   local extract_type=$4
   local bin_name=$5
   local folder_name="${tarball_name%.tar.gz}"
-  local folder_name="${folder_name%.tbz}"
+  folder_name="${folder_name%.tar.bz2}"
+  folder_name="${folder_name%.tbz}"
 
   log "INFO" "Processing architecture: ${arch_github}"
 
@@ -276,7 +277,7 @@ function update_app() {
   DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
-  linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
+  linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | (endswith(".tar.gz") or endswith(".tar.bz2") or endswith(".tbz")) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
   # linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("musl") | not) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not)) | .name')
 
   for tarball in ${linux_tarballs}; do
