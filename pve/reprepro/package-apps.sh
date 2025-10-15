@@ -196,6 +196,7 @@ function package_and_add() {
   local extract_type=$4
   local bin_name=$5
   local folder_name="${tarball_name%.tar.gz}"
+  local folder_name="${folder_name%.tbz}"
 
   log "INFO" "Processing architecture: ${arch_github}"
 
@@ -253,12 +254,9 @@ function update_app() {
   local github_repo="$2"
   local extract_type="$3"
   local bin_name="$4"
+  local arch_regexp="$5"
   export APP_NAME="${app_name}"
   export GITHUB_REPO="${github_repo}"
-
-  log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing application: ${APP_NAME}"
-  log "INFO" "--------------------------------------------------"
 
   if ! get_latest_version; then
     return
@@ -274,7 +272,8 @@ function update_app() {
 
   # remove_package "${APP_NAME}"
 
-  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION
+  DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
@@ -282,15 +281,7 @@ function update_app() {
 
   for tarball in ${linux_tarballs}; do
     local github_arch
-    if [[ "${APP_NAME}" == "eza" ]]; then
-      github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^-]*')
-    elif [[ "${APP_NAME}" == "sd" ]]; then
-      github_arch=$(echo "${tarball}" | grep -oP '.*-\K[^-]+(?=-unknown-linux)')
-    elif [[ "${APP_NAME}" == "ripgrep" ]]; then
-      github_arch=$(echo "${tarball}" | grep -oP '.*-\K[^-]+(?=-unknown-linux-gnu)')
-    else
-      github_arch=$(echo "${tarball}" | grep -oP '(?<=_)[^_]+(?=\.tar\.gz)')
-    fi
+    github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
 
     local debian_arch=""
     case "${github_arch}" in
@@ -316,7 +307,7 @@ function update_app() {
 
 # Main function to orchestrate the script execution
 function main() {
-  # trap cleanup EXIT
+  trap cleanup EXIT
   local package_to_remove=""
 
   # Parse command-line arguments
@@ -365,16 +356,21 @@ function main() {
   make_temp_dir
 
   if [ -z "${PACKAGE_APPS-}" ]; then
-    log "ERRO" "PACKAGE_APPS is not defined in .env. Please define it as an array of 'github_repo:extraction_type:binary_name'."
-    log "ERRO" "Example: PACKAGE_APPS=(\"user/repo:all\" \"user/repo2:file_strip:rg\")"
-    log "ERRO" "Extraction types: all, file, file_strip. The binary_name is optional."
+    log "ERRO" "PACKAGE_APPS is not defined in .env. Please define it as an array of 'github_repo:extraction_type:binary_name:arch_regexp'."
+    log "ERRO" "Example: PACKAGE_APPS=(\"user/repo:all::(?<=_)[^-]*\")"
+    log "ERRO" "Extraction types: all, file, file_strip. The binary_name and arch_regexp are optional."
     exit 1
   fi
 
   for app_config in "${PACKAGE_APPS[@]}"; do
-    IFS=':' read -r github_repo extract_type bin_name <<< "${app_config}"
+    IFS=':' read -r github_repo extract_type bin_name arch_regexp <<< "${app_config}"
     local app_name
     app_name=$(basename "${github_repo}")
+
+    log "INFO" "--------------------------------------------------"
+    log "INFO" "Processing application: ${app_name}"
+    log "INFO" "--------------------------------------------------"
+
     if [ -z "${extract_type}" ]; then
       extract_type="file" # Default extraction type
       log "WARN" "No extraction type for ${github_repo}, using default: ${extract_type}"
@@ -382,7 +378,11 @@ function main() {
     if [ -z "${bin_name}" ]; then
       bin_name="${app_name}"
     fi
-    update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}"
+    if [ -z "${arch_regexp}" ]; then
+      arch_regexp='(?<=_)[^_]+(?=\.tar\.gz)'
+      log "WARN" "No architecture regexp for ${github_repo}, using default: ${arch_regexp}"
+    fi
+    update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}" "${arch_regexp}"
   done
 
   log "INFO" "Script finished."
