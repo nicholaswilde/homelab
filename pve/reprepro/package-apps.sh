@@ -274,8 +274,7 @@ function update_app() {
 
   # remove_package "${APP_NAME}"
 
-  export DESCRIPTION
-  DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')

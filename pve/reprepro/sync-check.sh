@@ -111,7 +111,7 @@ function make_temp_dir(){
 }
 
 function get_latest_version() {
-  local api_url="https://api.github.com/repos/${USERNAME}/${APP_NAME}/releases/latest"
+  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local curl_args=('-s')
   if [ -n "${GITHUB_TOKEN}" ]; then
     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
@@ -134,7 +134,7 @@ function get_latest_version() {
 }
 
 function get_current_version(){
-  export CURRENT_VERSION=$(reprepro --confdir ${BASE_DIR}/ubuntu/conf/ list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  export CURRENT_VERSION=$(reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
 
@@ -189,12 +189,9 @@ function download_and_add() {
 
 function update_app() {
   local github_repo="$1"
-  local app_name
-  app_name=$(basename "${github_repo}")
-  local username
-  username=$(dirname "${github_repo}")
-  export APP_NAME="${app_name}"
-  export USERNAME="${username}"
+  export GITHUB_REPO="${github_repo}"
+  export APP_NAME
+  APP_NAME=$(basename "${GITHUB_REPO}")
 
   log "INFO" "--------------------------------------------------"
   log "INFO" "Processing application: ${APP_NAME}"
@@ -263,7 +260,8 @@ function main() {
     case $1 in
       -d|--debug)
         DEBUG="true"
-        shift;;
+        shift # past argument
+        ;;
       -r|--remove)
         if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
           package_to_remove="$2"
@@ -301,6 +299,11 @@ function main() {
 
   check_dependencies
   make_temp_dir
+
+  if [ -z "${SYNC_APPS_GITHUB_REPOS-}" ]; then
+    log "ERRO" "SYNC_APPS_GITHUB_REPOS is not defined in .env. Please define it as an array of 'user/repo'."
+    exit 1
+  fi
   
   for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
     update_app "${github_repo}"
