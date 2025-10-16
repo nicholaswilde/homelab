@@ -24,7 +24,7 @@ readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null 
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
+  # local message="$2"
   local color="$RESET"
 
   case "$type" in
@@ -34,9 +34,18 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
+    # Add a default case for other types
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 # Cleanup function to remove temporary directory
@@ -76,11 +85,12 @@ function get_latest_version() {
 }
 
 function main() {
-    trap cleanup EXIT
+    # trap cleanup EXIT
     make_temp_dir
-
+    log "INFO" "Starting package neovim script..."
+    log "INFO" "Architecture: $(dpkg --print-architecture)"
     log "INFO" "Cloning neovim repository..."
-    git clone https://github.com/neovim/neovim "${TEMP_PATH}/neovim"
+    git clone https://github.com/neovim/neovim.git "${TEMP_PATH}/neovim" 2>&1 | log "INFO"
 
     cd "${TEMP_PATH}/neovim"
 
@@ -90,17 +100,17 @@ function main() {
     git checkout "${TAG_NAME}"
 
     log "INFO" "Building neovim..."
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    make CMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | log "INFO"
 
     log "INFO" "Packaging neovim..."
     cd build
-    cpack -G DEB
+    cpack -G DEB 2>&1 | log "INFO"
 
     local deb_file=$(find . -name "*.deb")
 
     log "INFO" "Neovim package created."
     log "INFO" "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
-    log "INFO" "Architecture: $(dpkg --print-architecture)"
+
 }
 
 main "$@"
