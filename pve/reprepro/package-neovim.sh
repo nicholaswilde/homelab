@@ -11,8 +11,8 @@
 #
 ################################################################################
 
-set -e
-set -o pipefail
+# set -e
+# set -o pipefail
 
 # Constants
 readonly BLUE=$(tput setaf 4)
@@ -48,12 +48,11 @@ function cleanup() {
 }
 
 function make_temp_dir(){
-  TEMP_PATH=$(mktemp -d)
+  export TEMP_PATH=$(mktemp -d)
   if [ ! -d "${TEMP_PATH}" ]; then
     log "ERRO" "Could not create temp dir"
     exit 1
   fi
-  export TEMP_PATH
   log "INFO" "Temp path: ${TEMP_PATH}"
 }
 
@@ -64,8 +63,7 @@ function get_latest_version() {
     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
 
-  json_response=$(curl "${curl_args[@]}" "${api_url}")
-  export json_response
+  export json_response=$(curl "${curl_args[@]}" "${api_url}")
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for neovim from GitHub API."
@@ -73,8 +71,7 @@ function get_latest_version() {
     exit 1
   fi
 
-  TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
-  export TAG_NAME
+  export TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
   log "INFO" "Latest neovim version: ${TAG_NAME}"
 }
 
@@ -99,12 +96,11 @@ function main() {
     cd build
     cpack -G DEB
 
-    local deb_file
-    deb_file=$(find . -name "*.deb")
+    local deb_file=$(find . -name "*.deb")
 
     log "INFO" "Neovim package created."
-    echo "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
-    echo "Architecture: $(dpkg --print-architecture)"
+    log "INFO" "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
+    log "INFO" "Architecture: $(dpkg --print-architecture)"
 }
 
 main "$@"
