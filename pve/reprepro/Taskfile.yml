@@ -52,6 +52,10 @@ tasks:
     desc: Check and sync app releases
     cmds:
       - sudo ./package-apps.sh
+  package-neovim:
+    desc: Package the latest neovim release
+    cmds:
+      - ./package-neovim.sh
   download:
     desc: Download SOPS and Task .deb files
     cmds:
