@@ -1,5 +1,15 @@
 Origin: Ubuntu
 Label: Oracular apt repository
+Codename: plucky
+Architectures: amd64 arm64 armhf
+Components: main  
+Description: Apt repository for Ubuntu stable - Plucky
+DebOverride: override.plucky
+DscOverride: override.plucky
+SignWith: 089C9FAF 
+
+Origin: Ubuntu
+Label: Oracular apt repository
 Codename: oracular
 Architectures: amd64 arm64 armhf
 Components: main  
