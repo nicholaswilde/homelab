@@ -56,6 +56,16 @@ tasks:
     desc: Package the latest neovim release
     cmds:
       - ./package-neovim.sh
+  upload-neovim:
+    desc: Upload the neovim package to a remote server
+    cmds:
+      - |
+        DEB_FILE=$(find . -maxdepth 1 -name "nvim*.deb")
+        if [ -z "$DEB_FILE" ]; then
+          echo "Neovim deb file not found."
+          exit 1
+        fi
+        scp "$DEB_FILE" {{.REMOTE_USER}}@{{.REMOTE_IP}}:{{.REMOTE_PATH}}
   download:
     desc: Download SOPS and Task .deb files
     cmds:
