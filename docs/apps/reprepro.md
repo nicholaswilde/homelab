@@ -68,6 +68,8 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     )
     ```
 
+## :gear: Config
+
 ### :package: Repository
 
 !!! code "Make directories"
@@ -193,16 +195,23 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/override.&lt;codename&gt;"
 
+    === "Automatic"
+
+        ```shell
+        task symlinks
+        ```
+        
     === "Download"
 
         ```shell
         (
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye -O /srv/reprepro/debian/conf/override.bullseye
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepro/debian/conf/override.bookworm
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie -O /srv/reprepro/debian/conf/override.trixie
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepro/ubuntu/conf/override.oracular
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepro/ubuntu/conf/override.noble
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.jammy -O /srv/reprepro/ubuntu/conf/override.jammy
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye -O /srv/reprepro/debian/conf/override.bullseye
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepro/debian/conf/override.bookworm
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie -O /srv/reprepro/debian/conf/override.trixie
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.plucky -O /srv/reprepro/ubuntu/conf/override.plucky
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepro/ubuntu/conf/override.oracular
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepro/ubuntu/conf/override.noble
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.jammy -O /srv/reprepro/ubuntu/conf/override.jammy
         )
         ```
 
@@ -210,12 +219,13 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepro/debian/conf/override.bullseye
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepro/debian/conf/override.bookworm
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie /srv/reprepro/debian/conf/override.trixie
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepro/ubuntu/conf/override.oracular
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepro/ubuntu/conf/override.noble
-          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy /srv/reprepro/ubuntu/conf/override.jammy
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepro/debian/conf/override.bullseye
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepro/debian/conf/override.bookworm
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie /srv/reprepro/debian/conf/override.trixie
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.plucky /srv/reprepro/ubuntu/conf/override.plucky
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepro/ubuntu/conf/override.oracular
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepro/ubuntu/conf/override.noble
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy /srv/reprepro/ubuntu/conf/override.jammy
         )
         ```
 
@@ -223,22 +233,15 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     
         ```shell
         (
-          touch /srv/reprepro/ubuntu/conf/override.noble
-          touch /srv/reprepro/ubuntu/conf/override.oracular
-          touch /srv/reprepro/ubuntu/conf/override.jammy
-          touch /srv/reprepro/debian/conf/override.bookworm
-          touch /srv/reprepro/debian/conf/override.bullseye
-          touch /srv/reprepro/debian/conf/override.trixie
+          sudo touch /srv/reprepro/debian/conf/override.bookworm
+          sudo touch /srv/reprepro/debian/conf/override.bullseye
+          sudo touch /srv/reprepro/debian/conf/override.trixie
+          sudo touch /srv/reprepro/ubuntu/conf/override.plucky
+          sudo touch /srv/reprepro/ubuntu/conf/override.oracular
+          sudo touch /srv/reprepro/ubuntu/conf/override.noble
+          sudo touch /srv/reprepro/ubuntu/conf/override.jammy
         )
         ```
-
-## :simple-traefikproxy: Traefik
-
-??? abstract "`homelab/pve/traefik/conf.d/reprepro.yaml`"
-
-    ```yaml
-    --8<-- "traefik/conf.d/reprepro.yaml"
-    ```
 
 ## :pencil: Usage
 
@@ -250,12 +253,13 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          reprepro -b /srv/reprepro/ubuntu/ includedeb oracular sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/ubuntu/ includedeb noble sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/ubuntu/ includedeb jammy sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/debian/ includedeb bookworm sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/debian/ includedeb bullseye sops_3.9.4_amd64.deb
-          reprepro -b /srv/reprepro/debian/ includedeb trixie sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian includedeb bookworm sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian includedeb bullseye sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian includedeb trixie sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu includedeb plucky sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu includedeb oracular sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu includedeb noble sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu includedeb jammy sops_3.9.4_amd64.deb
         )
         ```
 
@@ -338,9 +342,39 @@ Add repo and install.
             apt install sops
             ```
 
-## :material-sync: Sync Check
+### Environmental File
 
-The script `sync-check.sh` is used to compare the latest released versions of the apps SOPS and Task to the local versions.
+A `.env` file is used to set variables that are used with task and scripts.
+
+!!! code "`homelab/pve/reprepro`"
+
+    === "Automatic"
+
+        ```shell
+        task init
+        ```
+
+    === "Manual"
+
+        ```shell
+        cp .env.tmpl .env
+        ```
+
+Edit the `.env` file with your preferred text editor.
+
+??? abstract ".env"
+
+    ```ini
+    --8<-- "reprepro/.env.tmpl"
+    ```
+
+## :scroll: Scripts
+
+Some scripts are provided to help with common tasks.
+
+### :material-sync: Sync Check
+
+The script `sync-check.sh` is used to compare the latest released versions of the apps specified with the `SYNC_APPS_GITHUB_REPOS` variable in the `.env` file to the local versions.
 
 If out of date, the debs are downloaded and added to reprepro.
 
@@ -355,8 +389,85 @@ If out of date, the debs are downloaded and added to reprepro.
     === "Manual"
     
         ```shell
-        ./sync-check.sh
+        sudo ./sync-check.sh
         ```
+
+??? abstract "sync-check.sh"
+
+    ```bash
+    --8<-- "reprepro/sync-check.sh"
+    ```
+
+### :package: Package Apps
+
+The script `package-apps.sh` is used to compare the latest released versions of the apps specified with the `PACKAGE_APPS` variable in the `.env` file to the local versions.
+
+If out of date, the compressed archives are downloaded, packaged into deb files, and added to reprepro.
+
+!!! code "`homelab/pve/reprepro`"
+
+    === "Task"
+
+        ```shell
+        task package-apps
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        sudo ./package-apps.sh
+        ```
+
+??? abstract "package-apps.sh"
+
+    ```bash
+    --8<-- "reprepro/package-apps.sh"
+    ```
+
+### :package: Package Neovim
+
+The script `package-neovim.sh` is used to compare the latest released version of Neovim to the local version.
+
+If out of date, the compressed archive is downloaded, built, packaged into a deb file.
+
+The reason this is separate from `package-apps.sh` is because dependencies need to get packaged along with the binary and an `armhf` version is not part of the release package.
+
+!!! tip
+
+    To get multiple architectures of the deb file, the script may be run on different architecture platforms. For
+    instance, I use my RPi2 to get the `armv7l`, RPi5 to get the `arm64`, and HP to get the `amd64` version.
+
+!!! code "`homelab/pve/reprepro`"
+
+    === "Task"
+
+        ```shell
+        task package-apps
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        sudo ./package-apps.sh
+        ```
+
+??? abstract "package-apps.sh"
+
+    ```bash
+    --8<-- "reprepro/package-apps.sh"
+    ```
+
+### :outbox_tray: Upload Neovim
+
+Once the deb files are built, they are copied to the current `pve/reprepro` folder. The task can then be used to push the deb file to the reprepro LXC.
+
+The `REMOTE_IP`, `REMOTE_USER`, and `REMOTE_PATH` variables in the `.env` file are used to specify the reprepro LXC.
+
+!!! code ""
+
+    ```bash
+    task upload-neovim
+    ```
 
 ## :alarm_clock: Cronjob
 
@@ -368,6 +479,7 @@ A cronjob can be setup to run every night to check the released versions.
     
         ```shell
         (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh") | crontab -
+        (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/package-apps.sh") | crontab -
         ```
         
     === "Manual"
@@ -378,7 +490,16 @@ A cronjob can be setup to run every night to check the released versions.
         
         ```ini
         0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh
+        0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/package-apps.sh
         ```
+
+## :simple-traefikproxy: Traefik
+
+??? abstract "`homelab/pve/traefik/conf.d/reprepro.yaml`"
+
+    ```yaml
+    --8<-- "traefik/conf.d/reprepro.yaml"
+    ```
         
 ## :simple-task: Task List
 
