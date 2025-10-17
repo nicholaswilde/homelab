@@ -43,7 +43,10 @@ tasks:
   deps:
     desc: Install dependencies
     cmds:
-      - sudo apt install jq reprepro cron dpkg-dev ninja-build gettext cmake curl build-essential git
+      - >-
+        sudo apt install \
+          jq reprepro cron dpkg-dev ninja-build gettext cmake curl \
+          build-essential git
   sync-check:
     desc: Check and sync released versions of configured apps
     cmds:
@@ -56,16 +59,23 @@ tasks:
     desc: Package the latest neovim release
     cmds:
       - ./package-neovim.sh
-  upload-neovim:
-    desc: Upload the neovim package to a remote server
+  package-sops:
+    desc: Package the latest sops release
+    cmds:
+      - ./package-sops.sh
+  upload-debs:
+    desc: Upload the deb packages to a remote server
     cmds:
       - |
-        DEB_FILE=$(find . -maxdepth 1 -name "nvim*.deb")
-        if [ -z "$DEB_FILE" ]; then
-          echo "Neovim deb file not found."
+        shopt -s nullglob
+        DEB_FILES=(*.deb)
+        if [ ${#DEB_FILES[@]} -eq 0 ]; then
+          echo "No deb files found."
           exit 1
         fi
-        scp "$DEB_FILE" {{.REMOTE_USER}}@{{.REMOTE_IP}}:{{.REMOTE_PATH}}
+        echo "Uploading ${#DEB_FILES[@]} file(s)..."
+        scp "${DEB_FILES[@]}" {{.REMOTE_USER}}@{{.REMOTE_IP}}:{{.REMOTE_PATH}}
+    silent: true
   download:
     desc: Download SOPS and Task .deb files
     cmds:

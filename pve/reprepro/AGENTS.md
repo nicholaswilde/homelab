@@ -1,6 +1,6 @@
 # :robot: reprepro AGENT Instructions
 
-This document outlines the steps to update reprepro configurations for new Debian/Ubuntu distributions.
+This document outlines the steps to update reprepro configurations for new Debian/Ubuntu distributions and manage packages.
 
 ## :gear: Update Distributions and Options
 
@@ -44,6 +44,54 @@ To add a new distribution, follow these steps:
         # In add_package function, add:
         reprepro -b /srv/reprepro/debian/ includedeb forky "${FILEPATH}"
         ```
+
+## :package: Package Management
+
+This section describes how to add, update, and remove packages from the repository.
+
+### Environment Variables
+
+The scripts rely on a `.env` file in the same directory. Create it from `.env.tmpl` and configure the following variables:
+
+-   `GITHUB_TOKEN`: A GitHub token to avoid rate limiting when checking for new releases.
+-   `SYNC_APPS_GITHUB_REPOS`: An array of GitHub repositories (e.g., `user/repo`) for applications that provide `.deb` releases. Used by `sync-check.sh`.
+-   `PACKAGE_APPS`: An array of configurations for applications that need to be packaged from tarballs. Used by `package-apps.sh`.
+
+    The format for each entry is `"github_repo:extraction_type:binary_name:arch_regexp"`.
+
+### Adding/Updating Packages
+
+There are three ways to add packages:
+
+1.  **From `.deb` releases (`sync-check.sh`):**
+    For apps that have `.deb` files in their GitHub releases.
+    -   Add the repository to the `SYNC_APPS_GITHUB_REPOS` array in `.env`.
+    -   Run `./sync-check.sh`. The script will find the latest version, download the `.deb` files, and add them to all configured distributions.
+
+2.  **From tarball releases (`package-apps.sh`):**
+    For apps that only provide tarballs (`.tar.gz`).
+    -   Add a configuration string to the `PACKAGE_APPS` array in `.env`.
+    -   Run `./package-apps.sh`. The script downloads the tarball, extracts the binary, creates a `.deb` package, and adds it to the repository.
+
+3.  **From source (`package-neovim.sh`, `package-sops.sh`):**
+    For specific applications that require a custom build process.
+    -   `./package-neovim.sh`: Builds Neovim from source.
+    -   `./package-sops.sh`: Builds sops from source using GoReleaser.
+    -   For other Go projects that need to be built from source, `checkinstall` can be used to create a `.deb` package if a `goreleaser` configuration is not available.
+
+### Removing Packages
+
+To remove a package from all distributions, use the `--remove` flag with `sync-check.sh` or `package-apps.sh`.
+
+```shell
+./sync-check.sh --remove <package_name>
+```
+
+To clear all packages from all distributions, use the `clear.sh` script.
+
+```shell
+./clear.sh
+```
 
 ## :pencil: Update Documentation
 
