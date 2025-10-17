@@ -43,7 +43,7 @@ tasks:
   deps:
     desc: Install dependencies
     cmds:
-      - sudo apt install jq reprepro cron dpkg-dev
+      - sudo apt install jq reprepro cron dpkg-dev ninja-build gettext cmake curl build-essential git
   sync-check:
     desc: Check and sync released versions of configured apps
     cmds:

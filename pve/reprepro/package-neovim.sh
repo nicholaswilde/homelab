@@ -85,19 +85,26 @@ function get_latest_version() {
 }
 
 function main() {
-    # trap cleanup EXIT
+    trap cleanup EXIT
     make_temp_dir
     log "INFO" "Starting package neovim script..."
     log "INFO" "Architecture: $(dpkg --print-architecture)"
-    log "INFO" "Cloning neovim repository..."
-    git clone https://github.com/neovim/neovim.git "${TEMP_PATH}/neovim" 2>&1 | log "INFO"
-
-    cd "${TEMP_PATH}/neovim"
 
     get_latest_version
 
-    log "INFO" "Checking out latest release: ${TAG_NAME}"
-    git checkout "${TAG_NAME}"
+    local tarball_url
+    tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
+    if [ -z "${tarball_url}" ] || [ "${tarball_url}" == "null" ]; then
+      log "ERRO" "Could not find tarball URL in GitHub API response."
+      echo "${json_response}"
+      exit 1
+    fi
+
+    log "INFO" "Downloading and extracting neovim version ${TAG_NAME} from ${tarball_url}"
+    mkdir -p "${TEMP_PATH}/neovim"
+    curl -sL "${tarball_url}" | tar -xz --strip-components=1 -C "${TEMP_PATH}/neovim" 2>&1 | log "INFO"
+
+    cd "${TEMP_PATH}/neovim"
 
     log "INFO" "Building neovim..."
     make CMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | log "INFO"
@@ -106,7 +113,11 @@ function main() {
     cd build
     cpack -G DEB 2>&1 | log "INFO"
 
-    local deb_file=$(find . -name "*.deb")
+    local deb_file
+    deb_file=$(find . -maxdepth 1 -name "*.deb")
+
+    log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
+    cp "${deb_file}" "${SCRIPT_DIR}/"
 
     log "INFO" "Neovim package created."
     log "INFO" "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
