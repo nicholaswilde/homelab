@@ -1,5 +1,5 @@
 Origin: Ubuntu
-Label: Oracular apt repository
+Label: Plucky apt repository
 Codename: plucky
 Architectures: amd64 arm64 armhf
 Components: main  

@@ -243,6 +243,53 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         )
         ```
 
+### :key: Environmental File
+
+A `.env` file is used to set variables that are used with task and scripts.
+
+!!! code "`homelab/pve/reprepro`"
+
+    === "Automatic"
+
+        ```shell
+        task init
+        ```
+
+    === "Manual"
+
+        ```shell
+        cp .env.tmpl .env
+        ```
+
+Edit the `.env` file with your preferred text editor.
+
+??? abstract ".env"
+
+    ```ini
+    --8<-- "reprepro/.env.tmpl"
+    ```
+
+### :label: Adding a New Release Codename
+
+To add a new release codename to reprepro:
+
+1. Add a new `override.<codename>` file in `/srv/reprepro/<dist>/conf`.
+2. Add a new entry to `/srv/reprepro/<dist>/conf/distributions` file.
+
+!!! abstract "`/srv/reprepro/<dist>/conf/distributions`"
+
+    ```ini
+    Origin: Ubuntu
+    Label: Oracular apt repository
+    Codename: plucky
+    Architectures: amd64 arm64 armhf
+    Components: main
+    Description: Apt repository for Ubuntu stable - Plucky
+    DebOverride: override.plucky
+    DscOverride: override.plucky
+    SignWith: 089C9FAF
+    ```
+
 ## :pencil: Usage
 
 ### :desktop_computer: Server
@@ -342,32 +389,6 @@ Add repo and install.
             apt install sops
             ```
 
-### Environmental File
-
-A `.env` file is used to set variables that are used with task and scripts.
-
-!!! code "`homelab/pve/reprepro`"
-
-    === "Automatic"
-
-        ```shell
-        task init
-        ```
-
-    === "Manual"
-
-        ```shell
-        cp .env.tmpl .env
-        ```
-
-Edit the `.env` file with your preferred text editor.
-
-??? abstract ".env"
-
-    ```ini
-    --8<-- "reprepro/.env.tmpl"
-    ```
-
 ## :scroll: Scripts
 
 Some scripts are provided to help with common tasks.
@@ -406,7 +427,7 @@ The script `package-neovim.sh` is used to compare the latest released version of
 
 If out of date, the compressed archive is downloaded, built, packaged into a deb file.
 
-The reason this is separate from `package-neovim.sh` is because dependencies need to get packaged along with the binary
+The reason this is separate from `update-reprepro.sh` is because dependencies need to get packaged along with the binary
 and an `armhf` version is not part of the release package.
 
 !!! tip
@@ -441,7 +462,7 @@ The script `package-sops.sh` is used to compare the latest released version of S
 
 If out of date, the compressed archive is downloaded, built, packaged into a deb file.
 
-The reason this is separate from `package-sops.sh` is because the sops repo doesn't offer an `armhf` version and so I
+The reason this is separate from `update-reprepro.sh` is because the sops repo doesn't offer an `armhf` version and so I
 manually build and package the `armhf` version and add it to reprepro.
 
 !!! tip
