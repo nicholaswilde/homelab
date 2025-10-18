@@ -47,14 +47,6 @@ tasks:
         sudo apt install \
           jq reprepro cron dpkg-dev ninja-build gettext cmake curl \
           build-essential git
-  sync-check:
-    desc: Check and sync released versions of configured apps
-    cmds:
-      - sudo ./sync-check.sh
-  package-apps:
-    desc: Check and sync app releases
-    cmds:
-      - sudo ./package-apps.sh
   package-neovim:
     desc: Package the latest neovim release
     cmds:
