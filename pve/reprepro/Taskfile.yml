@@ -105,6 +105,12 @@ tasks:
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular {{.BASE_DIR}}/ubuntu/conf/override.oracular
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble {{.BASE_DIR}}/ubuntu/conf/override.noble
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy {{.BASE_DIR}}/ubuntu/conf/override.jammy
+  update-reprepro:
+    desc: Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
+    preconditions:
+      - test -f update-reprepro.sh
+    cmds:
+      - sudo ./update-reprepro.sh
   list:
     desc: List all packages in all distributions
     cmds:
