@@ -30,8 +30,8 @@ readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/
 
 # Default variables
 BASE_DIR="/srv/reprepro"
-ENABLE_NOTIFICATIONS="true"
-DEBUG="true"
+ENABLE_NOTIFICATIONS="false"
+DEBUG="false"
 
 if [ ! -f "${SCRIPT_DIR}/.env" ]; then
   echo "ERRO[$(date +'%Y-%m-%d %H:%M:%S')] The .env file is missing. Please create it." >&2
@@ -268,8 +268,14 @@ EOF
 
   log "INFO" "Building .deb package..."
   local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
-  dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"; return 1; }
-
+  # dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"; return 1; }
+  local build_output=$(dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1)
+  local exit_status=$?
+  echo "${build_output}" | log "DEBU"
+  if [[ ${exit_status} -ne 0 ]]; then
+    log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"
+    return 1
+  fi
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
@@ -347,7 +353,7 @@ function update_app_from_source() {
       "armv7"|"armhf"|"arm") debian_arch="armhf";;
       "386") debian_arch="i386";;
       *)
-        log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch}. Skipping."
+        log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch//$'\n'/ }. Skipping."
         continue;;
     esac
 
@@ -357,11 +363,11 @@ function update_app_from_source() {
   get_current_version
   if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
     log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
-    FAILED_APPS+=("${app_name}")
+    FAILED_APPS+=("${app_name}: ${LATEST_VERSION}")
     return 1
   else
     log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
-    SUCCESSFUL_APPS+=("${app_name}")
+    SUCCESSFUL_APPS+=("${app_name}: ${LATEST_VERSION}")
     return 0
   fi
 }
@@ -369,8 +375,8 @@ function update_app_from_source() {
 function update_app_from_deb() {
   local github_repo="$1"
   export GITHUB_REPO="${github_repo}"
-  export APP_NAME
-  APP_NAME=$(basename "${GITHUB_REPO}")
+  # export APP_NAME
+  export APP_NAME=$(basename "${GITHUB_REPO}")
 
   log "INFO" "--------------------------------------------------"
   log "INFO" "Processing deb package: ${APP_NAME}"
@@ -398,11 +404,11 @@ function update_app_from_deb() {
   get_current_version
   if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
     log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
-    FAILED_APPS+=("${APP_NAME}")
+    FAILED_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
     return 1
   else
     log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
-    SUCCESSFUL_APPS+=("${APP_NAME}")
+    SUCCESSFUL_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
     return 0
   fi
 }
@@ -421,14 +427,12 @@ function send_notification(){
     return 0
   fi
 
-  local EMAIL_SUBJECT=""
+  local EMAIL_SUBJECT="Homelab - Update Reprepro Summary"
   local EMAIL_BODY=""
   if [[ "${UPDATE_SUCCESS}" == "true" ]]; then
-    EMAIL_SUBJECT="Homelab Apps Update: Success"
     EMAIL_BODY="All out-of-date applications were successfully updated."
   else
-    EMAIL_SUBJECT="Homelab Apps Update: Failure"
-    EMAIL_BODY="Some out-of-date applications failed to update. Please check logs."
+    EMAIL_BODY="Some out-of-date applications failed to update"
   fi
 
   if [ ${#SUCCESSFUL_APPS[@]} -gt 0 ]; then
