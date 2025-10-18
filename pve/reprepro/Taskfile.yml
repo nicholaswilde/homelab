@@ -100,7 +100,7 @@ tasks:
   update-reprepro:
     desc: Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
     preconditions:
-      - test -f update-reprepro.sh
+      - test -f ./update-reprepro.sh
     cmds:
       - sudo ./update-reprepro.sh
   list:
