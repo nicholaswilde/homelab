@@ -372,102 +372,120 @@ Edit the `.env` file with your preferred text editor.
 
 Some scripts are provided to help with common tasks.
 
-### :material-sync: Sync Check
+### :package: Update Reprepro
 
-The script `sync-check.sh` is used to compare the latest released versions of the apps specified with the `SYNC_APPS_GITHUB_REPOS` variable in the `.env` file to the local versions.
+The script `update-reprepro.sh` is used to compare the latest released versions of the apps specified with the 
+`SYNC_APPS_GITHUB_REPOS` and `PACKAGE_APPS` variables in the `.env` file to the local versions.
 
-If out of date, the debs are downloaded and added to reprepro.
-
-!!! code "`homelab/pve/reprepro`"
-
-    === "Task"
-
-        ```shell
-        task sync-check
-        ```
-        
-    === "Manual"
-    
-        ```shell
-        sudo ./sync-check.sh
-        ```
-
-??? abstract "sync-check.sh"
-
-    ```bash
-    --8<-- "reprepro/sync-check.sh"
-    ```
-
-### :package: Package Apps
-
-The script `package-apps.sh` is used to compare the latest released versions of the apps specified with the `PACKAGE_APPS` variable in the `.env` file to the local versions.
-
-If out of date, the compressed archives are downloaded, packaged into deb files, and added to reprepro.
+If out of date, the compressed archives specified in the `PACKAGE_APPS` variable are downloaded, packaged into deb files,
+and added to reprepro and deb files located in the `SYNC_APPS_GITHUB_REPOS` variable are downloaded and add to reprepro.
 
 !!! code "`homelab/pve/reprepro`"
 
     === "Task"
 
         ```shell
-        task package-apps
+        task update-reprepro
         ```
         
     === "Manual"
     
         ```shell
-        sudo ./package-apps.sh
+        sudo ./update-reprepro.sh
         ```
 
 ??? abstract "package-apps.sh"
 
     ```bash
-    --8<-- "reprepro/package-apps.sh"
+    --8<-- "reprepro/update-reprepro.sh"
     ```
 
 ### :package: Package Neovim
 
-The script `package-neovim.sh` is used to compare the latest released version of Neovim to the local version.
+The script `package-neovim.sh` is used to compare the latest released version of Neovim to the local version in reprepro.
 
 If out of date, the compressed archive is downloaded, built, packaged into a deb file.
 
-The reason this is separate from `package-apps.sh` is because dependencies need to get packaged along with the binary and an `armhf` version is not part of the release package.
+The reason this is separate from `package-neovim.sh` is because dependencies need to get packaged along with the binary
+and an `armhf` version is not part of the release package.
 
 !!! tip
 
     To get multiple architectures of the deb file, the script may be run on different architecture platforms. For
-    instance, I use my RPi2 to get the `armv7l`, RPi5 to get the `arm64`, and HP to get the `amd64` version.
+    instance, I use my [RPi2](../hardware/rpi2.md) to build the `armv7l`, [RPi5](../hardware/rpi5.md) to build
+    the `arm64`, and [HP](../hardware/hp-prodesk-600-g3.md) to build the `amd64` version.
 
 !!! code "`homelab/pve/reprepro`"
 
     === "Task"
 
         ```shell
-        task package-apps
+        task package-neovim
         ```
         
     === "Manual"
     
         ```shell
-        sudo ./package-apps.sh
+        sudo ./package-neovim.sh
         ```
 
-??? abstract "package-apps.sh"
+??? abstract "package-neovim.sh"
 
     ```bash
-    --8<-- "reprepro/package-apps.sh"
+    --8<-- "reprepro/package-neovim.sh"
     ```
 
-### :outbox_tray: Upload Neovim
+### :package: Package SOPS
 
-Once the deb files are built, they are copied to the current `pve/reprepro` folder. The task can then be used to push the deb file to the reprepro LXC.
+The script `package-sops.sh` is used to compare the latest released version of SOPS to the local version in reprepro.
+
+If out of date, the compressed archive is downloaded, built, packaged into a deb file.
+
+The reason this is separate from `package-sops.sh` is because the sops repo doesn't offer an `armhf` version and so I
+manually build and package the `armhf` version and add it to reprepro.
+
+!!! tip
+
+    To get multiple architectures of the deb file, the script may be run on different architecture platforms. For
+    instance, I use my [RPi2](../hardware/rpi2.md) to build the `armhf` version.
+
+!!! code "`homelab/pve/reprepro`"
+
+    === "Task"
+
+        ```shell
+        task package-sops
+        ```
+        
+    === "Manual"
+    
+        ```shell
+        sudo ./package-sops.sh
+        ```
+
+??? abstract "package-sops.sh"
+
+    ```bash
+    --8<-- "reprepro/package-sops.sh"
+    ```
+
+### :outbox_tray: Upload Deb Files
+
+Once the neovim or sops deb files are built, they are copied to the current `pve/reprepro` folder. The `upload-debs` task can then be used to push the deb files to the reprepro LXC using `scp`.
 
 The `REMOTE_IP`, `REMOTE_USER`, and `REMOTE_PATH` variables in the `.env` file are used to specify the reprepro LXC.
 
 !!! code ""
 
     ```bash
-    task upload-neovim
+    task upload-debs
     ```
+
+### :bell: Script Notifications
+
+Some scripts can send notifications via [Mailrise](./mailrise.md).
+
+Set the `MAILRISE_*` variables and the `ENABLE_NOTIFICATIONS` variable in the `.env` file.
 
 ## :alarm_clock: Cronjob
 
@@ -478,8 +496,7 @@ A cronjob can be setup to run every night to check the released versions.
     === "Automatic"
     
         ```shell
-        (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh") | crontab -
-        (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/package-apps.sh") | crontab -
+        (crontab -l 2>/dev/null; echo "0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro.sh") | crontab -
         ```
         
     === "Manual"
@@ -489,8 +506,7 @@ A cronjob can be setup to run every night to check the released versions.
         ```
         
         ```ini
-        0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/sync-check.sh
-        0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/package-apps.sh
+        0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro.sh
         ```
 
 ## :simple-traefikproxy: Traefik
