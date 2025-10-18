@@ -28,15 +28,18 @@ readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/
 readonly UBUNTU_ARCHITECTURES=($(grep -oP '(?<=Architectures: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 readonly DEBIAN_ARCHITECTURES=($(grep -oP '(?<=Architectures: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 
+# Defaults
 BASE_DIR="/srv/reprepro"
-
 DEBUG="false"
 
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
   local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
 
   case "$type" in
     INFO)
@@ -47,9 +50,18 @@ function log() {
       color="$RED";;
     DEBU)
       color="$PURPLE";;
+    # Add a default case for other types
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 if [ ! -f "${SCRIPT_DIR}/.env" ]; then
@@ -98,6 +110,7 @@ function check_dependencies() {
 function check_root(){
   if [ "$UID" -ne 0 ]; then
     log "ERRO" "Please run as root or with sudo."
+    exit 1
   fi
 }
 
@@ -119,7 +132,7 @@ function get_latest_version() {
 
   export json_response=$(curl "${curl_args[@]}" "${api_url}")
 
-  if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
+  if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1 | log "DEBU"; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
     echo "${json_response}"
     # Don't exit, just return so we can continue with other apps
@@ -143,11 +156,11 @@ function remove_package() {
   log "INFO" "Forcefully removing existing '${package_name}' packages from reprepro to ensure a clean state..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Ubuntu ${codename}"
-    reprepro -b "${BASE_DIR}/ubuntu" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" remove "${codename}" "${package_name}" 2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Debian ${codename}"
-    reprepro -b "${BASE_DIR}/debian" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" remove "${codename}" "${package_name}" 2>&1 | log "DEBU" || true
   done
 
   log "INFO" "Searching for and removing old '${package_name}' .deb files from the pool..."
@@ -180,10 +193,10 @@ function download_and_add() {
 
   log "INFO" "Adding ${package_name} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${package_path}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${package_path}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
 }
 
@@ -198,22 +211,21 @@ function update_app() {
   log "INFO" "--------------------------------------------------"
 
   if ! get_latest_version; then
-    return
+    return 0
   fi
   get_current_version
 
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
     log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    return
+    return 0
   fi
 
+  export APPS_OUT_OF_DATE="true"
   log "INFO" "New version available: ${LATEST_VERSION}"
 
-  # remove_package "${APP_NAME}"
+  local linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
 
-  local linux_debs
-  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
-
+  local app_update_failed="false"
   for deb in ${linux_debs}; do
     local github_arch
     github_arch=$(echo "${deb}" | grep -oP '(?<=_)[^_]+(?=\.deb)')
@@ -233,11 +245,13 @@ function update_app() {
         debian_arch="i386";;
       *)
         log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
+        app_update_failed="true"
         continue;;
     esac
 
     if ! download_and_add "${github_arch}" "${debian_arch}" "${deb}"; then
       log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
+      app_update_failed="true"
       continue
     fi
   done
@@ -245,9 +259,46 @@ function update_app() {
   get_current_version
   if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" ]]; then
     log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}. Current version is ${CURRENT_VERSION}."
+    return 1
   else
     log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+    return 0
   fi
+  if [[ "${app_update_failed}" == "true" ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+function send_notification(){
+  if [[ "${APPS_OUT_OF_DATE}" == "false" || "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    log "INFO" "No applications were out of date. No email notification sent."
+    return 0
+  fi
+  local EMAIL_SUBJECT=""
+  local EMAIL_BODY=""
+  if [[ "${UPDATE_SUCCESS}" == "true" ]]; then
+    EMAIL_SUBJECT="Homelab Apps Update: Success"
+    EMAIL_BODY="All out-of-date applications were successfully updated."
+  else
+    EMAIL_SUBJECT="Homelab Apps Update: Failure"
+    EMAIL_BODY="Some out-of-date applications failed to update. Please check logs."
+  fi
+
+  log "INFO" "Sending email notification..."
+  curl -s \
+    --url 'smtp://smtp.l.nicholaswilde.io:8025' \
+    --mail-from 'reprepro@nicholaswilde.io' \
+    --mail-rcpt 'email@mailrise.xyz' \
+    --upload-file - <<EOF
+From: Reprepro <reprepro@nicholaswilde.io>
+To: Nicholas Wilde <email@mailrise.xyz>
+Subject: ${EMAIL_SUBJECT}
+
+${EMAIL_BODY}
+EOF
+  log "INFO" "Email notification sent."
 }
 
 # Main function to orchestrate the script execution
@@ -308,7 +359,8 @@ function main() {
   for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
     update_app "${github_repo}"
   done
-
+  
+  send_notification
   log "INFO" "Script finished."
 }
 

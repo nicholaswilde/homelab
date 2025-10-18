@@ -312,7 +312,7 @@ function update_app() {
     return 0
   fi
 
-  APPS_OUT_OF_DATE="true"
+  export APPS_OUT_OF_DATE="true"
   log "INFO" "New version available: ${LATEST_VERSION}"
 
   export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
@@ -336,7 +336,8 @@ function update_app() {
       "386")
         debian_arch="i386";;
       *)
-        log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
+        log "DEBU" "github_arch: ${github_arch//$'\n'/}"
+        log "WARN" "Unsupported architecture found: ${github_arch//$'\n'/}. Skipping."
         app_update_failed="true"
         continue;;
     esac
@@ -348,6 +349,13 @@ function update_app() {
     fi
   done
 
+  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" ]]; then
+    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}. Current version is ${CURRENT_VERSION}."
+    return 1
+  else
+    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+    return 0
+  fi
   if [[ "${app_update_failed}" == "true" ]]; then
     return 1
   else
@@ -356,7 +364,15 @@ function update_app() {
 }
 
 function send_notification(){
-  if [[ "${APPS_OUT_OF_DATE}" == "false" || "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+  if [[ "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    log "WARN" "Notifications are disabled. Skipping."
+    return 0
+  fi
+  if [[ -z "${MAILRISE_URL}" || -z "${MAILRISE_FROM}" || -z "${MAILRISE_RCPT}" ]]; then
+    log "WARN" "Notification variables not set. Skipping notification."
+    return 1
+  fi
+  if [[ "${APPS_OUT_OF_DATE}" == "false" ]]; then
     log "INFO" "No applications were out of date. No email notification sent."
     return 0
   fi
@@ -372,12 +388,12 @@ function send_notification(){
 
   log "INFO" "Sending email notification..."
   curl -s \
-    --url 'smtp://smtp.l.nicholaswilde.io:8025' \
-    --mail-from 'reprepro@nicholaswilde.io' \
-    --mail-rcpt 'email@mailrise.xyz' \
+    --url "${MAILRISE_URL}" \
+    --mail-from "${MAILRISE_FROM}" \
+    --mail-rcpt "${MAILRISE_RCPT}" \
     --upload-file - <<EOF
-From: Reprepro <reprepro@nicholaswilde.io>
-To: Nicholas Wilde <email@mailrise.xyz>
+From: Reprepro <${MAILRISE_FROM}>
+To: Nicholas Wilde <${MAILRISE_RCPT}>
 Subject: ${EMAIL_SUBJECT}
 
 ${EMAIL_BODY}
