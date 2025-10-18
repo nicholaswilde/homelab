@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 ################################################################################
 #
-# Script Name: package-apps.sh
+# Script Name: update-reprepro.sh
 # ----------------
-# Downloads application tar.gz files, packages them as .deb files, and adds to
-# reprepro.
+# Downloads application tar.gz and .deb files, packages them as needed, and
+# adds them to a reprepro repository.
+#
+# Combines the functionality of package-apps.sh and sync-check.sh.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 11 Oct 2025
-# @version 0.2.0
+# @date 18 Oct 2025
+# @version 1.0.0
 #
 ################################################################################
 
@@ -60,7 +62,6 @@ function log() {
       color="$RED";;
     DEBU)
       color="$PURPLE";;
-    # Add a default case for other types
     *)
       type="LOGS";;
   esac
@@ -78,7 +79,11 @@ function usage() {
   cat <<EOF
 Usage: $0 [options]
 
-Downloads application tar.gz files, packages them as .deb files, and adds to reprepro.
+Manages Debian packages in the reprepro repository.
+
+This script can:
+1. Download application source (tar.gz), package it into a .deb, and add it.
+2. Download pre-compiled .deb packages and add them.
 
 Options:
   -d, --debug         Enable debug mode, which prints more info.
@@ -114,6 +119,7 @@ function check_dependencies() {
 function check_root(){
   if [ "$UID" -ne 0 ]; then
     log "ERRO" "Please run as root or with sudo."
+    exit 1
   fi
 }
 
@@ -138,7 +144,6 @@ function get_latest_version() {
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
     echo "${json_response}"
-    # Don't exit, just return so we can continue with other apps
     return 1
   fi
 
@@ -150,7 +155,8 @@ function get_latest_version() {
 }
 
 function get_current_version(){
-  export CURRENT_VERSION=$(reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  CURRENT_VERSION=$(reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  export CURRENT_VERSION
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
 
@@ -178,7 +184,6 @@ function extract_binary() {
   local package_dir="$3"
   local folder_name="$4"
   local bin_name="$5"
-  local output_target="$6"
   local arch_github="$7"
 
   log "INFO" "Extracting ${APP_NAME} binary using strategy: ${extract_type}"
@@ -187,20 +192,14 @@ function extract_binary() {
 
   case "${extract_type}" in
     "all")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" 2>&1 | log "DEBU"; then
-        log "ERRO" "Failed to extract ${tarball_path}"
-        return 1
-      fi;;
+      tar -xf "${tarball_path}" -C "${extract_dest}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to extract ${tarball_path}"; return 1; }
+      ;;
     "file_strip")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" 2>&1 | log "DEBU"; then
-        log "ERRO" "Failed to extract ${tarball_path}"
-        return 1
-      fi;;
+      tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to extract ${tarball_path}"; return 1; }
+      ;;
     "file")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}"  2>&1 | log "DEBU"; then
-        log "ERRO" "Failed to extract ${tarball_path}"
-        return 1
-      fi;;
+      tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}"  2>&1 | log "DEBU" || { log "ERRO" "Failed to extract ${tarball_path}"; return 1; }
+      ;;
     "file_path")
       local full_bin_path="${bin_name//\$\{ARCH\}/${arch_github}}"
       local dir_path
@@ -210,19 +209,13 @@ function extract_binary() {
         strip_components=$(echo "${dir_path}" | awk -F'/' '{print NF}')
       fi
 
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components="${strip_components}" "${full_bin_path}" 2>&1 | log "DEBU"; then
-        log "ERRO" "Failed to extract ${full_bin_path} from ${tarball_path}"
-        return 1
-      fi
+      tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components="${strip_components}" "${full_bin_path}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to extract ${full_bin_path} from ${tarball_path}"; return 1; }
       
       local extracted_bin_name
       extracted_bin_name=$(basename "${full_bin_path}")
       if [ "${extracted_bin_name}" != "${APP_NAME}" ]; then
         log "INFO" "Renaming extracted binary from ${extracted_bin_name} to ${APP_NAME}"
-        if ! mv "${extract_dest}/${extracted_bin_name}" "${extract_dest}/${APP_NAME}"; then
-          log "ERRO" "Failed to rename binary."
-          return 1
-        fi
+        mv "${extract_dest}/${extracted_bin_name}" "${extract_dest}/${APP_NAME}" || { log "ERRO" "Failed to rename binary."; return 1; }
       fi
       ;;
     *)
@@ -242,7 +235,7 @@ function package_and_add() {
   folder_name="${folder_name%.tar.bz2}"
   folder_name="${folder_name%.tbz}"
 
-  log "INFO" "Processing architecture: ${arch_github}"
+  log "INFO" "Processing architecture: ${arch_github} as ${arch_debian}"
 
   local download_url
   download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$tarball_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
@@ -254,20 +247,13 @@ function package_and_add() {
   local tarball_path="${TEMP_PATH}/${tarball_name}"
 
   log "INFO" "Downloading ${tarball_name}..."
-  if ! wget -q "${download_url}" -O "${tarball_path}" 2>&1 | log "DEBU"; then
-    log "ERRO" "Failed to download ${tarball_name}"
-    return 1
-  fi
+  wget -q "${download_url}" -O "${tarball_path}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to download ${tarball_name}"; return 1; }
 
   local package_dir="${TEMP_PATH}/${APP_NAME}_${LATEST_VERSION}_${arch_debian}"
   mkdir -p "${package_dir}/usr/local/bin"
   mkdir -p "${package_dir}/DEBIAN"
 
-  log "DEBU" "${extract_type} ${tarball_path} ${package_dir} ${folder_name} ${bin_name} ${OUTPUT_TARGET} ${arch_github}"
-
-  if ! extract_binary "${extract_type}" "${tarball_path}" "${package_dir}" "${folder_name}" "${bin_name}" "${OUTPUT_TARGET}" "${arch_github}"; then
-    return 1
-  fi
+  extract_binary "${extract_type}" "${tarball_path}" "${package_dir}" "${folder_name}" "${bin_name}" "${arch_github}" || return 1
 
   log "INFO" "Creating control file..."
   cat << EOF > "${package_dir}/DEBIAN/control"
@@ -282,10 +268,8 @@ EOF
 
   log "INFO" "Building .deb package..."
   local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
-  if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU"; then
-    log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"
-    return 1
-  fi
+  dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"; return 1; }
+
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
@@ -295,7 +279,34 @@ EOF
   done
 }
 
-function update_app() {
+function download_and_add_deb() {
+  local package_name=$1
+  
+  log "INFO" "Processing package: ${package_name}"
+
+  local download_url
+  download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$package_name" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
+
+  if [ -z "${download_url}" ]; then
+    log "ERRO" "Failed to get download url for ${package_name}"
+    return 1
+  fi
+
+  local package_path="${TEMP_PATH}/${package_name}"
+
+  log "INFO" "Downloading ${package_name}..."
+  wget -q "${download_url}" -O "${package_path}" || { log "ERRO" "Failed to download ${package_name}"; return 1; }
+
+  log "INFO" "Adding ${package_name} to reprepro..."
+  for codename in "${UBUNTU_CODENAMES[@]}"; do
+    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
+  done
+  for codename in "${DEBIAN_CODENAMES[@]}"; do
+    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
+  done
+}
+
+function update_app_from_source() {
   local app_name="$1"
   local github_repo="$2"
   local extract_type="$3"
@@ -304,10 +315,11 @@ function update_app() {
   export APP_NAME="${app_name}"
   export GITHUB_REPO="${github_repo}"
 
-  if ! get_latest_version; then
-    FAILED_APPS+=("${app_name}")
-    return 1
-  fi
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing source package: ${APP_NAME}"
+  log "INFO" "--------------------------------------------------"
+
+  get_latest_version || { FAILED_APPS+=("${app_name}"); return 1; }
   get_current_version
 
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
@@ -315,8 +327,8 @@ function update_app() {
     return 0
   fi
 
-  export APPS_OUT_OF_DATE="true"
-  log "INFO" "New version available: ${LATEST_VERSION}"
+  APPS_OUT_OF_DATE="true"
+  log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
   export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
@@ -325,34 +337,26 @@ function update_app() {
 
   local app_update_failed="false"
   for tarball in ${linux_tarballs}; do
-    local github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
+    local github_arch
+    github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
 
     local debian_arch=""
     case "${github_arch}" in
-      "amd64"|"x86_64")
-        debian_arch="amd64";;
-      "arm64"|"aarch64")
-        debian_arch="arm64";;
-      "armv7"|"armhf"|"arm")
-        debian_arch="armhf";;
-      "386")
-        debian_arch="i386";;
+      "amd64"|"x86_64") debian_arch="amd64";;
+      "arm64"|"aarch64") debian_arch="arm64";;
+      "armv7"|"armhf"|"arm") debian_arch="armhf";;
+      "386") debian_arch="i386";;
       *)
-        log "DEBU" "github_arch: ${github_arch//$'\n'/}"
-        log "WARN" "Unsupported architecture found: ${github_arch//$'\n'/}. Skipping."
-        app_update_failed="true"
+        log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch}. Skipping."
         continue;;
     esac
 
-    if ! package_and_add "${github_arch}" "${debian_arch}" "${tarball}" "${extract_type}" "${bin_name}"; then
-      log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
-      app_update_failed="true"
-      continue
-    fi
+    package_and_add "${github_arch}" "${debian_arch}" "${tarball}" "${extract_type}" "${bin_name}" || { app_update_failed="true"; continue; }
   done
+
   get_current_version
-  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" ]]; then
-    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}. Current version is ${CURRENT_VERSION}."
+  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
+    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
     FAILED_APPS+=("${app_name}")
     return 1
   else
@@ -360,11 +364,45 @@ function update_app() {
     SUCCESSFUL_APPS+=("${app_name}")
     return 0
   fi
-  if [[ "${app_update_failed}" == "true" ]]; then
-    FAILED_APPS+=("${app_name}")
+}
+
+function update_app_from_deb() {
+  local github_repo="$1"
+  export GITHUB_REPO="${github_repo}"
+  export APP_NAME
+  APP_NAME=$(basename "${GITHUB_REPO}")
+
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing deb package: ${APP_NAME}"
+  log "INFO" "--------------------------------------------------"
+
+  get_latest_version || { FAILED_APPS+=("${app_name}"); return 1; }
+  get_current_version
+
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    return 0
+  fi
+
+  APPS_OUT_OF_DATE="true"
+  log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
+
+  local linux_debs
+  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
+
+  local app_update_failed="false"
+  for deb in ${linux_debs}; do
+    download_and_add_deb "${deb}" || { app_update_failed="true"; continue; }
+  done
+
+  get_current_version
+  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
+    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
+    FAILED_APPS+=("${APP_NAME}")
     return 1
   else
-    SUCCESSFUL_APPS+=("${app_name}")
+    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+    SUCCESSFUL_APPS+=("${APP_NAME}")
     return 0
   fi
 }
@@ -382,6 +420,7 @@ function send_notification(){
     log "INFO" "No applications were out of date. No email notification sent."
     return 0
   fi
+
   local EMAIL_SUBJECT=""
   local EMAIL_BODY=""
   if [[ "${UPDATE_SUCCESS}" == "true" ]]; then
@@ -426,40 +465,21 @@ function main() {
   trap cleanup EXIT
   local package_to_remove=""
 
-  # Parse command-line arguments
   while [[ "$#" -gt 0 ]]; do
     case $1 in
-      -d|--debug)
-        DEBUG="true"
-        shift # past argument
-        ;;
+      -d|--debug) DEBUG="true"; shift;;
       -r|--remove)
         if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
-          package_to_remove="$2"
-          shift 2 # past argument and value
+          package_to_remove="$2"; shift 2;
         else
-          log "ERRO" "Error: Argument for $1 is missing" >&2
-          usage
-          exit 1
+          log "ERRO" "Error: Argument for $1 is missing"; usage; exit 1;
         fi;;
-      -h|--help)
-        usage
-        exit 0;;
-      *)
-        log "ERRO" "Unknown parameter passed: $1"
-        usage
-        exit 1;;
+      -h|--help) usage; exit 0;;
+      *) log "ERRO" "Unknown parameter passed: $1"; usage; exit 1;;
     esac
   done
 
-  # # Define the output target based on the DEBUG variable
-  # if [ "${DEBUG}" = "true" ]; then
-  #   OUTPUT_TARGET="/dev/stdout" # Send output to the screen
-  # else
-  #   OUTPUT_TARGET="/dev/null"   # Send output to the void
-  # fi
-
-  log "INFO" "Starting application packaging script..."
+  log "INFO" "Starting reprepro update script..."
   check_root
 
   if [ -n "${package_to_remove}" ]; then
@@ -471,38 +491,32 @@ function main() {
   check_dependencies
   make_temp_dir
 
+  # Process apps to be packaged from source
   if [ -z "${PACKAGE_APPS-}" ]; then
-    log "ERRO" "PACKAGE_APPS is not defined in .env. Please define it as an array of 'github_repo:extraction_type:binary_name:arch_regexp'."
-    log "ERRO" "Example: PACKAGE_APPS=(user/repo:all::(?<=_)[^-]*)"
-    log "ERRO" "Extraction types: all, file, file_strip. The binary_name and arch_regexp are optional."
-    exit 1
+    log "WARN" "PACKAGE_APPS is not defined in .env. Skipping source packaging."
+  else
+    for app_config in "${PACKAGE_APPS[@]}"; do
+      IFS=':' read -r github_repo extract_type bin_name arch_regexp <<< "${app_config}"
+      local app_name
+      app_name=$(basename "${github_repo}")
+
+      if [ -z "${extract_type}" ]; then extract_type="file"; fi
+      if [ -z "${bin_name}" ]; then bin_name="${app_name}"; fi
+      if [ -z "${arch_regexp}" ]; then arch_regexp='(?<=_)[^_]+(?=\.tar\.gz)'; fi
+      
+      update_app_from_source "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}" "${arch_regexp}" || UPDATE_SUCCESS="false"
+    done
   fi
 
-  for app_config in "${PACKAGE_APPS[@]}"; do
-    IFS=':' read -r github_repo extract_type bin_name arch_regexp <<< "${app_config}"
-    local app_name
-    app_name=$(basename "${github_repo}")
-
-    log "INFO" "--------------------------------------------------"
-    log "INFO" "Processing application: ${app_name}"
-    log "INFO" "--------------------------------------------------"
-
-    if [ -z "${extract_type}" ]; then
-      extract_type="file" # Default extraction type
-      log "WARN" "No extraction type for ${github_repo}, using default: ${extract_type}"
-    fi
-    if [ -z "${bin_name}" ]; then
-      bin_name="${app_name}"
-    fi
-    if [ -z "${arch_regexp}" ]; then
-      arch_regexp='(?<=_)[^_]+(?=\.tar\.gz)'
-      log "WARN" "No architecture regexp for ${github_repo}, using default: ${arch_regexp}"
-    fi
-    if ! update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}" "${arch_regexp}"; then
-      UPDATE_SUCCESS="false"
-    fi
-  done
-
+  # Process pre-compiled deb apps
+  if [ -z "${SYNC_APPS_GITHUB_REPOS-}" ]; then
+    log "WARN" "SYNC_APPS_GITHUB_REPOS is not defined in .env. Skipping deb sync."
+  else
+    for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
+      update_app_from_deb "${github_repo}" || UPDATE_SUCCESS="false"
+    done
+  fi
+  
   send_notification
   log "INFO" "Script finished."
 }
