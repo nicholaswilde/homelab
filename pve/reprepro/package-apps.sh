@@ -26,23 +26,27 @@ readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null 
 readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 
+# Default variables
 BASE_DIR="/srv/reprepro"
+ENABLE_NOTIFICATIONS="true"
+DEBUG="true"
+
 if [ ! -f "${SCRIPT_DIR}/.env" ]; then
   echo "ERRO[$(date +'%Y-%m-%d %H:%M:%S')] The .env file is missing. Please create it." >&2
   exit 1
 fi
 source "${SCRIPT_DIR}/.env"
 
-DEBUG="true"
+APPS_OUT_OF_DATE="false"
+UPDATE_SUCCESS="true"
 
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
   local color="$RESET"
 
   if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
-    return
+    return 0
   fi
 
   case "$type" in
@@ -54,9 +58,18 @@ function log() {
       color="$RED";;
     DEBU)
       color="$PURPLE";;
+    # Add a default case for other types
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 function usage() {
@@ -103,12 +116,11 @@ function check_root(){
 }
 
 function make_temp_dir(){
-  TEMP_PATH=$(mktemp -d)
+  export TEMP_PATH=$(mktemp -d)
   if [ ! -d "${TEMP_PATH}" ]; then
     log "ERRO" "Could not create temp dir"
     exit 1
   fi
-  export TEMP_PATH
   log "INFO" "Temp path: ${TEMP_PATH}"
 }
 
@@ -145,11 +157,11 @@ function remove_package() {
   log "INFO" "Forcefully removing existing '${package_name}' packages from reprepro to ensure a clean state..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Ubuntu ${codename}"
-    reprepro -b "${BASE_DIR}/ubuntu" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" remove "${codename}" "${package_name}"  2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
     log "INFO" "Attempting to remove '${package_name}' from Debian ${codename}"
-    reprepro -b "${BASE_DIR}/debian" remove "${codename}" "${package_name}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" remove "${codename}" "${package_name}"  2>&1 | log "DEBU" || true
   done
 
   log "INFO" "Searching for and removing old '${package_name}' .deb files from the pool..."
@@ -173,17 +185,17 @@ function extract_binary() {
 
   case "${extract_type}" in
     "all")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" 2>&1 | log "DEBU"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
     "file_strip")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components=1 "${folder_name}/${bin_name}" 2>&1 | log "DEBU"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
     "file")
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}"  2>&1 | log "DEBU"; then
         log "ERRO" "Failed to extract ${tarball_path}"
         return 1
       fi;;
@@ -196,7 +208,7 @@ function extract_binary() {
         strip_components=$(echo "${dir_path}" | awk -F'/' '{print NF}')
       fi
 
-      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components="${strip_components}" "${full_bin_path}" &> "${output_target}"; then
+      if ! tar -xf "${tarball_path}" -C "${extract_dest}" --strip-components="${strip_components}" "${full_bin_path}" 2>&1 | log "DEBU"; then
         log "ERRO" "Failed to extract ${full_bin_path} from ${tarball_path}"
         return 1
       fi
@@ -240,7 +252,7 @@ function package_and_add() {
   local tarball_path="${TEMP_PATH}/${tarball_name}"
 
   log "INFO" "Downloading ${tarball_name}..."
-  if ! wget -q "${download_url}" -O "${tarball_path}"; then
+  if ! wget -q "${download_url}" -O "${tarball_path}" 2>&1 | log "DEBU"; then
     log "ERRO" "Failed to download ${tarball_name}"
     return 1
   fi
@@ -268,16 +280,16 @@ EOF
 
   log "INFO" "Building .deb package..."
   local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
-  if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}"; then
+  if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU"; then
     log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"
     return 1
   fi
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" &> "${OUTPUT_TARGET}" || true
+    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
   done
 }
 
@@ -291,26 +303,24 @@ function update_app() {
   export GITHUB_REPO="${github_repo}"
 
   if ! get_latest_version; then
-    return
+    return 1
   fi
   get_current_version
 
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
     log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    return
+    return 0
   fi
 
+  APPS_OUT_OF_DATE="true"
   log "INFO" "New version available: ${LATEST_VERSION}"
 
-  # remove_package "${APP_NAME}"
-
-  export DESCRIPTION
-  DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | (endswith(".tar.gz") or endswith(".tar.bz2") or endswith(".tbz")) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
-  # linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".tar.gz") and (contains("musl") | not) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not)) | .name')
 
+  local app_update_failed="false"
   for tarball in ${linux_tarballs}; do
     local github_arch
     github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
@@ -327,14 +337,52 @@ function update_app() {
         debian_arch="i386";;
       *)
         log "WARN" "Unsupported architecture found: ${github_arch}. Skipping."
+        app_update_failed="true"
         continue;;
     esac
 
     if ! package_and_add "${github_arch}" "${debian_arch}" "${tarball}" "${extract_type}" "${bin_name}"; then
       log "ERRO" "Skipping ${APP_NAME} ${github_arch} due to packaging error."
+      app_update_failed="true"
       continue
     fi
   done
+
+  if [[ "${app_update_failed}" == "true" ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+function send_notification(){
+  if [[ "${APPS_OUT_OF_DATE}" == "false" || "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    log "INFO" "No applications were out of date. No email notification sent."
+    return 0
+  fi
+  local EMAIL_SUBJECT=""
+  local EMAIL_BODY=""
+  if [[ "${UPDATE_SUCCESS}" == "true" ]]; then
+    EMAIL_SUBJECT="Homelab Apps Update: Success"
+    EMAIL_BODY="All out-of-date applications were successfully updated."
+  else
+    EMAIL_SUBJECT="Homelab Apps Update: Failure"
+    EMAIL_BODY="Some out-of-date applications failed to update. Please check logs."
+  fi
+
+  log "INFO" "Sending email notification..."
+  curl -s \
+    --url 'smtp://smtp.l.nicholaswilde.io:8025' \
+    --mail-from 'reprepro@nicholaswilde.io' \
+    --mail-rcpt 'email@mailrise.xyz' \
+    --upload-file - <<EOF
+From: Reprepro <reprepro@nicholaswilde.io>
+To: Nicholas Wilde <email@mailrise.xyz>
+Subject: ${EMAIL_SUBJECT}
+
+${EMAIL_BODY}
+EOF
+  log "INFO" "Email notification sent."
 }
 
 # Main function to orchestrate the script execution
@@ -414,9 +462,12 @@ function main() {
       arch_regexp='(?<=_)[^_]+(?=\.tar\.gz)'
       log "WARN" "No architecture regexp for ${github_repo}, using default: ${arch_regexp}"
     fi
-    update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}" "${arch_regexp}"
+    if ! update_app "${app_name}" "${github_repo}" "${extract_type}" "${bin_name}" "${arch_regexp}"; then
+      UPDATE_SUCCESS="false"
+    fi
   done
 
+  send_notification
   log "INFO" "Script finished."
 }
 
