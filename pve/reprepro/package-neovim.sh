@@ -7,25 +7,39 @@
 #
 # @author Nicholas Wilde, 0xb299a622
 # @date 16 Oct 2025
-# @version 0.1.0
+# @version 0.2.0
 #
 ################################################################################
 
+# Options
 # set -e
 # set -o pipefail
 
-# Constants
+# These are constants
 readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
+readonly PURPLE=$(tput setaf 5)
 readonly RESET=$(tput sgr0)
 readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Default variables
+DEBUG="false"
+
+if [ ! -f "${SCRIPT_DIR}/.env" ]; then
+  echo "ERRO[$(date +'%Y-%m-%d %H:%M:%S')] The .env file is missing. Please create it." >&2
+  exit 1
+fi
+source "${SCRIPT_DIR}/.env"
 
 # Logging function
 function log() {
   local type="$1"
-  # local message="$2"
   local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
 
   case "$type" in
     INFO)
@@ -34,7 +48,8 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
-    # Add a default case for other types
+    DEBU)
+      color="$PURPLE";;
     *)
       type="LOGS";;
   esac
@@ -48,11 +63,35 @@ function log() {
   fi
 }
 
+function usage() {
+  cat <<EOF
+Usage: $0 [options]
+
+Clones, builds, and packages the latest release of Neovim as a .deb file.
+
+Options:
+  -d, --debug         Enable debug mode, which prints more info.
+  -h, --help          Display this help message.
+EOF
+}
+
 # Cleanup function to remove temporary directory
 function cleanup() {
   if [ -d "${TEMP_PATH}" ]; then
     log "INFO" "Cleaning up temporary directory: ${TEMP_PATH}"
     rm -rf "${TEMP_PATH}"
+  fi
+}
+
+# Checks if a command exists.
+function command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+function check_dependencies() {
+  if ! command_exists curl || ! command_exists jq || ! command_exists git || ! command_exists make || ! command_exists cpack; then
+    log "ERRO" "Required dependencies (curl, jq, git, make, cpack) are not installed."
+    exit 1
   fi
 }
 
@@ -85,43 +124,53 @@ function get_latest_version() {
 }
 
 function main() {
-    trap cleanup EXIT
-    make_temp_dir
-    log "INFO" "Starting package neovim script..."
-    log "INFO" "Architecture: $(dpkg --print-architecture)"
+  trap cleanup EXIT
 
-    get_latest_version
+  while [[ "$#" -gt 0 ]]; do
+    case $1 in
+      -d|--debug) DEBUG="true"; shift;;
+      -h|--help) usage; exit 0;;
+      *) log "ERRO" "Unknown parameter passed: $1"; usage; exit 1;;
+    esac
+  done
 
-    local tarball_url
-    tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
-    if [ -z "${tarball_url}" ] || [ "${tarball_url}" == "null" ]; then
-      log "ERRO" "Could not find tarball URL in GitHub API response."
-      echo "${json_response}"
-      exit 1
-    fi
+  log "INFO" "Starting package neovim script..."
+  check_dependencies
+  make_temp_dir
+  log "INFO" "Architecture: $(dpkg --print-architecture)"
 
-    log "INFO" "Downloading and extracting neovim version ${TAG_NAME} from ${tarball_url}"
-    mkdir -p "${TEMP_PATH}/neovim"
-    curl -sL "${tarball_url}" | tar -xz --strip-components=1 -C "${TEMP_PATH}/neovim" 2>&1 | log "INFO"
+  get_latest_version
 
-    cd "${TEMP_PATH}/neovim"
+  local tarball_url
+  tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
+  if [ -z "${tarball_url}" ] || [ "${tarball_url}" == "null" ]; then
+    log "ERRO" "Could not find tarball URL in GitHub API response."
+    echo "${json_response}"
+    exit 1
+  fi
 
-    log "INFO" "Building neovim..."
-    make CMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | log "INFO"
+  log "INFO" "Downloading and extracting neovim version ${TAG_NAME} from ${tarball_url}"
+  mkdir -p "${TEMP_PATH}/neovim"
+  curl -sL "${tarball_url}" | tar -xz --strip-components=1 -C "${TEMP_PATH}/neovim" 2>&1 | log "INFO"
 
-    log "INFO" "Packaging neovim..."
-    cd build
-    cpack -G DEB 2>&1 | log "INFO"
+  cd "${TEMP_PATH}/neovim"
 
-    local deb_file
-    deb_file=$(find . -maxdepth 1 -name "*.deb")
+  log "INFO" "Building neovim..."
+  make CMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | log "INFO"
 
-    log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
-    cp "${deb_file}" "${SCRIPT_DIR}/"
+  log "INFO" "Packaging neovim..."
+  cd build
+  cpack -G DEB 2>&1 | log "INFO"
 
-    log "INFO" "Neovim package created."
-    log "INFO" "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
+  local deb_file
+  deb_file=$(find . -maxdepth 1 -name "*.deb")
 
+  log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
+  cp "${deb_file}" "${SCRIPT_DIR}/"
+
+  log "INFO" "Neovim package created."
+  log "INFO" "Debian package: ${TEMP_PATH}/neovim/build/${deb_file}"
+  log "INFO" "Script finished."
 }
 
 main "$@"

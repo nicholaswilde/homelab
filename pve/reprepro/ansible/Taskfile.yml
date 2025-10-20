@@ -1,0 +1,17 @@
+---
+version: '3'
+
+tasks:
+  deps:
+    desc: Install dependencies
+    cmds:
+      - pipx install ansible jmespath
+      - pipx inject ansible jmespath
+  build-neovim:
+    desc: Build neovim
+    cmds:
+      - ansible-playbook -i inventory.ini build_neovim.yml
+  default:
+    cmds:
+      - task -l
+    silent: true

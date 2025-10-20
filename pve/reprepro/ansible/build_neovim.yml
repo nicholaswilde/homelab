@@ -1,0 +1,223 @@
+---
+- name: 1. Check for new Neovim release
+  hosts: localhost
+  gather_facts: false
+  vars:
+    github_token: "{{ lookup('env', 'GITHUB_TOKEN') | default('') }}"
+    base_api_headers:
+      Accept: "application/vnd.github.v3+json"
+    auth_api_header:
+      Authorization: "token {{ github_token }}"
+    
+    reprepro_base_path: "/srv/reprepro"
+    reprepro_check_dist: "ubuntu"
+    reprepro_dist_name: "plucky"
+    neovim_pkg_name: "neovim"
+    reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
+
+  tasks:
+    - name: "Get latest Neovim release info from GitHub API"
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/neovim/neovim/releases/latest"
+        method: GET
+        return_content: true
+        headers: "{{ base_api_headers | combine(auth_api_header if github_token else {}) }}"
+        validate_certs: true
+      register: release_info
+
+    - name: "Set GitHub version facts"
+      ansible.builtin.set_fact:
+        neovim_tag_name: "{{ release_info.json.tag_name }}"
+        github_version: "{{ release_info.json.tag_name | replace('v', '') }}"
+        neovim_tarball_url: "https://github.com/neovim/neovim/archive/refs/tags/{{ release_info.json.tag_name }}.tar.gz"
+        neovim_src_dir_name: "neovim-{{ release_info.json.tag_name | replace('v', '') }}"
+
+    - name: "Get current neovim version from reprepro"
+      become: true
+      ansible.builtin.command:
+        cmd: "reprepro -b {{ reprepro_base_path }}/{{ reprepro_check_dist }} list {{ reprepro_dist_name }} {{ neovim_pkg_name }}"
+      register: reprepro_list_result
+      changed_when: false
+      ignore_errors: true 
+
+    - name: "Parse and set reprepro version fact"
+      ansible.builtin.set_fact:
+        reprepro_version: "{{ (reprepro_list_result.stdout | default('') | regex_search(neovim_pkg_name + ': ([0-9\\.]+)', '\\1') | default([], true)) | first | default('0.0.0') }}"
+
+    - name: "Decide if a new build is needed"
+      ansible.builtin.set_fact:
+        build_is_needed: "{{ github_version is version(reprepro_version, '>') }}"
+
+    - name: "Debug: Show version comparison"
+      ansible.builtin.debug:
+        msg: |
+          GitHub Version: {{ github_version }}
+          Reprepro Version: {{ reprepro_version }}
+          Build Needed: {{ build_is_needed }}
+
+- name: 2. Build and Fetch Latest Neovim DEB Package
+  hosts: neovim_builders
+  gather_facts: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
+
+  tasks:
+    - name: "Install Neovim build dependencies"
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ninja-build
+          - gettext
+          - cmake
+          - unzip
+          - curl
+          - build-essential
+          - libtool
+          - libtool-bin
+          - autoconf
+          - automake
+          - g++
+          - pkg-config
+        state: present
+
+    - name: "--- START BUILD BLOCK ---"
+      block:
+        - name: "Ensure source directory exists"
+          ansible.builtin.file:
+            path: "{{ neovim_base_src_dir }}"
+            state: directory
+            mode: '0755'
+
+        - name: "Download and extract the Neovim source tarball"
+          ansible.builtin.unarchive:
+            src: "{{ hostvars['localhost'].neovim_tarball_url }}"
+            dest: "{{ neovim_base_src_dir }}"
+            remote_src: true
+            creates: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}"
+
+        - name: "Build Neovim (make)"
+          ansible.builtin.command:
+            cmd: make CMAKE_BUILD_TYPE=RelWithDebInfo
+            chdir: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}"
+            creates: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}/build/bin/nvim"
+
+        - name: "Clean old .deb files from build directory"
+          ansible.builtin.file:
+            path: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}/build/{{ item }}"
+            state: absent
+          loop:
+            - "*.deb"
+
+        - name: "Package Neovim (cpack)"
+          ansible.builtin.command:
+            cmd: cpack -G DEB
+            chdir: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}/build"
+          register: cpack_result
+
+        - name: "Find the generated .deb file"
+          ansible.builtin.find:
+            paths: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}/build"
+            patterns: "*.deb"
+          register: deb_file
+
+        - name: "Debug: Show found .deb files"
+          ansible.builtin.debug:
+            var: deb_file.files
+
+        - name: "Fail if .deb file not found"
+          ansible.builtin.fail:
+            msg: "No .deb file was found after running cpack."
+          when: deb_file.files | length == 0
+
+        - name: "Set new .deb file path as fact"
+          ansible.builtin.set_fact:
+            new_filename: "neovim_{{ hostvars['localhost'].github_version }}_{{ arch }}.deb"
+            new_deb_path: "{{ neovim_base_src_dir }}/{{ hostvars['localhost'].neovim_src_dir_name }}/build/neovim_{{ hostvars['localhost'].github_version }}_{{ arch }}.deb"
+
+        - name: "Rename .deb file to include version and arch"
+          ansible.builtin.command:
+            cmd: "mv {{ deb_file.files[0].path }} {{ new_deb_path }}"
+          changed_when: true
+
+        - name: "Debug: Show found .deb files"
+          ansible.builtin.debug:
+            var: reprepro_incoming_dir
+
+        - name: "Fetch the .deb package to the reprepro host"
+          ansible.builtin.fetch:
+            src: "{{ new_deb_path }}"
+            dest: "{{ reprepro_incoming_dir }}/"
+            flat: true
+
+      when: hostvars['localhost'].build_is_needed == true
+
+    - name: "Notify: Build skipped"
+      ansible.builtin.debug:
+        msg: "Skipping build: Reprepro version {{ hostvars['localhost'].reprepro_version }} is up-to-date with GitHub version {{ hostvars['localhost'].github_version }}."
+      when: hostvars['localhost'].build_is_needed == false
+
+- name: 3. Import new packages into Reprepro
+  hosts: localhost
+  gather_facts: false
+  become: true
+
+  vars:
+    reprepro_base_path: "/srv/reprepro"
+    reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
+
+    reprepro_dists:
+      ubuntu:
+        - plucky
+        - oracular
+        - noble
+        - jammie
+      debian:
+        - bookworm
+        - bullseye
+        - trixie
+      
+  tasks:
+    - name: "--- START IMPORT BLOCK ---"
+      block:
+        - name: "Find fetched .deb files to import"
+          ansible.builtin.find:
+            paths: "{{ reprepro_incoming_dir }}"
+            patterns: "*.deb"
+          register: fetched_debs
+          become: false # 'find' can run as the user
+
+        - name: "Fail if no .deb files were found in incoming dir"
+          ansible.builtin.fail:
+            msg: "Build was needed, but no .deb files were found in {{ reprepro_incoming_dir }} to import."
+          when: fetched_debs.files | length == 0
+
+        # --- MODIFIED: The block/loop was removed from here ---
+        - name: "Import each .deb into all distributions"
+          ansible.builtin.command:
+            # item.0 = file object (from fetched_debs.files)
+            # item.1 = dist tuple (from subelements)
+            # item.1.0.key = 'ubuntu' or 'debian'
+            # item.1.1 = 'plucky', 'bookworm', etc.
+            cmd: "reprepro -b {{ reprepro_base_path }}/{{ item.1.0.key }} includedeb {{ item.1.1 }} {{ item.0.path }}"
+
+          # This single loop combines both lists into one set of iterations
+          loop: "{{ fetched_debs.files | product((reprepro_dists | dict2items) | subelements('value')) | list }}"
+          loop_control:
+            label: "Importing {{ item.0.path | basename }} into dist={{ item.1.0.key }} codename={{ item.1.1 }}"
+          changed_when: true
+
+        - name: "Clean up imported .deb files from incoming dir"
+          ansible.builtin.file:
+            path: "{{ item.path }}"
+            state: absent
+          loop: "{{ fetched_debs.files }}"
+          loop_control:
+            label: "Removing {{ item.path | basename }}"
+
+      when: hostvars['localhost'].build_is_needed == true
+
+    - name: "Notify: Import skipped"
+      ansible.builtin.debug:
+        msg: "Skipping import: No new build was performed."
+      when: hostvars['localhost'].build_is_needed == false
