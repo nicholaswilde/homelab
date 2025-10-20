@@ -2,6 +2,10 @@
 version: '3'
 
 tasks:
+  rebuild:
+    desc: Rebuild Docker containers
+    cmds:
+      - docker compose up -d --build
   deps:
     desc: Install dependencies
     cmds:
