@@ -61,6 +61,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
+    neovim_base_src_dir: "{{ ansible_env.HOME }}/src"
 
   tasks:
     - name: "Install Neovim build dependencies"

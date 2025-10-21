@@ -1,9 +1,12 @@
 # Use the arm64v8 version of Debian for our ARM image
 ARG BUILD_ARCH=amd64
-FROM ${BUILD_ARCH}/debian:bullseye
+# FROM ${BUILD_ARCH}/debian:bullseye
+# FROM ${BUILD_ARCH}/python:bullseye
+FROM ${BUILD_ARCH}/python:slim-bullseye
 
 # Install SSH and sudo
-RUN apt-get update && apt-get install -y openssh-server sudo python3 \
+RUN apt-get update \
+    && apt-get install -y openssh-server sudo python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Create an ansible user

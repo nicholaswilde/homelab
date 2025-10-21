@@ -1,5 +1,4 @@
 ---
-version: '3.8'
 services:
   build-amd64:
     build:
@@ -9,14 +8,14 @@ services:
     platform: linux/amd64
     ports:
       - "2201:22"
-  # build-arm64:
-    # build:
-      # context: .
-      # args:
-        # BUILD_ARCH: arm64v8 # Use the arm64v8 Debian base
-    # platform: linux/arm64
-    # ports:
-      # - "2202:22"
+  build-arm64:
+    build:
+      context: .
+      args:
+        BUILD_ARCH: arm64v8 # Use the arm64v8 Debian base
+    platform: linux/arm64
+    ports:
+      - "2202:22"
   # build-armhf:
     # build:
       # context: .

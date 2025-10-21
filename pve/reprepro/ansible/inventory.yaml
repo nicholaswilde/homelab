@@ -16,7 +16,7 @@ all:
         #   arch: armhf
         #   ansible_user: nicholas
       vars:
-        neovim_base_src_dir: "{{ ansible_user_home }}/src"
+        # neovim_base_src_dir: "{{ ansible_user_home }}/src"
         reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
 
         # --- ADD THESE TWO LINES ---
