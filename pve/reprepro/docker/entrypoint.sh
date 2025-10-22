@@ -71,6 +71,9 @@ main() {
   mkdir -p "${DIST_DIR}"
   mv "${deb_file}" "${DIST_DIR}/"
 
+  log "INFO" "Changing ownership of ${deb_file} to ${UID}:${GID}"
+  chown "${UID}:${GID}" "${DIST_DIR}/${deb_file}"
+
   log "INFO" "Neovim package created successfully."
   log "INFO" "Debian package: ${DIST_DIR}/${deb_file}"
   log "INFO" "Script finished."

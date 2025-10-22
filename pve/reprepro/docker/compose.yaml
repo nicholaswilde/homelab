@@ -1,28 +1,45 @@
 ---
+
+
 services:
   neovim-builder-amd64:
+    env_file:
+      - ../.env
     build:
       context: .
       args:
         BASE_IMAGE: ubuntu:jammy
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     platform: linux/amd64
     volumes:
       - ./dist:/dist
 
   neovim-builder-arm64:
+    env_file:
+      - ../.env
     build:
       context: .
       args:
         BASE_IMAGE: arm64v8/ubuntu:jammy
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     platform: linux/arm64
     volumes:
       - ./dist:/dist
 
   neovim-builder-armhf:
+    env_file:
+      - ../.env
     build:
       context: .
       args:
         BASE_IMAGE: arm32v7/ubuntu:jammy
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     platform: linux/arm/v7
     volumes:
       - ./dist:/dist
