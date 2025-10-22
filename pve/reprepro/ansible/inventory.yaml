@@ -11,14 +11,9 @@ all:
           ansible_host: 192.168.2.181
           arch: arm64
           ansible_user: root
-        # build-armhf:
-        #   ansible_host: 192.168.3.250
-        #   arch: armhf
-        #   ansible_user: nicholas
+        build-armhf:
+          ansible_host: 192.168.3.250
+          arch: armhf
+          ansible_user: nicholas
       vars:
-        # neovim_base_src_dir: "{{ ansible_user_home }}/src"
         reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
-
-        # --- ADD THESE TWO LINES ---
-        # reprepro_base_dir: "/srv/reprepro/ubuntu" # e.g., /opt/reprepro/repo
-        # reprepro_dist_name: "plucky"           # e.g., bullseye

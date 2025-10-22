@@ -109,6 +109,7 @@ tasks:
       - sudo reprepro -b {{.BASE_DIR}}/debian list bullseye
       - sudo reprepro -b {{.BASE_DIR}}/debian list bookworm
       - sudo reprepro -b {{.BASE_DIR}}/debian list trixie
+      - sudo reprepro -b {{.BASE_DIR}}/ubuntu list plucky
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list oracular
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list noble
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list jammy

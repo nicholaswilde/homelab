@@ -30,7 +30,7 @@ tasks:
   build-neovim:
     desc: Build neovim
     cmds:
-      - ansible-playbook -i inventory.ini build_neovim.yml
+      - ansible-playbook -i inventory.yaml build_neovim.yml
   default:
     cmds:
       - task -l
