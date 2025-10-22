@@ -1,0 +1,37 @@
+---
+version: '3'
+
+tasks:
+  test:
+    desc: Run Docker test playbook
+    cmds:
+      - ansible-playbook -i inventory.test.yaml build_neovim.yml
+  start:
+    desc: Start test Docker image
+    cmds:
+      - docker compose up -d --build
+  stop:
+    desc: Stop test docker image
+    cmds:
+      - docker compose down
+  restart:
+    desc: Restart test Docker image
+    cmds:
+      - task: start
+  rebuild:
+    desc: Rebuild Docker containers
+    cmds:
+      - docker compose up -d --build
+  deps:
+    desc: Install dependencies
+    cmds:
+      - pipx install ansible jmespath
+      - pipx inject ansible jmespath
+  build-neovim:
+    desc: Build neovim
+    cmds:
+      - ansible-playbook -i inventory.yaml build_neovim.yml
+  default:
+    cmds:
+      - task -l
+    silent: true
