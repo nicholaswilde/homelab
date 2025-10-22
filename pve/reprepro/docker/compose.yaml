@@ -1,3 +1,4 @@
+---
 services:
   neovim-builder-amd64:
     build:
