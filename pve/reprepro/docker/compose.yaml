@@ -1,6 +1,5 @@
 ---
 
-
 services:
   neovim-builder-amd64:
     env_file:
@@ -29,6 +28,8 @@ services:
     platform: linux/arm64
     volumes:
       - ./dist:/dist
+    # depends_on:
+      # - neovim-builder-amd64
 
   neovim-builder-armhf:
     env_file:
@@ -43,3 +44,5 @@ services:
     platform: linux/arm/v7
     volumes:
       - ./dist:/dist
+    # depends_on:
+    #   - neovim-builder-arm64

@@ -2,6 +2,20 @@
 version: '3'
 
 tasks:
+  deps:
+    desc: Install deps
+    cmds:
+      -  docker run --privileged --rm tonistiigi/binfmt --install all
+  arm64:
+    desc: Build arm64
+    cmds:
+      - task: deps
+      - docker compose --env-file ../.env up neovim-builder-arm64 --build --remove-orphans
+  armhf:
+    desc: Build armhf
+    cmds:
+      - task: deps
+      - docker compose --env-file ../.env up neovim-builder-armhf --build --remove-orphans
   start:
     desc: Start test Docker image
     cmds:
@@ -21,7 +35,7 @@ tasks:
   build-neovim:
     desc: Build neovim
     cmds:
-      - docker compose --env-file ../.env up neovim-builder-amd64 --build
+      - docker compose --env-file ../.env up --build
   default:
     cmds:
       - task -l
