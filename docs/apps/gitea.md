@@ -33,9 +33,7 @@ tags:
 
 ## :gear: Config
 
-Make symlinks to repo.
-
-## ![catppuuccin](https://raw.githubusercontent.com/catppuccin/website/refs/heads/main/public/favicon.png){ width="32" } [Catppuccin][2]
+### ![catppuuccin](https://raw.githubusercontent.com/catppuccin/website/refs/heads/main/public/favicon.png){ width="32" } [Catppuccin][2]
 
 !!! info
 
@@ -49,7 +47,7 @@ Make symlinks to repo.
 4. Restart your Gitea instance.
 5. Select the theme in `Gitea > Account > Settings > Appearance`.
 
-### Flavor-Accent
+#### :art: Flavor-Accent
 
 !!! abstract "`/etc/gitea/app.ini`"
 
@@ -60,7 +58,7 @@ Make symlinks to repo.
         THEMES = catppuccin-latte-rosewater,catppuccin-latte-flamingo,catppuccin-latte-pink,catppuccin-latte-mauve,catppuccin-latte-red,catppuccin-latte-maroon,catppuccin-latte-peach,catppuccin-latte-yellow,catppuccin-latte-green,catppuccin-latte-teal,catppuccin-latte-sky,catppuccin-latte-sapphire,catppuccin-latte-blue,catppuccin-latte-lavender,catppuccin-frappe-rosewater,catppuccin-frappe-flamingo,catppuccin-frappe-pink,catppuccin-frappe-mauve,catppuccin-frappe-red,catppuccin-frappe-maroon,catppuccin-frappe-peach,catppuccin-frappe-yellow,catppuccin-frappe-green,catppuccin-frappe-teal,catppuccin-frappe-sky,catppuccin-frappe-sapphire,catppuccin-frappe-blue,catppuccin-frappe-lavender,catppuccin-macchiato-rosewater,catppuccin-macchiato-flamingo,catppuccin-macchiato-pink,catppuccin-macchiato-mauve,catppuccin-macchiato-red,catppuccin-macchiato-maroon,catppuccin-macchiato-peach,catppuccin-macchiato-yellow,catppuccin-macchiato-green,catppuccin-macchiato-teal,catppuccin-macchiato-sky,catppuccin-macchiato-sapphire,catppuccin-macchiato-blue,catppuccin-macchiato-lavender,catppuccin-mocha-rosewater,catppuccin-mocha-flamingo,catppuccin-mocha-pink,catppuccin-mocha-mauve,catppuccin-mocha-red,catppuccin-mocha-maroon,catppuccin-mocha-peach,catppuccin-mocha-yellow,catppuccin-mocha-green,catppuccin-mocha-teal,catppuccin-mocha-sky,catppuccin-mocha-sapphire,catppuccin-mocha-blue,catppuccin-mocha-lavender
         ```
 
-### Auto
+#### :robot: Auto
 
 This ensures that the theme automatically switches between light (latte) and dark (mocha) mode.
 
@@ -83,6 +81,100 @@ This ensures that the theme automatically switches between light (latte) and dar
       systemctl restart gitea.service
     )
     ```
+
+### :bell: Email Notifications
+
+Enable email notifications using [mailrise](./mailrise.md).
+
+!!! abstract "/etc/gitea/app.ini"
+
+    ```ini
+    [mailer]
+    ENABLED        = true
+    FROM           = gitea@nicholaswilde.io
+    PROTOCOL       = smtp
+    SMTP_ADDR      = smtp.l.nicholaswilde.io
+    SMTP_PORT      = 8025
+    ```
+
+#### :e-mail: Send a test email
+
+1. Open your Git server (Gitea, GitHub, GitLab, etc.) in a web browser.
+
+2. Go to your "Site Administration".
+
+3. Find the "Configuration -> Summary" (or similar) section.
+
+4. Under "Mailer Configuration", enter `email@mailrize.xyz` and click the "Send" button.
+
+### :octicons-terminal-24: SSH Domain
+
+To be able to pull the gitea repo using a domain name rather than an IP address, change the following:
+
+!!! abstract "/etc/gitea/app.ini"
+
+    ```ini
+    [server]
+    SSH_DOMAIN = gitea-ssh.l.nicholaswilde.io
+    DOMAIN = gitea.l.nicholaswilde.io
+    HTTP_PORT = 3000
+    ROOT_URL = https://gitea.l.nicholaswilde.io/
+    APP_DATA_PATH = /var/lib/gitea/data
+    DISABLE_SSH = false
+    SSH_PORT = 22
+    ```
+
+The gitea repo should now show the `SSH_DOMAIN` in the `Code` button under `SSH` in the web GUI.
+
+!!! code ""
+
+    === "SSH"
+    
+        ```shell
+        gitea@gitea-ssh.l.nicholaswilde.io:nicholas/homelab.git
+        ```
+
+#### :simple-adguard: AdGuardHome DNS Rewrite
+
+In [AdGuardHome](./adguard.md) DNS Rewrites, add an entry that forwards the `SSH_DOMAIN` directly to your gitea LXC.
+
+- Domain: `gitea-ssh.l.nicholaswilde.io`
+- Answer: `192.168.2.20`
+
+#### :key: Add Your Remote Machine's Public Key to Your Git Server
+
+Your remote machine needs to be "authorized" to access your Git server. You do this by giving the server your machine's public key.
+
+1. Display the public key on your remote machine and copy it to your clipboard.
+
+!!! code "Remote LXC"
+
+    ```shell
+    cat ~/.ssh/id_rsa.pub
+    # Or, if you made an ed25519 key:
+    cat ~/.ssh/id_ed25519.pub
+    ```
+
+   The output will look something like `ssh-ed25519 AAAAC3... your_email@example.com`.
+
+2. Open your Git server (Gitea, GitHub, GitLab, etc.) in a web browser.
+
+3. Go to your user Settings.
+
+4. Find the "SSH / GPG Keys" (or similar) section.
+
+5. Click "Add Key" and paste the public key you just copied.
+
+#### Usage
+
+You can then clone a repo using the hostname rather than the gitea IP address.
+
+!!! code "remote machine"
+
+    ```shell
+    git clone gitea@gitea-ssh.l.nicholaswilde.io:nicholas/homelab.git
+    ```
+
 
 ## :simple-traefikproxy: Traefik
 
