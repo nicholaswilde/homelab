@@ -424,12 +424,17 @@ and added to reprepro and deb files located in the `SYNC_APPS_GITHUB_REPOS` vari
 ### :package: Package Neovim
 
 The script `package-neovim.sh` is used to compare the latest released version of Neovim to the local version in reprepro.
-This script is meant to be run on different systems with different architectures and then transfer the deb files to the reprepro container.
 
 If out of date, the compressed archive is downloaded, built, packaged into a deb file.
 
 The reason this is separate from `update-reprepro.sh` is because dependencies need to get packaged along with the binary
 and an `armhf` version is not part of the release package.
+
+There are three ways to build the Neovim package for different architectures:
+
+  1. **Docker**: Use `@pve/reprepro/docker/**` on the localhost to build for multiple platforms.
+  2. **Ansible**: Use `@pve/reprepro/ansible/**` if you have physical machines with different architectures.
+  3. **Manual Script**: Log into each machine with a different architecture and run the `@pve/reprepro/package-neovim.sh` script.
 
 !!! tip
 
@@ -455,78 +460,6 @@ and an `armhf` version is not part of the release package.
 
     ```bash
     --8<-- "reprepro/package-neovim.sh"
-    ```
-
-### :whale2: Docker Neovim
-
-The `homelab/pve/reprepro/docker` directory is used to build all three architectures on a single host system. It requires Docker to be installed as well as using `tonistiigi/binfmt`.
-
-!!! code "Install binfmt dependencies"
-
-    === "Task"
-
-        ```shell
-        task deps
-        ```
-        
-    === "Manual"
-    
-        ```shell
-        docker run --privileged --rm tonistiigi/binfmt --install all
-        ```
-
-!!! code "amd64"
-
-    === "Task"
-
-        ```shell
-        task amd64
-        ```
-        
-    === "Manual"
-    
-        ```shell
-        docker compose --env-file ../.env up neovim-builder-amd64 --build --remove-orphans
-        ```
-
-!!! code "arm64"
-
-    === "Task"
-
-        ```shell
-        task arm64
-        ```
-        
-    === "Manual"
-    
-        ```shell
-        docker compose --env-file ../.env up neovim-builder-arm64 --build --remove-orphans
-        ```
-
-!!! code "armhf"
-
-    === "Task"
-
-        ```shell
-        task armhf
-        ```
-        
-    === "Manual"
-    
-        ```shell
-        docker compose --env-file ../.env up neovim-builder-armhf --build --remove-orphans
-        ```
-
-??? abstract "`homelab/pve/reprepro/docker/compose.yaml`"
-
-    ```
-    --8<-- "reprepro/docker/compose.yaml"
-    ```
-
-??? abstract "`homelab/pve/reprepro/docker/Dockerfile`"
-
-    ```
-    --8<-- "reprepro/docker/Dockerfile"
     ```
 
 ### :package: Package SOPS
