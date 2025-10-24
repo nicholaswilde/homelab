@@ -415,13 +415,14 @@ function update_app_from_deb() {
 
 function update_tea() {
   export GITHUB_REPO="gitea/tea"
-  export APP_NAME="tea"
+  local binary_name="tea"
+  export APP_NAME="gitea-tea" # This is the package name
 
   log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing binary package: ${APP_NAME} from gitea.com"
+  log "INFO" "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
   log "INFO" "--------------------------------------------------"
 
-  local api_url="https://gitea.com/api/v1/repos/gitea/tea/releases/latest"
+  local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases/latest"
   log "DEBU" "api_url: ${api_url}"
   export json_response=$(curl -s "${api_url}")
   log "DEBU" "json_response: ${json_response}"
@@ -449,7 +450,7 @@ function update_tea() {
   APPS_OUT_OF_DATE="true"
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
-  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/gitea/tea" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_binaries
   linux_binaries=$(echo "${json_response}" | jq -r '.assets[] | select(.name | contains("-linux-") and (endswith(".asc") | not) and (endswith(".sha256") | not) and (endswith(".tar.gz") | not) and (endswith(".zip") | not)) | .name')
@@ -457,7 +458,7 @@ function update_tea() {
   local app_update_failed="false"
   for binary in ${linux_binaries}; do
     local gitea_arch
-    gitea_arch=$(echo "${binary}" | sed -n "s/tea-${LATEST_VERSION}-linux-//p")
+    gitea_arch=$(echo "${binary}" | sed -n "s/${binary_name}-${LATEST_VERSION}-linux-//p")
 
     local debian_arch=""
     case "${gitea_arch}" in
@@ -487,8 +488,8 @@ function update_tea() {
     mkdir -p "${package_dir}/usr/local/bin"
     mkdir -p "${package_dir}/DEBIAN"
 
-    mv "${binary_path}" "${package_dir}/usr/local/bin/tea"
-    chmod +x "${package_dir}/usr/local/bin/tea"
+    mv "${binary_path}" "${package_dir}/usr/local/bin/${binary_name}"
+    chmod +x "${package_dir}/usr/local/bin/${binary_name}"
 
     log "INFO" "Creating control file for ${debian_arch}..."
     cat << EOF > "${package_dir}/DEBIAN/control"
