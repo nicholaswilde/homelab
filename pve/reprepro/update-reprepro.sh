@@ -382,7 +382,7 @@ function update_app_from_deb() {
   log "INFO" "Processing deb package: ${APP_NAME}"
   log "INFO" "--------------------------------------------------"
 
-  get_latest_version || { FAILED_APPS+=("${app_name}"); return 1; }
+  get_latest_version || { FAILED_APPS+=("${APP_NAME}"); return 1; }
   get_current_version
 
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
@@ -399,6 +399,126 @@ function update_app_from_deb() {
   local app_update_failed="false"
   for deb in ${linux_debs}; do
     download_and_add_deb "${deb}" || { app_update_failed="true"; continue; }
+  done
+
+  get_current_version
+  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
+    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
+    FAILED_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
+    return 1
+  else
+    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+    SUCCESSFUL_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
+    return 0
+  fi
+}
+
+function update_tea() {
+  export GITHUB_REPO="gitea/tea"
+  export APP_NAME="tea"
+
+  log "INFO" "--------------------------------------------------"
+  log "INFO" "Processing binary package: ${APP_NAME} from gitea.com"
+  log "INFO" "--------------------------------------------------"
+
+  local api_url="https://gitea.com/api/v1/repos/gitea/tea/releases/latest"
+  log "DEBU" "api_url: ${api_url}"
+  export json_response=$(curl -s "${api_url}")
+  log "DEBU" "json_response: ${json_response}"
+
+  if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
+    log "ERRO" "Failed to get latest version for ${APP_NAME} from Gitea API."
+    echo "${json_response}"
+    FAILED_APPS+=("${APP_NAME}")
+    return 1
+  fi
+
+  export TAG_NAME=$(echo "${json_response}" | jq -r '.tag_name')
+  export LATEST_VERSION=${TAG_NAME#v}
+  export PUBLISHED_AT=$(echo "${json_response}" | jq -r '.published_at')
+  export SOURCE_DATE_EPOCH=$(date -d "${PUBLISHED_AT}" +%s)
+  log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION} (tag: ${TAG_NAME})"
+
+  get_current_version
+
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    return 0
+  fi
+
+  APPS_OUT_OF_DATE="true"
+  log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
+
+  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/gitea/tea" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+
+  local linux_binaries
+  linux_binaries=$(echo "${json_response}" | jq -r '.assets[] | select(.name | contains("-linux-") and (endswith(".asc") | not) and (endswith(".sha256") | not) and (endswith(".tar.gz") | not) and (endswith(".zip") | not)) | .name')
+
+  local app_update_failed="false"
+  for binary in ${linux_binaries}; do
+    local gitea_arch
+    gitea_arch=$(echo "${binary}" | sed -n "s/tea-${LATEST_VERSION}-linux-//p")
+
+    local debian_arch=""
+    case "${gitea_arch}" in
+      "amd64") debian_arch="amd64";;
+      "arm64") debian_arch="arm64";;
+      "arm-7") debian_arch="armhf";;
+      "386") debian_arch="i386";;
+      *)
+        log "WARN" "Unsupported architecture for ${APP_NAME}: ${gitea_arch}. Skipping."
+        continue;;
+    esac
+
+    local download_url
+    download_url=$(echo "${json_response}" | jq -r --arg pkg_name "$binary" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
+    if [ -z "${download_url}" ]; then
+      log "ERRO" "Failed to get download url for ${binary}"
+      app_update_failed="true"
+      continue
+    fi
+
+    local binary_path="${TEMP_PATH}/${binary}"
+
+    log "INFO" "Downloading ${binary}..."
+    wget -q "${download_url}" -O "${binary_path}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to download ${binary}"; app_update_failed="true"; continue; }
+
+    local package_dir="${TEMP_PATH}/${APP_NAME}_${LATEST_VERSION}_${debian_arch}"
+    mkdir -p "${package_dir}/usr/local/bin"
+    mkdir -p "${package_dir}/DEBIAN"
+
+    mv "${binary_path}" "${package_dir}/usr/local/bin/tea"
+    chmod +x "${package_dir}/usr/local/bin/tea"
+
+    log "INFO" "Creating control file for ${debian_arch}..."
+    cat << EOF > "${package_dir}/DEBIAN/control"
+Package: ${APP_NAME}
+Version: ${LATEST_VERSION}
+Section: utils
+Priority: optional
+Architecture: ${debian_arch}
+Maintainer: Nicholas Wilde <noreply@email.com>
+Description: ${DESCRIPTION}
+EOF
+
+    log "INFO" "Building .deb package for ${debian_arch}..."
+    local deb_file="${APP_NAME}_${LATEST_VERSION}_${debian_arch}.deb"
+    local build_output=$(dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1)
+    local exit_status=$?
+    echo "${build_output}" | log "DEBU"
+    if [[ ${exit_status} -ne 0 ]]; then
+      log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${debian_arch}"
+      app_update_failed="true"
+      continue
+    fi
+
+    log "INFO" "Adding ${deb_file} to reprepro..."
+    for codename in "${UBUNTU_CODENAMES[@]}"; do
+      reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
+    done
+    for codename in "${DEBIAN_CODENAMES[@]}"; do
+      reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
+    done
   done
 
   get_current_version
@@ -520,6 +640,8 @@ function main() {
       update_app_from_deb "${github_repo}" || UPDATE_SUCCESS="false"
     done
   fi
+  
+  update_tea || UPDATE_SUCCESS="false"
   
   send_notification
   log "INFO" "Script finished."
