@@ -155,7 +155,7 @@ function get_latest_version() {
 }
 
 function get_current_version(){
-  CURRENT_VERSION=$(reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  CURRENT_VERSION=$(sudo reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
   export CURRENT_VERSION
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
