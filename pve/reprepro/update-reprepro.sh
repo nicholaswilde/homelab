@@ -321,9 +321,7 @@ function update_app_from_source() {
   export APP_NAME="${app_name}"
   export GITHUB_REPO="${github_repo}"
 
-  log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing source package: ${APP_NAME}"
-  log "INFO" "--------------------------------------------------"
+  print_separator "Processing source package: ${APP_NAME}"
 
   get_latest_version || { FAILED_APPS+=("${app_name}"); return 1; }
   get_current_version
@@ -373,14 +371,21 @@ function update_app_from_source() {
 }
 
 function update_app_from_deb() {
-  local github_repo="$1"
-  export GITHUB_REPO="${github_repo}"
-  # export APP_NAME
-  export APP_NAME=$(basename "${GITHUB_REPO}")
+  local app_config="$1"
+  local github_repo
+  local app_name
 
-  log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing deb package: ${APP_NAME}"
-  log "INFO" "--------------------------------------------------"
+  if [[ "${app_config}" == *"|"* ]]; then
+    IFS='|' read -r github_repo app_name <<< "${app_config}"
+  else
+    github_repo="${app_config}"
+    app_name=$(basename "${github_repo}")
+  fi
+
+  export GITHUB_REPO="${github_repo}"
+  export APP_NAME="${app_name}"
+
+  print_separator "Processing deb package: ${APP_NAME} from ${GITHUB_REPO}"
 
   get_latest_version || { FAILED_APPS+=("${APP_NAME}"); return 1; }
   get_current_version
@@ -413,19 +418,29 @@ function update_app_from_deb() {
   fi
 }
 
+function print_separator(){
+  local msg=$1
+  local header=$(printf '%.0s-' {1..60})
+  log "INFO" "${header}"
+  log "INFO" "${msg}"
+  log "INFO" "${header}"
+}
+
 function update_tea() {
   export GITHUB_REPO="gitea/tea"
   local binary_name="tea"
   export APP_NAME="gitea-tea" # This is the package name
 
-  log "INFO" "--------------------------------------------------"
-  log "INFO" "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
-  log "INFO" "--------------------------------------------------"
+  # local header=$(printf '%.0s-' {1..60})
+  # log "INFO" "--------------------------------------------------"
+  # log "INFO" "${header}"
+  # log "INFO" "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
+  print_separator "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
+  # log "INFO" "--------------------------------------------------"
+  # log "INFO" "${header}"
 
   local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases/latest"
-  log "DEBU" "api_url: ${api_url}"
   export json_response=$(curl -s "${api_url}")
-  log "DEBU" "json_response: ${json_response}"
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from Gitea API."
@@ -515,10 +530,10 @@ EOF
 
     log "INFO" "Adding ${deb_file} to reprepro..."
     for codename in "${UBUNTU_CODENAMES[@]}"; do
-      reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
+      sudo reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
     done
     for codename in "${DEBIAN_CODENAMES[@]}"; do
-      reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
+      sudo reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
     done
   done
 
@@ -637,8 +652,8 @@ function main() {
   if [ -z "${SYNC_APPS_GITHUB_REPOS-}" ]; then
     log "WARN" "SYNC_APPS_GITHUB_REPOS is not defined in .env. Skipping deb sync."
   else
-    for github_repo in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
-      update_app_from_deb "${github_repo}" || UPDATE_SUCCESS="false"
+    for app_config in "${SYNC_APPS_GITHUB_REPOS[@]}"; do
+      update_app_from_deb "${app_config}" || UPDATE_SUCCESS="false"
     done
   fi
   
