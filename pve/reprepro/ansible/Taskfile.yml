@@ -31,6 +31,10 @@ tasks:
     desc: Build neovim
     cmds:
       - ansible-playbook -i inventory.yaml build_neovim.yml
+  build-lpass:
+    desc: Build lpass
+    cmds:
+      - ansible-playbook -i inventory.yaml build_lpass.yml
   default:
     cmds:
       - task -l

@@ -16,11 +16,11 @@ services:
     platform: linux/arm64
     ports:
       - "2202:22"
-  # build-armhf:
-    # build:
-      # context: .
-      # args:
-        # BUILD_ARCH: arm32v7 # Use the arm32v7 (armhf) Debian base
-    # platform: linux/arm/v7 # This is armhf
-    # ports:
-      # - "2203:22"
+  build-armhf:
+    build:
+      context: .
+      args:
+        BUILD_ARCH: arm32v7 # Use the arm32v7 (armhf) Debian base
+    platform: linux/arm/v7 # This is armhf
+    ports:
+      - "2203:22"

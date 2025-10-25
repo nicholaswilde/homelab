@@ -7,6 +7,14 @@ all:
           ansible_host: 127.0.0.1
           ansible_port: 2201
           arch: amd64
+        build-arm64:
+          ansible_host: 127.0.0.1
+          ansible_port: 2202
+          arch: arm64
+        build-armhf:
+          ansible_host: 127.0.0.1
+          ansible_port: 2203
+          arch: armhf
       vars:
         ansible_user: ansible
         ansible_password: ansible
