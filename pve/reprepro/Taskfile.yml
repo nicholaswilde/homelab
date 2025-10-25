@@ -46,7 +46,12 @@ tasks:
       - >-
         sudo apt install \
           jq reprepro cron dpkg-dev ninja-build gettext cmake curl \
-          build-essential git
+          build-essential git build-essential cmake libcurl4-openssl-dev \
+          libxml2-dev libssl-dev libxml-security-c-dev pkg-config
+  package-lastpass-cli:
+    desc: Package the latest lastpass-cli release
+    cmds:
+      - ./package-lastpass-cli.sh
   package-neovim:
     desc: Package the latest neovim release
     cmds:
