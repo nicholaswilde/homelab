@@ -90,20 +90,26 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     ```shell
     gpg --list-keys  
      pub  2048R/489CD644 2014-07-15  
-     uid         Your Name <your_email_address@domain.com>  
+     uid         Your Name <noreply@email.com>  
      sub  2048R/870B8E2D 2014-07-15
     ```
 
 !!! code "Get short fingerprint"
 
     ```shell
-    gpg --list-keys noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
+    gpg -k noreply@email.com | sed -n '2p'| sed 's/ //g' | tail -c 9
+    ```
+
+!!! success "short fingerprint"
+
+    ```shell
+    089C9FAF
     ```
 
 !!! abstract "Export public gpg key"
 
     ```shell
-    gpg --armor --output /srv/reprepro/public.gpg.key --export-options export-minimal --export 089C9FAF
+    gpg --export-options export-minimal -a --export 089C9FAF | sudo tee /srv/reprepro/public.gpg.key
     ```
     
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/distributions"
@@ -208,6 +214,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye -O /srv/reprepro/debian/conf/override.bullseye
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepro/debian/conf/override.bookworm
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie -O /srv/reprepro/debian/conf/override.trixie
+          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.questing -O /srv/reprepro/ubuntu/conf/override.questing
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.plucky -O /srv/reprepro/ubuntu/conf/override.plucky
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepro/ubuntu/conf/override.oracular
           sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepro/ubuntu/conf/override.noble
@@ -222,6 +229,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepro/debian/conf/override.bullseye
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepro/debian/conf/override.bookworm
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie /srv/reprepro/debian/conf/override.trixie
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.questing /srv/reprepro/ubuntu/conf/override.questing
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.plucky /srv/reprepro/ubuntu/conf/override.plucky
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepro/ubuntu/conf/override.oracular
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepro/ubuntu/conf/override.noble
@@ -236,6 +244,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo touch /srv/reprepro/debian/conf/override.bookworm
           sudo touch /srv/reprepro/debian/conf/override.bullseye
           sudo touch /srv/reprepro/debian/conf/override.trixie
+          sudo touch /srv/reprepro/ubuntu/conf/override.questing
           sudo touch /srv/reprepro/ubuntu/conf/override.plucky
           sudo touch /srv/reprepro/ubuntu/conf/override.oracular
           sudo touch /srv/reprepro/ubuntu/conf/override.noble
@@ -325,35 +334,14 @@ Add repo and install.
 
     === "Automatic"
 
-        === "Bookworm"
-    
-            ```shell
-            (
-              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bookworm main" >> /etc/apt/sources.list.d/reprepro.list && \
-              apt update && \
-              apt install sops
-            )
-            ```
-
-        === "Bullseye"
-    
-            ```shell
-            (
-              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bullseye main" >> /etc/apt/sources.list.d/reprepro.list && \
-              apt update && \
-              apt install sops
-            )
-            ```
-
-        === "Trixie"
-
-            ```shell
-            (
-              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian trixie main" >> /etc/apt/sources.list.d/reprepro.list && \
-              apt update && \
-              apt install sops
-            )
-            ```
+        ```shell
+        (
+          source /etc/os-release && \
+          echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main"
+          apt update && \
+          apt install sops
+        )
+        ```
 
     === "Manual"
 
