@@ -1,4 +1,14 @@
 Origin: Ubuntu
+Label: Questing apt repository
+Codename: questing
+Architectures: amd64 arm64 armhf
+Components: main
+Description: Apt repository for Ubuntu stable - Questing
+DebOverride: override.questing
+DscOverride: override.questing
+SignWith: 089C9FAF
+
+Origin: Ubuntu
 Label: Plucky apt repository
 Codename: plucky
 Architectures: amd64 arm64 armhf

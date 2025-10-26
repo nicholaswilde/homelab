@@ -180,10 +180,11 @@
 
     reprepro_dists:
       ubuntu:
+        - questing
         - plucky
         - oracular
         - noble
-        - jammie
+        - jammy
       debian:
         - bookworm
         - bullseye

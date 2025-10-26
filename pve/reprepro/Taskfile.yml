@@ -98,6 +98,7 @@ tasks:
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye {{.BASE_DIR}}/debian/conf/override.bullseye
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm {{.BASE_DIR}}/debian/conf/override.bookworm
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie {{.BASE_DIR}}/debian/conf/override.trixie
+      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.questing {{.BASE_DIR}}/ubuntu/conf/override.questing
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.plucky {{.BASE_DIR}}/ubuntu/conf/override.plucky
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular {{.BASE_DIR}}/ubuntu/conf/override.oracular
       - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble {{.BASE_DIR}}/ubuntu/conf/override.noble
@@ -114,6 +115,7 @@ tasks:
       - sudo reprepro -b {{.BASE_DIR}}/debian list bullseye
       - sudo reprepro -b {{.BASE_DIR}}/debian list bookworm
       - sudo reprepro -b {{.BASE_DIR}}/debian list trixie
+      - sudo reprepro -b {{.BASE_DIR}}/ubuntu list questing
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list plucky
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list oracular
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list noble
