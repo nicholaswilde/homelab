@@ -303,6 +303,7 @@ To add a new release codename to reprepro:
           sudo reprepro -b /srv/reprepro/debian -C main includedeb bookworm sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/debian -C main includedeb bullseye sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/debian -C main includedeb trixie sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb questing sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb plucky sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb oracular sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb noble sops_3.9.4_amd64.deb
