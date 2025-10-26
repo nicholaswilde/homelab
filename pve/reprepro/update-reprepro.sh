@@ -278,10 +278,10 @@ EOF
   fi
   log "INFO" "Adding ${deb_file} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
+    reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
+    reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
   done
 }
 
@@ -305,10 +305,10 @@ function download_and_add_deb() {
 
   log "INFO" "Adding ${package_name} to reprepro..."
   for codename in "${UBUNTU_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
+    reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
   for codename in "${DEBIAN_CODENAMES[@]}"; do
-    reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
+    reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
 }
 
@@ -530,10 +530,10 @@ EOF
 
     log "INFO" "Adding ${deb_file} to reprepro..."
     for codename in "${UBUNTU_CODENAMES[@]}"; do
-      sudo reprepro -b "${BASE_DIR}/ubuntu" includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
+      sudo reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
     done
     for codename in "${DEBIAN_CODENAMES[@]}"; do
-      sudo reprepro -b "${BASE_DIR}/debian" includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
+      sudo reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
     done
   done
 

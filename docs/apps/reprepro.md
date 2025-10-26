@@ -300,13 +300,13 @@ To add a new release codename to reprepro:
 
         ```shell
         (
-          sudo reprepro -b /srv/reprepro/debian includedeb bookworm sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/debian includedeb bullseye sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/debian includedeb trixie sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/ubuntu includedeb plucky sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/ubuntu includedeb oracular sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/ubuntu includedeb noble sops_3.9.4_amd64.deb
-          sudo reprepro -b /srv/reprepro/ubuntu includedeb jammy sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian -C main includedeb bookworm sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian -C main includedeb bullseye sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian -C main includedeb trixie sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb plucky sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb oracular sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb noble sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb jammy sops_3.9.4_amd64.deb
         )
         ```
 
