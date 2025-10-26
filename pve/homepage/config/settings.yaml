@@ -33,7 +33,7 @@ layout:
     icon: mdi-download-box
   IoT:
     style: row
-    columns: 4
+    columns: 3
     icon: mdi-home-automation
   Authentication & Security:
     style: row

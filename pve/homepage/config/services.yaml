@@ -38,6 +38,9 @@
     - Terminus:
         icon: https://usetrmnl.com/assets/trmnl--logo--mobile-fd77ffa1253e170dfc7096731ae701f52f3e27ade4d408d35bd31efd56315f4a.svg
         href: https://terminus.l.nicholaswilde.io
+    - activepieces:
+        icon: sh-activepieces.png
+        href: https://ap.l.nicholaswilde.io/
 - Networking:
     - Apt-Cacher NG:
         icon: mdi-package-variant
@@ -64,7 +67,7 @@
         icon: si-apacheguacamole
         href: https://guac.l.nicholaswilde.io
     - PortNote:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/portnote.png
+        icon: sh-portnote.svg
         href: https://portnote.l.nicholaswilde.io/
 - Media:
     - Jellyfin:
@@ -80,16 +83,16 @@
         icon: si-paperlessngx
         href: https://paperless.l.nicholaswilde.io
     - Pinchflat:
-        icon: sh-pinchflat.png
+        icon: sh-pinchflat.webp
         href: https://pinchflat.l.nicholaswilde.io/
     - ConvertX:
-        icon: https://raw.githubusercontent.com/C4illin/ConvertX/refs/heads/main/public/android-chrome-192x192.png
+        icon: sh-convertx.webp
         href: https://convertx.l.nicholaswilde.io/
     - Stirling PDF:
         icon: sh-stirling-pdf.svg
         href: https://stirling-pdf.l.nicholaswilde.io/
     - Reactive Resume:
-        icon: https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/refs/heads/main/apps/artboard/public/favicon.png
+        icon: sh-reactive-resume.svg
         href: https://resume.l.nicholaswilde.io/dashboard/resumes
 - Authentication & Security:
     - Authentik:
@@ -103,14 +106,14 @@
         href: https://vault.l.nicholaswilde.io
 - Finance:
     - Wallos:
-        icon: sh-wallos.png
+        icon: sh-wallos.svg
         href: https://wallos.l.nicholaswilde.io
     - Mealie:
         icon: si-mealie
         href: https://mealie.l.nicholaswilde.io
 - Monitoring & Analytics:
     - Beszel:
-        icon: https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg
+        icon: sh-beszel.svg
         href: https://beszel.l.nicholaswilde.io
     - Change Detection:
         icon: sh-changedetection.png
@@ -141,7 +144,7 @@
         icon: mdi-download
         href: https://aria2.l.nicholaswilde.io    
     - File Browser:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/file-browser.svg
+        icon: sh-file-browser.svg
         href: https://fb.l.nicholaswilde.io/
     - Gitea:
         icon: si-gitea
