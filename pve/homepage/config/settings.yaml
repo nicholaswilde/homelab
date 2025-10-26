@@ -9,7 +9,7 @@ providers:
 layout:
   Proxmox:
     style: row
-    columns: 4
+    columns: 3
     icon: si-proxmox
   DNS:
     style: row

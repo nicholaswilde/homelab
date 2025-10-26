@@ -3,9 +3,6 @@
     - Node 01:
         icon: mdi-server
         href: https://pve01.l.nicholaswilde.io
-    - Node 02:
-        icon: mdi-server-network
-        href: https://pve02.l.nicholaswilde.io    
     - Node 03:
         icon: mdi-server
         href: https://pve03.l.nicholaswilde.io
