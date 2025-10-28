@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  build-lnav:
+    desc: Build lnav
+    cmds:
+      - sudo ./build-lnav.sh
   nuke:
     desc: Nuke the packages
     cmds:
@@ -40,6 +44,17 @@ tasks:
       - task: deps
       - task: dirs
       - task: symlinks
+  deps-lnav:
+    desc: Install lnav dependencies
+    cmds:
+      - >-
+        sudo apt install \
+          automake\
+           autoconf \
+           libunistring-dev \
+           libpcre2-dev \
+           libsqlite3-dev \
+           checkinstall
   deps:
     desc: Install dependencies
     cmds:
