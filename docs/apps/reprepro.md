@@ -378,6 +378,35 @@ Add repo and install.
             apt install sops
             ```
 
+### :left_right_arrow: Copy all package from one codename to another from `noble` to `questing`.
+
+!!! code ""
+
+    ```shell
+    sudo reprepro -b /srv/reprepro/ubuntu/ copymatched questing noble '*'
+    ```
+
+### :clipboard: List all package information
+
+!!! code ""
+
+    ```shell
+    find /srv/reprepro/ubuntu/dists/noble -name 'Packages.gz' -exec zcat {} +
+    ```
+
+### :recycle: Regenerate the Repository Index
+
+This can fix `BADSIG` errors shown on remote hosts.
+
+The `badsig` error means the `Release.gpg` file for that codename does not contain a valid signature for the Release
+file. The Release file itself contains a list of all other index files (like Packages.gz) and their checksums.
+
+!!! code ""
+
+    ```shell
+    sudo reprepro -b /srv/reprepro/debian/ -V export noble
+    ```
+
 ## :scroll: Scripts
 
 Some scripts are provided to help with common tasks.
@@ -524,6 +553,8 @@ A cronjob can be setup to run every night to check the released versions.
         ```ini
         0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro.sh
         ```
+
+
 
 ## :simple-traefikproxy: Traefik
 
