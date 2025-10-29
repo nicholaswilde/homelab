@@ -54,7 +54,8 @@ tasks:
            libunistring-dev \
            libpcre2-dev \
            libsqlite3-dev \
-           checkinstall
+           checkinstall \
+           zlib1g-dev
   deps:
     desc: Install dependencies
     cmds:
