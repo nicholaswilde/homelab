@@ -87,6 +87,7 @@ nav:
       - SOPS: tools/sops.md
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md
+      - webhook: tools/webhook.md
   - Travel: travel.md
   - Reference:
       - Emoji: reference/emoji.md
