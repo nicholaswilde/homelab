@@ -2,7 +2,7 @@
 tags:
  - tool
 ---
-# webhook
+# ![webhook](https://cdn.jsdelivr.net/gh/selfhst/icons/png/adnanh-webhook.png){ width="32" } webhook
 
 [webhook][1] is a lightweight incoming webhook server to run shell commands
 
@@ -50,18 +50,19 @@ A minimal hooks.json file looks like this:
           execute-command: /var/scripts/redeploy.sh
           command-working-directory: /var/scripts/
         ```
+=== "JSON"
 
-        !!! abstract "`hook.json`"
+    !!! abstract "`hook.json`"
 
-            ```json
-            [
-              {
-                "id": "redeploy-my-app",
-                "execute-command": "/var/scripts/redeploy.sh",
-                "command-working-directory": "/var/scripts/"
-              }
-            ]
-            ```
+        ```json
+        [
+          {
+            "id": "redeploy-my-app",
+            "execute-command": "/var/scripts/redeploy.sh",
+            "command-working-directory": "/var/scripts/"
+          }
+        ]
+        ```
 
 To secure your webhook, you should add a trigger-rule. A common method is to use a secret, which can be passed as a URL parameter or in the payload.
 
