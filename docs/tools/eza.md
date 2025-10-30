@@ -30,7 +30,18 @@ tags:
 
 ## :gear: Config
 
-WIP
+!!! abstract "~/.bashrc"
+
+    ```bash
+    # Check if command exists
+    function command_exists(){
+      command -v "${1}" &> /dev/null
+    }
+    
+    if command_exists eza; then
+      alias ls='eza'
+    fi
+    ```
 
 ## :pencil: Usage
 
