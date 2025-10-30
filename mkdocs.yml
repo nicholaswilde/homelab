@@ -74,7 +74,6 @@ nav:
       - Raspberry Pi 5: hardware/rpi5.md
   - Tools:
       - Apprise: tools/apprise.md
-      - Arduino CLI: tools/arduino-cli.md
       - Autofs: tools/autofs.md
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
