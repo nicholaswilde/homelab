@@ -75,6 +75,7 @@ nav:
   - Tools:
       - Apprise: tools/apprise.md
       - Autofs: tools/autofs.md
+      - bat: tools/bat.md
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
       - .env Files: tools/env-files.md
