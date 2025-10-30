@@ -4,7 +4,7 @@ tags:
 ---
 # webhook
 
-webhook is a lightweight incoming webhook server to run shell commands
+[webhook][1] is a lightweight incoming webhook server to run shell commands
 
 ## :hammer_and_wrench: Installation
 
@@ -20,4 +20,4 @@ WIP
 
 ## :link: References
 
-[1]: <https://github.com/eza-community/eza>
+[1]: <https://github.com/adnanh/webhook>
