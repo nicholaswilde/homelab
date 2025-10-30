@@ -8,7 +8,25 @@ tags:
 
 ## :hammer_and_wrench: Installation
 
-WIP
+!!! code ""
+
+    === "reprepro"
+
+        ```shell
+        sudo apt install eza
+        ```
+
+    === "apt"
+
+        ```shell
+        sudo apt install eza
+        ```
+
+    === "brew"
+
+        ```shell
+        brew install eza
+        ```
 
 ## :gear: Config
 
