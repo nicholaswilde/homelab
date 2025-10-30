@@ -41,17 +41,27 @@ You can download pre-compiled binaries from the [GitHub releases page][2].
 webhook is configured using a single JSON or YAML file (e..g., hooks.json) that contains an array of hook definitions.
 A minimal hooks.json file looks like this:
 
-!!! abstract "`hook.json`"
+=== "YAML"
 
-    ```json
-    [
-      {
-        "id": "redeploy-my-app",
-        "execute-command": "/var/scripts/redeploy.sh",
-        "command-working-directory": "/var/scripts/"
-      }
-    ]
-    ```
+    !!! abstract "hook.yaml"
+
+        ```yaml
+        - id: redeploy-my-app
+          execute-command: /var/scripts/redeploy.sh
+          command-working-directory: /var/scripts/
+        ```
+
+    !!! abstract "`hook.json`"
+
+        ```json
+        [
+          {
+            "id": "redeploy-my-app",
+            "execute-command": "/var/scripts/redeploy.sh",
+            "command-working-directory": "/var/scripts/"
+          }
+        ]
+        ```
 
 To secure your webhook, you should add a trigger-rule. A common method is to use a secret, which can be passed as a URL parameter or in the payload.
 
