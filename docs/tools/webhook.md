@@ -51,6 +51,41 @@ A minimal hooks.json file looks like this:
           command-working-directory: /var/scripts/
         ```
 
+        !!! abstract "`hook.json`"
+
+            ```json
+            [
+              {
+                "id": "redeploy-my-app",
+                "execute-command": "/var/scripts/redeploy.sh",
+                "command-working-directory": "/var/scripts/"
+              }
+            ]
+            ```
+
+To secure your webhook, you should add a trigger-rule. A common method is to use a secret, which can be passed as a URL parameter or in the payload.
+
+Here is a more secure example that triggers the hook only if the secret "my-secret-token" is provided:
+
+=== "YAML"
+
+    !!! abstract "`hook.yaml`"
+
+        ```yaml
+        - id: redeploy-my-app
+          execute-command: /var/scripts/redeploy.sh
+          command-working-directory: /var/scripts/
+          trigger-rule:
+            match:
+              type: value
+              value: my-secret-token
+              parameter:
+                source: url
+                name: secret
+        ```
+
+=== "JSON"
+
     !!! abstract "`hook.json`"
 
         ```json
@@ -58,36 +93,20 @@ A minimal hooks.json file looks like this:
           {
             "id": "redeploy-my-app",
             "execute-command": "/var/scripts/redeploy.sh",
-            "command-working-directory": "/var/scripts/"
+            "command-working-directory": "/var/scripts/",
+            "trigger-rule": {
+              "match": {
+                "type": "value",
+                "value": "my-secret-token",
+                "parameter": {
+                  "source": "url",
+                  "name": "secret"
+                }
+              }
+            }
           }
         ]
         ```
-
-To secure your webhook, you should add a trigger-rule. A common method is to use a secret, which can be passed as a URL parameter or in the payload.
-
-Here is a more secure example that triggers the hook only if the secret "my-secret-token" is provided:
-
-!!! abstract "`hook.json`"
-
-    ```json
-    [
-      {
-        "id": "redeploy-my-app",
-        "execute-command": "/var/scripts/redeploy.sh",
-        "command-working-directory": "/var/scripts/",
-        "trigger-rule": {
-          "match": {
-            "type": "value",
-            "value": "my-secret-token",
-            "parameter": {
-              "source": "url",
-              "name": "secret"
-            }
-          }
-        }
-      }
-    ]
-    ```
 
 ## :pencil: Usage
 
