@@ -78,6 +78,7 @@ nav:
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
       - .env Files: tools/env-files.md
+      - eza: tools/eza.md
       - Google Gemini CLI: tools/google-gemini-cli.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
