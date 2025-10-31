@@ -93,6 +93,7 @@ nav:
       - SOPS: tools/sops.md
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md
+      - tmux: tools/tmux.md
       - webhook: tools/webhook.md
   - Travel: travel.md
   - Reference:

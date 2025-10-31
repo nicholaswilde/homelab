@@ -64,6 +64,26 @@ You can also add new themes by creating a `themes` folder within `bat`'s configu
     bat cache --build
     ```
 
+### :cat: Catppuccin Theme
+
+To install the [Catppuccin theme][2] for `bat`, follow these steps:
+
+!!! code "Install Catppuccin Theme"
+
+    ```shell
+    mkdir -p "$(bat --config-dir)/themes"
+    wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin-mocha.tmTheme
+    bat cache --build
+    ```
+
+To use the Catppuccin theme, set `BAT_THEME` to `Catppuccin-mocha`:
+
+!!! code "Set Catppuccin Theme"
+
+    ```shell
+    export BAT_THEME="Catppuccin-mocha"
+    ```
+
 ## :pencil: Usage
 
 To view a file:
@@ -93,5 +113,7 @@ To concatenate multiple files:
 ## :link: References
 
 - <https://github.com/sharkdp/bat>
+- <https://github.com/catppuccin/bat>
 
 [1]: <https://github.com/sharkdp/bat>
+[2]: <https://github.com/catppuccin/bat>
