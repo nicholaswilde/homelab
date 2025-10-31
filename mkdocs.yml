@@ -78,13 +78,18 @@ nav:
       - bat: tools/bat.md
       - cheat: tools/cheat.md
       - docker-volume-backup: tools/docker-volume-backup.md
+      - duf: tools/duf.md
       - .env Files: tools/env-files.md
       - eza: tools/eza.md
+      - fd: tools/fd.md
       - Google Gemini CLI: tools/google-gemini-cli.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
+      - localsend: tools/localsend.md
       - micro: tools/micro.md
       - rclone: tools/rclone.md
+      - ripgrep: tools/ripgrep.md
+      - sd: tools/sd.md
       - SOPS: tools/sops.md
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md
