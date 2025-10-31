@@ -58,12 +58,22 @@ Here are some common ways to use `eza`, demonstrating its features beyond the st
     eza --tree --level=2
     ```
 
+!!! tip
+
+    Requires a [Nerd Font][2] to render icons
+
 !!! code "A common alias: long format, all files, icons, and Git status"
+
+    ```bash
+    eza -la --icons --git
+    ```
+!!! code "Sort by file size, largest first"
 
     ```bash
     eza -l --sort=size --reverse
     ```
-    
+
 ## :link: References
 
 [1]: <https://github.com/eza-community/eza>
+[2]: <https://www.nerdfonts.com/?hl=en-US>
