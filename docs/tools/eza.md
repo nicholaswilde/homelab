@@ -30,6 +30,8 @@ tags:
 
 ## :gear: Config
 
+eza is backeard compatible with `ls` so you can add to your bash aliases and map it to `ls`.
+
 !!! abstract "~/.bashrc"
 
     ```bash
@@ -41,6 +43,12 @@ tags:
     if command_exists eza; then
       alias ls='eza'
     fi
+    ```
+
+!!! code ""
+
+    ```shell
+    source ~/.bashrc
     ```
 
 ## :pencil: Usage
