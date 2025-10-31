@@ -45,8 +45,25 @@ tags:
 
 ## :pencil: Usage
 
-WIP
+Here are some common ways to use `eza`, demonstrating its features beyond the standard `ls`.
 
+!!! code "Show detailed long view, all files (including hidden), with a header"
+
+    ```bash
+    eza -la --header
+    ```
+!!! code "Display files as a tree (limited to 2 levels deep)"
+
+    ```bash
+    eza --tree --level=2
+    ```
+
+!!! code "A common alias: long format, all files, icons, and Git status"
+
+    ```bash
+    eza -l --sort=size --reverse
+    ```
+    
 ## :link: References
 
 [1]: <https://github.com/eza-community/eza>
