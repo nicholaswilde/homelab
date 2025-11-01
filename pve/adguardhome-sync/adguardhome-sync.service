@@ -1,9 +1,9 @@
 [Unit]
-Description = AdGuardHome Sync
+Description = Synchronize AdGuard Home config to replicas
 After = network.target
 
 [Service]
-ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
+ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
 
 [Install]
 WantedBy = multi-user.target

@@ -14,12 +14,18 @@ tasks:
       - task: start
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env.enc
+      - test -f adguardhome-sync.yaml.enc
     cmds:
-      - "[ -f .env.enc ] && sops -d --input-type dotenv --output-type dotenv .env.enc > .env"
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
       - sops -d --input-type yaml --output-type yaml adguardhome-sync.yaml.enc > adguardhome-sync.yaml
     ignore_error: true
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env
+      - test -f adguardhome-sync.yaml
     cmds:
       - sops -e .env > .env.enc
       - sops -e adguardhome-sync.yaml > adguardhome-sync.yaml.enc
@@ -55,6 +61,10 @@ tasks:
     desc: Stop the application's systemd service.
     cmds:
       - systemctl stop {{ .SERVICE_NAME }}.service
+  update:
+    desc: Update {{ .SERVICE_NAME }}
+    cmds:
+      - ./update.sh
   default:
     cmds:
       - task -l
