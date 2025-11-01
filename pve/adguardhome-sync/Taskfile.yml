@@ -11,6 +11,7 @@ tasks:
       - task: init
       - task: install
       - task: install-service
+      - task: reload
       - task: start
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
@@ -41,26 +42,38 @@ tasks:
   install:
     desc: Install {{ .SERVICE_NAME }}
     cmds:
-      - "[ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync"
-      - "cd /opt/adguardhome-sync"
-      - "curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash"
+      - "curl {{ .INSTALLER_URL }} | bash"
   install-service:
     desc: Install the application's systemd service.
+    preconditions:
+      - test -f ./adguardhome-sync.service
     cmds:
-      - "cp ./adguardhome-sync.service /etc/systemd/system/"
-      - "systemctl enable adguardhome-sync.service"
+      - "sudo cp ./adguardhome-sync.service /etc/systemd/system/"
+      - task: enable
+  reload:
+    desc: Reload the application's systemd service.
+    cmds:
+      - sudo systemctl daemon-reload
+  enable:
+    desc: Enable the application's systemd service.
+    cmds:
+      - sudo systemctl enable {{ .SERVICE_NAME }}.service
   restart:
     desc: Restart the application's systemd service.
     cmds:
-      - systemctl restart {{ .SERVICE_NAME }}.service
+      - sudo systemctl restart {{ .SERVICE_NAME }}.service
+  status:
+    desc: Get the service status
+    cmds:
+      - sudo systemctl status {{ .SERVICE_NAME }}.service
   start:
     desc: Start the application's systemd service.
     cmds:
-      - systemctl start {{ .SERVICE_NAME }}.service
+      - sudo systemctl start {{ .SERVICE_NAME }}.service
   stop:
     desc: Stop the application's systemd service.
     cmds:
-      - systemctl stop {{ .SERVICE_NAME }}.service
+      - sudo systemctl stop {{ .SERVICE_NAME }}.service
   update:
     desc: Update {{ .SERVICE_NAME }}
     cmds:

@@ -22,9 +22,9 @@ readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
 readonly RESET=$(tput sgr0)
-readonly SERVICE_NAME="adguardhome-sync"
-readonly INSTALL_DIR="/opt/adguardhome-sync"
-readonly GITHUB_REPO="bakito/adguardhome-sync"
+SERVICE_NAME="adguardhome-sync"
+INSTALL_DIR="/opt/adguardhome-sync"
+GITHUB_REPO="bakito/adguardhome-sync"
 
 source "$(dirname "$0")/.env"
 
@@ -62,8 +62,10 @@ function get_latest_version() {
   log "INFO" "Getting latest version of ${SERVICE_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local json_response
-  json_response=$(curl -s "${api_url}")
-
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    local curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+  fi
+  json_response=$(curl -s "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
     echo "${json_response}"
