@@ -22,13 +22,13 @@ tasks:
   encrypt:
     desc: Encrypt scan.db using SOPS
     cmds:
-      - sops -e .env > .env.enc
+      - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
       - sops -e secret.txt > secret.txt.enc
       - sops -e url-watches.json > url-watches.json.enc
   decrypt:
     desc: Decrypt scan.db using SOPS
     cmds:
-      - sops -d .env.enc > .env
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
       - sops -d secret.txt.enc > secret.txt
       - sops -d --input-type json --output-type json url-watches.json.enc > url-watches.json
   start:
