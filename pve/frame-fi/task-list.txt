@@ -1,17 +1,18 @@
 task: Available tasks for this project:
-* clean:          Remove all downloaded images from the local destination.
-* decrypt:        Decrypt sensitive configuration files using SOPS.
-* default:        List all available tasks.
-* download:       Download images from Google Photos album.
-* enable:         Enable the application's systemd service.
-* encrypt:        Encrypt sensitive configuration files using SOPS.
-* export:         Export the task list to `task-list.txt`.
-* init:           Initialize the application's environment and configuration files.
-* install:        Install the FrameFi application and set up its environment.
-* mklinks:        Create symbolic links for configuration files.
-* restart:        Restart the application's systemd service.
-* start:          Start the application's systemd service.
-* status:         Check the status of the application's systemd service.
-* stop:           Stop the application's systemd service.
-* update:         Update the application or its running containers.
-* upgrade:        Upgrade the application by pulling the latest changes and updating.
+* clean:                Remove all downloaded images from the local destination.
+* create-crontab:       Create a daily crontab job to download images.
+* decrypt:              Decrypt sensitive configuration files using SOPS.
+* default:              List all available tasks.
+* download:             Download images from Google Photos album.
+* enable:               Enable the application's systemd service.
+* encrypt:              Encrypt sensitive configuration files using SOPS.
+* export:               Export the task list to `task-list.txt`.
+* init:                 Initialize the application's environment and configuration files.
+* install:              Install the FrameFi application and set up its environment.
+* mklinks:              Create symbolic links for configuration files.
+* restart:              Restart the application's systemd service.
+* start:                Start the application's systemd service.
+* status:               Check the status of the application's systemd service.
+* stop:                 Stop the application's systemd service.
+* update:               Update the application or its running containers.
+* upgrade:              Upgrade the application by pulling the latest changes and updating.

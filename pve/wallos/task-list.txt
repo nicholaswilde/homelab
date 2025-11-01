@@ -5,3 +5,5 @@ task: Available tasks for this project:
 * init:          Init
 * mklinks:       Make client symlinks
 * status:        Status
+* update:        Update Wallos
+* upgrade:       Upgrade Wallos

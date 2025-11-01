@@ -15,19 +15,13 @@ It is installed only on the primary instance and is scheduled to run once a day,
 
     :material-console-network: Default Port: `8080`
     
-    :material-information-outline: Configuration path: `/opt/adguardhome-sync`
+    :material-information-outline: Binary path: `/usr/local/bin`
 
-!!! code "Install or Update"
+!!! code "Install"
 
-    === "installer"
-    
-        ```shell
-        (
-          [ -d /opt/adguardhome-sync ] || mkdir -p /opt/adguardhome-sync && \
-          cd /opt/adguardhome-sync && \
-          curl https://installer.l.nicholaswilde.io/bakito/adguardhome-sync | bash
-        )
-        ```
+    ```shell
+    task install
+    ```
 
 ## :gear: Config
 
@@ -42,45 +36,50 @@ It is installed only on the primary instance and is scheduled to run once a day,
         After = network.target
 
         [Service]
-        ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
+                ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
+        
+                [Install]
+                WantedBy = multi-user.target
+                EOF
+                ```
+        
+            === "Download"
+        
+                ```shell
+                wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
+                ```
+            
+            === "Manual"
+        
+                ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
+                [Unit]
+                Description = AdGuardHome Sync
+                After = network.target
+        
+                [Service]
+                ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
+        
+                [Install]
+                WantedBy = multi-user.target
+                ```
+        
+        !!! code "Enable service"
+        
+            ```shell
+            ( 
+             cp /opt/adguardhome-sync/adguardhome-sync.service /etc/systemd/system/ && \
+             systemctl enable adguardhome-sync.service && \
+             systemctl start adguardhome-sync.service && \
+             systemctl status adguardhome-sync.service
+            ) 
+            ```
+## :rocket: Upgrade
 
-        [Install]
-        WantedBy = multi-user.target
-        EOF
-        ```
-
-    === "Download"
-
-        ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
-        ```
-    
-    === "Manual"
-
-        ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
-        [Unit]
-        Description = AdGuardHome Sync
-        After = network.target
-
-        [Service]
-        ExecStart = /opt/adguardhome-sync/adguardhome-sync --config /opt/adguardhome-sync/adguardhome-sync.yaml run
-
-        [Install]
-        WantedBy = multi-user.target
-        ```
-
-!!! code "Enable service"
+!!! code ""
 
     ```shell
-    (
-     cp /opt/adguardhome-sync/adguardhome-sync.service /etc/systemd/system/ && \
-     systemctl enable adguardhome-sync.service && \
-     systemctl start adguardhome-sync.service && \
-     systemctl status adguardhome-sync.service
-    ) 
+    task update
     ```
-
-Make symlinks from `/opt/adguardhome-sync` to this repo.
 
 ## :simple-task: Task List
 

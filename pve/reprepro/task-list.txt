@@ -1,18 +1,20 @@
 task: Available tasks for this project:
-* bootstrap:            Bootstrap the reprepro environment
-* clear:                Remove all packages from all distributions
-* decrypt:              Decrypt sensitive configuration files using SOPS.
-* deps:                 Install dependencies
-* dirs:                 Create reprepro directories
-* download:             Download SOPS and Task .deb files
-* encrypt:              Encrypt sensitive configuration files using SOPS.
-* export:               Export the task list
-* init:                 Initialize the application's environment and configuration files.
-* list:                 List all packages in all distributions
-* nuke:                 Nuke the packages
-* package-apps:         Check and sync app releases
-* package-neovim:       Package the latest neovim release
-* package-sops:         Package the latest sops release
-* symlinks:             Create reprepro symlinks
-* sync-check:           Check and sync released versions of configured apps
-* upload-debs:          Upload the deb packages to a remote server
+* bootstrap:                  Bootstrap the reprepro environment
+* build-lnav:                 Build lnav
+* clear:                      Remove all packages from all distributions
+* decrypt:                    Decrypt sensitive configuration files using SOPS.
+* deps:                       Install dependencies
+* deps-lnav:                  Install lnav dependencies
+* dirs:                       Create reprepro directories
+* download:                   Download SOPS and Task .deb files
+* encrypt:                    Encrypt sensitive configuration files using SOPS.
+* export:                     Export the task list
+* init:                       Initialize the application's environment and configuration files.
+* list:                       List all packages in all distributions
+* nuke:                       Nuke the packages
+* package-lastpass-cli:       Package the latest lastpass-cli release
+* package-neovim:             Package the latest neovim release
+* package-sops:               Package the latest sops release
+* symlinks:                   Create reprepro symlinks
+* update-reprepro:            Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
+* upload-debs:                Upload the deb packages to a remote server
