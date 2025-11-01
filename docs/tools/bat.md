@@ -94,6 +94,14 @@ To view a file:
     bat filename.txt
     ```
 
+To not show line numbers:
+
+!!! code ""
+
+    ```shell
+    bat -p config.yaml
+    ```
+
 To show line numbers:
 
 !!! code ""
