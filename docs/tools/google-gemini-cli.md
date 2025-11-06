@@ -96,6 +96,18 @@ Once installed and authenticated, start interacting with Gemini from the shell.
     echo "Explain the content of this file docs/README.md" | gemini -p
     ```
 
+## List Models
+
+!!! note
+
+    Assuming that your Gemini key is stored in the `GEMINI_API_KEY` environmental variable and `jq` is installed.
+
+!!! code
+
+    ```bash
+    curl "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}" | jq -r '.models[].name'
+    ```
+
 ## :link: References
 
 - <https://github.com/google-gemini/gemini-cli>
