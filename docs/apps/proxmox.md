@@ -526,6 +526,28 @@ Create app password for the account.
 
 WIP
 
+## VM Trim
+
+It tells your VM to report all deleted (unused) blocks to the hypervisor (like Proxmox, VMware, etc.) so the host system can reclaim that storage space.
+
+This is especially important for thinly-provisioned disks.
+
+Here’s a breakdown of the command and the process:
+
+- `sudo`: Runs the command as the 'root' superuser, which is required.
+
+- `fstrim`: The command to "trim" or discard unused blocks.
+
+- `-a`: (all) Runs the command on all mounted filesystems that support it.
+
+- `-v`: (verbose) Prints out how much space was trimmed from each filesystem.
+
+!!! code ""
+
+    ```
+    sudo fstrim -av
+    ```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
