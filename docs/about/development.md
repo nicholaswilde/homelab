@@ -192,7 +192,7 @@ Sometimes I will create my own bash script to update the app. Typically, the scr
         sudo ./update.sh
         ```
 
-### ![proxmox](https://cdn.jsdelivr.net/gh/selfhst/icons/png/proxmox.png){: style="vertical-align: width="24" } Upgrades via Proxmox Helper Scripts
+### ![proxmox](https://cdn.jsdelivr.net/gh/selfhst/icons/png/proxmox.png){: style="vertical-align": width="24" } Upgrades via Proxmox Helper Scripts
 
 The helper scripts can update the app in the LXC/VM.
 
@@ -238,7 +238,7 @@ The old and unused images are then purged to save space in the LXC/VM.
         )
         ```
 
-### ![ansible](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ansible.svg){: style="vertical-align: width="24" } Ansible Upgrades
+### ![ansible](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ansible.svg){: style="vertical-align": width="24" } Ansible Upgrades
 
 I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
 
