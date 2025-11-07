@@ -260,6 +260,18 @@ Logs are used to debug applications. They may be looked at once or followed get 
         docker logs immich-server -f
         ```
 
+## :wrench: Maintenance 
+
+Maintenance is usually done by monitoring GitHub repos for releases. Once an email is received, I SSH into the host and perform a manual update.
+
+I also use Mend Renovate or Dependabot to create PRs for Docker container updates, but those, too, are merged and applied manually.
+
+I prefer to "manually" update my homelab because I can react to anything that goes wrong. Yes, I can have automated monitoring that sends me a notification when something goes wrong, but that itself takes maintenance.
+
+I do like to automate my maintenance tasks, such as using bash scripts, but they are not unattended.
+
+I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
@@ -277,3 +289,4 @@ Logs are used to debug applications. They may be looked at once or followed get 
 [13]: <../tools/sops.md>
 [14]: <../tools/env-files.md>
 [15]: <../tools/syncthing.md>
+[16]: <https://nicholaswilde.io/homelab-playbooks>
