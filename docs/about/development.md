@@ -238,7 +238,7 @@ The old and unused images are then purged to save space in the LXC/VM.
         )
         ```
 
-### :simple-ansible: Ansible Upgrades
+### ![ansible](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ansible.svg){: width="24" } Ansible Upgrades
 
 I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
 
