@@ -298,6 +298,12 @@ Logs are used to debug applications. They may be looked at once or followed get 
         docker logs immich-server -f
         ```
 
+## :bell: Notifications 
+
+My preferred form of notifications in my Homelab are email via [mailrise][17] because they are lasting and not easily dismissed.
+
+I have tried [ntfy][18] and [Gotify][19], but they are easily dismissed and difficult to get notified outside of my home network.
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
@@ -316,3 +322,6 @@ Logs are used to debug applications. They may be looked at once or followed get 
 [14]: <../tools/env-files.md>
 [15]: <../tools/syncthing.md>
 [16]: <https://nicholaswilde.io/homelab-playbooks>
+[17]: <../apps/mailrise.md>
+[18]: <>
+[19]: <>
