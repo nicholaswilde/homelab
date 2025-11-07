@@ -174,7 +174,7 @@ Maintenance is usually done by monitoring GitHub repos for releases. Once an ema
 
 I prefer to "manually" update my homelab because I can react to anything that goes wrong. Yes, I can have automated monitoring that sends me a notification when something goes wrong, but that itself takes maintenance.
 
-### :simple-proxmox: Upgrades via Custom Scripts
+### :scroll: Upgrades via Custom Scripts
 
 Sometimes I will create my own bash script to update the app. Typically, the script is named `update.sh` and is located in the `homelab/pve/<app name>` directory.
 
