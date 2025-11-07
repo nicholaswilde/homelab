@@ -208,7 +208,7 @@ What is nice is that that the scripts are updated automatically by the community
 
 Sometimes, I will convert the community script to a custom one.
 
-### :simple-docker: Docker Upgrades
+### :whale2: Docker Upgrades
 
 Docker tags are scanned by [Mend Renovate][10] :simple-renovate:, which opens a PR if a newer version is available.
 
