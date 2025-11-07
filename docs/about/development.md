@@ -170,6 +170,26 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 ## :rocket: Upgrades
 
+Maintenance is usually done by monitoring GitHub repos for releases. Once an email is received, I SSH into the host and perform a manual update.
+
+### :simple-proxmox: Upgrades via Custom Scripts
+
+Sometimes I will create my own bash script to update the app. Typically, the script is named `update.sh` and is located in the `homelab/pve/<app name>` directory.
+
+!!! code "homelab/pve/<app name>/update.sh"
+
+    === "Task"
+
+        ```shell
+        task update
+        ```
+
+    === "Manual"
+
+        ```shell
+        sudo ./update.sh
+        ```
+
 ### :simple-proxmox: Upgrades via Proxmox Helper Scripts
 
 The helper scripts can update the app in the LXC/VM.
