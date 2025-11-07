@@ -323,5 +323,5 @@ I have tried [ntfy][18] and [Gotify][19], but they are easily dismissed and diff
 [15]: <../tools/syncthing.md>
 [16]: <https://nicholaswilde.io/homelab-playbooks>
 [17]: <../apps/mailrise.md>
-[18]: <>
+[18]: <https://ntfy.sh/>
 [19]: <>
