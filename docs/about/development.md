@@ -238,7 +238,7 @@ The old and unused images are then purged to save space in the LXC/VM.
         )
         ```
 
-### Ansible Upgrades
+### :simple-ansible: Ansible Upgrades
 
 I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
 
@@ -297,18 +297,6 @@ Logs are used to debug applications. They may be looked at once or followed get 
         ```shell
         docker logs immich-server -f
         ```
-
-## :wrench: Maintenance 
-
-Maintenance is usually done by monitoring GitHub repos for releases. Once an email is received, I SSH into the host and perform a manual update.
-
-I also use Mend Renovate or Dependabot to create PRs for Docker container updates, but those, too, are merged and applied manually.
-
-
-
-I do like to automate my maintenance tasks, such as using bash scripts, but they are not unattended.
-
-
 
 ## :link: References
 
