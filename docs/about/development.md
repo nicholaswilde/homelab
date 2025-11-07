@@ -172,11 +172,13 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 Maintenance is usually done by monitoring GitHub repos for releases. Once an email is received, I SSH into the host and perform a manual update.
 
+I prefer to "manually" update my homelab because I can react to anything that goes wrong. Yes, I can have automated monitoring that sends me a notification when something goes wrong, but that itself takes maintenance.
+
 ### :simple-proxmox: Upgrades via Custom Scripts
 
 Sometimes I will create my own bash script to update the app. Typically, the script is named `update.sh` and is located in the `homelab/pve/<app name>` directory.
 
-!!! code "homelab/pve/<app name>/update.sh"
+!!! code "homelab/pve/appname/update.sh"
 
     === "Task"
 
@@ -193,6 +195,18 @@ Sometimes I will create my own bash script to update the app. Typically, the scr
 ### :simple-proxmox: Upgrades via Proxmox Helper Scripts
 
 The helper scripts can update the app in the LXC/VM.
+
+!!! code ""
+
+    ```bash
+    update
+    ```
+
+One thing I don't like about the scripts is their interactivity. I prefer not to be prompted.
+
+What is nice is that that the scripts are updated automatically by the community and they are available globally throughout the container. Although, I can make my custom script global as well.
+
+Sometimes, I will convert the community script to a custom one.
 
 ### :simple-docker: Docker Upgrades
 
@@ -223,6 +237,10 @@ The old and unused images are then purged to save space in the LXC/VM.
           docker image prune -a -f
         )
         ```
+
+### Ansible Upgrades
+
+I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
 
 ## :alarm_clock: Cronjobs
 
@@ -286,11 +304,11 @@ Maintenance is usually done by monitoring GitHub repos for releases. Once an ema
 
 I also use Mend Renovate or Dependabot to create PRs for Docker container updates, but those, too, are merged and applied manually.
 
-I prefer to "manually" update my homelab because I can react to anything that goes wrong. Yes, I can have automated monitoring that sends me a notification when something goes wrong, but that itself takes maintenance.
+
 
 I do like to automate my maintenance tasks, such as using bash scripts, but they are not unattended.
 
-I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
+
 
 ## :link: References
 
