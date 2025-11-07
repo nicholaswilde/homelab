@@ -192,7 +192,7 @@ Sometimes I will create my own bash script to update the app. Typically, the scr
         sudo ./update.sh
         ```
 
-### ![proxmox](https://cdn.jsdelivr.net/gh/selfhst/icons/png/proxmox.png){ width = ”24” } Upgrades via Proxmox Helper Scripts
+### ![proxmox](https://cdn.jsdelivr.net/gh/selfhst/icons/png/proxmox.png){: width="24" } Upgrades via Proxmox Helper Scripts
 
 The helper scripts can update the app in the LXC/VM.
 
