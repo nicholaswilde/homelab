@@ -7,6 +7,10 @@ vars:
   PORT: 8000
 
 tasks:
+  glist:
+    desc: List the Gemini models
+    cmds:
+      - curl -fsSL "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}" | jq -r '.models[].name'
   build:
     desc: Build documentation using Docker and mkdocs-material
     cmds:

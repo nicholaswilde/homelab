@@ -1,0 +1,19 @@
+task: Available tasks for this project:
+* create-template:       Create template from existing .env file
+* decrypt:               Decrypt sensitive configuration files using SOPS.
+* default:               List all available tasks.
+* enable:                Enable the application's systemd service.
+* encrypt:               Encrypt sensitive configuration files using SOPS.
+* export:                Export the task list to `task-list.txt`.
+* follow:                Follow the logs
+* init:                  Initialize the application's environment and configuration files.
+* install-service:       Install the application's systemd service.
+* mklinks:               Create symbolic links for configuration files.
+* reload:                Reload the application's systemd service.
+* restart:               Restart the application's systemd service.
+* start:                 Start the application's systemd service.
+* status:                Check the status of the application's systemd service.
+* stop:                  Stop the application's systemd service.
+* update:                Update the application or its running containers.
+* upgrade:               Upgrade the application by pulling the latest changes and updating.
+* watch:                 Watch the logs

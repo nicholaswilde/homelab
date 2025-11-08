@@ -419,6 +419,10 @@ The script `update-reprepro.sh` is used to compare the latest released versions 
 If out of date, the compressed archives specified in the `PACKAGE_APPS` variable are downloaded, packaged into deb files,
 and added to reprepro and deb files located in the `SYNC_APPS_GITHUB_REPOS` variable are downloaded and add to reprepro.
 
+!!! note "Automation"
+
+    The `update-reprepro-service.sh` script can be triggered automatically using a [webhook](./webhook.md). This is useful for continuous integration, for example, triggering an update after a new package has been built and pushed.
+
 !!! code "`homelab/pve/reprepro`"
 
     === "Task"

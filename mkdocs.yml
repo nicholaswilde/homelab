@@ -58,6 +58,7 @@ nav:
       - Vaultwarden: apps/vaultwarden.md
       - Vaultwarden Backup: apps/vaultwarden-backup.md
       - Ventoy: apps/ventoy.md
+      - webhook: apps/webhook.md
       - WatchYourLAN: apps/watchyourlan.md
       - Windows 11: apps/w11.md
   - Hardware:
@@ -94,7 +95,6 @@ nav:
       - Syncthing: tools/syncthing.md
       - Task: tools/task.md
       - tmux: tools/tmux.md
-      - webhook: tools/webhook.md
   - Travel: travel.md
   - Reference:
       - Emoji: reference/emoji.md
