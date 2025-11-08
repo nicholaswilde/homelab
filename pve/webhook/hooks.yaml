@@ -1,4 +1,9 @@
 ---
 - id: redeploy-webhook
-  execute-command: "/root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro-service.sh 2>&1 | logger -t reprepro-updater"
+  execute-command: "/bin/bash"
   command-working-directory: "/root/git/nicholaswilde/homelab/pve/webhook"
+  pass-arguments-to-command:
+    - source: string
+      name: "-c"
+    - source: string
+      name: "/root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro-service.sh 2>&1 | logger -t reprepro-updater"
