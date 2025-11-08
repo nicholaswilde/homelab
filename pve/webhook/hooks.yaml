@@ -1,0 +1,4 @@
+---
+- id: redeploy-webhook
+  execute-command: "/root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro.sh"
+  command-working-directory: "/root/git/nicholaswilde/homelab/pve/webhook"

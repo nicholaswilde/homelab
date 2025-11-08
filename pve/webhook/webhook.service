@@ -1,0 +1,9 @@
+[Unit]
+Description = Synchronize AdGuard Home config to replicas
+After = network.target
+
+[Service]
+ExecStart = /usr/local/bin/webhook -hooks /root/git/nicholaswilde/homelab/pve/webhook/hooks.yaml -verbose
+
+[Install]
+WantedBy = multi-user.target
