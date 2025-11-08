@@ -1,5 +1,5 @@
 [Unit]
-Description = Synchronize AdGuard Home config to replicas
+Description = webhook is a lightweight incoming webhook server to run shell commands
 After = network.target
 
 [Service]

@@ -86,6 +86,14 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  watch:
+    desc: Watch the logs
+    cmds:
+      - journalctl -f -t reprepro-updater
+  follow:
+    desc: Follow the logs
+    cmds:
+      - task: watch
   default:
     cmds:
       - task -l
