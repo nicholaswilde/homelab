@@ -34,6 +34,10 @@ tasks:
     cmds:
       - docker compose up --force-recreate --build -d
       - docker image prune -a -f
+  update-go:
+    desc: Update immich-go
+    cmds:
+      - sudo ./update.sh
   up:
     desc: Run Docker Compose in the foreground.
     cmds:

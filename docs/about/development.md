@@ -170,11 +170,45 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
 
 ## :rocket: Upgrades
 
-### :simple-proxmox: Upgrades via Proxmox Helper Scripts
+Maintenance is usually done by monitoring GitHub repos for releases. Once an email is received, I SSH into the host and perform a manual update.
+
+I prefer to "manually" update my homelab because I can react to anything that goes wrong. Yes, I can have automated monitoring that sends me a notification when something goes wrong, but that itself takes maintenance.
+
+### :scroll: Upgrades via Custom Scripts
+
+Sometimes I will create my own bash script to update the app. Typically, the script is named `update.sh` and is located in the `homelab/pve/<app name>` directory.
+
+!!! code "homelab/pve/appname/update.sh"
+
+    === "Task"
+
+        ```shell
+        task update
+        ```
+
+    === "Manual"
+
+        ```shell
+        sudo ./update.sh
+        ```
+
+### ![proxmox](https://cdn.jsdelivr.net/gh/selfhst/icons/png/proxmox.png){: style="vertical-align": width="24" } Upgrades via Proxmox Helper Scripts
 
 The helper scripts can update the app in the LXC/VM.
 
-### :simple-docker: Docker Upgrades
+!!! code ""
+
+    ```bash
+    update
+    ```
+
+One thing I don't like about the scripts is their interactivity. I prefer not to be prompted.
+
+What is nice is that that the scripts are updated automatically by the community and they are available globally throughout the container. Although, I can make my custom script global as well.
+
+Sometimes, I will convert the community script to a custom one.
+
+### :whale2: Docker Upgrades
 
 Docker tags are scanned by [Mend Renovate][10] :simple-renovate:, which opens a PR if a newer version is available.
 
@@ -203,6 +237,10 @@ The old and unused images are then purged to save space in the LXC/VM.
           docker image prune -a -f
         )
         ```
+
+### ![ansible](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/ansible.svg){: style="vertical-align": width="24" } Ansible Upgrades
+
+I also use Ansible for batch updates and changes. See my [Homelab Playbooks][16].
 
 ## :alarm_clock: Cronjobs
 
@@ -260,6 +298,12 @@ Logs are used to debug applications. They may be looked at once or followed get 
         docker logs immich-server -f
         ```
 
+## :bell: Notifications 
+
+My preferred form of notifications in my Homelab are email via [mailrise][17] because they are lasting and not easily dismissed.
+
+I have tried [ntfy][18] and [Gotify][19], but they are easily dismissed and difficult to get notified outside of my home network.
+
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
@@ -277,3 +321,7 @@ Logs are used to debug applications. They may be looked at once or followed get 
 [13]: <../tools/sops.md>
 [14]: <../tools/env-files.md>
 [15]: <../tools/syncthing.md>
+[16]: <https://nicholaswilde.io/homelab-playbooks>
+[17]: <../apps/mailrise.md>
+[18]: <https://ntfy.sh/>
+[19]: <https://gotify.net/>
