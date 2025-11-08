@@ -68,7 +68,7 @@ function get_latest_version() {
   json_response=$(curl -s "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
-    echo "${json_response}"
+    echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
     return 1
   fi
 
@@ -107,14 +107,22 @@ function main() {
   fi
 
   log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
-  log "INFO" "Stopping ${SERVICE_NAME} service..."
-  systemctl stop "${SERVICE_NAME}.service"
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Stopping ${SERVICE_NAME} service..."
+    systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+  fi
 
   log "INFO" "Downloading and installing update..."
-  curl -fsSL "${INSTALLER_URL}" | bash
+  { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
 
-  log "INFO" "Restarting ${SERVICE_NAME} service..."
-  systemctl restart "${SERVICE_NAME}.service"
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Restarting ${SERVICE_NAME} service..."
+    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
+  fi
 
   get_current_version
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then

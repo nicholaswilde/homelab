@@ -1,94 +1,145 @@
-#!/usr/bin/env bash
+#!/usr//bin/env bash
 ################################################################################
 #
-# traefik
+# Script Name: update.sh
 # ----------------
-# Update traefik
+# Checks for the latest release of traefik/traefik and compares it to
+# the local version. If out of date, it stops the service, downloads the
+# latest version, and restarts the service.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 28 Jun 2025
-# @version 0.1.0
+# @date 08 Nov 2025
+# @version 1.0.0
 #
 ################################################################################
 
+# Options
 set -e
 set -o pipefail
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
-blue=$(tput setaf 4)
-default=$(tput setaf 9)
-white=$(tput setaf 7)
-yellow=$(tput setaf 3)
+# These are constants
+readonly BLUE=$(tput setaf 4)
+readonly RED=$(tput setaf 1)
+readonly YELLOW=$(tput setaf 3)
+readonly RESET=$(tput sgr0)
+SERVICE_NAME="traefik"
+INSTALL_DIR="/usr/local/bin"
+GITHUB_REPO="traefik/traefik"
 
-readonly bold
-readonly normal
-readonly red
-readonly blue
-readonly default
-readonly white
-readonly yellow
+# Source environment variables
+if [ -f "$(dirname "$0")/.env" ]; then
+  source "$(dirname "$0")/.env"
+fi
 
-function print_text(){
-  echo "${blue}==> ${white}${bold}${1}${normal}"
+# Logging function
+function log() {
+  local type="$1"
+  local message="$2"
+  local color="$RESET"
+
+  case "$type" in
+    INFO)
+      color="$BLUE";;
+    WARN)
+      color="$YELLOW";;
+    ERRO)
+      color="$RED";;
+  esac
+
+  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
 }
 
-function show_warning(){
-  printf "${yellow}%s\n" "${1}${normal}"
-}
-
-function raise_error(){
-  printf "${red}%s\n" "${1}${normal}"
-  exit 1
-}
-
-# Check if variable is set
-# Returns false if empty
-function is_set(){
-  [ -n "${1}" ]
-}
-
+# Checks if a command exists.
 function command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-function check_url(){
-  local url="${1}"
-  local status=$(curl -sSL -o /dev/null -w "${http_code}" "${url}")
-  if [[ "${status}" -ge 200 && "${status}" -lt 400 ]]; then
-    return 0
-  else
+function check_dependencies() {
+  if ! command_exists curl || ! command_exists jq; then
+    log "ERRO" "Required dependencies (curl, jq) are not installed." >&2
+    exit 1
+  fi
+}
+
+function get_latest_version() {
+  log "INFO" "Getting latest version of ${SERVICE_NAME} from GitHub..."
+  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
+  local json_response
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    local curl_args=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+  fi
+  json_response=$(curl -s "${curl_args[@]}" "${api_url}")
+  if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
+    log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
+    echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
     return 1
   fi
+
+  local tag_name
+  tag_name=$(echo "${json_response}" | jq -r '.tag_name')
+  LATEST_VERSION=${tag_name#v}
+  log "INFO" "Latest ${SERVICE_NAME} version: ${LATEST_VERSION}"
 }
 
-function check_curl(){
-  if ! command_exists curl; then
-    raise_error "curl is not installed"
+function get_current_version() {
+  if ! command_exists "${INSTALL_DIR}/${SERVICE_NAME}"; then
+    log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
+    CURRENT_VERSION="0"
+    return
   fi
+  log "INFO" "Getting current version of ${SERVICE_NAME}..."
+  # The version output is like: "Version:      2.10.4"
+  local current_version_full
+  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" version 2>&1)
+  CURRENT_VERSION=$(echo "${current_version_full}" | grep 'Version:' | awk '{print $2}')
+  log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
 }
 
-function update_script() {
-  APP=traefik
-  if ! command_exists traefik; then
-    raise_error "No traefik Installation Found!"
+# Main function to orchestrate the script execution
+function main() {
+  log "INFO" "Starting ${SERVICE_NAME} update script..."
+  check_dependencies
+
+  get_latest_version
+  get_current_version
+
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "${SERVICE_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    log "INFO" "Script finished."
+    exit 0
   fi
-  cd /usr/bin
-  print_text "Stopping traefik service"
-  sudo systemctl stop traefik
-  test -f /usr/local/bin/traefik && sudo rm -rf /usr/local/bin/traefik
-  print_text "Upgrading traefik"
-  curl -fsSL http://192.168.2.26:3000/traefik/traefik! | bash
-  sudo chmod +x /usr/local/bin/traefik
-  print_text "Starting traefik service"
-  sudo systemctl start traefik
-  print_text "Updated traefik Successfully"
+
+  log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Stopping ${SERVICE_NAME} service..."
+    systemctl stop "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+  fi
+
+  log "INFO" "Downloading and installing update..."
+  if [ -z "${INSTALLER_URL}" ]; then
+      log "ERRO" "INSTALLER_URL is not set. Please set it in the .env file."
+      exit 1
+  fi
+  { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Restarting ${SERVICE_NAME} service..."
+    systemctl restart "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
+  fi
+
+  get_current_version
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "Successfully updated ${SERVICE_NAME} to ${LATEST_VERSION}."
+  else
+    log "ERRO" "Failed to update ${SERVICE_NAME}. Still on ${CURRENT_VERSION}."
+  fi
+
+  log "INFO" "Script finished."
 }
 
-function main(){
-  check_curl
-  update_script
-}
-
-main "@"
+# Call main to start the script
+main "$@"
