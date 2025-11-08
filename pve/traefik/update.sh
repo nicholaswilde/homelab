@@ -77,9 +77,9 @@ function update_script() {
   cd /usr/bin
   print_text "Stopping traefik service"
   sudo systemctl stop traefik
-  test -f /usr/bin/traefik && sudo rm -rf /usr/bin/traefik
+  test -f /usr/local/bin/traefik && sudo rm -rf /usr/local/bin/traefik
   print_text "Upgrading traefik"
-  curl -fsSL http://192.168.2.26:3000/traefik/traefik | bash
+  curl -fsSL http://192.168.2.26:3000/traefik/traefik! | bash
   sudo chmod +x /usr/local/bin/traefik
   print_text "Starting traefik service"
   sudo systemctl start traefik
