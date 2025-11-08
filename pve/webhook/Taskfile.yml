@@ -5,6 +5,12 @@ dotenv:
   - .env
 
 tasks:
+  create-template:
+    desc: Create template from existing .env file
+    preconditions:
+      - test -f .env
+    cmds:
+      - "sed '/^ *#/! s/=.*/=/' .env > .env.tmpl"
   install-service:
     desc: Install the application's systemd service.
     preconditions:
