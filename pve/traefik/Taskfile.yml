@@ -1,10 +1,26 @@
 ---
 version: '3'
 
+dotenv:
+  - .env
+
 env:
   APP_NAME: '{{ .APP_NAME }}'
 
 tasks:
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env.enc
+    cmds:
+      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+    ignore_error: true
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f .env
+    cmds:
+      - sops -e .env > .env.enc
   update:
     desc: Update running containers
     preconditions:
@@ -22,6 +38,8 @@ tasks:
       - jinja2 -D APP_NAME={{shellQuote .APP_NAME }} conf.d/.template.yaml.j2
   watch:
     desc: Watch the log file
+    preconditions:
+      - test -f /var/log/traefik/traefik.log
     cmds:
       - tail -f /var/log/traefik/traefik.log
   restart:
