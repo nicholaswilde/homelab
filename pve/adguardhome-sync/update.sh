@@ -21,18 +21,27 @@ set -o pipefail
 readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
+readonly PURPLE=$(tput setaf 5)
 readonly RESET=$(tput sgr0)
 SERVICE_NAME="adguardhome-sync"
 INSTALL_DIR="/opt/adguardhome-sync"
 GITHUB_REPO="bakito/adguardhome-sync"
+DEBUG="false"
 
-source "$(dirname "$0")/.env"
+# Source .env file if it exists
+if [ -f "$(dirname "$0")/.env" ]; then
+  source "$(dirname "$0")/.env"
+fi
+
 
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
   local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
 
   case "$type" in
     INFO)
@@ -41,9 +50,19 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
+    DEBU)
+      color="$PURPLE";;
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 # Checks if a command exists.
@@ -114,8 +133,19 @@ function main() {
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
 
+  local installer_url="${INSTALLER_URL}"
+  local fallback_repo="${GITHUB_REPO}"
+  if [[ "${installer_url}" == *! ]]; then
+    fallback_repo="${GITHUB_REPO}!"
+  fi
   log "INFO" "Downloading and installing update..."
-  { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+  if ! ({ curl -fsSL "${installer_url}" | bash;} 2>&1 | log "INFO"); then
+    log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
+    if ! ( { curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
+      log "ERRO" "Failed to download from fallback URL. Aborting update."
+      exit 1
+    fi
+  fi
 
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
