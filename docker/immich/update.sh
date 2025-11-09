@@ -114,34 +114,6 @@ function get_current_version() {
   log "INFO" "Current ${BINARY_NAME} version: ${CURRENT_VERSION}"
 }
 
-function get_arch() {
-  ARCH=$(uname -m)
-  case ${ARCH} in
-    x86_64)
-      ARCH="amd64"
-      ;;
-    aarch64)
-      ARCH="arm64"
-      ;;
-    *)
-      log "ERRO" "Unsupported architecture: ${ARCH}"
-      exit 1
-      ;;
-  esac
-}
-
-function get_os() {
-  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-  case ${OS} in
-      linux|darwin|windows)
-          ;;
-      *)
-          log "ERRO" "Unsupported OS: ${OS}"
-          exit 1
-          ;;
-  esac
-}
-
 # Main function to orchestrate the script execution
 function main() {
   log "INFO" "Starting ${BINARY_NAME} update script..."
