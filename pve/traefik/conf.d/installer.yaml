@@ -11,6 +11,16 @@ http:
         - https-redirectscheme@file
       tls: {}
       service: installer  
+    installer2:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`i.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: installer  
+
 #endregion
 #region services
   services:
