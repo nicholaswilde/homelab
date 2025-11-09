@@ -20,14 +20,20 @@ tasks:
       - cp .env.tmpl .env
   decrypt:
     desc: Decrypt .env using SOPS
+    preconditions:
+      - test -f .env.enc
+      - test -f app.ini.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
-      - sops -d --input-type dotenv --output-type dotenv app.ini.enc > app.ini
+      - sops -d --input-type ini --output-type ini app.ini.enc > app.ini
   encrypt:
     desc: Encrypt .env using SOPS
+    preconditions:
+      - test -f .env
+      - test -f app.ini
     cmds:
-      - sops -e .env > .env.enc
-      - sops -e app.ini > app.ini.enc
+      - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
+      - sops -e --input-type ini --output-type ini app.ini > app.ini.enc
   update:
     desc: Update running containers
     cmds:

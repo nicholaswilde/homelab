@@ -1,93 +1,201 @@
 #!/usr/bin/env bash
 ################################################################################
 #
-# update
+# Script Name: update.sh
 # ----------------
-# Update gitea
+# Checks for the latest release of go-gitea/gitea and compares it to
+# the local version. If out of date, it downloads the latest version.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 23 Apr 2025
-# @version 0.1.0
+# @date 09 Nov 2025
+# @version 1.0.0
 #
 ################################################################################
 
-# set -e
-# set -o pipefail
+# Options
+set -e
+set -o pipefail
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
-blue=$(tput setaf 4)
-default=$(tput setaf 9)
-white=$(tput setaf 7)
-yellow=$(tput setaf 3)
+# These are constants
+readonly BLUE=$(tput setaf 4)
+readonly RED=$(tput setaf 1)
+readonly YELLOW=$(tput setaf 3)
+readonly PURPLE=$(tput setaf 5)
+readonly RESET=$(tput sgr0)
+SERVICE_NAME="gitea"
+BINARY_NAME="gitea"
+INSTALL_DIR="/usr/local/bin"
+GITHUB_REPO="go-gitea/gitea"
+DEBUG="false"
 
-readonly bold
-readonly normal
-readonly red
-readonly blue
-readonly default
-readonly white
-readonly yellow
+# Source .env file if it exists
+if [ -f "$(dirname "$0")/.env" ]; then
+  source "$(dirname "$0")/.env"
+fi
 
-function print_text(){
-  echo "${blue}==> ${white}${bold}${1}${normal}"
+# Logging function
+function log() {
+  local type="$1"
+  local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
+
+  case "$type" in
+    INFO)
+      color="$BLUE";;
+    WARN)
+      color="$YELLOW";;
+    ERRO)
+      color="$RED";;
+    DEBU)
+      color="$PURPLE";;
+    *)
+      type="LOGS";;
+  esac
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
-function show_warning(){
-  printf "${yellow}%s\n" "${1}${normal}"
-}
-
-function raise_error(){
-  printf "${red}%s\n" "${1}${normal}"
-  exit 1
-}
-
-# Check if variable is set
-# Returns false if empty
-function is_set(){
-  [ -n "${1}" ]
-}
-
+# Checks if a command exists.
 function command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-function check_url(){
-  local url="${1}"
-  local status=$(curl -sSL -o /dev/null -w "${http_code}" "${url}")
-  if [[ "${status}" -ge 200 && "${status}" -lt 400 ]]; then
-    return 0
-  else
+function check_dependencies() {
+  if ! command_exists curl || ! command_exists jq; then
+    log "ERRO" "Required dependencies (curl, jq) are not installed." >&2
+    exit 1
+  fi
+}
+
+function get_arch() {
+  ARCH=$(uname -m)
+  case $ARCH in
+    x86_64)
+      ARCH="amd64"
+      ;;
+    aarch64)
+      ARCH="arm64"
+      ;;
+  esac
+}
+
+function get_latest_version() {
+  log "INFO" "Getting latest version of ${BINARY_NAME} from GitHub..."
+  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases"
+  if [ -n "${GITHUB_TOKEN}" ]; then
+    local curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+  fi
+  local all_releases_json
+  all_releases_json=$(curl -s "${curl_args[@]}" "${api_url}")
+
+  LATEST_RELEASE_JSON=$(echo "${all_releases_json}" | jq '[.[] | select(.prerelease == false)] | .[0]')
+
+  if [ -z "${LATEST_RELEASE_JSON}" ] || [ "${LATEST_RELEASE_JSON}" == "null" ]; then
+    log "ERRO" "Failed to find a matching stable release for ${BINARY_NAME} from GitHub API."
     return 1
   fi
+
+  local tag_name
+  tag_name=$(echo "${LATEST_RELEASE_JSON}" | jq -r '.tag_name')
+  if [ -z "${tag_name}" ] || [ "${tag_name}" == "null" ]; then
+    log "ERRO" "Could not extract tag_name from release JSON."
+    return 1
+  fi
+  LATEST_VERSION=${tag_name#v}
+  log "INFO" "Latest ${BINARY_NAME} version: ${LATEST_VERSION}"
 }
 
-function check_curl(){
-  if ! command_exists curl; then
-    raise_error "curl is not installed"
+function get_current_version() {
+  if ! command_exists "${BINARY_NAME}"; then
+    log "WARN" "${BINARY_NAME} is not installed or not in PATH."
+    CURRENT_VERSION="0"
+    return
+  fi
+  log "INFO" "Getting current version of ${BINARY_NAME}..."
+  local version_output
+  version_output=$("${BINARY_NAME}" --version 2>&1)
+  CURRENT_VERSION=$(echo "${version_output}" | awk '{print $3}')
+  log "INFO" "Current ${BINARY_NAME} version: ${CURRENT_VERSION}"
+}
+
+function download_and_install() {
+  get_arch
+  local download_url="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/gitea-${LATEST_VERSION}-linux-${ARCH}"
+  local temp_file
+  temp_file=$(mktemp)
+
+  log "INFO" "Downloading ${BINARY_NAME} from ${download_url}"
+  if ! curl -sSL -o "${temp_file}" "${download_url}"; then
+    log "ERRO" "Failed to download ${BINARY_NAME}."
+    rm -f "${temp_file}"
+    exit 1
+  fi
+
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Stopping ${SERVICE_NAME} service..."
+    sudo systemctl stop "${SERVICE_NAME}.service"
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+  fi
+
+  local installer_url="${INSTALLER_URL}"
+  local fallback_repo="${GITHUB_REPO}"
+  if [[ "${installer_url}" == *! ]]; then
+    fallback_repo="${GITHUB_REPO}!"
+  fi
+  log "INFO" "Downloading and installing update..."
+  if ! ({ curl -fsSL "${installer_url}" | bash;} 2>&1 | log "INFO"); then
+    log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
+    if ! ( { curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
+      log "ERRO" "Failed to download from fallback URL. Aborting update."
+      exit 1
+    fi
+  fi
+  
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Restarting ${SERVICE_NAME} service..."
+    sudo systemctl restart "${SERVICE_NAME}.service"
+  else
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi
 }
 
-function update_script() {
-  if ! command_exists gitea; then
-    raise_error "No gitea Installation Found!"
+# Main function to orchestrate the script execution
+function main() {
+  log "INFO" "Starting ${BINARY_NAME} update script..."
+  check_dependencies
+
+  get_latest_version
+  get_current_version
+
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "${BINARY_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    log "INFO" "Script finished."
+    exit 0
   fi
-  RELEASE=$(curl -fsSL https://github.com/go-gitea/gitea/releases/latest | grep "title>Release" | cut -d " " -f 4 | sed 's/^v//')
-  print_text "Updating $APP to ${RELEASE}"
-   curl -fsSL "https://github.com/go-gitea/gitea/releases/download/v$RELEASE/gitea-$RELEASE-linux-amd64" -o $(basename "https://github.com/go-gitea/gitea/releases/download/v$RELEASE/gitea-$RELEASE-linux-amd64")
-   sudo systemctl stop gitea
-   sudo rm -rf /usr/local/bin/gitea
-   sudo mv gitea* /usr/local/bin/gitea
-   sudo chmod +x /usr/local/bin/gitea
-   sudo systemctl start gitea
-   print_text "Updated gitea Successfully"
-   exit 0
+
+  log "INFO" "New version available for ${BINARY_NAME}: ${LATEST_VERSION}"
+
+  download_and_install
+
+  get_current_version
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "Successfully updated ${BINARY_NAME} to ${LATEST_VERSION}."
+  else
+    log "ERRO" "Failed to update ${BINARY_NAME}. Still on ${CURRENT_VERSION}."
+  fi
+
+  log "INFO" "Script finished."
 }
 
-function main(){
-  check_curl
-  update_script
-}
-
-main "@"
+# Call main to start the script
+main "$@"
