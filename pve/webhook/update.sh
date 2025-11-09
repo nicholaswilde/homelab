@@ -128,23 +128,27 @@ function main() {
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
     systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
-    # systemctl stop "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
 
-  log "INFO" "Downloading and installing update..."
-  if [ -z "${INSTALLER_URL}" ]; then
-      log "ERRO" "INSTALLER_URL is not set. Please set it in the .env file."
-      exit 1
+  local installer_url="${INSTALLER_URL}"
+  local fallback_repo="${GITHUB_REPO}"
+  if [[ "${installer_url}" == *! ]]; then
+    fallback_repo="${GITHUB_REPO}!"
   fi
-  { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | log "INFO"
-  # { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+  log "INFO" "Downloading and installing update..."
+  if ! ({ curl -fsSL "${installer_url}" | bash;} 2>&1 | log "INFO"); then
+    log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
+    if ! ( { curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
+      log "ERRO" "Failed to download from fallback URL. Aborting update."
+      exit 1
+    fi
+  fi
 
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
     systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
-    # systemctl restart "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi
