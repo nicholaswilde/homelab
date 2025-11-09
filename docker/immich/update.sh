@@ -161,14 +161,12 @@ function main() {
   local installer_url="${INSTALLER_URL}"
   local fallback_repo="${GITHUB_REPO}"
   if [[ "${installer_url}" == *! ]]; then
-    installer_url="${installer_url%!}"
     fallback_repo="${GITHUB_REPO}!"
   fi
-
   log "INFO" "Downloading and installing update..."
-  if ! (curl -fsSL "${installer_url}" | bash | log "INFO"); then
+  if ! ({ curl -fsSL "${installer_url}" | bash;} 2>&1 | log "INFO"); then
     log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
-    if ! (curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash | log "INFO"); then
+    if ! ( { curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
       log "ERRO" "Failed to download from fallback URL. Aborting update."
       exit 1
     fi
