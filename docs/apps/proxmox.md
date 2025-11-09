@@ -247,6 +247,8 @@ From node
 
 ### :material-harddisk-plus: Step 2: Extend physical drive partition
 
+From inside of the VM, not from the control node.
+
 !!! code "check free space"
 
     ```shell
