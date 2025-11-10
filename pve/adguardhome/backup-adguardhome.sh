@@ -44,8 +44,11 @@ fi
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
   local color="$RESET"
+
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
 
   case "$type" in
     INFO)
@@ -54,9 +57,19 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
+    DEBU)
+      color="$PURPLE";;
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 # Checks if a command exists.
