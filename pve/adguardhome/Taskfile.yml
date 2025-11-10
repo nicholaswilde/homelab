@@ -59,6 +59,10 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  backup:
+    desc: Backs up the AdGuardHome.yaml file
+    cmds:
+      - ./backup-adguardhome.sh
   default:
     cmds:
       - task -l
