@@ -43,6 +43,42 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
           answer: 192.168.3.250
     ```
 
+### :handshake: Service
+
+!!! abstract "`/etc/systemd/system/AdGuardHome.service`"
+
+    === "Automatic"
+
+        ```shell
+        cat > /etc/systemd/system/AdGuardHome.service <<EOF
+        --8<-- "adguardhome/AdGuardHome.service"
+        EOF
+        ```
+
+    === "Download"
+
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome/AdGuardHome.service -O /etc/systemd/system/AdGuardHome.service
+        ```
+        
+    === "Manual"
+
+        ```ini
+        --8<-- "adguardhome/AdGuardHome.service"
+        ```
+    
+!!! code "Enable service"
+
+    === "Manual"
+    
+        ```shell
+        (
+         systemctl enable AdGuardHome.service && \
+         systemctl start AdGuardHome.service && \
+         systemctl status AdGuardHome.service
+        ) 
+        ```
+
 ## :rocket: Upgrade
 
 Upgrading the app is done [via the web GUI][3].
