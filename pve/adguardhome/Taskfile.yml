@@ -7,16 +7,24 @@ dotenv:
 tasks:
   decrypt:
     desc: Decrypt .env using SOPS
+    preconditions:
+      - test -f .env.enc
+      - test -f AdGuardHome.yaml.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type yaml --output-type yaml AdGuardHome.yaml.enc > AdGuardHome.yaml
   enable:
     desc: Enable the application's systemd service.
     cmds:
       - systemctl enable {{ .SERVICE_NAME }}.service
   encrypt:
     desc: Encrypt .env using SOPS
+    preconditions:
+      - test -f AdGuardHome.yaml
+      - test -f .env
     cmds:
       - sops -e .env > .env.enc
+      - sops -e --input-type yaml --output-type yaml AdGuardHome.yaml > AdGuardHome.yaml.enc
   export:
     silent: true
     desc: Export the task list to `task-list.txt`.
