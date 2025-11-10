@@ -1,0 +1,16 @@
+# This is a template for the AdGuard Home backup timer.
+# To use it, copy it to /etc/systemd/system/adguardhome-backup.timer
+# and adjust the schedule in OnCalendar if necessary.
+
+[Unit]
+Description=Run AdGuard Home backup script periodically
+
+[Timer]
+# Run daily at midnight.
+# You can change this to something else, e.g., "hourly", "weekly",
+# or a more specific time like "*-*-* 02:00:00".
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

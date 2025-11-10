@@ -63,6 +63,43 @@ tasks:
     desc: Backs up the AdGuardHome.yaml file
     cmds:
       - ./backup-adguardhome.sh
+  bt:install:
+    desc: Install and enable the backup timer systemd service.
+    cmds:
+      - sudo cp {{.TASKFILE_DIR}}/backup.service.tmpl /etc/systemd/system/adguardhome-backup.service
+      - sudo cp {{.TASKFILE_DIR}}/backup.timer.tmpl /etc/systemd/system/adguardhome-backup.timer
+      - sudo systemctl daemon-reload
+      - sudo systemctl enable --now adguardhome-backup.timer
+    preconditions:
+      - test -f {{.TASKFILE_DIR}}/backup.service.tmpl
+      - test -f {{.TASKFILE_DIR}}/backup.timer.tmpl
+  bt:uninstall:
+    desc: Uninstall the backup timer systemd service.
+    cmds:
+      - sudo systemctl disable --now adguardhome-backup.timer
+      - sudo rm /etc/systemd/system/adguardhome-backup.service
+      - sudo rm /etc/systemd/system/adguardhome-backup.timer
+      - sudo systemctl daemon-reload
+  bt:status:
+    desc: Check the status of the backup timer.
+    cmds:
+      - sudo systemctl status adguardhome-backup.timer
+  bt:start:
+    desc: Start the backup timer.
+    cmds:
+      - sudo systemctl start adguardhome-backup.timer
+  bt:stop:
+    desc: Stop the backup timer.
+    cmds:
+      - sudo systemctl stop adguardhome-backup.timer
+  bt:enable:
+    desc: Enable the backup timer to start on boot.
+    cmds:
+      - sudo systemctl enable adguardhome-backup.timer
+  bt:disable:
+    desc: Disable the backup timer from starting on boot.
+    cmds:
+      - sudo systemctl disable adguardhome-backup.timer
   default:
     cmds:
       - task -l

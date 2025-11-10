@@ -18,7 +18,7 @@
 
 # Options
 # set -e
-# set -o pipefail
+set -o pipefail
 
 # These are constants
 readonly BLUE=$(tput setaf 4)
@@ -37,6 +37,7 @@ ENABLE_NOTIFICATIONS="true"
 UPDATE_SUCCESS="true"
 UPDATE_MESSAGES=()
 CHANGES_DETECTED=false
+DEBUG="false"
 
 if [ -f "${SCRIPT_DIR}/.env" ]; then
   source "${SCRIPT_DIR}/.env"
@@ -143,75 +144,75 @@ function backup_config() {
   log "INFO" "Starting AdGuardHome backup process..."
 
   if [ ! -f "${ENCRYPTED_FILE}" ]; then
-      log "ERRO" "Encrypted file not found at ${ENCRYPTED_FILE}"
-      UPDATE_SUCCESS="false"
-      UPDATE_MESSAGES+=("Encrypted file not found.")
-      return
+    log "ERRO" "Encrypted file not found at ${ENCRYPTED_FILE}"
+    UPDATE_SUCCESS="false"
+    UPDATE_MESSAGES+=("Encrypted file not found.")
+    return
   fi
 
   if [ ! -f "${UNENCRYPTED_FILE}" ]; then
-      log "ERRO" "Unencrypted file not found at ${UNENCRYPTED_FILE}"
-      UPDATE_SUCCESS="false"
-      UPDATE_MESSAGES+=("Unencrypted file not found.")
-      return
+    log "ERRO" "Unencrypted file not found at ${UNENCRYPTED_FILE}"
+    UPDATE_SUCCESS="false"
+    UPDATE_MESSAGES+=("Unencrypted file not found.")
+    return
   fi
 
   log "INFO" "Decrypting for comparison..."
-  if ! sops -d "${ENCRYPTED_FILE}" > "${TMP_DECRYPTED_FILE}"; then
+  if ! sops -d --input-type yaml --output-type yaml "${ENCRYPTED_FILE}" > "${TMP_DECRYPTED_FILE}"; then
     log "ERRO" "SOPS decryption failed."
     UPDATE_SUCCESS="false"
     UPDATE_MESSAGES+=("SOPS decryption failed.")
     return
   fi
 
-  if diff -q "${UNENCRYPTED_FILE}" "${TMP_DECRYPTED_FILE}"; then
+  if diff -u "${UNENCRYPTED_FILE}" "${TMP_DECRYPTED_FILE}" 2>&1 | log "DEBU"; then
     log "INFO" "No changes detected in AdGuardHome.yaml. No backup needed."
     # No changes, so we don't set CHANGES_DETECTED to true
   else
     CHANGES_DETECTED=true
     log "INFO" "Changes detected. Proceeding with backup."
 
+    log "INFO" "Pulling latest changes from origin..."
+    if ! git -C "${PROJECT_ROOT}" pull origin main 2>&1 | log "INFO"; then
+      log "ERRO" "Git pull failed."
+      UPDATE_SUCCESS="false"
+      UPDATE_MESSAGES+=("Git pull from origin failed.")
+      return
+    fi
+    UPDATE_MESSAGES+=("Pulled latest changes from origin.")
+
     log "INFO" "Encrypting ${UNENCRYPTED_FILE} to ${ENCRYPTED_FILE}..."
-    if ! sops --encrypt "${UNENCRYPTED_FILE}" > "${ENCRYPTED_FILE}"; then
-        log "ERRO" "SOPS encryption failed."
-        UPDATE_SUCCESS="false"
-        UPDATE_MESSAGES+=("SOPS encryption failed.")
-        return
+    if ! sops -e --input-type yaml --output-type yaml "${UNENCRYPTED_FILE}" > "${ENCRYPTED_FILE}"; then
+      log "ERRO" "SOPS encryption failed."
+      UPDATE_SUCCESS="false"
+      UPDATE_MESSAGES+=("SOPS encryption failed.")
+      return
     fi
     UPDATE_MESSAGES+=("Successfully encrypted new configuration.")
 
     log "INFO" "Adding changes to git..."
-    if ! git -C "${PROJECT_ROOT}" add "${ENCRYPTED_FILE}"; then
-        log "ERRO" "Git add failed."
-        UPDATE_SUCCESS="false"
-        UPDATE_MESSAGES+=("Git add failed.")
-        return
+    if ! git -C "${PROJECT_ROOT}" add "${ENCRYPTED_FILE}" 2>&1 | log "INFO"; then
+      log "ERRO" "Git add failed."
+      UPDATE_SUCCESS="false"
+      UPDATE_MESSAGES+=("Git add failed.")
+      return
     fi
 
     log "INFO" "Committing changes to git..."
-    if ! git -C "${PROJECT_ROOT}" commit -m "ci(adguardhome): backup AdGuardHome.yaml"; then
-        log "ERRO" "Git commit failed."
-        UPDATE_SUCCESS="false"
-        UPDATE_MESSAGES+=("Git commit failed.")
-        return
+    if ! git -C "${PROJECT_ROOT}" commit --no-gpg-sign -m "ci(adguardhome): backup AdGuardHome.yaml" 2>&1 | log "INFO"; then
+      log "ERRO" "Git commit failed."
+      UPDATE_SUCCESS="false"
+      UPDATE_MESSAGES+=("Git commit failed.")
+      return
     fi
     UPDATE_MESSAGES+=("Committed changes to git.")
 
-    log "INFO" "Pulling latest changes from origin..."
-    if ! git -C "${PROJECT_ROOT}" pull origin main; then
-        log "ERRO" "Git pull failed."
-        UPDATE_SUCCESS="false"
-        UPDATE_MESSAGES+=("Git pull from origin failed.")
-        return
-    fi
-    UPDATE_MESSAGES+=("Pulled latest changes from origin.")
-
     log "INFO" "Pushing changes to origin..."
-    if ! git -C "${PROJECT_ROOT}" push origin main; then
-        log "ERRO" "Git push failed."
-        UPDATE_SUCCESS="false"
-        UPDATE_MESSAGES+=("Git push to origin failed.")
-        return
+    if ! git -C "${PROJECT_ROOT}" push origin main 2>&1 | log "INFO"; then
+      log "ERRO" "Git push failed."
+      UPDATE_SUCCESS="false"
+      UPDATE_MESSAGES+=("Git push to origin failed.")
+      return
     fi
     UPDATE_MESSAGES+=("Pushed changes to origin.")
 

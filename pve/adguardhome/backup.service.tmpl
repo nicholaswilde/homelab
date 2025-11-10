@@ -1,0 +1,10 @@
+# This is a template for the AdGuard Home backup service.
+# To use it, copy it to /etc/systemd/system/adguardhome-backup.service
+# and adjust the ExecStart path if necessary.
+
+[Unit]
+Description=Back up AdGuard Home configuration
+
+[Service]
+Type=oneshot
+ExecStart=/home/nicholas/git/nicholaswilde/homelab/pve/adguardhome/backup-adguardhome.sh
