@@ -24,6 +24,7 @@
 readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
+readonly PURPLE=$(tput setaf 5)
 readonly RESET=$(tput sgr0)
 readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 readonly PROJECT_ROOT=$(git rev-parse --show-toplevel)
