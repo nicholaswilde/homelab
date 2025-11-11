@@ -1,0 +1,25 @@
+---
+version: '3'
+
+env:
+  APP_NAME: '{{ .APP_NAME }}'
+  APP_PORT: '{{ .APP_PORT }}'
+
+tasks:
+  new:
+    desc: Create a new file
+    cmds:
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME }} -D APP_PORT={{ shellQuote .APP_PORT }} .template.md.j2
+  new-docker:
+    desc: Create a new Docker file
+    cmds:
+      - jinja2 -D APP_NAME={{ shellQuote .APP_NAME }} -D APP_PORT={{ shellQuote .APP_PORT }} .template-docker.md.j2
+  generate-nav:
+    desc: Generate MkDocs navigation from content
+    cmds:
+      - python3 ../scripts/generate_mkdocs_nav.py
+  default:
+    cmds:
+      - task -l
+    silent: true
+    desc: List all available tasks.
