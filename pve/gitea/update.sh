@@ -76,18 +76,6 @@ function check_dependencies() {
   fi
 }
 
-function get_arch() {
-  ARCH=$(uname -m)
-  case $ARCH in
-    x86_64)
-      ARCH="amd64"
-      ;;
-    aarch64)
-      ARCH="arm64"
-      ;;
-  esac
-}
-
 function get_latest_version() {
   log "INFO" "Getting latest version of ${BINARY_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases"
