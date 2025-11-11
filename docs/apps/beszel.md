@@ -81,4 +81,3 @@ WIP
 [2]: <./mailrise.md>
 [3]: <./ntfy.md>
 [4]: <./gotify.md>
-

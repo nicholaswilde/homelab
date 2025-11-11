@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: Homelab
 site_description: My notes on various things
 site_author: Nicholas Wilde
@@ -100,6 +99,33 @@ nav:
       - Emoji: reference/emoji.md
       - Tags: reference/tags.md
 
+theme:
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+  palette:
+
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
 extra_css:
   - stylesheets/extra.css
 
@@ -121,35 +147,6 @@ extra:
       link: https://keybase.io/nicholaswilde
     - icon: fontawesome/solid/key
       link: https://github.com/nicholaswilde.gpg
-
-theme:
-  name: material
-  language: en
-  icon:
-    repo: fontawesome/brands/github
-    logo: fontawesome/solid/house-chimney
-  features:
-    - navigation.top
-    - navigation.tracking
-    - navigation.footer
-    - content.code.copy
-    - content.action.edit
-    - content.action.view
-  palette:
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
 
 plugins:
   - search
@@ -181,6 +178,8 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink:

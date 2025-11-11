@@ -6,7 +6,7 @@ tags:
 
 [Google Gemini CLI][1] is used as an AI agent that can be used directly in a terminal.
 
-I use the Gemini CLI to help generate bash script files and markdown documents for mkdocs-material. It is my preferred coding agent at the moment since I already pay for Google One.
+I use the Gemini CLI to help generate bash script files and markdown documents for zensical. It is my preferred coding agent at the moment since I already pay for Google One.
 
 ## :hammer_and_wrench: Installation
 

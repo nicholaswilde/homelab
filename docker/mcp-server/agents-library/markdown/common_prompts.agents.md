@@ -12,7 +12,7 @@ As an AI assistant, I will adhere to the following guidelines when creating or m
 - Ensure a consistent and instructional tone.
 - Favor simple Markdown over complex HTML.
 - All documentation is written in Markdown and generated using MkDocs with the Material theme.
-- Adhere strictly to the MkDocs-Material syntax extensions.
+- Adhere strictly to the Zensical syntax extensions.
 - Ensure all new pages are added to the `nav` section of the `mkdocs.yml` file.
 - All internal links must be relative and point to other `.md` files.
 - Do not use first-person or third-person perspective.
@@ -21,7 +21,7 @@ As an AI assistant, I will adhere to the following guidelines when creating or m
 
 ## Style Guide
 
-- **Headings:** Use ATX-style headings (`#`, `##`, etc.). The main page title is always H1. All headings should start with an emoji using mkdocs-material compatible shortcodes.
+- **Headings:** Use ATX-style headings (`#`, `##`, etc.). The main page title is always H1. All headings should start with an emoji using zensical compatible shortcodes.
 - **Admonitions:** Use admonitions to highlight information (e.g., `!!! note`, `!!! warning`).
 - **Code Blocks:** Always specify the language for syntax highlighting.
 - **Lists:** Use hyphens for unordered lists and numbers for ordered lists.

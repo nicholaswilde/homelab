@@ -14,16 +14,15 @@ Generally, the repo is meant to be used as a centralized location for my homelab
 
 This repo is cloned into each container and VM and then updated and maintained on that container and VM.
 
-!!! code ""
 
-    ```shell
-    (
-        [ -d ~/git/nicholaswilde ] || mkdir -p ~/git/nicholaswilde
-        cd ~/git/nicholaswilde && \
-        git clone git@github.com:nicholaswilde/homelab.git && \
-        cd homelab
-    )
-    ```
+```shell
+(
+    [ -d ~/git/nicholaswilde ] || mkdir -p ~/git/nicholaswilde
+    cd ~/git/nicholaswilde && \
+    git clone git@github.com:nicholaswilde/homelab.git && \
+    cd homelab
+)
+```
 
 ### :package: Containers & VMs
 

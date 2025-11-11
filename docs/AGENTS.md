@@ -11,7 +11,7 @@
 - Ensure a consistent tone and voice (e.g., formal, informal, instructional).
 - Favor simple Markdown over complex HTML embeds unless absolutely necessary.
 - All documentation is written in Markdown and generated using the MkDocs with the Material theme.
-- Adhere strictly to the MkDocs-Material syntax extensions for features like admonitions, content tabs, and icons.
+- Adhere strictly to the Zensical syntax extensions for features like admonitions, content tabs, and icons.
 - Ensure all new pages are added to the `nav` section of the `mkdocs.yml` file to appear in the site navigation.
 - All internal links must be relative and point to other `.md` files within the `docs/` directory.
 - Do not use first-person nor third-person perspective in the document.
@@ -19,7 +19,7 @@
 ## Markdown Style Guide:
 
 - **Headings:** Use ATX-style headings (`#`, `##`, `###`, etc.). The main page title is always H1 (`#`).
-- All Headings should start with emoji using mkdocs-material compatible shortcode.
+- All Headings should start with emoji using zensical compatible shortcode.
 - **Admonitions:** Use admonitions to highlight important information.
 - `!!! note` for general information.
 - `!!! code` for computer code and commands.
@@ -83,7 +83,7 @@ This directory contains documentation for hardware components in the homelab. Ea
 
 ## Regarding Dependencies:
 
-- The primary dependency is mkdocs-material.
+- The primary dependency is zensical.
 - The project also uses the pymdown-extensions for advanced formatting.
 - Mermaid is an acceptable plugin.
 - Do not introduce new MkDocs plugins without prior discussion and approval.

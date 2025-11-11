@@ -3,7 +3,7 @@ tags:
   - vm
   - proxmox
 ---
-# :simple-homeassistant: Home Assistant OS
+# :lucide-homeassistant: Home Assistant OS
 
 My current setup consists of running Docker containers on my [NUC][1]. 
 

@@ -2,8 +2,6 @@
 version: '3'
 
 vars:
-  VER: '2.5'
-  IMAGE: nicholaswilde/mkdocs-material
   PORT: 8000
 
 tasks:
@@ -12,17 +10,10 @@ tasks:
     cmds:
       - curl -fsSL "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}" | jq -r '.models[].name'
   build:
-    desc: Build documentation using Docker and mkdocs-material
+    desc: Build documentation using zensical
     cmds:
-      - >-
-        docker run --rm -it -v ${PWD}:/docs --platform linux/amd64
-        {{ .IMAGE }} build -f ./mkdocs.yml
+      - uvx zensical build
 
-  update:
-    desc: Update docker container
-    cmds:
-      - docker pull {{ .IMAGE }}
-      - docker image prune -a -f
   up:
     desc: Start server
     cmds:
@@ -31,14 +22,9 @@ tasks:
   serve:
     desc: >-
       Start development server on http://0.0.0.0:{{ .PORT }} using
-      Docker and mkdocs-material
+      zensical
     cmds:
-      - >-
-        docker run --rm -it -p {{ .PORT }}:{{ .PORT}} -v ${PWD}:/docs
-        --platform linux/amd64 {{ .IMAGE }} serve
-        --dev-addr 0.0.0.0:{{ .PORT }} -f ./mkdocs.yml
-    deps:
-      - build
+      - uvx zensical serve --dev-addr 0.0.0.0:{{.PORT}}
 
   linkcheck:
     desc: Run markdown-link-check
