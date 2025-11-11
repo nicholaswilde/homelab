@@ -1,39 +1,29 @@
 ---
-name: ci
-on:  # yamllint disable-line rule:truthy
+name: Documentation
+on:
   push:
     branches:
+      - master
       - main
-
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   deploy:
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Create virtual environment
-        run: uv venv
-      - name: Install dependencies
-        run: uv pip install .
-      - name: Build documentation
-        run: uvx zensical build --clean
+      - run: pip install zensical
+      - run: zensical build --clean 
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: ./site
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          path: site
+      - uses: actions/deploy-pages@v4
