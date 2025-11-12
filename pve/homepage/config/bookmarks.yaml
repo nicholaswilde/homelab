@@ -37,8 +37,8 @@
     - Selfh.st Icons Source:
         - icon: si-github
           href: https://github.com/selfhst/icons/tree/main/png
-      - Material for MkDocs:
-          icon: mdi-material-ui
+    - Zensical:
+        - icon: mdi-material-ui
           href: https://zensical.org/docs/authoring/icons-emojis/
     - Emojipedia:
         # - icon: https://blog.emojipedia.org/content/images/2017/08/emojipedia300.png
