@@ -77,7 +77,14 @@ tasks:
       - scripts/.venv/bin/python3 scripts/generate_mkdocs_nav.py
     deps:
       - scripts:deps
-
+  docs:check:
+    desc: Check Zensical version
+    cmds:
+      - uv pip show zensical
+  docs:update:
+    desc: Update Zensical
+    cmds:
+      - uv lock --upgrade-package zensical==0.0.7
   default:
     cmds:
       - task -l
