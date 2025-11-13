@@ -25,6 +25,14 @@ Installed via `homelab-pull`.
 2. Remove shared folder.
 3. Accept shared folders from control node.
 
+## Troubleshooting
+
+To fix a stopped Syncthing folder
+
+```shell title="Both managed and control node"
+syncthing --reset-database
+```
+
 ## :link: References
 
 - <https://syncthing.net/>
