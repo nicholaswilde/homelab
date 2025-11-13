@@ -17,11 +17,9 @@ It is installed only on the primary instance and is scheduled to run once a day,
     
     :material-information-outline: Binary path: `/usr/local/bin`
 
-!!! code "Install"
-
-    ```shell
-    task install
-    ```
+```shell title="Install"
+task install
+```
 
 ## :gear: Config
 
@@ -36,33 +34,33 @@ It is installed only on the primary instance and is scheduled to run once a day,
         After = network.target
 
         [Service]
-                ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
-        
-                [Install]
-                WantedBy = multi-user.target
-                EOF
-                ```
-        
-            === "Download"
-        
-                ```shell
-                wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
-                ```
-            
-            === "Manual"
-        
-                ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
-                [Unit]
-                Description = AdGuardHome Sync
-                After = network.target
-        
-                [Service]
-                ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
-        
-                [Install]
-                WantedBy = multi-user.target
-                ```
-        
+        ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
+
+        [Install]
+        WantedBy = multi-user.target
+        EOF
+        ```
+
+    === "Download"
+
+        ```shell
+        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
+        ```
+    
+    === "Manual"
+
+        ```ini title="/opt/adguardhome-sync/adguardhome-sync.service"
+        [Unit]
+        Description = AdGuardHome Sync
+        After = network.target
+
+        [Service]
+        ExecStart = /usr/local/bin/adguardhome-sync --config ${HOME}/git/nicholaswilde/homelab/pve/adguardhome-sync/adguardhome-sync.yaml run
+
+        [Install]
+        WantedBy = multi-user.target
+        ```
+      
         !!! code "Enable service"
         
             ```shell
@@ -75,11 +73,9 @@ It is installed only on the primary instance and is scheduled to run once a day,
             ```
 ## :rocket: Upgrade
 
-!!! code ""
-
-    ```shell
-    task update
-    ```
+```shell
+task update
+```
 
 ## :simple-task: Task List
 
