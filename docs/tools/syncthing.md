@@ -29,9 +29,18 @@ Installed via `homelab-pull`.
 
 To fix a stopped Syncthing folder
 
-```shell title="Both managed and control node"
+```shell title="Managed node"
 syncthing --reset-database
+systemctl restart syncthing@${USER}.service
 ```
+
+Remote orphaned shared computer and then unshared folders, is needed in the GUI
+
+Changed shared folders to `Receive Only`.
+
+Reset and restart syncthing again.
+
+Revert changes to folders if they say `Local`.
 
 ## :link: References
 
