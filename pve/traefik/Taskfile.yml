@@ -45,11 +45,15 @@ tasks:
   restart:
     desc: Restart Traefik
     cmds:
-      - service traefik restart
+      - systemctl restart {{ .SERVICE_NAME }}.service
   status:
     desc: View the Traefik service status
     cmds:
-      - service traefik status
+      - systemctl status {{ .SERVICE_NAME }}.service
+  stop:
+    desc: Stop the Traefik service
+    cmds:
+      - systemctl stop {{ .SERVICE_NAME }}.service
 
   default:
     cmds:
