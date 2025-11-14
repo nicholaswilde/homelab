@@ -3,7 +3,7 @@ tags:
   - lxc
   - proxmox
 ---
-# :lucide-gitea: Gitea
+# :simple-gitea: Gitea
 
 [Gitea][1] is used to have local git repos. I typically use it as a backup (mirror) of my GitHub repos.
 
@@ -136,7 +136,7 @@ The gitea repo should now show the `SSH_DOMAIN` in the `Code` button under `SSH`
 
 #### :lucide-adguard: AdGuardHome DNS Rewrite
 
-In [AdGuardHome](./adguard.md) DNS Rewrites, add an entry that forwards the `SSH_DOMAIN` directly to your gitea LXC.
+In [AdGuardHome](./adguardhome.md) DNS Rewrites, add an entry that forwards the `SSH_DOMAIN` directly to your gitea LXC.
 
 - Domain: `gitea-ssh.l.nicholaswilde.io`
 - Answer: `192.168.2.20`
@@ -176,7 +176,7 @@ You can then clone a repo using the hostname rather than the gitea IP address.
     ```
 
 
-## :lucide-traefikproxy: Traefik
+## :simple-traefikproxy: Traefik
 
 ??? abstract "`homelab/pve/traefik/conf.d/gitea.yaml`"
 
@@ -184,7 +184,7 @@ You can then clone a repo using the hostname rather than the gitea IP address.
     --8<-- "traefik/conf.d/gitea.yaml"
     ```
 
-## :lucide-task: Task List
+## :simple-task: Task List
 
 !!! example ""
 

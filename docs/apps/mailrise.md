@@ -7,7 +7,7 @@ tags:
 ---
 # ![mailrise](https://raw.githubusercontent.com/YoRyan/mailrise/refs/heads/main/src/mailrise/asset/mailrise-info-128x128.png){ width="32" } mailrise
 
-[mailrise][1] An SMTP gateway for Apprise notifications.
+[mailrise][1] is my primary notification system, centralizing credentials and supporting various notification types. Its ease of use with `curl` or `smtp` tools makes it highly effective.
 
 ## :hammer_and_wrench: Installation
 

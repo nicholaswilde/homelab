@@ -199,5 +199,5 @@ To uninstall the timer, run the following task:
 - <https://pimox-scripts.com/scripts?id=adguard>
 
 [1]: <https://adguard.com/en/adguard-home/overview.html>
-[2]: <./adguard-sync.md>
+[2]: <./adguardhome-sync.md>
 [3]: <https://github.com/adguardteam/adguardhome/wiki/Getting-Started#update>

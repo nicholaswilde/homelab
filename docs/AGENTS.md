@@ -51,7 +51,7 @@
 
 ## File Naming Conventions:
 
-- **Applications:** Files in `docs/apps/` should be named `app-name.md` (e.g., `adguard.md`).
+- **Applications:** Files in `docs/apps/` should be named `app-name.md` (e.g., `adguardhome.md`).
 - **Tools:** Files in `docs/tools/` should be named `tool-name.md` (e.g., `sops.md`).
 - **Hardware:** Files in `docs/hardware/` should be named `hardware-name.md` (e.g., `rpi5.md`).
 

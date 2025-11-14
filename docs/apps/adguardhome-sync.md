@@ -73,9 +73,18 @@ task install
             ```
 ## :rocket: Upgrade
 
-```shell
-task update
-```
+!!! code ""
+
+    === "Task"
+
+        ```shell
+        task update
+        ```
+    === "Manual"
+
+        ```shell
+        sudo /root/git/nicholaswilde/homelab/pve/adguardhome-sync/update.sh
+        ```
 
 ## :simple-task: Task List
 
@@ -90,4 +99,4 @@ task update
 - <https://github.com/bakito/adguardhome-sync>
 
 [1]: <https://github.com/bakito/adguardhome-sync>
-[2]: <./adguard.md>
+[2]: <./adguardhome.md>

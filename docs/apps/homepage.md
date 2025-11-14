@@ -69,6 +69,24 @@ I make this my 🏠 button as well as my new tab in Chrome so that it launches e
     --8<-- "traefik/conf.d/homepage.yaml"
     ```
 
+## :rocket: Upgrade
+
+To upgrade homepage, run the `update.sh` script located in `pve/homepage/`.
+
+!!! code ""
+
+    === "Task"
+
+        ```shell
+        task update
+        ```
+
+    === "Manual"
+
+        ```shell
+        sudo /root/git/nicholaswilde/homelab/pve/homepage/update.sh
+        ```
+
 ## :simple-task: Task List
 
 !!! example ""

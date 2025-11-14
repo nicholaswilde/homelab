@@ -18,8 +18,8 @@ nav:
       - Development: about/development.md
       - Future: about/future.md
   - Apps:
-      - Adguard Home Sync: apps/adguard-sync.md
-      - AdGuard Home: apps/adguard.md
+      - Adguard Home Sync: apps/adguardhome-sync.md
+      - AdGuard Home: apps/adguardhome.md
       - Apache Guacamole: apps/apache-guacamole.md
       - Apt-Cacher NG: apps/aptcacherng.md
       - aria2: apps/aria2.md
@@ -33,7 +33,7 @@ nav:
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
       - Gotify: apps/gotify.md
-      - Home Assistant OS: apps/home-assistant-os.md
+      - Home Assistant: apps/home-assistant.md
       - homepage: apps/homepage.md
       - Immich: apps/immich.md
       - Immich-Go: apps/immich-go.md

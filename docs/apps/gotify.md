@@ -44,7 +44,7 @@ tags:
     --8<-- "gotify/config.yml.tmpl"
     ```
 
-## :lucide-task: Task List
+## :simple-task: Task List
 
 !!! example ""
 

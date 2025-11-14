@@ -306,8 +306,8 @@ I have tried [ntfy][18] and [Gotify][19], but they are easily dismissed and diff
 ## :link: References
 
 [3]: <../tools/jinja2-cli.md>
-[1]: <../apps/adguard.md>
-[2]: <../apps/adguard-sync.md>
+[1]: <../apps/adguardhome.md>
+[2]: <../apps/adguardhome-sync.md>
 [4]: <../apps/traefik.md>
 [5]: <../apps/homepage.md>
 [6]: <../apps/watchyourlan.md>
