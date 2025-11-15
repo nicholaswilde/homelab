@@ -31,6 +31,14 @@ tasks:
     desc: Make symlinks
     cmds:
       - ln -s {{ .TASKFILE_DIR }}/acng.conf /etc/apt-cacher-ng/
+  watch:
+    desc: Watch the logs
+    cmds:
+      - tail -f /var/log/apt-cacher-ng/apt-cacher.log
+  follow:
+    desc: Follow the logs
+    cmds:
+      - task: watch
   default:
     cmds:
       - task -l
