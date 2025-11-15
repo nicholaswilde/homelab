@@ -41,7 +41,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "zensical", specifier = ">=0.0.6" }]
+requires-dist = [{ name = "zensical", specifier = ">=0.0.7" }]
 
 [[package]]
 name = "markdown"

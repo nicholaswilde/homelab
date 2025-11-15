@@ -82,6 +82,27 @@ tags:
         ```ini
         Acquire::http::Proxy "http://192.168.2.40:3142";
         ```
+
+## :material-test-tube: Testing
+
+To test the Apt-Cacher NG setup, perform the following steps:
+
+1.  **From a remote host**, use the following command to download a package through the cache:
+
+    !!! code ""
+
+        ```shell
+        sudo apt clean && time sudo apt install --download-only --reinstall libreoffice
+        ```
+
+2.  **On the ACNG host**, watch the logs to confirm that the package download was cached:
+
+    !!! code ""
+
+        ```shell
+        tail -f /var/log/apt-cacher-ng/apt-cacher.log
+        ```
+
 ## :simple-traefikproxy: Traefik
 
 ??? abstract "`homelab/pve/traefik/conf.d/aptcache.yaml`"
