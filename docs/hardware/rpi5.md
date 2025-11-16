@@ -490,6 +490,7 @@ See [LVM](../tools/lvm.md).
 ## :link: References
 
   - <https://a.co/d/etvDazc>
+  - <https://docs.pxvirt.lierfang.com/en/README.html>
 
 [1]: <https://packages.debian.org/buster/dphys-swapfile>
 [2]: <https://www.raspberrypi.com/software/>
@@ -504,6 +505,6 @@ See [LVM](../tools/lvm.md).
 
 [10]: <https://community-scripts.github.io/ProxmoxVE/> 
 [11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/> 
-[13]: <https://download.lierfang.com/isos/> 
+[13]: <https://mirrors.lierfang.com/pxcloud/pxvirt/isos/> 
 [14]: <https://www.raspberrypi.com/products/active-cooler/>
 [15]: <https://github.com/jiangcuo/pxvirt>
