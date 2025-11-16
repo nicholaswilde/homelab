@@ -49,3 +49,6 @@ pve/frame-fi/pictures/*.webm
 pve/frame-fi/pictures/*.flv
 pve/frame-fi/pictures/*.wmv
 !pve/frame-fi/pictures/.gitkeep
+# Patchmon
+*.creds
+patchmon.conf

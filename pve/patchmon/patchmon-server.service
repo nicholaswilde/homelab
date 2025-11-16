@@ -1,0 +1,20 @@
+[Unit]
+Description=PatchMon Service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/patchmon/backend
+ExecStart=/usr/bin/node src/server.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=PATH=/usr/bin:/usr/local/bin
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/patchmon
+
+[Install]
+WantedBy=multi-user.target

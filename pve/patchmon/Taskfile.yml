@@ -14,19 +14,27 @@ tasks:
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
-      - test -f .env.enc
+      - test -f {{ .TASKFILE_DIR }}/frontend/.env.enc
+      - test -f {{ .TASKFILE_DIR }}/backend/.env.enc
+      - test -f {{ .TASKFILE_DIR }}/patchmon.creds.enc
     cmds:
-      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc > {{ .TASKFILE_DIR }}/frontend/.env
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc > {{ .TASKFILE_DIR }}/backend/.env
+      - sops -d {{ .TASKFILE_DIR }}/patchmon.creds.enc > {{ .TASKFILE_DIR }}/patchmon.creds
   enable:
     desc: Enable the application's systemd service.
     cmds:
-      - systemctl enable {{ .SERVICE_NAME }}.service
+      - sudo systemctl enable -q --now {{ .SERVICE_NAME }}
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
     preconditions:
-      - test -f .env
+      - test -f {{ .TASKFILE_DIR }}/frontend/.env
+      - test -f {{ .TASKFILE_DIR }}/backend/.env
+      - test -f {{ .TASKFILE_DIR }}/patchmon.creds
     cmds:
-      - sops -e .env > .env.enc
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env > {{ .TASKFILE_DIR }}/frontend/.env.enc
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env > {{ .TASKFILE_DIR }}/backend/.env.enc
+      - sops -e {{ .TASKFILE_DIR }}/patchmon.creds > {{ .TASKFILE_DIR }}/patchmon.creds.enc
   export:
     silent: true
     desc: Export the task list to `task-list.txt`.
@@ -47,30 +55,44 @@ tasks:
   restart:
     desc: Restart the application's systemd service.
     cmds:
-      - systemctl restart {{ .SERVICE_NAME }}.service
+      - sudo systemctl restart {{ .SERVICE_NAME }}.service
   start:
     desc: Start the application's systemd service.
     cmds:
-      - systemctl start {{ .SERVICE_NAME }}.service
+      - sudo systemctl start {{ .SERVICE_NAME }}.service
   status:
     desc: Check the status of the application's systemd service.
     cmds:
-      - systemctl status {{ .SERVICE_NAME }}.service
+      - sudo systemctl status {{ .SERVICE_NAME }}.service
   stop:
     desc: Stop the application's systemd service.
     cmds:
-      - systemctl stop {{ .SERVICE_NAME }}.service
+      - sudo systemctl stop {{ .SERVICE_NAME }}.service
   update:
     desc: Update the application or its running containers.
     preconditions:
       - test -f update.sh
     cmds:
-      - ./update.sh
+      - sudo ./update.sh
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
       - git pull origin
       - task: update
+  service:install:
+    desc: Install service
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/{{ .SERVICE_NAME }}.service
+    cmds:
+      - sudo cp {{ .TASKFILE_DIR }}/{{ .SERVICE_NAME }}.service /etc/systemd/system/
+      - task: enable
+  settings:install:
+    desc: Install settings
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/update-settings.js
+    cmds:
+      - sudo cp {{ .TASKFILE_DIR }}/update-settings.js /opt/patchmon/backend/update-settings.js
+      - node update-settings.js
   default:
     cmds:
       - task -l
