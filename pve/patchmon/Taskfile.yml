@@ -14,10 +14,12 @@ tasks:
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
+      - test -f {{ .TASKFILE_DIR }}/.env.enc
       - test -f {{ .TASKFILE_DIR }}/frontend/.env.enc
       - test -f {{ .TASKFILE_DIR }}/backend/.env.enc
       - test -f {{ .TASKFILE_DIR }}/patchmon.creds.enc
     cmds:
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc > {{ .TASKFILE_DIR }}/.env
       - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc > {{ .TASKFILE_DIR }}/frontend/.env
       - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc > {{ .TASKFILE_DIR }}/backend/.env
       - sops -d {{ .TASKFILE_DIR }}/patchmon.creds.enc > {{ .TASKFILE_DIR }}/patchmon.creds
@@ -32,6 +34,7 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/backend/.env
       - test -f {{ .TASKFILE_DIR }}/patchmon.creds
     cmds:
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env > {{ .TASKFILE_DIR }}/.env.enc
       - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env > {{ .TASKFILE_DIR }}/frontend/.env.enc
       - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env > {{ .TASKFILE_DIR }}/backend/.env.enc
       - sops -e {{ .TASKFILE_DIR }}/patchmon.creds > {{ .TASKFILE_DIR }}/patchmon.creds.enc
