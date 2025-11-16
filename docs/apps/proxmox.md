@@ -550,11 +550,72 @@ Here’s a breakdown of the command and the process:
     sudo fstrim -av
     ```
 
+## [QDevice](https://www.techtutorials.tv/sections/promox/proxmox-cluster-qdevice-raspberry-pi/)
+
+How to add a Raspberry Pi to a Proxmox cluster that only has two nodes.
+
+### Raspberry Pi
+
+Install the corosync-qnetd package
+
+```shell
+sudo apt install corosync-qnetd
+```
+
+Allow root SSH Login
+
+```shell
+sudo nano /etc/ssh/sshd_config
+```
+
+!!! abstract "/etc/ssh/sshd_config"
+
+    ```
+    PermitRootLogin yes
+    ```
+
+Restart service
+
+```shell
+sudo systemctl restart ssh
+```
+
+Change root password
+
+```shell
+sudo passwd root
+```
+
+View the IP address
+
+```
+hostname -I
+```
+
+### PVE Nodes
+
+```shell
+apt install corosync-qdevice
+```
+
+Install the corosync-qdevice package on all nodes
+
+```shell
+pvecm qdevice setup <qdevice_ip_address>
+```
+
+Check the results
+
+```shell
+pvecm status
+```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
 - <https://pimox-scripts.com/scripts?id=Homepage>
 - <https://pve.proxmox.com/wiki/>
+- <https://pve.proxmox.com/pve-docs/chapter-pvecm.html#_corosync_external_vote_support>
 
 [1]: <https://www.proxmox.com/en/>
 [2]: <https://pve.proxmox.com/wiki/Cluster_Manager#_remove_a_cluster_node>
