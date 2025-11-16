@@ -66,6 +66,9 @@
     - PortNote:
         icon: sh-portnote.svg
         href: https://portnote.l.nicholaswilde.io/
+    - PatchMon:
+        icon: sh-patchmon.svg
+        href: https://patchmon.l.nicholaswilde.io/
 - Media:
     - Jellyfin:
         icon: si-jellyfin
