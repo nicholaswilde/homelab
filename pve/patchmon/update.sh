@@ -272,6 +272,15 @@ function replace_me() {
   fi
 }
 
+function update_settings(){
+  cd "${INSTALL_DIR}/${APP_NAME}/backend"
+  log "INFO" "Updating settings ..." 
+  if ! node update-settings.js 2>&1 | log "DEBU"; then
+    log "ERRO" "Failed to update settings"
+    exit 1
+  fi
+}
+
 # Main function to orchestrate the script execution
 function main() {
   trap cleanup EXIT
@@ -312,6 +321,7 @@ function main() {
   build_update
   replace_me
   restart_service
+  update_settings
   get_current_version
   
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
