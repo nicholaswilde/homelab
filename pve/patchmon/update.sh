@@ -136,21 +136,21 @@ function make_temp_dir(){
 
 function backup() {
   log "INFO" "Creating Backups"
-  if [ -f "${INSTALL_DIR}/${APP_NAME}/backend/.env" ]; then
+  if [[ -f "${INSTALL_DIR}/${APP_NAME}/backend/.env" ]]; then
     if ! sudo cp "${INSTALL_DIR}/${APP_NAME}/backend/.env" "${INSTALL_DIR}/backend.env"; then
       return 1
     fi
   else
     log "WARN" "File /opt/patchmon/backend/.env doesn't exist"
   fi
-  if [ -f "${INSTALL_DIR}/${APP_NAME}/frontend/.env" ]; then
+  if [[ -f "${INSTALL_DIR}/${APP_NAME}/frontend/.env" ]]; then
     if ! sudo cp "${INSTALL_DIR}/${APP_NAME}/frontend/.env" "${INSTALL_DIR}/frontend.env"; then
       return 1
     fi
   else
     log "WARN" "File /opt/patchmon/frontend/.env doesn't exist"
   fi
-  if [ -f "${INSTALL_DIR}/${APP_NAME}/backend/update-settings.js" ]; then
+  if [[ -f "${INSTALL_DIR}/${APP_NAME}/backend/update-settings.js" ]]; then
     if ! sudo cp "${INSTALL_DIR}/${APP_NAME}/backend/update-settings.js" "${INSTALL_DIR}/update-settings.js"; then
       return 1
     fi
