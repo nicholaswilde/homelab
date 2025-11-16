@@ -45,6 +45,7 @@ nav:
       - netboot.xyz: apps/netbootxyz.md
       - ntfy: apps/ntfy.md
       - OpenMediaVault: apps/openmediavault.md
+      - PatchMon: apps/patchmon.md
       - Pinchflat: apps/pinchflat.md
       - Proxmox: apps/proxmox.md
       - qBittorrent: apps/qbittorrent.md
@@ -155,7 +156,84 @@ plugins:
       minify_html: true
 
 # Extensions
-markdown_extensions:
+  - Apps:
+      - Adguard Home Sync: apps/adguardhome-sync.md
+      - AdGuard Home: apps/adguardhome.md
+      - Apache Guacamole: apps/apache-guacamole.md
+      - Apt-Cacher NG: apps/aptcacherng.md
+      - aria2: apps/aria2.md
+      - authentik: apps/authentik.md
+      - ![beszel](https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg){ width="24" } Beszel: apps/beszel.md
+      - ![title](https://raw.githubusercontent.com/selfhst/icons/400886b4f5cd552ef373e4550cb0be7344402cce/svg/changedetection.svg){ width="32" } Change Detection: apps/changedetection.md
+      - ![ConvertX](https://raw.githubusercontent.com/C4illin/ConvertX/refs/heads/main/public/android-chrome-192x192.png){ width="32" } ConvertX: apps/convertx.md
+      - ![cyberkeygen](https://raw.githubusercontent.com/karthik558/CyberKeyGen/refs/heads/main/public/favicon.png){ width="32" } CyberKeyGen: apps/cyberkeygen.md
+      - Excalidraw: apps/excalidraw.md
+      - ![filebrowser](https://cdn.jsdelivr.net/gh/selfhst/icons/svg/file-browser.svg){ width="32" } File Browser: apps/filebrowser.md
+      - FrameFi: apps/frame-fi.md
+      - Gitea: apps/gitea.md
+      - ![gotify](https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png){ width="32" } Gotify: apps/gotify.md
+      - Home Assistant: apps/home-assistant.md
+      - homepage: apps/homepage.md
+      - Immich-Go: apps/immich-go.md
+      - Immich: apps/immich.md
+      - Installer: apps/installer.md
+      - ![it-tools](https://github.com/CorentinTh/it-tools/raw/refs/heads/main/public/safari-pinned-tab.svg){ width="32" } IT-TOOLS: apps/it-tools.md
+      - ![mailrise](https://raw.githubusercontent.com/YoRyan/mailrise/refs/heads/main/src/mailrise/asset/mailrise-info-128x128.png){ width="32" } mailrise: apps/mailrise.md
+      - MCP Server: apps/mcp-server.md
+      - MySpeed: apps/myspeed.md
+      - ![netboot.xyz](https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/png/netboot-xyz-light.png){ width="32" } netboot.xyz: apps/netbootxyz.md
+      - ntfy: apps/ntfy.md
+      - OpenMediaVault: apps/openmediavault.md
+      - PatchMon: apps/patchmon.md
+      - Pinchflat: apps/pinchflat.md
+      - Proxmox: apps/proxmox.md
+      - qBittorrent: apps/qbittorrent.md
+      - ![reactive-resume](https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/refs/heads/main/apps/artboard/public/favicon.png){ width="32" } Reactive Resume: apps/reactive-resume.md
+      - Registry: apps/registry.md
+      - reprepro: apps/reprepro.md
+      - ![Stirling PDF](https://cdn.jsdelivr.net/gh/selfhst/icons/webp/stirling-pdf.webp){ width="32" } Stirling PDF: apps/stirling-pdf.md
+      - Traefik: apps/traefik.md
+      - ![unbound][1]{ width="32" } Unbound: apps/unbound.md
+      - vaultwarden-backup: apps/vaultwarden-backup.md
+      - Vaultwarden: apps/vaultwarden.md
+      - ![ventoy](https://a.fsdn.com/allura/p/ventoy/icon?83b3cf3559dee8e8a1302821225c2e6076b1e2fded2a1ddc8c229a99eb9efd5a?&w=90){ width="32" } Ventoy: apps/ventoy.md
+      - ![windows](https://cdn.jsdelivr.net/gh/selfhst/icons/png/microsoft-windows.png){ width="32" } Windows 11: apps/w11.md
+      - ![watchyourland](https://cdn.jsdelivr.net/gh/selfhst/icons/png/watchyourlan.png){ width="32"} WatchYourLAN: apps/watchyourlan.md
+      - webhook: apps/webhook.md
+  - Hardware:
+      - ASUS Chromebook Plus CX34: hardware/asus-chromebook-plus-cx34.md
+      - Digital Picture Frame: hardware/digital-picture-frame.md
+      - HP ProDesk 600 G3: hardware/hp-prodesk-600-g3.md
+      - Lenovo ChromeBook Flex 5: hardware/lenovo-chromebook-flex-5.md
+      - LilyGo T-Dongle S3: hardware/lilygo-t-dongle-s3.md
+      - Intel NUC: hardware/nuc.md
+      - Raspberry Pi Zero W: hardware/rpi0.md
+      - Raspberry Pi 1 Model B+: hardware/rpi1.md
+      - Raspberry Pi 2: hardware/rpi2.md
+      - Raspberry Pi 4 8GB: hardware/rpi4.md
+      - Raspberry Pi 5 16GB: hardware/rpi5.md
+  - Tools:
+      - Apprise: tools/apprise.md
+      - Autofs: tools/autofs.md
+      - bat: tools/bat.md
+      - cheat: tools/cheat.md
+      - docker-volume-backup: tools/docker-volume-backup.md
+      - duf: tools/duf.md
+      - .env Files: tools/env-files.md
+      - eza: tools/eza.md
+      - fd: tools/fd.md
+      - ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Google Gemini CLI: tools/google-gemini-cli.md
+      - jinja2-cli: tools/jinja2-cli.md
+      - LocalSend: tools/localsend.md
+      - [LVM][9]: tools/lvm.md
+      - micro: tools/micro.md
+      - ![rclone](https://cdn.jsdelivr.net/gh/selfhst/icons/png/rclone.png){ width="32" } rclone: tools/rclone.md
+      - ripgrep: tools/ripgrep.md
+      - sd: tools/sd.md
+      - SOPS: tools/sops.md
+      - ![syncthing](https://cdn.jsdelivr.net/gh/selfhst/icons/png/syncthing.png){ width="32" } Syncthing: tools/syncthing.md
+      - Task: tools/task.md
+      - tmux: tools/tmux.mdmarkdown_extensions:
   - admonition
   - abbr
   - attr_list
