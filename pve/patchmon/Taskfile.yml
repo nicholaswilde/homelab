@@ -40,6 +40,12 @@ tasks:
     desc: Export the task list to `task-list.txt`.
     cmds:
       - task --list > task-list.txt
+  backup:
+    desc: Run the Redis backup script and encrypt the dump file.
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/backup.sh
+    cmds:
+      - sudo {{ .TASKFILE_DIR }}/backup.sh
   init:
     desc: Initialize the application's environment and configuration files.
     preconditions:
