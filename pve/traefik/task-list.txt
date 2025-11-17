@@ -1,7 +1,10 @@
 task: Available tasks for this project:
+* decrypt:       Decrypt sensitive configuration files using SOPS.
+* encrypt:       Encrypt sensitive configuration files using SOPS.
 * export:        Export the task list
 * new:           Create a new config file
 * restart:       Restart Traefik
 * status:        View the Traefik service status
+* stop:          Stop the Traefik service
 * update:        Update running containers
 * watch:         Watch the log file

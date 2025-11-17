@@ -4,7 +4,7 @@ tags:
   - hardware
   - amd64
 ---
-# :computer: HP ProDesk 600 G3
+# :computer: HP ProDesk 600 G3 SFF
 
 This computer was inherited and so I converted it to a [Proxmox][1] node.
 
