@@ -274,6 +274,7 @@ function replace_me() {
 
 function update_settings(){
   cd "${INSTALL_DIR}/${APP_NAME}/backend"
+  cp "${INSTALL_DIR}/update-settings.js" "${TEMP_PATH}/${APP_NAME}/backend/update-settings.js"
   log "INFO" "Updating settings ..." 
   if ! node update-settings.js 2>&1 | log "DEBU"; then
     log "ERRO" "Failed to update settings"
