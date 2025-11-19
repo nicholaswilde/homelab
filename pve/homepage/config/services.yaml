@@ -41,7 +41,7 @@
 - Networking:
     - Apt-Cacher NG:
         icon: mdi-package-variant
-        href: https://aptcache.l.nicholaswilde.io/acng-report.html
+        href: http://aptcache.l.nicholaswilde.io:3142/acng-report.html
     - Modem:
         icon: mdi-server-network
         href: https://modem.l.nicholaswilde.io
