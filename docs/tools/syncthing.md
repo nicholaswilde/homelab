@@ -10,9 +10,43 @@ This is preferred over Ansible so that I can more easily update them by updating
 
 ## :hammer_and_wrench: Installation
 
-Installed via `homelab-pull`.
+=== "root"
+
+    ```shell
+    (
+      mkdir -p /etc/apt/keyrings  && \
+      curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg  && \
+      echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | tee /etc/apt/sources.list.d/syncthing.list && \
+      apt update && \
+      apt install syncthing -y
+    )
+    ```
+
+=== "sudo"
+
+    ```shell
+    (
+      sudo mkdir -p /etc/apt/keyrings && \
+      sudo curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg && \
+      echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | sudo tee /etc/apt/sources.list.d/syncthing.list && \
+      sudo apt update && \
+      sudo apt install syncthing
+    )
+    ```
 
 ## :gear: Config
+
+### Service
+
+=== "root"
+
+    ```shell
+    (
+      wget -O /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
+      systemctl enable syncthing@${USER}.service
+      systemctl start syncthing@${USER}.service
+    )
+    ```
 
 ### :desktop_computer: Control Node
 
