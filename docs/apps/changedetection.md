@@ -18,13 +18,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"
+bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/changedetection.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/changedetection.sh)"
         ```
 
 ## :gear: Config
@@ -61,7 +61,7 @@ tags:
 
     ```shell
     (
-      echo 'bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"' | tee -a ~/.bash_aliases && \
+      echo 'bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"' | tee -a ~/.bash_aliases && \
       source ~/.bashrc && \
       update
     )

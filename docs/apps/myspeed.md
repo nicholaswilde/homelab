@@ -18,13 +18,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/myspeed.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/myspeed.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/myspeed.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/myspeed.sh)"
         ```
 
 ## :gear: Config

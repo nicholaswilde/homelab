@@ -44,7 +44,7 @@ task install
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service -O /etc/systemd/system/adguardhome-sync.service
+        curl -Lo /etc/systemd/system/adguardhome-sync.service https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome-sync/adguardhome-sync.service
         ```
     
     === "Manual"

@@ -1,7 +1,7 @@
 Origin: Ubuntu
 Label: Questing apt repository
 Codename: questing
-Architectures: amd64 arm64 armhf
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Ubuntu stable - Questing
 DebOverride: override.questing
@@ -11,7 +11,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Plucky apt repository
 Codename: plucky
-Architectures: amd64 arm64 armhf
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Ubuntu stable - Plucky
 DebOverride: override.plucky
@@ -21,7 +21,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Oracular apt repository
 Codename: oracular
-Architectures: amd64 arm64 armhf
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Ubuntu stable - Oracular
 DebOverride: override.oracular
@@ -31,7 +31,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Noble apt repository
 Codename: noble
-Architectures: amd64 arm64 armhf
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Ubuntu stable - Noble
 DebOverride: override.noble
@@ -41,7 +41,7 @@ SignWith: 089C9FAF
 Origin: Ubuntu
 Label: Jammy apt repository
 Codename: jammy
-Architectures: amd64 arm64 armhf
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Ubuntu stable - Jammy
 DebOverride: override.jammy

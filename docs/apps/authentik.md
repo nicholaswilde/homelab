@@ -19,7 +19,7 @@ different applications.
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/authentik.sh)"
         ```
 
 ## :gear: Config

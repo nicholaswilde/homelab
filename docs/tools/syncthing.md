@@ -34,9 +34,7 @@ This is preferred over Ansible so that I can more easily update them by updating
     )
     ```
 
-## :gear: Config
-
-### Service
+### :handshake: Service
 
 === "root"
 
@@ -58,6 +56,8 @@ This is preferred over Ansible so that I can more easily update them by updating
     )
     ```
 
+Update the `host` in `config.xml`.
+
 === "root"
 
     ```
@@ -71,6 +71,8 @@ This is preferred over Ansible so that I can more easily update them by updating
     sed -i "{s/127.0.0.1:8384/0.0.0.0:8384/g}" "${HOME}/.local/state/syncthing/config.xml"
     sudo systemctl restart syncthing@${USER}.service
     ```
+
+## :gear: Config
 
 ### :desktop_computer: Control Node
 

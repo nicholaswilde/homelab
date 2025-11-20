@@ -54,14 +54,30 @@ Other files are encrypted that have secrets, such as yaml config or sqlite db fi
 
 !!! abstract ".sops.yaml"
 
+    === "Automatic"
+        ```bash
+        cat <<EOF > .sops.yaml
+        ---
+        creation_rules:
+          - filename_regex: (\.ya?ml|\.db|\.env|\.json|\.ini|\.toml)$
+            pgp: '78E2E084522FB8A14C0D9AED800C8DB8B299A622'
+            age: 'age1x2at6wwq2gks47fsep9a25emdeqd93e3k0gfsswtmhruqrteu5jqjvy7kd'
+        EOF
+        ```
+
+    === "Download"
+
+        ```bash
+        curl -LO https://github.com/nicholaswilde/homelab/raw/refs/heads/main/.sops.yaml
+        ```
+        
     === "Manual"
     
         ```yaml
         ---
         creation_rules:
-          - filename_regex: \.yaml$
-            age: 'age1x2at6wwq2gks47fsep9a25emdeqd93e3k0gfsswtmhruqrteu5jqjvy7kd'
-          - filename_regex: \.db$
+          - filename_regex: (\.ya?ml|\.db|\.env|\.json|\.ini|\.toml)$
+            pgp: '78E2E084522FB8A14C0D9AED800C8DB8B299A622'
             age: 'age1x2at6wwq2gks47fsep9a25emdeqd93e3k0gfsswtmhruqrteu5jqjvy7kd'
         ```
 

@@ -24,13 +24,13 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/adguard.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/adguard.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/adguard.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/adguard.sh)"
         ```
 
 ## :gear: Config
@@ -58,7 +58,7 @@ Syncing between the instances are done using [AdGuard Home Sync][2]
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome/AdGuardHome.service -O /etc/systemd/system/AdGuardHome.service
+        curl -Lo /etc/systemd/system/AdGuardHome.service https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/adguardhome/AdGuardHome.service
         ```
         
     === "Manual"

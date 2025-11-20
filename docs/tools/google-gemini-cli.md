@@ -16,16 +16,16 @@ I use the Gemini CLI to help generate bash script files and markdown documents f
     
 !!! code ""
 
+    === "npm"
+    
+        ```shell
+        npm install -g @google/gemini-cli
+        ```
+
     === "npx"
 
         ```shell
         npx https://github.com/google-gemini/gemini-cli
-        ```
-
-    === "npm"
-    
-        ```shell
-        sudo npm install -g @google/gemini-cli
         ```
 
     ```shell

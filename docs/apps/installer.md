@@ -63,7 +63,7 @@ For setup apps that have are not supported by apt package manager, such as task,
     curl https://i.jpillora.com/<query>! | bash
     ```
 
-*Or you can use* `wget -qO- url | bash`
+*Or you can use* `curl -sL url | bash`
 
 **Path API**
 

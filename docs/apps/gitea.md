@@ -22,13 +22,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/gitea.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/gitea.sh)"
         ```
 
 ## :gear: Config
@@ -76,7 +76,7 @@ This ensures that the theme automatically switches between light (latte) and dar
     ```shell
     (
       [ -d /var/lib/gitea/custom/public/assets/css ] || mkdir -p /var/lib/gitea/custom/public/assets/css
-      wget https://github.com/catppuccin/gitea/releases/latest/download/catppuccin-gitea.tar.gz -O /tmp/catppuccin-gitea.tar.gz && \
+      curl -Lo /tmp/catppuccin-gitea.tar.gz https://github.com/catppuccin/gitea/releases/latest/download/catppuccin-gitea.tar.gz && \
       tar -xvf /tmp/catppuccin-gitea.tar.gz -C /var/lib/gitea/custom/public/assets/css && \
       systemctl restart gitea.service
     )

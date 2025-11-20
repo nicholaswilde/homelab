@@ -140,7 +140,6 @@ function main() {
     check_dependencies
     make_temp_dir
     log "INFO" "Starting package sops script..."
-    log "INFO" "Building for architecture: armhf"
 
     get_latest_version
     get_description
@@ -159,18 +158,28 @@ function main() {
 
     cd "${TEMP_PATH}/sops"
 
-    log "INFO" "Building sops for armhf..."
-    GOOS=linux GOARCH=arm ${GO_CMD} build ./cmd/sops 2>&1 | log "INFO"
+    declare -A archs
+    archs[armel]="6"
+    archs[armhf]="7"
 
-    local arch_debian="armhf"
-    local package_dir="${TEMP_PATH}/sops_${LATEST_VERSION}_${arch_debian}"
-    mkdir -p "${package_dir}/usr/local/bin"
-    mkdir -p "${package_dir}/DEBIAN"
+    for arch_debian in "${!archs[@]}"; do
+      local go_arm="${archs[$arch_debian]}"
+      log "INFO" "Building sops for ${arch_debian} (GOARM=${go_arm})..."
 
-    mv sops "${package_dir}/usr/local/bin/"
+      GOARM=${go_arm} GOOS=linux GOARCH=arm ${GO_CMD} build ./cmd/sops 2>&1 | log "INFO"
+      if [ ! -f "sops" ]; then
+        log "ERRO" "Build failed for ${arch_debian}"
+        continue
+      fi
 
-    log "INFO" "Creating control file..."
-    cat << EOF > "${package_dir}/DEBIAN/control"
+      local package_dir="${TEMP_PATH}/sops_${LATEST_VERSION}_${arch_debian}"
+      mkdir -p "${package_dir}/usr/local/bin"
+      mkdir -p "${package_dir}/DEBIAN"
+
+      mv sops "${package_dir}/usr/local/bin/"
+
+      log "INFO" "Creating control file for ${arch_debian}..."
+      cat << EOF > "${package_dir}/DEBIAN/control"
 Package: sops
 Version: ${LATEST_VERSION}
 Section: utils
@@ -180,17 +189,18 @@ Maintainer: Nicholas Wilde <noreply@email.com>
 Description: ${DESCRIPTION}
 EOF
 
-    log "INFO" "Building .deb package..."
-    local deb_file="sops_${LATEST_VERSION}_${arch_debian}.deb"
-    if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}"; then
-        log "ERRO" "Failed to build .deb package for sops ${LATEST_VERSION} ${arch_debian}"
-        exit 1
-    fi
+      log "INFO" "Building .deb package for ${arch_debian}..."
+      local deb_file="sops_${LATEST_VERSION}_${arch_debian}.deb"
+      if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}"; then
+          log "ERRO" "Failed to build .deb package for sops ${LATEST_VERSION} ${arch_debian}"
+          continue
+      fi
 
-    log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
-    cp "${TEMP_PATH}/${deb_file}" "${SCRIPT_DIR}/"
+      log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
+      cp "${TEMP_PATH}/${deb_file}" "${SCRIPT_DIR}/"
 
-    log "INFO" "Sops package created: ${SCRIPT_DIR}/${deb_file##*/}"
+      log "INFO" "Sops package created: ${SCRIPT_DIR}/${deb_file##*/}"
+    done
 }
 
 main "$@"
