@@ -48,6 +48,30 @@ This is preferred over Ansible so that I can more easily update them by updating
     )
     ```
 
+=== "sudo"
+
+    ```shell
+    (
+      sudo wget -O /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
+      sudo systemctl enable syncthing@${USER}.service
+      sudo systemctl start syncthing@${USER}.service
+    )
+    ```
+
+=== "root"
+
+    ```
+    sed -i "{s/127.0.0.1:8384/0.0.0.0:8384/g}" "${HOME}/.local/state/syncthing/config.xml"
+    systemctl restart syncthing@${USER}.service
+    ```
+
+=== "sudo"
+
+    ```
+    sed -i "{s/127.0.0.1:8384/0.0.0.0:8384/g}" "${HOME}/.local/state/syncthing/config.xml"
+    sudo systemctl restart syncthing@${USER}.service
+    ```
+
 ### :desktop_computer: Control Node
 
 1. Add managed node.
