@@ -27,13 +27,13 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/misc/post-pve-install.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/misc/post-pve-install.sh)"
         ```
 
 !!! code "Add LXC IP Tag"
@@ -41,13 +41,13 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
         ```
 
 !!! code "Update"
@@ -55,13 +55,13 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-lxcs.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-lxcs.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/add-lxc-iptag.sh)"
         ```
 
 ## :material-harddisk-plus: Datacenter NFS Volumes

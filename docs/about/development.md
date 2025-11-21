@@ -54,6 +54,10 @@ Tools are generally installed, generally, using `apt`.
 
     I try to avoid using other package systems, such as `pip` or `npm`, to avoid the overhead of having those package systems installed.
 
+!!! note ":v: `curl` vs `wget`"
+
+    I generally prefer using `curl` over `wget` for downloading files and making HTTP requests. `curl` is often more versatile, supporting a wider range of protocols and offering finer control over requests, which is beneficial for scripting and debugging in diverse environments.
+
 #### :package: reprepro
 
 If a `deb` file is available for download for the tool, I'll add it to my [`reprepro`][8] registry and install the tool using `apt`. Updating the tool is then just a matter of running apt update using Ansible.

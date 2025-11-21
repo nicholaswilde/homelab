@@ -15,7 +15,7 @@ The `webhook` binary can be downloaded directly from the project's GitHub releas
 
     ```shell
     # Download the latest binary for your architecture. This example is for amd64.
-    wget https://github.com/adnanh/webhook/releases/download/2.8.0/webhook-linux-amd64.tar.gz
+    curl -LO https://github.com/adnanh/webhook/releases/download/2.8.0/webhook-linux-amd64.tar.gz
     tar -xvzf webhook-linux-amd64.tar.gz
     sudo mv webhook-linux-amd64/webhook /usr/local/bin/
     ```

@@ -21,13 +21,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/watchyourlan.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/watchyourlan.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/watchyourlan.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/watchyourlan.sh)"
         ```
 
 ## :gear: Config
@@ -51,7 +51,7 @@ tags:
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/watchyourlan/config_v2.yaml -O /etc/watchyourlan/config_v2.yaml
+        curl -Lo /etc/watchyourlan/config_v2.yaml https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/watchyourlan/config_v2.yaml
         ```
         
     === "Manual"

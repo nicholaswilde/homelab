@@ -31,7 +31,7 @@ tags:
         ```shell
         (
           [ -d ~/.config/micro ] || mkdir -p ~/.config/micro
-          wget https://github.com/nicholaswilde/dotfiles2/raw/refs/heads/main/.config/micro/settings.json -O ~/.config/micro/settings.json
+          curl -Lo ~/.config/micro/settings.json https://github.com/nicholaswilde/dotfiles2/raw/refs/heads/main/.config/micro/settings.json
         )
         ```
 
@@ -55,8 +55,8 @@ tags:
     ```shell
     (
       [ -d ~/.config/micro/colorschemes ] || mkdir -p ~/.config/micro/colorschemes
-      wget -O ~/.config/micro/colorschemes/
-      wget -O ~/.config/micro/colorschemes/
+      curl -Lo ~/.config/micro/colorschemes/
+      curl -Lo ~/.config/micro/colorschemes/
     )
     ```
 

@@ -20,13 +20,13 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/unbound.sh)"
         ```
 
 ## :gear: Config
