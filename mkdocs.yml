@@ -28,6 +28,7 @@ nav:
       - ChangeDetection: apps/changedetection.md
       - ConvertX: apps/convertx.md
       - CyberKeyGen: apps/cyberkeygen.md
+      - DietPi: apps/dietpi.md
       - Excalidraw: apps/excalidraw.md
       - FrameFi: apps/frame-fi.md
       - File Browser: apps/filebrowser.md
