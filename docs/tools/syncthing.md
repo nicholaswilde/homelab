@@ -40,7 +40,7 @@ This is preferred over Ansible so that I can more easily update them by updating
 
     ```shell
     (
-      wget -O /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
+      curl -Lo /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
       systemctl enable syncthing@${USER}.service
       systemctl start syncthing@${USER}.service
     )
@@ -50,7 +50,7 @@ This is preferred over Ansible so that I can more easily update them by updating
 
     ```shell
     (
-      sudo wget -O /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
+      sudo curl -Lo /usr/lib/systemd/system/syncthing@.service https://github.com/syncthing/syncthing/raw/refs/heads/main/etc/linux-systemd/system/syncthing@.service
       sudo systemctl enable syncthing@${USER}.service
       sudo systemctl start syncthing@${USER}.service
     )

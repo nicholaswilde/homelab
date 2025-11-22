@@ -72,7 +72,7 @@ To install the [Catppuccin theme][2] for `bat`, follow these steps:
 
     ```shell
     mkdir -p "$(bat --config-dir)/themes"
-    wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin-mocha.tmTheme
+    curl -Lo "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin-mocha.tmTheme
     bat cache --build
     ```
 

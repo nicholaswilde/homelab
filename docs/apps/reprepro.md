@@ -49,7 +49,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/apache2/conf-available/repos.conf -O /etc/apache2/conf-availabe/repos.conf
+        curl -Lo /etc/apache2/conf-availabe/repos.conf https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/apache2/conf-available/repos.conf
         ```
 
     === "Manual"
@@ -139,8 +139,8 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/distributions -O /srv/reprepro/debian/conf/distributions
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/distributions -O /srv/reprepro/ubuntu/conf/distributions
+          curl -Lo /srv/reprepro/debian/conf/distributions https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/distributions
+          curl -Lo /srv/reprepro/ubuntu/conf/distributions https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/distributions
         )
         ```
 
@@ -173,8 +173,8 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/options -O /srv/reprepro/debian/conf/options
-          wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/options -O /srv/reprepro/ubuntu/conf/options
+          curl -Lo /srv/reprepro/debian/conf/options https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/options
+          curl -Lo /srv/reprepro/ubuntu/conf/options https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/options
         )
         ```
 
@@ -211,14 +211,14 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
         ```shell
         (
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye -O /srv/reprepro/debian/conf/override.bullseye
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm -O /srv/reprepro/debian/conf/override.bookworm
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie -O /srv/reprepro/debian/conf/override.trixie
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.questing -O /srv/reprepro/ubuntu/conf/override.questing
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.plucky -O /srv/reprepro/ubuntu/conf/override.plucky
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular -O /srv/reprepro/ubuntu/conf/override.oracular
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble -O /srv/reprepro/ubuntu/conf/override.noble
-          sudo wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.jammy -O /srv/reprepro/ubuntu/conf/override.jammy
+          sudo curl -Lo /srv/reprepro/debian/conf/override.bullseye https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye
+          sudo curl -Lo /srv/reprepro/debian/conf/override.bookworm https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm
+          sudo curl -Lo /srv/reprepro/debian/conf/override.trixie https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie
+          sudo curl -Lo /srv/reprepro/ubuntu/conf/override.questing https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.questing
+          sudo curl -Lo /srv/reprepro/ubuntu/conf/override.plucky https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.plucky
+          sudo curl -Lo /srv/reprepro/ubuntu/conf/override.oracular https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular
+          sudo curl -Lo /srv/reprepro/ubuntu/conf/override.noble https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble
+          sudo curl -Lo /srv/reprepro/ubuntu/conf/override.jammy https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.jammy
         )
         ```
 

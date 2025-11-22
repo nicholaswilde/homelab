@@ -77,7 +77,7 @@ The way that it works is that an NFS share and USB drive are mounted using autof
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/ventoy/ventoy.service -O /etc/systemd/system/ventoy.service
+        curl -Lo /etc/systemd/system/ventoy.service https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/ventoy/ventoy.service
         ```
         
     === "Manual"

@@ -18,14 +18,14 @@ tags:
     === "AMD64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/traefik.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/traefik.sh)"
         ```
 
     === "ARM64"
 
         ```shell
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
-        bash -c "$(wget -qLO - https://github.com/asylumexp/Proxmox/raw/main/ct/traefik.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/{{ app_name | lower }}.sh)"
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/traefik.sh)"
         ```
 
 ## :gear: Config
@@ -71,7 +71,7 @@ Update `EnvironmentFile` and `ExecStart` to point to your homelab directories.
     === "Download"
 
         ```shell
-        wget https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/traefik/traefik.service -O /etc/systemd/system/traefik.service
+        curl -Lo /etc/systemd/system/traefik.service https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/traefik/traefik.service
         ```
         
     === "Manual"

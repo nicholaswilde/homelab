@@ -143,7 +143,7 @@ Setup [LVM][9] first
 !!! code "Download image"
 
     ```shell
-    wget https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz -O 2024-11-19-raspios-bookworm-arm64-lite.img.xz
+    curl -Lo 2024-11-19-raspios-bookworm-arm64-lite.img.xz https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz
     ```
 
 !!! code "Extract image"
@@ -411,8 +411,8 @@ Where `eth0` is the current existing network interface
 
     ```shell
     (
-      bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-repo.sh)" &&
-      bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
+      bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/update-repo.sh)" &&
+      bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
     )
     ```
 
