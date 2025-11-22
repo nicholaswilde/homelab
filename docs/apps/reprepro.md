@@ -324,9 +324,17 @@ To add a new release codename to reprepro:
 
 !!! code "Download gpg key"
 
-    ```shell
-    curl -fsSL http://deb.l.nicholaswilde.io/public.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/reprepro.gpg
-    ```
+    === "root"
+    
+        ```shell
+        curl -fsSL http://deb.l.nicholaswilde.io/public.gpg.key | gpg --dearmor -o /etc/apt/keyrings/reprepro.gpg
+        ```
+
+    === "sudo"
+    
+        ```shell
+        curl -fsSL http://deb.l.nicholaswilde.io/public.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/reprepro.gpg
+        ```
 
 Add repo and install.
 
@@ -334,14 +342,26 @@ Add repo and install.
 
     === "Automatic"
 
-        ```shell
-        (
-          source /etc/os-release && \
-          echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main"
-          apt update && \
-          apt install sops
-        )
-        ```
+        === "root"
+        
+            ```shell
+            (
+              source /etc/os-release && \
+              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main" | tee -a /etc/apt/sources.list.d/reprepro.list
+              apt update && \
+              apt install sops
+            )
+            ```
+        === "sudo"
+        
+            ```shell
+            (
+              source /etc/os-release && \
+              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/reprepro.list
+              sudo apt update && \
+              sudo apt install sops
+            )
+            ```
 
     === "Manual"
 
