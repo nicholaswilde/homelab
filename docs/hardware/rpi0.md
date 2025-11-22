@@ -5,11 +5,13 @@ tags:
 ---
 # :simple-raspberrypi: Raspberry Pi Zero W
 
+DietPi is selected for this device due to its lightweight footprint, which is ideal for the limited resources (single-core CPU, 512MB RAM) of the Zero W.
+
 ## :gear: Config
 
 !!! example ""
 
-    OS: [Rasbperry Pi OS (Legacy) Lite][2]
+    OS: [DietPi](../apps/dietpi.md)
 
 ## :link: References
 

@@ -7,11 +7,13 @@ tags:
 
 I am still running the [Raspberry Pi 1 Model B+][1], my first RPi board.
 
+DietPi is the operating system of choice here because its optimized, minimal installation allows this older hardware to run efficiently despite its limited processing power and memory.
+
 ## :gear: Config
 
 !!! example ""
 
-    OS: [Rasbperry Pi OS (Legacy) Lite][2]
+    OS: [DietPi](../apps/dietpi.md)
 
 ## :link: References
 
