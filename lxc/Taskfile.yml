@@ -9,6 +9,9 @@ env:
 tasks:
   new:
     desc: Create a new lxc app
+    preconditions:
+      - sh: "command -v jinja2"
+        msg: "jinja2 is not installed. Please install it to continue."
     cmds:
       - mkdir {{ .APP_NAME_LOWER }}
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
