@@ -5,6 +5,14 @@ dotenv:
   - .env
 
 tasks:
+  own:
+    desc: Have gitea own the config file.
+    preconditions:
+      - test -f app.ini
+      - getent passwd gitea
+      - getent group gitea
+    cmds:
+      - chown gitea:gitea app.ini
   export:
     silent: true
     desc: Export the task list
