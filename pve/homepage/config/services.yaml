@@ -115,15 +115,9 @@
     - Change Detection:
         icon: sh-changedetection.png
         href: https://cd.l.nicholaswilde.io/
-    - Grafana:
-        icon: si-grafana
-        href: https://grafana.l.nicholaswilde.io/
     - InfluxDB:
         icon: si-influxdb
         href: https://influxdb.l.nicholaswilde.io/
-    - Uptime Kuma:
-        icon: si-uptimekuma
-        href: https://up.l.nicholaswilde.io/
     - WatchYourLAN:
         icon: sh-watchyourlan.png
         href: https://watch.l.nicholaswilde.io/
