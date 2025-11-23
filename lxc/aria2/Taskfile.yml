@@ -77,8 +77,10 @@ tasks:
     preconditions:
       - test -f {{ .TASKFILE_DIR }}/aria2.daemon
       - test -d {{ .CONFIG_DIR }}
+      - test -f {{ .TASKFILE_DIR }}/nginx/ariang.conf
     cmds:
       - ln -sf {{ .TASKFILE_DIR }}/aria2.daemon {{ .CONFIG_DIR }}/aria2.daemon
+      - stow --adopt -v -t /etc/nginx {{ .TASKFILE_DIR }}/nginx/
   default:
     cmds:
       - task -l
