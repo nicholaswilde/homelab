@@ -16,11 +16,7 @@ Documentation can be found [here][1].
 
 I just want to document and share my homelab setup and experiences.
 
-My current setup is Proxmox installed on an AMD64 desktop computer, and old AMD64 laptop, a Raspberry Pi 4 8GB, and a Raspberry Pi 5 16GB.
-
-I also have an Intel NUC running Ubuntu server with Home Assistant and add ons in Docker containers.
-
-I also have a Raspberry Pi Zero W running and NTP server.
+My current setup consists of my NUC and AMD64 desktop computer running Proxmox. My Raspberry Pi 5 16GB is also running Proxmox and my Raspberry Pi 4 8GB is running Home Assistant.
 
 ---
 
