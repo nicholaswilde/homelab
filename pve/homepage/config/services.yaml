@@ -133,12 +133,7 @@
     - WatchYourLAN:
         icon: sh-watchyourlan.png
         href: https://watch.l.nicholaswilde.io/
-    - Gotify:
-        icon: sh-gotify.png
-        href: https://gotify.l.nicholaswilde.io/
-    - ntfy:
-        icon: si-ntfy
-        href: https://ntfy.l.nicholaswilde.io/
+
 - Files & Downloads:
     - Aria2:
         icon: mdi-download

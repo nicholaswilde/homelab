@@ -39,9 +39,7 @@ Make symlinks to repo.
     --8<-- "traefik/conf.d/myspeed.yaml"
     ```
 
-## :bell: Notifications
 
-1. [Gotify][2]
 
 ## :simple-task: Task List
 
@@ -54,4 +52,4 @@ Make symlinks to repo.
 ## :link: References
 
 [1]: <https://myspeed.dev/>
-[2]: <./gotify.md>
+

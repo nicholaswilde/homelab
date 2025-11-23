@@ -44,8 +44,7 @@ Make symlinks to repo.
 ## :bell: Notifications
 
 1. [mailrise][2] via `smtp`.
-2. [ntfy][3] via webhook.
-3. [Gotify][4] via webhook.
+
 
 ## :pencil: Usage
 
@@ -79,5 +78,3 @@ WIP
 
 [1]: <https://beszel.dev/>
 [2]: <./mailrise.md>
-[3]: <./ntfy.md>
-[4]: <./gotify.md>

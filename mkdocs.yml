@@ -33,7 +33,6 @@ nav:
       - FrameFi: apps/frame-fi.md
       - File Browser: apps/filebrowser.md
       - Gitea: apps/gitea.md
-      - Gotify: apps/gotify.md
       - Home Assistant: apps/home-assistant.md
       - homepage: apps/homepage.md
       - Immich: apps/immich.md
@@ -44,7 +43,6 @@ nav:
       - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
-      - ntfy: apps/ntfy.md
       - OpenMediaVault: apps/openmediavault.md
       - PatchMon: apps/patchmon.md
       - Pinchflat: apps/pinchflat.md
@@ -172,7 +170,6 @@ plugins:
       - File Browser: apps/filebrowser.md
       - FrameFi: apps/frame-fi.md
       - Gitea: apps/gitea.md
-      - Gotify: apps/gotify.md
       - Home Assistant: apps/home-assistant.md
       - homepage: apps/homepage.md
       - Immich-Go: apps/immich-go.md
@@ -183,7 +180,6 @@ plugins:
       - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md
       - netboot.xyz: apps/netbootxyz.md
-      - ntfy: apps/ntfy.md
       - OpenMediaVault: apps/openmediavault.md
       - PatchMon: apps/patchmon.md
       - Pinchflat: apps/pinchflat.md

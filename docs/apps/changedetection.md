@@ -70,8 +70,7 @@ bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/c
 ## :bell: Notifications
 
 1. [Apprise][2]
-2. [ntfy][3]
-3. [Gotify][4]
+
 
 ## :simple-task: Task List
 
@@ -89,5 +88,4 @@ bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/c
 
 [1]: <https://changedetection.io/>
 [2]: <../tools/apprise.md>
-[3]: <./ntfy.md>
-[4]: <./gotify.md>
+
