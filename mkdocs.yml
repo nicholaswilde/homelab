@@ -53,6 +53,7 @@ nav:
       - Stirling PDF: apps/stirling-pdf.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
+      - Wallos: apps/wallos.md
       - Vaultwarden: apps/vaultwarden.md
       - Vaultwarden Backup: apps/vaultwarden-backup.md
       - Ventoy: apps/ventoy.md
@@ -189,6 +190,7 @@ plugins:
       - Stirling PDF: apps/stirling-pdf.md
       - Traefik: apps/traefik.md
       - Unbound: apps/unbound.md
+      - Wallos: apps/wallos.md
       - vaultwarden-backup: apps/vaultwarden-backup.md
       - Vaultwarden: apps/vaultwarden.md
       - Ventoy: apps/ventoy.md
