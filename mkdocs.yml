@@ -20,7 +20,6 @@ nav:
   - Apps:
       - Adguard Home Sync: apps/adguardhome-sync.md
       - AdGuard Home: apps/adguardhome.md
-      - Apache Guacamole: apps/apache-guacamole.md
       - Apt-Cacher NG: apps/aptcacherng.md
       - aria2: apps/aria2.md
       - authentik: apps/authentik.md
@@ -158,7 +157,6 @@ plugins:
   - Apps:
       - Adguard Home Sync: apps/adguardhome-sync.md
       - AdGuard Home: apps/adguardhome.md
-      - Apache Guacamole: apps/apache-guacamole.md
       - Apt-Cacher NG: apps/aptcacherng.md
       - aria2: apps/aria2.md
       - authentik: apps/authentik.md

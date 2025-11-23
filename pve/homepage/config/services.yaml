@@ -60,9 +60,6 @@
     - Dockflare:
         icon: si-cloudflare
         href: https://dockflare.l.nicholaswilde.io
-    - Apache Guacamole:
-        icon: si-apacheguacamole
-        href: https://guac.l.nicholaswilde.io
     - PortNote:
         icon: sh-portnote.svg
         href: https://portnote.l.nicholaswilde.io/
