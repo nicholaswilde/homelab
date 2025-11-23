@@ -125,31 +125,42 @@ When using `bat` and pressing ++tab++
 !!! failure
 
     ```
-    bat /opt/stirk-bash: _get_comp_words_by_ref: command not found
+    bash: _get_comp_words_by_ref: command not found
     ```
 
-Need to re-add `/etc/profile./bash_completions.sh`
+This error indicates that `bash-completion` is not correctly set up or sourced. To resolve this, ensure the following:
 
-!!! abstract "/etc/profile./bash_completions.sh"
+1.  **Install `bash-completion`**: Make sure the `bash-completion` package is installed on your system.
 
-    ```bash
-    # shellcheck shell=sh disable=SC1091,SC2166,SC2268,SC3028,SC3044,SC3054
-    # Check for interactive bash and that we haven't already been sourced.
-    if [ "x${BASH_VERSION-}" != x -a "x${PS1-}" != x -a "x${BASH_COMPLETION_VERSINFO-}" = x ]; then
-    
-        # Check for recent enough version of bash.
-        if [ "${BASH_VERSINFO[0]}" -gt 4 ] ||
-            [ "${BASH_VERSINFO[0]}" -eq 4 -a "${BASH_VERSINFO[1]}" -ge 2 ]; then
-            [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion" ] &&
-                . "${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
-            if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
-                # Source completion code.
-                . /usr/share/bash-completion/bash_completion
-            fi
-        fi
-    
-    fi
-    ```
+    !!! code ""
+
+        ```shell
+        sudo apt install bash-completion
+        ```
+
+2.  **Source `bash_completion.sh`**: Verify that `/etc/profile.d/bash_completion.sh` is sourced in your shell's startup files (e.g., `.bashrc` or `.profile`). This file sets up the `bash-completion` environment.
+
+    !!! code ""
+
+        ```shell
+        source /etc/profile.d/bash_completion.sh
+        ```
+
+3.  **Run `bat` completion command**: Ensure that the `bat` completion script is loaded. Add the following line to your `~/.bashrc` file:
+
+    !!! code ""
+
+        ```shell
+        eval "$(bat --completion bash)"
+        ```
+
+    After adding, reload your shell configuration:
+
+    !!! code ""
+
+        ```shell
+        source ~/.bashrc
+        ```
 
 ## :link: References
 
