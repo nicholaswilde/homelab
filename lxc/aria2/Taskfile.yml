@@ -30,14 +30,22 @@ tasks:
     desc: Decrypt .env using SOPS
     preconditions:
       - test -f .env.enc
+      - test -f rpc.secret.enc
+      - test -f aria2.daemon.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type yaml --output-type yaml rpc.secret.enc > rpc.secret
+      - sops -d --input-type dotenv --output-type dotenv aria2.daemon.enc > aria2.daemon
   encrypt:
     desc: Encrypt .env using SOPS
     preconditions:
       - test -f .env
+      - test -f rpc.secret
+      - test -f aria2.daemon
     cmds:
-      - sops -e .env > .env.enc
+      - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
+      - sops -e --input-type yaml --output-type yaml rpc.secret > rpc.secret.enc
+      - sops -e --input-type dotenv --output-type dotenv aria2.daemon > aria2.daemon.enc
   update:
     desc: Update running containers
     preconditions:
@@ -67,10 +75,10 @@ tasks:
   mklinks:
     desc: Make client symlinks
     preconditions:
-      - test -f {{ .TASKFILE_DIR }}/daemon.json
+      - test -f {{ .TASKFILE_DIR }}/aria2.daemon
       - test -d {{ .CONFIG_DIR }}
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+      - ln -sf {{ .TASKFILE_DIR }}/aria2.daemon {{ .CONFIG_DIR }}/aria2.daemon
   default:
     cmds:
       - task -l

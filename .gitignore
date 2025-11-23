@@ -52,3 +52,6 @@ pve/frame-fi/pictures/*.wmv
 # Patchmon
 *.creds
 patchmon.conf
+
+**/rpc.secret
+**/aria2.daemon
