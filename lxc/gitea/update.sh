@@ -116,21 +116,12 @@ function get_current_version() {
 }
 
 function download_and_install() {
-  get_arch
-  local download_url="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/gitea-${LATEST_VERSION}-linux-${ARCH}"
   local temp_file
   temp_file=$(mktemp)
 
-  log "INFO" "Downloading ${BINARY_NAME} from ${download_url}"
-  if ! curl -sSL -o "${temp_file}" "${download_url}"; then
-    log "ERRO" "Failed to download ${BINARY_NAME}."
-    rm -f "${temp_file}"
-    exit 1
-  fi
-
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
-    sudo systemctl stop "${SERVICE_NAME}.service"
+    systemctl stop "${SERVICE_NAME}.service"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
@@ -151,7 +142,7 @@ function download_and_install() {
   
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
-    sudo systemctl restart "${SERVICE_NAME}.service"
+    systemctl restart "${SERVICE_NAME}.service"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi

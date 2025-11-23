@@ -8,11 +8,11 @@ tasks:
   own:
     desc: Have gitea own the config file.
     preconditions:
-      - test -f app.ini
+      - test -f {{ .CONFIG_DIR }}/app.ini
       - getent passwd gitea
       - getent group gitea
     cmds:
-      - chown gitea:gitea app.ini
+      - chown gitea:gitea {{ .CONFIG_DIR }}/app.ini
   export:
     silent: true
     desc: Export the task list
@@ -29,21 +29,24 @@ tasks:
   decrypt:
     desc: Decrypt .env using SOPS
     preconditions:
-      - test -f .env.enc
-      - test -f app.ini.enc
+      - test -f {{ .TASKFILE_DIR }}/.env.enc
+      - test -f {{ .TASKFILE_DIR }}/app.ini.enc
     cmds:
-      - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
-      - sops -d --input-type ini --output-type ini app.ini.enc > app.ini
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc > {{ .TASKFILE_DIR }}/.env
+      - sops -d --input-type ini --output-type ini {{ .TASKFILE_DIR }}/app.ini.enc > {{ .CONFIG_DIR }}/app.ini
+      - task: own
   encrypt:
     desc: Encrypt .env using SOPS
     preconditions:
-      - test -f .env
-      - test -f app.ini
+      - test -f {{ .TASKFILE_DIR }}/.env
+      - test -f {{ .CONFIG_DIR }}/app.ini
     cmds:
       - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
-      - sops -e --input-type ini --output-type ini app.ini > app.ini.enc
+      - sops -e --input-type ini --output-type ini {{ .CONFIG_DIR }}/app.ini > app.ini.enc
   update:
     desc: Update running containers
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/update.sh
     cmds:
       - ./update.sh
       # - bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
@@ -60,10 +63,6 @@ tasks:
     desc: Restart service
     cmds:
       - systemctl restart {{ .SERVICE_NAME }}.service
-  mklinks:
-    desc: Make client symlinks
-    cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/app.ini  {{ .CONFIG_DIR }}/app.ini
   default:
     cmds:
       - task -l
