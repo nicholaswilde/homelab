@@ -81,7 +81,7 @@ The original files are copied into the original config location with a `.bak` ex
 ??? example
 
     ```shell
-    cp /etc/prometheus/prometheus.yml /etc/prometheus/prometheus.yml.bak
+    cp /opt/AdGuardHome/AdGuardHome.yaml /opt/AdGuardHome/AdGuardHome.yaml.bak
     ```
 
 ### :link: Symlinks
@@ -96,10 +96,10 @@ Generally, config files are moved to the repo for remote backup and then symlink
 
     ```shell
     (
-      systemctl stop prometheus.service
-      cp /etc/prometheus/prometheus.yml /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml
-      ln -s /root/git/nicholaswilde/homelab/pve/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
-      systemctl stop prometheus.service
+      systemctl stop AdGuardHome.service
+      cp /opt/AdGuardHome/AdGuardHome.yaml /root/git/nicholaswilde/homelab/pve/adguardhome/AdGuardHome.yaml
+      ln -s /root/git/nicholaswilde/homelab/pve/adguardhome/AdGuardHome.yaml /opt/AdGuardHome/AdGuardHome.yaml
+      systemctl start AdGuardHome.service
     )
     ```
 
@@ -282,7 +282,7 @@ Logs are used to debug applications. They may be looked at once or followed get 
     === "journalctl"
 
         ```shell
-        journalctl -xeu prometheus.service
+        journalctl -xeu AdGuardHome.service
         ```
 
 ### :simple-docker: Docker Logs

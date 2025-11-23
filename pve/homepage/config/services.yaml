@@ -124,9 +124,6 @@
     - InfluxDB:
         icon: si-influxdb
         href: https://influxdb.l.nicholaswilde.io/
-    - Prometheus:
-        icon: si-prometheus
-        href: https://prometheus.l.nicholaswilde.io/
     - Uptime Kuma:
         icon: si-uptimekuma
         href: https://up.l.nicholaswilde.io/

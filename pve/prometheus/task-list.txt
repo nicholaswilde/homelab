@@ -1,8 +1,0 @@
-task: Available tasks for this project:
-* decrypt:       Decrypt .env using SOPS
-* encrypt:       Encrypt .env using SOPS
-* export:        Export the task list
-* init:          Init
-* mklinks:       Make client symlinks
-* reload:        Reload Prometheus
-* status:        Status
