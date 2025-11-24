@@ -167,7 +167,7 @@ Setup [LVM][9] first
     cd /media/sd
     ```
 
-### :fontawesome-solid-user-plus: Create Username & Password
+### :fontawesome-solid-user-plus: [Create Username & Password][16]
 
 !!! abstract "/boot/firmware/userconf.txt"
 
@@ -502,3 +502,4 @@ See [LVM](../tools/lvm.md).
 [13]: <https://mirrors.lierfang.com/pxcloud/pxvirt/isos/> 
 [14]: <https://www.raspberrypi.com/products/active-cooler/>
 [15]: <https://github.com/jiangcuo/pxvirt>
+[16]: <https://www.raspberrypi.com/documentation/computers/configuration.html#configuring-a-user>
