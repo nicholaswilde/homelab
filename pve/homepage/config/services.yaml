@@ -48,9 +48,7 @@
     - MySpeed:
         icon: si-speedtest
         href: https://myspeed.l.nicholaswilde.io
-    - Shlink:
-        icon: sh-shlink.svg
-        href: https://shlink.l.nicholaswilde.io
+
     - UniFi:
         icon: si-ubiquiti
         href: https://unifi.l.nicholaswilde.io
