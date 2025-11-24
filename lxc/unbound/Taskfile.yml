@@ -1,0 +1,45 @@
+---
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  export:
+    silent: true
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  init:
+    desc: Init
+    cmds:
+      - cp .env.tmpl .env
+  mklinks:
+    desc: Make symlinks
+    cmds:
+      - stow -v -t {{ .CONFIG_DIR }}/unbound.conf.d/ {{ .TASKFILE_DIR}}/unbound.conf.d/      
+      - stow -v -t /etc/logrotate.d {{ .TASKFILE_DIR}}/logrotate.d/
+  stow:
+    desc: Stow configs
+    cmds:
+      - task: mklinks
+  stop:
+    desc: Stop service
+    cmds:
+      - systemctl stop unbound.service
+  restart:
+    desc: Restart service
+    cmds:
+      - systemctl restart unbound.service
+  status:
+    desc: Check service status
+    cmds:
+      - systemctl status unbound.service
+  start:
+    desc: Start service
+    cmds:
+      - systemctl start unbound.service
+  default:
+    cmds:
+      - task -l
+    silent: true
