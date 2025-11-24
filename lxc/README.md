@@ -2,4 +2,4 @@
 
 Apps that are installed in my Proxmox instances.
 
-These apps are installed either in LXCs or VMs, but mostly LXCs.
+These apps are installed in LXCs.
