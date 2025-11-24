@@ -270,6 +270,7 @@ markdown_extensions:
         - ./docker
         - ./vm
         - ./docs
+        - ./lxc
   - pymdownx.smartsymbols
   - pymdownx.superfences:
       custom_fences:

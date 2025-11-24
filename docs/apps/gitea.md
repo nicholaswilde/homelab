@@ -192,6 +192,47 @@ You can then clone a repo using the hostname rather than the gitea IP address.
     --8<-- "gitea/task-list.txt"
     ```
 
+## :mag: Configuration Monitoring
+
+The `check-config.sh` script can be used to monitor the Gitea configuration for discrepancies between the live `app.ini` and the encrypted `app.ini.enc`. If a mismatch is found, a Mailrise notification is sent.
+
+### Systemd Service
+
+Create `/etc/systemd/system/gitea-check-config.service`:
+
+```ini
+[Unit]
+Description=Check Gitea configuration sync status
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/root/git/nicholaswilde/homelab/pve/gitea
+ExecStart=/root/git/nicholaswilde/homelab/pve/gitea/check-config.sh
+```
+
+### Systemd Timer
+
+Create `/etc/systemd/system/gitea-check-config.timer`:
+
+```ini
+[Unit]
+Description=Run Gitea configuration check daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+Enable and start the timer:
+
+```shell
+systemctl enable --now gitea-check-config.timer
+```
+
 ## :link: References
 
 - <https://community-scripts.github.io/ProxmoxVE/scripts?id=homepage>
