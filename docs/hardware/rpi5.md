@@ -146,16 +146,10 @@ Setup [LVM][9] first
     curl -Lo 2024-11-19-raspios-bookworm-arm64-lite.img.xz https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz
     ```
 
-!!! code "Extract image"
-
-    ```shell
-    xz -d 2024-11-19-raspios-bookworm-arm64-lite.img.xz
-    ```
-
 !!! code "Write image to SD card"
 
     ```shell
-    dd if=2024-11-19-raspios-bookworm-arm64-lite.img /dev/mmcblk0 status=progress
+    xzcat 2024-11-19-raspios-bookworm-arm64-lite.img.xz | dd /dev/mmcblk0 status=progress
     ```
 
 !!! code "Mount boot partition"
