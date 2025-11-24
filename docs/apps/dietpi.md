@@ -19,8 +19,16 @@ tags:
 
 3. Write the image to the SD card. Replace `image.img.xz` with the path to your downloaded image and `/dev/sdX` with the device identifier of your SD card.
 
+=== "root"
+
     ```shell
-    xzcat image.img.xz | sudo dd of=/dev/sdX bs=4M status=progress
+    xzcat image.img.xz | dd of=/dev/sdX status=progress
+    ```
+
+=== "sudo"
+
+    ```shell
+    xzcat image.img.xz | sudo dd of=/dev/sdX status=progress
     ```
 
 4. Mount the boot partition (e.g., `/dev/sdX1`) and edit the configuration files.
