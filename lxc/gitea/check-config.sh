@@ -137,7 +137,8 @@ function main() {
   
   local temp_decrypted
   temp_decrypted=$(mktemp)
-  trap 'rm -f "${temp_decrypted}"' EXIT
+  log "DEBU" "temp_decrypted: ${temp_decrypted}"
+  # trap 'rm -f "${temp_decrypted}"' EXIT
 
   log "INFO" "Decrypting ${ENC_FILE} for comparison..."
   if ! sops -d --input-type ini --output-type ini "$enc_file_path" > "$temp_decrypted"; then

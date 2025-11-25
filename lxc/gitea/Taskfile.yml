@@ -5,6 +5,12 @@ dotenv:
   - .env
 
 tasks:
+  check-config:
+    desc: Checks if app.ini.enc needs to be updated by comparing it with the live configuration.
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/check-config.sh
+    cmds:
+      - ./check-config.sh
   own:
     desc: Have gitea own the config file.
     preconditions:
