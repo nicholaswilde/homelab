@@ -21,13 +21,15 @@ readonly BLUE=$(tput setaf 4)
 readonly RED=$(tput setaf 1)
 readonly YELLOW=$(tput setaf 3)
 readonly RESET=$(tput sgr0)
+readonly PURPLE=$(tput setaf 5)
 readonly ENC_FILE="app.ini.enc"
 readonly LIVE_FILE_NAME="app.ini"
+ENABLE_NOTIFICATIONS="true"
+DEBUG="false"
 
 # Logging function
 function log() {
   local type="$1"
-  local message="$2"
   local color="$RESET"
 
   case "$type" in
@@ -37,9 +39,19 @@ function log() {
       color="$YELLOW";;
     ERRO)
       color="$RED";;
+    DEBU)
+      color="$PURPLE";;
+    *)
+      type="LOGS";;
   esac
-
-  echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  if [[ -t 0 ]]; then
+    local message="$2"
+    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+    done
+  fi
 }
 
 # Checks if a command exists.
@@ -51,6 +63,38 @@ function check_dependencies() {
   if ! commandExists sops || ! commandExists diff; then
     log "ERRO" "Required dependencies (sops, diff) are not installed." >&2
     exit 1
+  fi
+}
+
+function send_notification(){
+  if [[ "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    log "WARN" "Notifications are disabled. Skipping."
+    return 0
+  fi
+  if [[ -z "${MAILRISE_URL}" || -z "${MAILRISE_FROM}" || -z "${MAILRISE_RCPT}" ]]; then
+    log "WARN" "Notification variables not set. Skipping notification."
+    return 1
+  fi
+
+  local EMAIL_SUBJECT="Homelab - Gitea Settings"
+  local EMAIL_BODY="Gitea config settings are out of date."
+
+  log "INFO" "Sending email notification..."
+  if ! curl -s \
+    --url "${MAILRISE_URL}" \
+    --mail-from "${MAILRISE_FROM}" \
+    --mail-rcpt "${MAILRISE_RCPT}" \
+    --upload-file - <<EOF
+From: Application <${MAILRISE_FROM}>
+To: User <${MAILRISE_RCPT}>
+Subject: ${EMAIL_SUBJECT}
+
+${EMAIL_BODY}
+EOF
+  then
+    log "ERRO" "Failed to send notification."
+  else
+    log "INFO" "Email notification sent."
   fi
 }
 
@@ -119,6 +163,7 @@ function main() {
     log "WARN" "Configuration mismatch detected!"
     log "INFO" "The live file ($live_file) differs from the encrypted source ($ENC_FILE)."
     log "INFO" "Run 'task encrypt' to update the encrypted file, or 'task decrypt' to restore from source."
+    send_notification
   else
     log "ERRO" "Error comparing files. Check permissions for $live_file."
     exit 1
