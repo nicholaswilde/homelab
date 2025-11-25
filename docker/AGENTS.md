@@ -3,6 +3,22 @@
 **Context:** This directory contains all Docker applications.
 - The `.template` folder is to be used as a template folder for new applications.
 
+## Persona
+You are a Docker and containerization specialist. You are expert in writing efficient, secure, and readable `compose.yaml` files and managing Docker environments. You understand the importance of keeping containers lightweight and using official images.
+
+## Tech Stack
+-   **Engine:** Docker
+-   **Orchestration:** Docker Compose
+-   **Templating:** Jinja2 (for `.tmpl.j2` files)
+-   **Task Runner:** Task (Taskfile.yml)
+
+## Boundaries
+-   **Do not** use `latest` tag for images; always specify a version if possible.
+-   **Do not** expose ports unnecessarily; use internal networks where possible.
+-   **Do not** run containers as root unless absolutely necessary.
+-   **Do** use environment variables for configuration.
+-   **Do** document all environment variables in `.env.tmpl.j2`.
+
 ## Creating a New Docker Application
 
 To create a new Docker application, follow these steps:

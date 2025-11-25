@@ -1,0 +1,8 @@
+[Unit]
+Description=Check Gitea configuration sync status
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/gitea
+ExecStart=/root/git/nicholaswilde/homelab/lxc/gitea/check-config.sh

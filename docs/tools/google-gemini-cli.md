@@ -65,12 +65,62 @@ Syntax files are used to customize the iutput from Gemini.
 
 Enable `gemini-cli` to use `AGENTS.md` files.
 
-!!! abstact "~/.gemini/settings.json"
+!!! abstract "~/.gemini/settings.json"
 
     ```json
     { "contextFileName": "AGENTS.md" }
     ```
-    
+
+## :robot: MCP Servers
+
+The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub repositories.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "context": {
+            "fileName": "AGENTS.md"
+        },
+        "mcpServers": {
+            "MCP_DOCKER": {
+                "command": "docker",
+                "args": [
+                    "mcp",
+                    "gateway",
+                    "run"
+                ]
+            },
+            "github": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "-e",
+                    "GITHUB_PERSONAL_ACCESS_TOKEN",
+                    "ghcr.io/github/github-mcp-server"
+                ],
+                "env": {
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_MCP_PAT"
+                }
+            }
+        },
+        "security": {
+            "auth": {
+                "selectedType": "oauth-personal"
+            }
+        },
+        "general": {
+            "previewFeatures": true
+        }
+    }
+    ```
+
+- `context.fileName`: Specifies the file to use for context, in this case `AGENTS.md`.
+- `general.previewFeatures`: Set to `true` to enable preview features such as Gemini 3.0.
+- `GITHUB_MCP_PAT`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
+
 ## :pencil: Usage
 
 Once installed and authenticated, start interacting with Gemini from the shell.
@@ -111,7 +161,10 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 ## :link: References
 
 - <https://github.com/google-gemini/gemini-cli>
+- <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
 [3]: <https://agents.md>
+[4]: <https://github.com/github/github-mcp-server>
+[5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
