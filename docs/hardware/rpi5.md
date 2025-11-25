@@ -132,163 +132,11 @@ This is how to change the resolution on boot of the command line so that it can 
 
 Setup [LVM][9] first
 
-### Setup [Raspberry Pi OS][3].
+### Setup [Raspberry Pi OS][2]
 
-!!! code "Create a tmp dir"
+See [Raspberry Pi OS setup](../hardware/rpios.md).
 
-    ```shell
-    cd "$(mktemp -d)"
-    ```
-
-!!! code "Download image"
-
-    ```shell
-    curl -Lo 2024-11-19-raspios-bookworm-arm64-lite.img.xz https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz
-    ```
-
-!!! code "Write image to SD card"
-
-    ```shell
-    xzcat 2024-11-19-raspios-bookworm-arm64-lite.img.xz | dd /dev/mmcblk0 status=progress
-    ```
-
-!!! code "Mount boot partition"
-
-    ```shell
-    (
-      [ -d /media/sd ] || mkdir /media/sd
-      sudo mount -a /dev/mmcblk0p1 /media/sd
-    )
-    ```
-
-!!! code "Change to boot partition"
-
-    ```shell
-    cd /media/sd
-    ```
-
-### :fontawesome-solid-user-plus: [Create Username & Password][16]
-
-!!! abstract "/boot/firmware/userconf.txt"
-
-    === "Automatic"
-    
-        ```shell
-        echo 'nicholas:' "$(openssl passwd -6)" | sed 's/ //g' | sudo tee -a userconf.txt
-        ```
-
-    === "Manual"
-
-        ```shell
-        nicholas:<hash>
-        ```
-
-### :computer: Enable SSH
-
-!!! abstract "/boot/ssh"
-    
-    ```shell
-    touch ssh
-    ```
-
-#### :page_facing_up: Kernel Page Size
-
-You should use the Kernel with 4K pagesize
-
-!!! abstract "/boot/firmware/config.txt"
-
-    === "Manual"
-    
-        ```shell
-        kernel=kernel8.img # to end of line
-        ```
-
-#### :material-memory: CT Notes
-
-Is the container summary memory usage and swap usage always shows `0`?
-
-!!! abstract "/boot/firmware/cmdline.txt"
-
-    === "Automatic"
-
-        ```shell
-        sed -i '1s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' cmdline.txt
-        ```
-
-    === "Manual"
-
-        ```ini
-        cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-        ```
-
-Unmount SD card, plug into the Raspberry Pi and boot
-
-### PXVIRT Installation
-
-!!! tip
-
-    Alternatively, the [ISO][13] may be downloaded and installed as a removable media.
-
-Log into the Raspberry Pi using SSH.
-
-!!! code "Switch to `root` user. Default password is blank for Raspberry Pi OS.""
-
-    ```shell
-    sudo su root
-    ```
-
-!!! code "Set root password so that you can log into Proxmox web GUI"
-
-    ```shell
-    passwd
-    ```
-
-Add an `/etc/hosts` entry for your IP address.
-
-Please make sure that your machine's hostname is resolvable via `/etc/hosts`, i.e. you need an entry in `/etc/hosts` which assigns an address to its hostname.
-
-Make sure that you have configured one of the following addresses in `/etc/hosts` for your hostname:
-
-1 `IPv4` or
-1 `IPv6` or
-1 `IPv4` and 1 `IPv6`
-
-!!! note
-
-    This also means removing the address `127.0.1.1` that might be present as default.
-
-!!! code "Get IP address"
-
-    ```shell
-    hostname -I | awk '{print $1}'
-    ```
-
-For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`, then your `/etc/hosts` file could look like:
-
-!!! abstract "/etc/hosts"
-
-    ```ini
-    127.0.0.1       localhost.localdomain localhost
-
-    ::1             localhost ip6-localhost ip6-loopback
-    ff02::1         ip6-allnodes
-    ff02::2         ip6-allrouters
-
-    192.168.1.192   pve02.nicholaswilde.io pve02
-    ```
-
-!!! code "Test if your setup is ok using the hostname command"
-
-    ```shell
-    hostname --ip-address
-    ```
-
-!!! success "should return your IP address here"
-
-    ```shell
-    192.168.1.192
-    ```
-
+### :floppy_disk: Install PXVIRT
 ### :floppy_disk: Install PXVIRT
 
 !!! warning
@@ -495,11 +343,8 @@ See [LVM](../tools/lvm.md).
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
 [9]: <../tools/lvm.md#swap>
+[10]: <https://community-scripts.github.io/ProxmoxVE/>
+[11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
 [12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>
-
-[10]: <https://community-scripts.github.io/ProxmoxVE/> 
-[11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/> 
-[13]: <https://mirrors.lierfang.com/pxcloud/pxvirt/isos/> 
-[14]: <https://www.raspberrypi.com/products/active-cooler/>
-[15]: <https://github.com/jiangcuo/pxvirt>
-[16]: <https://www.raspberrypi.com/documentation/computers/configuration.html#configuring-a-user>
+[13]: <https://www.raspberrypi.com/products/active-cooler/>
+[14]: <https://github.com/jiangcuo/pxvirt>
