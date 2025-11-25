@@ -134,7 +134,7 @@ The gitea repo should now show the `SSH_DOMAIN` in the `Code` button under `SSH`
         gitea@gitea-ssh.l.nicholaswilde.io:nicholas/homelab.git
         ```
 
-#### :lucide-adguard: AdGuardHome DNS Rewrite
+#### :simple-adguard: AdGuardHome DNS Rewrite
 
 In [AdGuardHome](./adguardhome.md) DNS Rewrites, add an entry that forwards the `SSH_DOMAIN` directly to your gitea LXC.
 
@@ -175,7 +175,87 @@ You can then clone a repo using the hostname rather than the gitea IP address.
     git clone gitea@gitea-ssh.l.nicholaswilde.io:nicholas/homelab.git
     ```
 
+## :mag: Configuration Monitoring
 
+The `check-config.sh` script can be used to monitor the Gitea configuration for discrepancies between the live `app.ini` and the encrypted `app.ini.enc`. If a mismatch is found, a Mailrise notification is sent.
+
+### :handshake: Systemd Service
+
+Create `/etc/systemd/system/gitea-check-config.service`:
+
+!!! abstract "/etc/systemd/system/gitea-check-config.service"
+
+    === "Automatic"
+
+        ```shell
+        cat <<EOF > /etc/systemd/system/gitea-check-config.service
+        [Unit]
+        Description=Check Gitea configuration sync status
+
+        [Service]
+        Type=oneshot
+        User=root
+        WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/gitea
+        ExecStart=/root/git/nicholaswilde/homelab/lxc/gitea/check-config.sh
+        EOF
+        ```
+
+    === "Manual"
+
+        ```ini
+        [Unit]
+        Description=Check Gitea configuration sync status
+
+        [Service]
+        Type=oneshot
+        User=root
+        WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/gitea
+        ExecStart=/root/git/nicholaswilde/homelab/lxc/gitea/check-config.sh
+        ```
+
+### :clock: Systemd Timer
+
+Create `/etc/systemd/system/gitea-check-config.timer`:
+
+!!! abstract "/etc/systemd/system/gitea-check-config.timer"
+
+    === "Automatic"
+    
+        ```shell
+        cat <<EOF > /etc/systemd/system/gitea-check-config.timer
+        [Unit]
+        Description=Run Gitea configuration check daily
+
+        [Timer]
+        OnCalendar=daily
+        Persistent=true
+
+        [Install]
+        WantedBy=timers.target
+        EOF
+        ```
+
+    === "Manual"
+
+        ```ini
+        [Unit]
+        Description=Run Gitea configuration check daily
+
+        [Timer]
+        OnCalendar=daily
+        Persistent=true
+
+        [Install]
+        WantedBy=timers.target
+        ```
+
+Enable and start the timer:
+
+=== "Manual"
+
+    ```shell
+    systemctl enable --now gitea-check-config.timer
+    ```
 ## :simple-traefikproxy: Traefik
 
 ??? abstract "`homelab/pve/traefik/conf.d/gitea.yaml`"
@@ -191,47 +271,6 @@ You can then clone a repo using the hostname rather than the gitea IP address.
     ```yaml
     --8<-- "gitea/task-list.txt"
     ```
-
-## :mag: Configuration Monitoring
-
-The `check-config.sh` script can be used to monitor the Gitea configuration for discrepancies between the live `app.ini` and the encrypted `app.ini.enc`. If a mismatch is found, a Mailrise notification is sent.
-
-### Systemd Service
-
-Create `/etc/systemd/system/gitea-check-config.service`:
-
-```ini
-[Unit]
-Description=Check Gitea configuration sync status
-
-[Service]
-Type=oneshot
-User=root
-WorkingDirectory=/root/git/nicholaswilde/homelab/pve/gitea
-ExecStart=/root/git/nicholaswilde/homelab/pve/gitea/check-config.sh
-```
-
-### Systemd Timer
-
-Create `/etc/systemd/system/gitea-check-config.timer`:
-
-```ini
-[Unit]
-Description=Run Gitea configuration check daily
-
-[Timer]
-OnCalendar=daily
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-```
-
-Enable and start the timer:
-
-```shell
-systemctl enable --now gitea-check-config.timer
-```
 
 ## :link: References
 
