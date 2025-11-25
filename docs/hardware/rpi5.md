@@ -137,11 +137,10 @@ Setup [LVM][9] first
 See [Raspberry Pi OS setup](../hardware/rpios.md).
 
 ### :floppy_disk: Install PXVIRT
-### :floppy_disk: Install PXVIRT
 
 !!! warning
 
-    Proxmox-Port has now been replaced by [PXVIRT][15]! The information below may be out of date!
+    Proxmox-Port has now been replaced by [PXVIRT][14]! The information below may be out of date!
 
 ##### :octicons-repo-24: Add the PXVIRT repository
 

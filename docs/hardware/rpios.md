@@ -19,26 +19,70 @@ This page outlines the setup of Raspberry Pi OS for use with Proxmox on a Raspbe
     cd "$(mktemp -d)"
     ```
 
+!!! code "Get the latest image version"
+
+    === "arm64"
+    
+        ```shell
+        curl -fsSL https://downloads.raspberrypi.com/raspios_lite_arm64/images/ | grep -Eo '[a-zA-Z0-9_.-]+-[0-9]{4}-[0-9]{2}-[0-9]{2}' | sort -u | tail -n 1
+        ```
+
+        !!! success "Output"
+
+            ```shell
+            raspios_lite_arm64-2025-11-24
+            ```
+
+    === "armhf"
+    
+        ```shell
+        curl -fsSL https://downloads.raspberrypi.com/raspios_lite_armhf/images/ | grep -Eo '[a-zA-Z0-9_.-]+-[0-9]{4}-[0-9]{2}-[0-9]{2}' | sort -u | tail -n 1
+        ```
+
+        !!! success "Output"
+
+            ```shell
+            raspios_lite_armhf-2025-11-24
+            ```
+
 !!! code "Download image"
 
-    ```shell
-    curl -Lo 2024-11-19-raspios-bookworm-arm64-lite.img.xz https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz
-    ```
+    === "arm64"
+    
+        ```shell
+        curl -fSLO https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2025-11-24/2025-11-24-raspios-trixie-arm64-lite.img.xz
+        ```
+
+    === "armhf"
+    
+        ```shell
+        curl -fSLO https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2025-11-24/2025-11-24-raspios-trixie-armhf-lite.img.xz
+        ```
+
+!!! note
+
+    Pay attention to which debian version the download URL is (e.g. `trixie`, `bookworm`, etc.)
+
+See [raspios_lite_arm64](https://downloads.raspberrypi.com/raspios_lite_arm64/images/) and [raspios_lite_armhf](https://downloads.raspberrypi.com/raspios_lite_armhf/images/).
 
 !!! code "Write image to SD card"
 
-    ```shell
-    xzcat 2024-11-19-raspios-bookworm-arm64-lite.img.xz | dd /dev/mmcblk0 status=progress
-    ```
+    === "arm64"
+    
+        ```shell
+        xzcat 2025-11-24-raspios-trixie-arm64-lite.img.xz | dd /dev/mmcblk0 status=progress
+        ```
 
 !!! code "Mount boot partition"
 
-    ```shell
-    (
-      [ -d /media/sd ] || mkdir /media/sd
-      sudo mount -a /dev/mmcblk0p1 /media/sd
-    )
-    ```
+    === "sudo"
+    
+        ```shell
+        (
+          [ -d /media/sd ] || mkdir /media/sd
+          sudo mount -a /dev/mmcblk0p1 /media/sd
+        )
+        ```
 
 !!! code "Change to boot partition"
 
@@ -167,6 +211,8 @@ For instance, if your IP address is `192.168.15.77`, and your hostname `prox4m1`
     ```shell
     192.168.1.192
     ```
+
+Then see [install PXVIRT](http://localhost:8000/homelab/hardware/rpi5/#install-pxvirt).
 
 ## :link: References
 
