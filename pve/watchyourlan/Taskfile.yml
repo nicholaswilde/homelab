@@ -40,6 +40,13 @@ tasks:
       - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/scan.db /etc/watchyourlan/scan.db
       - ln -s /root/git/nicholaswilde/homelab/pve/watchyourlan/config_v2.yaml /etc/watchyourlan/config_v2.yaml
       - task: restart
+  verify-secrets:
+    desc: Checks if the decrypted secrets match the local files
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q scan.db <(sops -d scan.db.enc)
+        msg: "The encrypted scan.db file and unencrypted scan.db file do not match! Please re-encrypt your changes."
   default:
     cmds:
       - task -l

@@ -66,6 +66,17 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  verify-secrets:
+    desc: Checks if the decrypted secrets match the local files
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
+        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+      - sh: diff -q secret.txt <(sops -d secret.txt.enc)
+        msg: "The encrypted secret.txt file and unencrypted secret.txt file do not match! Please re-encrypt your changes."
+      - sh: diff -q url-watches.json <(sops -d --input-type json --output-type json url-watches.json.enc)
+        msg: "The encrypted url-watches.json file and unencrypted url-watches.json file do not match! Please re-encrypt your changes."
   clean:
     desc: Clean node_modules
     cmds:

@@ -44,6 +44,13 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  verify-secrets:
+    desc: Checks if the decrypted secrets match the local files
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q backup.conf <(sops -d backup.conf.enc)
+        msg: "The encrypted backup.conf file and unencrypted backup.conf file do not match! Please re-encrypt your changes."
   stop:
     desc: Stop service
     cmds:
