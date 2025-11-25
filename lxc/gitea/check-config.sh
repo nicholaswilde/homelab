@@ -13,8 +13,8 @@
 ################################################################################
 
 # Options
-set -e
-set -o pipefail
+# set -e
+# set -o pipefail
 
 # Constants
 readonly BLUE=$(tput setaf 4)
