@@ -136,6 +136,13 @@ tasks:
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list oracular
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list noble
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list jammy
+  verify-secrets:
+    desc: Checks if the decrypted secret matches the local file
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
+        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
   default:
     cmds:
       - task -l

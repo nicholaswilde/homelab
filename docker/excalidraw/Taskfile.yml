@@ -52,6 +52,13 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  verify-secrets:
+    desc: Checks if the decrypted secret matches the local file
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
+        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
   stop:
     desc: Stop the application's Docker containers.
     cmds:

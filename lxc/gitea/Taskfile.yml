@@ -61,6 +61,15 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  verify-secrets:
+    desc: Checks if the decrypted secrets match the local files
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc)
+        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .CONFIG_DIR }}/app.ini <(sops -d --input-type ini --output-type ini {{ .TASKFILE_DIR }}/app.ini.enc)
+        msg: "The encrypted app.ini file and unencrypted app.ini file do not match! Please re-encrypt your changes."
   stop:
     desc: Stop service
     cmds:

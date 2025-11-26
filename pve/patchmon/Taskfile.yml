@@ -88,6 +88,19 @@ tasks:
     cmds:
       - git pull origin
       - task: update
+  verify-secrets:
+    desc: Checks if the decrypted secrets match the local files
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc)
+        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/frontend/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc)
+        msg: "The encrypted frontend/.env file and unencrypted frontend/.env file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/backend/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc)
+        msg: "The encrypted backend/.env file and unencrypted backend/.env file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/patchmon.creds <(sops -d {{ .TASKFILE_DIR }}/patchmon.creds.enc)
+        msg: "The encrypted patchmon.creds file and unencrypted patchmon.creds file do not match! Please re-encrypt your changes."
   service:install:
     desc: Install service
     preconditions:
