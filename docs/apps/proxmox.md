@@ -180,28 +180,37 @@ WIP
 
 !!! code "Create a partition"
 
-    ```shell
-    sgdisk -N 1 /dev/sdb
-    ```
+    === "root"
+    
+        ```shell
+        sgdisk -N 1 /dev/sdb
+        ```
+    
 !!! code "Create a [P]hysical [V]olume (PV) without confirmation and 250K metadatasize."
 
-    ```shell
-    pvcreate --metadatasize 250k -y -ff /dev/sdb1
-    ```
+    === "root"
+    
+        ```shell
+        pvcreate --metadatasize 250k -y -ff /dev/sdb1
+        ```
 
 !!! code "Create a volume group named `vmdata` on /dev/sdb1"
 
-    ```shell
-    vgcreate vmdata /dev/sdb1
-    ```
+    === "root"
+    
+        ```shell
+        vgcreate vmdata /dev/sdb1
+        ```
 
 ## :material-pool: Create a LVM-thin pool
 
 !!! code ""
 
-    ```shell
-    lvcreate -L 80G -T -n vmstore vmdata
-    ```
+    === "root"
+    
+        ```shell
+        lvcreate -L 80G -T -n vmstore vmdata
+        ```
 
 ## :material-harddisk-plus: [Resize LXC Disks][10]
 
@@ -213,33 +222,43 @@ From node
 
 !!! code "Stop the LXC"
 
-    ```shell
-    pct stop 108
-    ```
+    === "root"
+    
+        ```shell
+        pct stop 108
+        ```
 
 !!! code "Increase the absolute size to 20G"
 
-    ```shell
-    pct resize 108 rootfs 20G
-    ```
+    === "root"
+    
+        ```shell
+        pct resize 108 rootfs 20G
+        ```
 
 !!! code "Check the file system"
 
-    ```shell
-    e2fsck -f /dev/pve/vm-108-disk-0
-    ```
+    === "root"
+    
+        ```shell
+        e2fsck -f /dev/pve/vm-108-disk-0
+        ```
 
 !!! code "Resize the file system (optional)"
 
-    ```shell
-    resize2fs /dev/pve/vm-108-disk-0
-    ```
+    === "root"
+        
+        ```shell
+        resize2fs /dev/pve/vm-108-disk-0
+        ```
 
 !!! code "Start the LXC"
 
-    ```shell
-    pct start 108
-    ```
+    === "root"
+    
+        ```shell
+        pct start 108
+        ```
 
 ## :material-harddisk-plus: [Resize VM Disks][3]
 
@@ -251,22 +270,40 @@ From inside of the VM, not from the control node.
 
 !!! code "check free space"
 
-    ```shell
-    fdisk -l
-    ```
+    === "root"
+    
+        ```shell
+        fdisk -l
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo fdisk -l
+        ```
 
 !!! code "Extend physical drive partition"
 
-    ```shell
-    growpart /dev/sda 3
-    ```
+    === "root"
+        
+        ```shell
+        growpart /dev/sda 3
+        ```
+
+    === "sudo"
+        
+        ```shell
+        sudo growpart /dev/sda 3
+        ```
 
 !!! code "See physical drive"
 
     === "root"
+    
         ```shell
         pvdisplay
         ```
+        
     === "sudo"
     
         ```shell
@@ -274,53 +311,102 @@ From inside of the VM, not from the control node.
         ```
     
     ```shell title="Output"
-      --- Physical volume ---
-      PV Name               /dev/sda3
-      VG Name               ubuntu-vg
-      PV Size               <30.25 GiB / not usable 16.50 KiB
-      Allocatable           yes
-      PE Size               4.00 MiB
-      Total PE              7743
-      Free PE               2048
-      Allocated PE          5695
-      PV UUID               nE8Q94-dVYI-8ZP3-VEar-vONW-Vday-L0JofP
+    --- Physical volume ---
+    PV Name               /dev/sda3
+    VG Name               ubuntu-vg
+    PV Size               <30.25 GiB / not usable 16.50 KiB
+    Allocatable           yes
+    PE Size               4.00 MiB
+    Total PE              7743
+    Free PE               2048
+    Allocated PE          5695
+    PV UUID               nE8Q94-dVYI-8ZP3-VEar-vONW-Vday-L0JofP
     ```
 
 !!! code "Instruct LVM that disk size has changed"
 
-    ```shell
-    pvresize /dev/sda3
-    ```
+    === "root"
+    
+        ```shell
+        pvresize /dev/sda3
+        ```
 
+    === "sudo"
+    
+        ```shell
+        sudo pvresize /dev/sda3
+        ```
+        
 !!! success "Check physical drive if has changed"
 
-    ```shell
-    pvdisplay
-    ```
+    === "root"
+    
+        ```shell
+        pvdisplay
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo pvdisplay
+        ```
 
     ```shell title="Output"
-    
+    --- Physical volume ---
+    PV Name               /dev/sda3
+    VG Name               ubuntu-vg
+    PV Size               <58.25 GiB / not usable 16.50 KiB
+    Allocatable           yes (but full)
+    PE Size               4.00 MiB
+    Total PE              14911
+    Free PE               0
+    Allocated PE          14911
+    PV UUID               nE8Q94-dVYI-8ZP3-VEar-vONW-Vday-L0JofP
     ```
 
 ### :brain: Step 3: Extend Logical volume
 
 !!! code "View starting LV"
 
-    ```shell
-    lvdisplay
-    ```
+    === "root"
+    
+        ```shell
+        lvdisplay
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo lvdisplay
+        ```
 
 !!! code "Resize LV"
 
-    ```shell
-    lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
-    ```
+    === "root"
+    
+        ```shell
+        lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+        ```
 
 !!! success "View changed LV"
 
-    ```shell
-    lvdisplay
-    ```
+    === "root"
+    
+        ```shell
+        lvdisplay
+        ```
+
+    === "sudo"
+    
+        ```shell
+        sudo lvdisplay
+        ```
 
     ```shell title="Output"
     
@@ -330,32 +416,78 @@ From inside of the VM, not from the control node.
 
 !!! code "Resize Filesystem"
 
-    ```shell
-    resize2fs /dev/ubuntu-vg/ubuntu-lv
-    ```
+    === "root"
+
+        ```shell
+        resize2fs /dev/ubuntu-vg/ubuntu-lv
+        ```
+        
+    === "sudo"
+
+        ```shell
+        sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
+        ```
 
 !!! success "Confirm results"
 
-    ```shell
-    fdisk -l
-    ```
-
-    ```shell title="Output"
+    === "root"
     
+        ```shell
+        fdisk -l
+        ```
+
+    === "sudo"
+        
+        ```shell
+        sudo fdisk -l
+        ```
+      
+    ```shell title="Output"
+    Disk /dev/sda: 60 GiB, 64424509440 bytes, 125829120 sectors
+    Disk model: QEMU HARDDISK
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: gpt
+    Disk identifier: C4F18461-1027-4C82-82F5-AA8A9A8F5098
+    
+    Device       Start       End   Sectors  Size Type
+    /dev/sda1     2048      4095      2048    1M BIOS boot
+    /dev/sda2     4096   3674111   3670016  1.8G Linux filesystem
+    /dev/sda3  3674112 125829086 122154975 58.2G Linux filesystem
+    
+    
+    Disk /dev/mapper/ubuntu--vg-ubuntu--lv: 58.25 GiB, 62541266944 bytes, 122150912 sectors
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes     
     ```
 
 ## :key: [private key /root/.ssh/id_rsa contents do not match][5]
 
 !!! code "Run on all nodes"
 
-    ```shell
-    (
-      cd /root/.ssh && \
-      mv id_rsa id_rsa.bak && \
-      mv id_rsa.pub id_rsa.pub.bak && \
-      mv config config.bak
-    )
-    ```
+    === "root"
+    
+        ```shell
+        (
+          cd /root/.ssh && \
+          mv id_rsa id_rsa.bak && \
+          mv id_rsa.pub id_rsa.pub.bak && \
+          mv config config.bak
+        )
+        ```
+
+    === "sudo"
+    
+        ```shell
+        (
+          cd /root/.ssh && \
+          mv id_rsa id_rsa.bak && \
+          mv id_rsa.pub id_rsa.pub.bak && \
+          mv config config.bak
+        )
+        ```
 
 !!! code "Run on all nodes"
 
@@ -546,9 +678,17 @@ Here’s a breakdown of the command and the process:
 
 !!! code ""
 
-    ```
-    sudo fstrim -av
-    ```
+    === "root"
+
+        ```
+        fstrim -av
+        ```
+
+    === "sudo"
+
+        ```
+        sudo fstrim -av
+        ```
 
 ## [QDevice](https://www.techtutorials.tv/sections/promox/proxmox-cluster-qdevice-raspberry-pi/)
 
@@ -558,15 +698,31 @@ How to add a Raspberry Pi to a Proxmox cluster that only has two nodes.
 
 Install the corosync-qnetd package
 
-```shell
-sudo apt install corosync-qnetd
-```
+=== "root"
+
+    ```shell
+    sudo apt install corosync-qnetd
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo apt install corosync-qnetd
+    ```
 
 Allow root SSH Login
 
-```shell
-sudo nano /etc/ssh/sshd_config
-```
+=== "root"
+
+    ```shell
+    nano /etc/ssh/sshd_config
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo nano /etc/ssh/sshd_config
+    ```
 
 !!! abstract "/etc/ssh/sshd_config"
 
@@ -576,39 +732,69 @@ sudo nano /etc/ssh/sshd_config
 
 Restart service
 
-```shell
-sudo systemctl restart ssh
-```
+=== "root"
+
+    ```shell
+    systemctl restart ssh
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo systemctl restart ssh
+    ```
 
 Change root password
 
-```shell
-sudo passwd root
-```
+=== "root"
+
+    ```shell
+    passwd root
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo passwd root
+    ```
 
 View the IP address
 
-```
-hostname -I
-```
+=== "root"
+    
+    ```
+    hostname -I
+    ```
+
+=== "sudo"
+    
+    ```
+    hostname -I
+    ```
 
 ### PVE Nodes
 
-```shell
-apt install corosync-qdevice
-```
+=== "root"
+    
+    ```shell
+    apt install corosync-qdevice
+    ```
 
 Install the corosync-qdevice package on all nodes
 
-```shell
-pvecm qdevice setup <qdevice_ip_address>
-```
+=== "root"
+    
+    ```shell
+    pvecm qdevice setup <qdevice_ip_address>
+    ```
 
 Check the results
 
-```shell
-pvecm status
-```
+=== "root"
+    
+    ```shell
+    pvecm status
+    ```
 
 ## :link: References
 
