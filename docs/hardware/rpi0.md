@@ -11,7 +11,7 @@ DietPi is selected for this device due to its lightweight footprint, which is id
 
 !!! example ""
 
-    OS: [DietPi](../apps/dietpi.md)
+    OS: [DietPi](../os/dietpi.md)
 
 ## :link: References
 

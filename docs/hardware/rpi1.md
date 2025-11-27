@@ -13,7 +13,7 @@ DietPi is the operating system of choice here because its optimized, minimal ins
 
 !!! example ""
 
-    OS: [DietPi](../apps/dietpi.md)
+    OS: [DietPi](../os/dietpi.md)
 
 ## :link: References
 

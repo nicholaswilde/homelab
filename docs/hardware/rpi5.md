@@ -134,7 +134,7 @@ Setup [LVM][9] first
 
 ### Setup [Raspberry Pi OS][2]
 
-See [Raspberry Pi OS setup](../hardware/rpios.md).
+See [Raspberry Pi OS setup](../os/rpios.md).
 
 ### :floppy_disk: Install PXVIRT
 
