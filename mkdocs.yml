@@ -89,6 +89,7 @@ nav:
       - LVM: tools/lvm.md
       - localsend: tools/localsend.md
       - micro: tools/micro.md
+      - pass: tools/pass.md
       - rclone: tools/rclone.md
       - ripgrep: tools/ripgrep.md
       - sd: tools/sd.md
