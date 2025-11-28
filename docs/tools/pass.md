@@ -147,7 +147,7 @@ Run this in your terminal (or add it to your `~/.bashrc`):
     export DISPLAY=:0
     ```
 
-Step 3: Test It
+### Step 3: Test It
 
 Run the standard copy command:
 
