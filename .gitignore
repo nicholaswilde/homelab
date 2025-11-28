@@ -57,3 +57,5 @@ patchmon.conf
 **/aria2.daemon
 
 **/wg1.conf
+
+**/secure-shell-preferences-backup.json

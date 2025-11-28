@@ -72,6 +72,7 @@ nav:
       - Raspberry Pi 4: hardware/rpi4.md
       - Raspberry Pi 5: hardware/rpi5.md
   - Operating Systems:
+      - Chrome OS: os/chromeos.md
       - DietPi: os/dietpi.md
       - Raspberry Pi OS: os/rpios.md
   - Tools:
