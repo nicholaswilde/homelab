@@ -16,13 +16,17 @@ sudo passwd $USER
 
 Change the font in the SSH terminal to render emoji correctly for [LazyVim](https://www.lazyvim.org/).
 
-```bash title="Penguin"
-chrome-untrusted://terminal/html/nassh_preferences_editor.html
-```
+=== "Penguin"
 
-```bash title="Secure Shell extension"
-chrome-extension://iodihamcpbpeioajjeobimgagajmlibd/html/nassh_preferences_editor.html
-```
+    ```bash
+    chrome-untrusted://terminal/html/nassh_preferences_editor.html
+    ```
+
+=== "Secure Shell extension"
+
+    ```bash
+    chrome-extension://iodihamcpbpeioajjeobimgagajmlibd/html/nassh_preferences_editor.html
+    ```
 
 ```css title="Custom CSS (inline text)"
 @font-face {
