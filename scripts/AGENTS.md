@@ -34,7 +34,11 @@ You are a senior Bash scripting expert. You write robust, secure, and portable B
 - All dependencies shall be checked if they exist as a function.
 - Instead of echo, use a log function to log in the format of go-lang (e.g. `INFO[date time] message`).
 - Color INFO as blue, WARN as yellow, and ERRO as red.
-- Use tput to define the colors (e.g. `RED=$(tput setaf 1)`)
+- Use Catppuccin Mocha RGB colors:
+  - BLUE="\033[38;2;137;180;250m"
+  - RED="\033[38;2;243;139;168m"
+  - YELLOW="\033[38;2;249;226;175m"
+  - PURPLE="\033[38;2;203;166;247m"
 - Make all constants as readonly (e.g. `readonly CONST`)
 - Define all constants after the header and before the functions.
 - Hard coded paths shall be set as variables after the options.
@@ -68,11 +72,17 @@ set -o pipefail
 CONSTANT="value"
 readonly CONSTANT
 
-readonly BLUE=$(tput setaf 4)
-readonly RED=$(tput setaf 1)
-readonly YELLOW=$(tput setaf 3)
-readonly PURPLE=$(tput setaf 5)
-readonly RESET=$(tput sgr0)
+# Catppuccin Mocha Colors
+BLUE="\033[38;2;137;180;250m"
+readonly BLUE
+RED="\033[38;2;243;139;168m"
+readonly RED
+YELLOW="\033[38;2;249;226;175m"
+readonly YELLOW
+PURPLE="\033[38;2;203;166;247m"
+readonly PURPLE
+RESET="\033[0m"
+readonly RESET
 DEBUG="false"
 
 # Logging function
