@@ -260,13 +260,46 @@ From node
         pct start 108
         ```
 
-## :material-harddisk-plus: [Resize VM Disks][3]
+## :material-harddisk-plus: [Resize VM LVM Disks][3]
+
+!!! note
+
+    This procedure assumes that your VM file system is using LVM, such as Ubuntu.
 
 ### :frame_photo: Step 1: Increase/resize disk from GUI console
 
 ### :material-harddisk-plus: Step 2: Extend physical drive partition
 
 From inside of the VM, not from the control node.
+
+#### TL;DR
+
+=== "root"
+
+    ```shell
+    (
+      fdisk -l && \
+      growpart /dev/sda 3 && \
+      pvresize /dev/sda3 && \
+      lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv && \
+      resize2fs /dev/ubuntu-vg/ubuntu-lv && \
+      fdisk -l
+    )
+    ```
+
+=== "sudo"
+
+    ```shell
+    (
+      sudo fdisk -l && \
+      sudo growpart /dev/sda 3 && \
+      sudo pvresize /dev/sda3 && \
+      sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv && \
+      sudo resize2fs /dev/ubuntu-vg/ubuntu-lv && \
+      sudo fdisk -l
+    )
+    ```
+
 
 !!! code "check free space"
 

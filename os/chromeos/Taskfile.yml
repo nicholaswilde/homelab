@@ -1,0 +1,38 @@
+---
+version: '3'
+
+tasks:
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
+    cmds:
+      - sops -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    preconditions:
+      - test -f {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
+    cmds:
+      - sops -e --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc
+  export:
+    silent: true
+    desc: Export the task list to `task-list.txt`.
+    cmds:
+      - task --list > {{ .TASKFILE_DIR }}/task-list.txt
+  upgrade:
+    desc: Upgrade the application by pulling the latest changes and updating.
+    cmds:
+      - git pull origin
+  verify-secrets:
+    desc: Checks if the decrypted secret matches the local file
+    cmds:
+      - echo "Secrets are in sync."
+    preconditions:
+      - sh: diff -q {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json <(sops -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc)
+        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+    silent: true
+  default:
+    cmds:
+      - task -l
+    silent: true
+    desc: List all available tasks.
