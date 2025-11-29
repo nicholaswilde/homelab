@@ -39,6 +39,10 @@ tasks:
     desc: Restart ChangeDetection service
     cmds:
       - systemctl restart changedetection.service
+  status:
+    desc: Check ChangeDetection status
+    cmds:
+      - systemctl status changedetection.service
   stop:
     desc: Stop changedetection service
     cmds:

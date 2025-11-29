@@ -59,3 +59,6 @@ patchmon.conf
 **/wg1.conf
 
 **/secure-shell-preferences-backup.json
+
+**/openmediavault/config.xml
+**/openmediavault/php.ini
