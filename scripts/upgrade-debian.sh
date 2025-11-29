@@ -107,7 +107,7 @@ function create_snapshot() {
   if command_exists timeshift; then
     log "INFO" "Creating Timeshift snapshot..."
     # Create snapshot with description and 'Daily' tag (D)
-    if timeshift --create --comments "Upgrade: ${VERSION_CODENAME} -> ${TARGET_CODENAME}" --tags D; then
+    if timeshift --create --comments "Upgrade: ${VERSION_CODENAME} -> ${TARGET_CODENAME}" --tags D 2>&1 | log "INFO"; then
         log "INFO" "Snapshot created successfully."
     else
         log "WARN" "Snapshot creation failed."
@@ -121,10 +121,10 @@ function update_current() {
   log "INFO" "Updating current packages..."
   export DEBIAN_FRONTEND=noninteractive
 
-  apt update
-  apt upgrade -y
-  apt full-upgrade -y
-  apt autoremove -y
+  apt update 2>&1 | log "INFO"
+  apt upgrade -y 2>&1 | log "INFO"
+  apt full-upgrade -y 2>&1 | log "INFO"
+  apt autoremove -y 2>&1 | log "INFO"
 }
 
 function modify_sources() {
@@ -153,18 +153,18 @@ function modify_sources() {
 function perform_upgrade() {
   log "INFO" "Starting Full Distribution Upgrade to ${TARGET_CODENAME}..."
 
-  apt update
+  apt update 2>&1 | log "INFO"
 
   # Two-stage upgrade to handle dependency shifts safely
   # We use || true in case there are nothing to upgrade in the first step to avoid script exit on set -e
-  apt upgrade --without-new-pkgs -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
-  apt full-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+  apt upgrade --without-new-pkgs -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" 2>&1 | log "INFO"
+  apt full-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" 2>&1 | log "INFO"
 }
 
 function cleanup() {
   log "INFO" "Cleaning up..."
-  apt autoremove -y
-  apt clean
+  apt autoremove -y 2>&1 | log "INFO"
+  apt clean 2>&1 | log "INFO"
 }
 
 function check_reboot() {
@@ -173,7 +173,7 @@ function check_reboot() {
     
     if [[ -f /var/run/reboot-required.pkgs ]]; then
       log "INFO" "The following updates triggered the reboot request:"
-      sed 's/^/  - /' < /var/run/reboot-required.pkgs
+      sed 's/^/  - /' < /var/run/reboot-required.pkgs | log "INFO"
     fi
     
     echo ""
@@ -181,7 +181,7 @@ function check_reboot() {
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       log "INFO" "Rebooting..."
-      reboot
+      reboot 2>&1 | log "INFO"
     fi
   else
     log "INFO" "No reboot required. Upgrade complete."
