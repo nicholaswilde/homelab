@@ -87,6 +87,61 @@ dietpi-config
 dietpi-drive_manager
 ```
 
+### :zap: Overclocking
+
+!!! warning "Risk of Hardware Damage"
+    Overclocking may void your warranty and can shorten the life of your device. Ensure you have adequate cooling.
+
+=== "Raspberry Pi Zero W"
+
+    Add the following to `/boot/config.txt`:
+
+    ```ini
+    # already runs at 1000 by default when busy, this locks it high
+    force_turbo=1
+    over_voltage=2
+    ```
+
+=== "Raspberry Pi 1"
+
+    Add the following to `/boot/config.txt`:
+
+    ```ini
+    arm_freq=900
+    core_freq=400
+    sdram_freq=450
+    over_voltage=6
+    ```
+
+### :rocket: Kernel Tuning
+
+Optimize the kernel for low-memory devices (Raspberry Pi 1, Zero, 2).
+
+!!! abstract "/etc/sysctl.d/99-rpi-tuning.conf"
+
+    ```ini
+    vm.swappiness=100
+    vm.vfs_cache_pressure=500
+    vm.dirty_background_ratio=1
+    vm.dirty_ratio=50
+    ```
+
+Apply the changes:
+
+```shell
+sudo sysctl --system
+```
+
+### :package: ZRAM Swap
+
+Install `zram-swap` to improve performance on low-memory devices.
+
+```shell
+git clone https://github.com/foundObjects/zram-swap.git
+cd zram-swap
+sudo ./install.sh
+```
+
 ## :pencil: Usage
 
 ## :rocket: Upgrade
@@ -103,3 +158,4 @@ dietpi-drive_manager
 
 [1]: <https://dietpi.com/>
 [2]: <https://dietpi.com/downloads/images/>
+[3]: <https://github.com/foundObjects/zram-swap>
