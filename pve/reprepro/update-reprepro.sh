@@ -155,7 +155,9 @@ function get_latest_version() {
 }
 
 function get_current_version(){
+  log "DEBU" "Firse codename: ${UBUNTU_CODENAMES[0]}"
   CURRENT_VERSION=$(sudo reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  log "DEBU" "CURRENT_VERSION: ${CURRENT_VERSION}, APP_NAME: ${APP_NAME}, codename: ${UBUNTU_CODENAMES[0]}"
   export CURRENT_VERSION
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
@@ -375,11 +377,13 @@ function update_app_from_deb() {
   local app_config="$1"
   local github_repo
   local app_name
-
+  log "DEBU" "app_config: ${app_config}"
   if [[ "${app_config}" == *"|"* ]]; then
     IFS='|' read -r github_repo app_name <<< "${app_config}"
+    log "DEBU" "yes"
   else
     github_repo="${app_config}"
+    log "DEBU" "no"
     app_name=$(basename "${github_repo}")
   fi
 
