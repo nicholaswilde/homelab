@@ -160,7 +160,19 @@ function main() {
 
   log "INFO" "Packaging neovim..."
   cd build
-  cpack -G DEB 2>&1 | log "INFO"
+  
+  # Prepare Version for CPack
+  local clean_version=$(echo "${TAG_NAME}" | sed 's/^v//')
+  local version_suffix=""
+  
+  if [[ "$(uname -m)" == "armv6"* ]]; then
+    log "INFO" "Detected ARMv6 architecture. Appending +armv6 suffix."
+    version_suffix="+armv6"
+  fi
+  
+  local full_version="${clean_version}${version_suffix}"
+
+  cpack -G DEB -D CPACK_PACKAGE_VERSION="${full_version}" 2>&1 | log "INFO"
 
   local deb_file
   deb_file=$(find . -maxdepth 1 -name "*.deb")

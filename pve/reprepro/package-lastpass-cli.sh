@@ -156,6 +156,14 @@ function main() {
 
   get_latest_version
 
+  # --- Architecture Detection & Version Adjustment ---
+  local version_suffix=""
+  if [[ "$(uname -m)" == "armv6"* ]]; then
+    log "INFO" "Detected ARMv6 architecture. Appending +armv6 to version."
+    version_suffix="+armv6"
+    LPASS_VERSION="${LPASS_VERSION}${version_suffix}"
+  fi
+
   local tarball_url
   tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
   if [ -z "${tarball_url}" ] || [ "${tarball_url}" == "null" ]; then

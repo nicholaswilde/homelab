@@ -36,6 +36,13 @@ readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null 
 readonly DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/debian/conf/distributions"))
 readonly UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${SCRIPT_DIR}/ubuntu/conf/distributions"))
 
+STANDARD_DEBIAN_CODENAMES=()
+for codename in "${DEBIAN_CODENAMES[@]}"; do
+  if [[ "${codename}" != "raspi" ]]; then
+    STANDARD_DEBIAN_CODENAMES+=("${codename}")
+  fi
+done
+
 # Default variables
 BASE_DIR="/srv/reprepro"
 ENABLE_NOTIFICATIONS="false"
@@ -248,6 +255,23 @@ function package_and_add() {
 
   log "INFO" "Processing architecture: ${arch_github} as ${arch_debian}"
 
+  local target_debian_codenames=()
+  local target_ubuntu_codenames=()
+  local version_suffix=""
+
+  if [[ "${arch_github}" == "armv6"* ]]; then
+    version_suffix="+armv6"
+    if [[ " ${DEBIAN_CODENAMES[*]} " =~ " raspi " ]]; then
+      target_debian_codenames+=("raspi")
+    fi
+    # Skip Ubuntu for armv6
+  else
+    target_debian_codenames=("${STANDARD_DEBIAN_CODENAMES[@]}")
+    target_ubuntu_codenames=("${UBUNTU_CODENAMES[@]}")
+  fi
+
+  local full_version="${LATEST_VERSION}${version_suffix}"
+
   local download_url
   download_url=$(echo "${json_response}" | jq -r --arg pkg_name "${tarball_name}" '.assets[] | select(.name==$pkg_name) | .browser_download_url')
   if [ -z "${download_url}" ]; then
@@ -260,7 +284,7 @@ function package_and_add() {
   log "INFO" "Downloading ${tarball_name}..."
   wget -q "${download_url}" -O "${tarball_path}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to download ${tarball_name}"; return 1; }
 
-  local package_dir="${TEMP_PATH}/${APP_NAME}_${LATEST_VERSION}_${arch_debian}"
+  local package_dir="${TEMP_PATH}/${APP_NAME}_${full_version}_${arch_debian}"
   mkdir -p "${package_dir}/usr/local/bin"
   mkdir -p "${package_dir}/DEBIAN"
 
@@ -269,7 +293,7 @@ function package_and_add() {
   log "INFO" "Creating control file..."
   cat << EOF > "${package_dir}/DEBIAN/control"
 Package: ${APP_NAME}
-Version: ${LATEST_VERSION}
+Version: ${full_version}
 Section: utils
 Priority: optional
 Architecture: ${arch_debian}
@@ -278,20 +302,20 @@ Description: ${DESCRIPTION}
 EOF
 
   log "INFO" "Building .deb package..."
-  local deb_file="${APP_NAME}_${LATEST_VERSION}_${arch_debian}.deb"
-  # dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"; return 1; }
+  local deb_file="${APP_NAME}_${full_version}_${arch_debian}.deb"
+  # dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || { log "ERRO" "Failed to build .deb package for ${APP_NAME} ${full_version} ${arch_debian}"; return 1; }
   local build_output=$(dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}" 2>&1)
   local exit_status=$?
   echo "${build_output}" | log "DEBU"
   if [[ ${exit_status} -ne 0 ]]; then
-    log "ERRO" "Failed to build .deb package for ${APP_NAME} ${LATEST_VERSION} ${arch_debian}"
+    log "ERRO" "Failed to build .deb package for ${APP_NAME} ${full_version} ${arch_debian}"
     return 1
   fi
   log "INFO" "Adding ${deb_file} to reprepro..."
-  for codename in "${UBUNTU_CODENAMES[@]}"; do
+  for codename in "${target_ubuntu_codenames[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
   done
-  for codename in "${DEBIAN_CODENAMES[@]}"; do
+  for codename in "${target_debian_codenames[@]}"; do
     reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
   done
 }
@@ -318,7 +342,7 @@ function download_and_add_deb() {
   for codename in "${UBUNTU_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
-  for codename in "${DEBIAN_CODENAMES[@]}"; do
+  for codename in "${STANDARD_DEBIAN_CODENAMES[@]}"; do
     reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
 }
@@ -360,6 +384,7 @@ function update_app_from_source() {
       "amd64"|"x86_64") debian_arch="amd64";;
       "arm64"|"aarch64") debian_arch="arm64";;
       "armv7"|"armhf"|"arm") debian_arch="armhf";;
+      "armv6"|"armv6l") debian_arch="armhf";;
       "386") debian_arch="i386";;
       *) 
         log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch//$'
@@ -544,7 +569,7 @@ EOF
     for codename in "${UBUNTU_CODENAMES[@]}"; do
       sudo reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
     done
-    for codename in "${DEBIAN_CODENAMES[@]}"; do
+    for codename in "${STANDARD_DEBIAN_CODENAMES[@]}"; do
       sudo reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
     done
   done

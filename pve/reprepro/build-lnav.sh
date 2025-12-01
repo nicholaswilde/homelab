@@ -26,9 +26,30 @@ readonly REPREPRO_BASE_PATH="/srv/reprepro"
 readonly REPREPRO_INCOMING_DIR="/tmp/incoming"
 readonly BUILD_DIR="/tmp/build"
 readonly PKG_NAME="lnav"
+readonly SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-readonly DEBIAN_CODENAMES=("bookworm" "bullseye" "trixie")
-readonly UBUNTU_CODENAMES=("jammy" "noble" "oracular")
+# --- Dynamic Codename Detection ---
+readonly DEBIAN_DIST_FILE="${SCRIPT_DIR}/debian/conf/distributions"
+readonly UBUNTU_DIST_FILE="${SCRIPT_DIR}/ubuntu/conf/distributions"
+
+if [[ ! -f "${DEBIAN_DIST_FILE}" ]] || [[ ! -f "${UBUNTU_DIST_FILE}" ]]; then
+  echo "ERRO: Distribution config files not found."
+  exit 1
+fi
+
+ALL_DEBIAN_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${DEBIAN_DIST_FILE}"))
+ALL_UBUNTU_CODENAMES=($(grep -oP '(?<=Codename: ).*' "${UBUNTU_DIST_FILE}"))
+
+STANDARD_DEBIAN_CODENAMES=()
+RASPI_CODENAMES=()
+
+for codename in "${ALL_DEBIAN_CODENAMES[@]}"; do
+  if [[ "${codename}" == "raspi" ]]; then
+    RASPI_CODENAMES+=("${codename}")
+  else
+    STANDARD_DEBIAN_CODENAMES+=("${codename}")
+  fi
+done
 
 # --- Logging function ---
 function log() {
@@ -79,13 +100,25 @@ function get_latest_version() {
 
 function get_reprepro_version() {
   local dist_name
-  if [ ${#DEBIAN_CODENAMES[@]} -gt 0 ]; then
-    dist_name=${DEBIAN_CODENAMES[0]}
+  if [[ "${IS_ARMV6}" == "true" ]]; then
+     # For ARMv6, we only check the raspi repo if it exists
+     if [ ${#RASPI_CODENAMES[@]} -gt 0 ]; then
+        dist_name=${RASPI_CODENAMES[0]}
+        reprepro -b "$REPREPRO_BASE_PATH/debian" list "$dist_name" "$PKG_NAME" 2>/dev/null | awk '{print $2}' | sed 's/.*:\([0-9.+]*\).*/\1/' || echo "0.0.0"
+        return
+     fi
+     echo "0.0.0"
+     return
+  fi
+
+  # Standard check
+  if [ ${#STANDARD_DEBIAN_CODENAMES[@]} -gt 0 ]; then
+    dist_name=${STANDARD_DEBIAN_CODENAMES[0]}
   else
-    dist_name=${UBUNTU_CODENAMES[0]}
+    dist_name=${ALL_UBUNTU_CODENAMES[0]}
   fi
   
-  reprepro -b "$REPREPRO_BASE_PATH/debian" list "$dist_name" "$PKG_NAME" 2>/dev/null | awk '{print $2}' | sed 's/.*:\([0-9.]*\).*/\1/' || echo "0.0.0"
+  reprepro -b "$REPREPRO_BASE_PATH/debian" list "$dist_name" "$PKG_NAME" 2>/dev/null | awk '{print $2}' | sed 's/.*:\([0-9.+]*\).*/\1/' || echo "0.0.0"
 }
 
 function compare_versions() {
@@ -96,9 +129,30 @@ function compare_versions() {
 function main() {
   check_dependencies
 
+  # Detect Architecture
+  IS_ARMV6="false"
+  VERSION_SUFFIX=""
+  TARGET_DEBIAN=()
+  TARGET_UBUNTU=()
+
+  if [[ "$(uname -m)" == "armv6"* ]]; then
+    log "INFO" "Detected ARMv6 architecture."
+    IS_ARMV6="true"
+    VERSION_SUFFIX="+armv6"
+    TARGET_DEBIAN=("${RASPI_CODENAMES[@]}")
+    # Ubuntu typically doesn't support armv6
+    TARGET_UBUNTU=() 
+  else
+    log "INFO" "Detected Standard architecture."
+    TARGET_DEBIAN=("${STANDARD_DEBIAN_CODENAMES[@]}")
+    TARGET_UBUNTU=("${ALL_UBUNTU_CODENAMES[@]}")
+  fi
+
   log "INFO" "Fetching latest version information..."
-  local latest_version
-  latest_version=$(get_latest_version)
+  local base_latest_version
+  base_latest_version=$(get_latest_version)
+  local latest_version="${base_latest_version}${VERSION_SUFFIX}"
+  
   local current_version
   current_version=$(get_reprepro_version)
 
@@ -142,10 +196,11 @@ function main() {
   log "INFO" "Packaging with checkinstall..."
   local arch
   arch=$(dpkg --print-architecture)
-  local description
-  description=$(curl -s "$GITHUB_API_URL" | jq -r '.name')
   
-  # Dependencies identified from `apt-cache depends lnav` on a Debian system
+  # Map armv6l to armhf for Debian/Raspbian compatibility if needed, 
+  # but checkinstall usually takes the system arch. 
+  # If we are on armv6l, dpkg --print-architecture usually says armhf (on Raspbian).
+  
   local requires="libc6,libcurl4,libpcre2-8-0,libsqlite3-0,libtinfo6,zlib1g"
 
   sudo checkinstall -y \
@@ -172,12 +227,17 @@ function main() {
   fi
 
   log "INFO" "Importing $deb_file into reprepro..."
-  for codename in "${DEBIAN_CODENAMES[@]}"; do
+  
+  if [ ${#TARGET_DEBIAN[@]} -eq 0 ] && [ ${#TARGET_UBUNTU[@]} -eq 0 ]; then
+    log "WARN" "No target distributions found for this architecture."
+  fi
+
+  for codename in "${TARGET_DEBIAN[@]}"; do
     log "INFO" "Importing for debian $codename"
     sudo reprepro -b "$REPREPRO_BASE_PATH/debian" includedeb "$codename" "$deb_file"
   done
 
-  for codename in "${UBUNTU_CODENAMES[@]}"; do
+  for codename in "${TARGET_UBUNTU[@]}"; do
     log "INFO" "Importing for ubuntu $codename"
     sudo reprepro -b "$REPREPRO_BASE_PATH/ubuntu" includedeb "$codename" "$deb_file"
   done

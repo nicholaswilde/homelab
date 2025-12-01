@@ -134,6 +134,63 @@ function check_root(){
   fi
 }
 
+# Define a function to encapsulate build and package logic
+function build_and_package() {
+  local debian_arch="$1" # e.g., amd64, arm64, armhf
+  local go_arch="$2"     # e.g., amd64, arm64, arm
+  local go_arm="$3"      # e.g., 7, 6 (empty for non-arm)
+  local version_suffix="$4" # e.g., "+armv6"
+
+  local full_version="${LATEST_VERSION}${version_suffix}"
+  local build_cmd=("GOOS=linux")
+
+  if [[ -n "${go_arch}" ]]; then
+    build_cmd+=("GOARCH=${go_arch}")
+  fi
+  if [[ -n "${go_arm}" ]]; then
+    build_cmd+=("GOARM=${go_arm}")
+  fi
+  build_cmd+=("${GO_CMD}" "build" "-o" "sops" "./cmd/sops")
+
+  log "INFO" "Building sops for ${debian_arch} (GOARCH=${go_arch}, GOARM=${go_arm})..."
+  "${build_cmd[@]}" 2>&1 | log "INFO"
+
+  if [ ! -f "sops" ]; then
+    log "ERRO" "Build failed for ${debian_arch}"
+    return 1
+  fi
+
+  local package_dir="${TEMP_PATH}/sops_${full_version}_${debian_arch}"
+  mkdir -p "${package_dir}/usr/local/bin"
+  mkdir -p "${package_dir}/DEBIAN"
+
+  mv sops "${package_dir}/usr/local/bin/"
+
+  log "INFO" "Creating control file for ${debian_arch}..."
+  cat << EOF > "${package_dir}/DEBIAN/control"
+Package: sops
+Version: ${full_version}
+Section: utils
+Priority: optional
+Architecture: ${debian_arch}
+Maintainer: Nicholas Wilde <noreply@email.com>
+Description: ${DESCRIPTION}
+EOF
+
+  log "INFO" "Building .deb package for ${debian_arch}..."
+  local deb_file="sops_${full_version}_${debian_arch}.deb"
+  if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}"; then
+      log "ERRO" "Failed to build .deb package for sops ${full_version} ${debian_arch}"
+      return 1
+  fi
+
+  log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
+  cp "${TEMP_PATH}/${deb_file}" "${SCRIPT_DIR}/"
+
+  log "INFO" "Sops package created: ${SCRIPT_DIR}/${deb_file##*/}"
+  return 0
+}
+
 function main() {
     trap cleanup EXIT
     check_root
@@ -158,49 +215,10 @@ function main() {
 
     cd "${TEMP_PATH}/sops"
 
-    declare -A archs
-    archs[armel]="6"
-    archs[armhf]="7"
-
-    for arch_debian in "${!archs[@]}"; do
-      local go_arm="${archs[$arch_debian]}"
-      log "INFO" "Building sops for ${arch_debian} (GOARM=${go_arm})..."
-
-      GOARM=${go_arm} GOOS=linux GOARCH=arm ${GO_CMD} build ./cmd/sops 2>&1 | log "INFO"
-      if [ ! -f "sops" ]; then
-        log "ERRO" "Build failed for ${arch_debian}"
-        continue
-      fi
-
-      local package_dir="${TEMP_PATH}/sops_${LATEST_VERSION}_${arch_debian}"
-      mkdir -p "${package_dir}/usr/local/bin"
-      mkdir -p "${package_dir}/DEBIAN"
-
-      mv sops "${package_dir}/usr/local/bin/"
-
-      log "INFO" "Creating control file for ${arch_debian}..."
-      cat << EOF > "${package_dir}/DEBIAN/control"
-Package: sops
-Version: ${LATEST_VERSION}
-Section: utils
-Priority: optional
-Architecture: ${arch_debian}
-Maintainer: Nicholas Wilde <noreply@email.com>
-Description: ${DESCRIPTION}
-EOF
-
-      log "INFO" "Building .deb package for ${arch_debian}..."
-      local deb_file="sops_${LATEST_VERSION}_${arch_debian}.deb"
-      if ! dpkg-deb --build "${package_dir}" "${TEMP_PATH}/${deb_file}"; then
-          log "ERRO" "Failed to build .deb package for sops ${LATEST_VERSION} ${arch_debian}"
-          continue
-      fi
-
-      log "INFO" "Copying ${deb_file} to ${SCRIPT_DIR}"
-      cp "${TEMP_PATH}/${deb_file}" "${SCRIPT_DIR}/"
-
-      log "INFO" "Sops package created: ${SCRIPT_DIR}/${deb_file##*/}"
-    done
+    build_and_package "amd64" "amd64" "" "" || true
+    build_and_package "arm64" "arm64" "" "" || true
+    build_and_package "armhf" "arm" "7" "" || true
+    build_and_package "armhf" "arm" "6" "+armv6" || true
 }
 
 main "$@"
