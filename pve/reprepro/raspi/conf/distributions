@@ -1,0 +1,9 @@
+Origin: Debian
+Label: Raspberry Pi apt repository
+Codename: raspi
+Architectures: armhf
+Components: main
+Description: Apt repository for Raspberry Pi 1/Zero (ARMv6)
+DebOverride: override.raspi
+DscOverride: override.raspi
+SignWith: 089C9FAF

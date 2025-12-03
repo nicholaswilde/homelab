@@ -1,0 +1,3 @@
+verbose
+basedir /srv/reprepro/raspi
+ask-passphrase
