@@ -578,7 +578,19 @@ A cronjob can be setup to run every night to check the released versions.
         0 2 * * * /root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro.sh
         ```
 
+## Copy from one dist to another
 
+1. Step 1: Find the full path of the file
+
+```shell
+find /srv/reprepro/debian/pool -name "localsend-cli*1.2.2*.deb"
+```
+
+2. Step 2: Include that file into the new repository
+
+```shell
+reprepro -b /srv/reprepro/raspi/ includedeb raspi /srv/reprepro/debian/pool/main/l/localsend-cli/localsend-cli_1.2.2_armhf.deb
+```
 
 ## :simple-traefikproxy: Traefik
 
