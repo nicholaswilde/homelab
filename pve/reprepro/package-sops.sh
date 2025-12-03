@@ -142,7 +142,7 @@ function build_and_package() {
   local version_suffix="$4" # e.g., "+armv6"
 
   local full_version="${LATEST_VERSION}${version_suffix}"
-  local build_cmd=("GOOS=linux")
+  local build_cmd=("env" "GOOS=linux")
 
   if [[ -n "${go_arch}" ]]; then
     build_cmd+=("GOARCH=${go_arch}")
