@@ -1,9 +1,9 @@
 Origin: Debian
 Label: Raspberry Pi apt repository
-Codename: raspi
+Codename: trixie
 Architectures: armhf
 Components: main
 Description: Apt repository for Raspberry Pi 1/Zero (ARMv6)
-DebOverride: override.raspi
-DscOverride: override.raspi
+DebOverride: override.trixie
+DscOverride: override.trixie
 SignWith: 089C9FAF
