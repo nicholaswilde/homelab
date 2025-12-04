@@ -14,6 +14,7 @@ tasks:
     cmds:
       - sudo rm -rf {{.BASE_DIR}}/debian/pool {{.BASE_DIR}}/debian/db {{.BASE_DIR}}/debian/dists
       - sudo rm -rf {{.BASE_DIR}}/ubuntu/pool {{.BASE_DIR}}/ubuntu/db {{.BASE_DIR}}/ubuntu/dists
+      - sudo rm -rf {{.BASE_DIR}}/raspi/pool {{.BASE_DIR}}/raspi/db {{.BASE_DIR}}/raspi/dists
       - sudo rm -rf {{.BASE_DIR}}/pool {{.BASE_DIR}}/db {{.BASE_DIR}}/dists
   init:
     desc: Initialize the application's environment and configuration files.
@@ -63,7 +64,7 @@ tasks:
         sudo apt install \
           jq reprepro cron dpkg-dev ninja-build gettext cmake curl \
           build-essential git build-essential cmake libcurl4-openssl-dev \
-          libxml2-dev libssl-dev libxml-security-c-dev pkg-config
+          libxml2-dev libssl-dev libxml-security-c-dev pkg-config stow
   package-lastpass-cli:
     desc: Package the latest lastpass-cli release
     cmds:
@@ -102,23 +103,19 @@ tasks:
     cmds:
       - sudo mkdir -p {{.BASE_DIR}}/debian/conf
       - sudo mkdir -p {{.BASE_DIR}}/ubuntu/conf
+      - sudo mkdir -p {{.BASE_DIR}}/raspi/conf
+  symlinks:test:
+    desc: Create reprepro symlinks
+    cmds:
+      - sudo stow -n -v -t {{ .BASE_DIR }}/debian debian
+      - sudo stow -n -v -t {{ .BASE_DIR }}/ubuntu ubuntu
+      - sudo stow -n -v -t {{ .BASE_DIR }}/raspi raspi
   symlinks:
     desc: Create reprepro symlinks
     cmds:
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/distributions {{.BASE_DIR}}/debian/conf/distributions
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/distributions {{.BASE_DIR}}/ubuntu/conf/distributions
-      # - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/conf/distributions {{.BASE_DIR}}/conf/distributions
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/options {{.BASE_DIR}}/debian/conf/options
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/options {{.BASE_DIR}}/ubuntu/conf/options
-      # - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/conf/options {{.BASE_DIR}}/conf/options
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye {{.BASE_DIR}}/debian/conf/override.bullseye
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm {{.BASE_DIR}}/debian/conf/override.bookworm
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie {{.BASE_DIR}}/debian/conf/override.trixie
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.questing {{.BASE_DIR}}/ubuntu/conf/override.questing
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.plucky {{.BASE_DIR}}/ubuntu/conf/override.plucky
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular {{.BASE_DIR}}/ubuntu/conf/override.oracular
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble {{.BASE_DIR}}/ubuntu/conf/override.noble
-      - sudo ln -fs $HOME/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy {{.BASE_DIR}}/ubuntu/conf/override.jammy
+      - sudo stow -v -t {{ .BASE_DIR }}/debian/ debian
+      - sudo stow -v -t {{ .BASE_DIR }}/ubuntu/ ubuntu
+      - sudo stow -v -t {{ .BASE_DIR }}/raspi/ raspi
   update-reprepro:
     desc: Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
     preconditions:
@@ -136,6 +133,8 @@ tasks:
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list oracular
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list noble
       - sudo reprepro -b {{.BASE_DIR}}/ubuntu list jammy
+      - sudo reprepro -b {{.BASE_DIR}}/raspi list trixie
+      - sudo reprepro -b {{.BASE_DIR}}/raspi list bookworm
   verify-secrets:
     desc: Checks if the decrypted secret matches the local file
     cmds:
