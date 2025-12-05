@@ -7,3 +7,13 @@ Description: Apt repository for Raspberry Pi 1/Zero (ARMv6)
 DebOverride: override.trixie
 DscOverride: override.trixie
 SignWith: 089C9FAF
+
+Origin: Debian
+Label: Raspberry Pi apt repository
+Codename: bookworm
+Architectures: armhf
+Components: main
+Description: Apt repository for Raspberry Pi 1/Zero (ARMv6)
+DebOverride: override.bookworm
+DscOverride: override.bookworm
+SignWith: 089C9FAF

@@ -10,6 +10,10 @@ tags:
 
 Some apps, like SOPS, release deb files, but are not a part of the normal repository. Hosting them locally, allows me to download the package once and then easily update on all other containers.
 
+## :strawberry: Raspberry Pi Support
+
+The `raspi` repository is used to support ARMv6 devices, such as the Raspberry Pi 1 and Raspberry Pi Zero W.
+
 ## :hammer_and_wrench: Installation
 
 !!! code ""
@@ -124,6 +128,10 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           cat <<EOF > /srv/reprepo/ubuntu/conf/distributions
           --8<-- "reprepro/ubuntu/conf/distributions"
           EOF
+          cat <<EOF > /srv/reprepo/raspi/conf/distributions
+          --8<-- "reprepro/raspi/conf/distributions"
+          EOF
+
         )
         ```
     === "Symlinks"
@@ -132,6 +140,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         (
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/distributions /srv/reprepro/debian/conf/distributions
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/distributions /srv/reprepro/ubuntu/conf/distributions
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/raspi/conf/distributions /srv/reprepro/raspi/conf/distributions
         )
         ```
         
@@ -141,6 +150,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         (
           curl -Lo /srv/reprepro/debian/conf/distributions https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/distributions
           curl -Lo /srv/reprepro/ubuntu/conf/distributions https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/distributions
+          curl -Lo /srv/reprepro/raspi/conf/distributions https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/raspi/conf/distributions
         )
         ```
 
@@ -155,6 +165,11 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         ```yaml
         --8<-- "reprepro/ubuntu/conf/distributions"
         ```
+    === "Raspi Manual"
+
+        ```yaml
+        --8<-- "reprepro/raspi/conf/distributions"
+        ```
 
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/options"
 
@@ -167,6 +182,9 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         cat <<EOF > /srv/reprepo/ubuntu/conf/options
         --8<-- "reprepro/ubuntu/conf/options::3"
         EOF
+        cat <<EOF > /srv/reprepo/ubuntu/conf/options
+        --8<-- "reprepro/raspi/conf/options::3"
+        EOF
         ```
 
     === "Download"
@@ -175,6 +193,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         (
           curl -Lo /srv/reprepro/debian/conf/options https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/options
           curl -Lo /srv/reprepro/ubuntu/conf/options https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/options
+          curl -Lo /srv/reprepro/raspi/conf/options https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/raspi/conf/options
         )
         ```
 
@@ -184,6 +203,7 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         (
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/options /srv/reprepro/debian/conf/options
           ln -s /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/options /srv/reprepro/ubuntu/conf/options
+          ln -s /root/git/nicholaswilde/homelab/pve/reprepro/raspi/conf/options /srv/reprepro/raspi/conf/options
         )
         ```
 
@@ -199,9 +219,15 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
         --8<-- "reprepro/ubuntu/conf/options"
         ```
 
+    === "Raspi Manual"
+
+        ```ini
+        --8<-- "reprepro/raspi/conf/options"
+        ```
+
 !!! abstract "/srv/reprepo/&lt;dist&gt;/conf/override.&lt;codename&gt;"
 
-    === "Automatic"
+    === "Automated"
 
         ```shell
         task symlinks
@@ -214,11 +240,15 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo curl -Lo /srv/reprepro/debian/conf/override.bullseye https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bullseye
           sudo curl -Lo /srv/reprepro/debian/conf/override.bookworm https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.bookworm
           sudo curl -Lo /srv/reprepro/debian/conf/override.trixie https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.trixie
+          sudo curl -Lo /srv/reprepro/debian/conf/override.raspi https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/debian/conf/override.raspi
           sudo curl -Lo /srv/reprepro/ubuntu/conf/override.questing https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.questing
           sudo curl -Lo /srv/reprepro/ubuntu/conf/override.plucky https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.plucky
           sudo curl -Lo /srv/reprepro/ubuntu/conf/override.oracular https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.oracular
           sudo curl -Lo /srv/reprepro/ubuntu/conf/override.noble https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.noble
           sudo curl -Lo /srv/reprepro/ubuntu/conf/override.jammy https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/ubuntu/conf/override.jammy
+          sudo curl -Lo /srv/reprepro/raspi/conf/override.bookworm https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepr/raspi/conf/override.bookworm
+          sudo curl -Lo /srv/reprepro/raspi/conf/override.trixie https://github.com/nicholaswilde/homelab/raw/refs/heads/main/pve/reprepro/raspi/conf/override.trixie
+
         )
         ```
 
@@ -229,11 +259,14 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bullseye /srv/reprepro/debian/conf/override.bullseye
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.bookworm /srv/reprepro/debian/conf/override.bookworm
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.trixie /srv/reprepro/debian/conf/override.trixie
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/debian/conf/override.raspi /srv/reprepro/debian/conf/override.raspi
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.questing /srv/reprepro/ubuntu/conf/override.questing
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.plucky /srv/reprepro/ubuntu/conf/override.plucky
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.oracular /srv/reprepro/ubuntu/conf/override.oracular
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.noble /srv/reprepro/ubuntu/conf/override.noble
           sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/ubuntu/conf/override.jammy /srv/reprepro/ubuntu/conf/override.jammy
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/raspi/conf/override.bookworm /srv/reprepro/raspi/conf/override.bookworm
+          sudo ln -fs /root/git/nicholaswilde/homelab/pve/reprepro/raspi/conf/override.trixie /srv/reprepro/raspi/conf/override.trixie
         )
         ```
 
@@ -244,11 +277,14 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
           sudo touch /srv/reprepro/debian/conf/override.bookworm
           sudo touch /srv/reprepro/debian/conf/override.bullseye
           sudo touch /srv/reprepro/debian/conf/override.trixie
+          sudo touch /srv/reprepro/debian/conf/override.raspi
           sudo touch /srv/reprepro/ubuntu/conf/override.questing
           sudo touch /srv/reprepro/ubuntu/conf/override.plucky
           sudo touch /srv/reprepro/ubuntu/conf/override.oracular
           sudo touch /srv/reprepro/ubuntu/conf/override.noble
           sudo touch /srv/reprepro/ubuntu/conf/override.jammy
+          sudo touch /srv/reprepro/raspi/conf/override.bookworm
+          sudo touch /srv/reprepro/raspi/conf/override.trixie
         )
         ```
 
@@ -309,9 +345,10 @@ To add a new release codename to reprepro:
 
         ```shell
         (
-          sudo reprepro -b /srv/reprepro/debian -C main includedeb bookworm sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/debian -C main includedeb trixie sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/debian -C main includedeb bullseye sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/debian -C main includedeb trixie sops_3.9.4_amd64.deb
+          sudo reprepro -b /srv/reprepro/raspi -C main includedeb trixie sops_3.9.4_armhf.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb questing sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb plucky sops_3.9.4_amd64.deb
           sudo reprepro -b /srv/reprepro/ubuntu -C main includedeb oracular sops_3.9.4_amd64.deb
@@ -391,6 +428,17 @@ Add repo and install.
 
             ```ini
             deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian trixie main
+            ```
+
+            ```shell
+            apt update && \
+            apt install sops
+            ```
+
+        === "Raspi"
+
+            ```ini
+            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/raspi trixie main
             ```
 
             ```shell
@@ -589,7 +637,7 @@ find /srv/reprepro/debian/pool -name "localsend-cli*1.2.2*.deb"
 2. Step 2: Include that file into the new repository
 
 ```shell
-reprepro -b /srv/reprepro/raspi/ includedeb raspi /srv/reprepro/debian/pool/main/l/localsend-cli/localsend-cli_1.2.2_armhf.deb
+reprepro -b /srv/reprepro/raspi/ includedeb trixie /srv/reprepro/debian/pool/main/l/localsend-cli/localsend-cli_1.2.2_armhf.deb
 ```
 
 ## :simple-traefikproxy: Traefik
