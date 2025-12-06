@@ -59,6 +59,7 @@ readonly APPS=(
   "sharkdp/bat:tar:bat:arm-unknown-linux-gnueabihf\.tar\.gz$:strip"
   "eza-community/eza:tar:eza:arm-unknown-linux-gnueabihf\.tar\.gz$:strip"
   "charmbracelet/glow:tar:glow:Linux_arm\.tar\.gz$:strip"
+  "junegunn/fzf:tar:fzf:linux_armv6\.tar\.gz$:flat"
 )
 
 # Logging function
