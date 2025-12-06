@@ -122,6 +122,12 @@ tasks:
       - test -f ./update-reprepro.sh
     cmds:
       - sudo ./update-reprepro.sh
+  update-raspi:
+    desc: Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
+    preconditions:
+      - test -f ./update-raspi.sh
+    cmds:
+      - sudo ./update-raspi.sh
   list:
     desc: List all packages in all distributions
     cmds:

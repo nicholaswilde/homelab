@@ -16,5 +16,8 @@ task: Available tasks for this project:
 * package-neovim:             Package the latest neovim release
 * package-sops:               Package the latest sops release
 * symlinks:                   Create reprepro symlinks
+* update-raspi:               Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
 * update-reprepro:            Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
 * upload-debs:                Upload the deb packages to a remote server
+* verify-secrets:             Checks if the decrypted secret matches the local file
+* symlinks:test:              Create reprepro symlinks
