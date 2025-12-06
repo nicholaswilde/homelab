@@ -628,16 +628,34 @@ A cronjob can be setup to run every night to check the released versions.
 
 ## Copy from one dist to another
 
-1. Step 1: Find the full path of the file
-
-```shell
+```shell title="Find the full path of the file"
 find /srv/reprepro/debian/pool -name "localsend-cli*1.2.2*.deb"
 ```
 
-2. Step 2: Include that file into the new repository
+```shell title="Include that file into the new repository"
+reprepro -b /srv/reprepro/raspi/ includedeb trixie /srv/reprepro/debian/pool/main/l/localsend-cli/localsend-cli_1.2.2_armhf.deb
+```
+
+## Remove app
 
 ```shell
-reprepro -b /srv/reprepro/raspi/ includedeb trixie /srv/reprepro/debian/pool/main/l/localsend-cli/localsend-cli_1.2.2_armhf.deb
+reprepro -b /srv/reprepro/raspi remove bookworm sops
+```
+
+```shell title="Remove Only a Specific Architecture"
+reprepro -b /srv/reprepro/raspi -A armhf remove bookworm sops
+```
+
+```shell title="List Only a Specific Version"
+reprepro -b /srv/reprepro/raspi listfilter bookworm "Package (== sops), Version (== 1.0.2)"
+```
+
+```shell title="Remove Only a Specific Version"
+reprepro -b /srv/reprepro/raspi removefilter bookworm "Package (== sops), Version (== 1.0.2)"
+```
+
+```shell title="Cleanup"
+reprepro -b /srv/reprepro/raspi deleteunreferenced
 ```
 
 ## :simple-traefikproxy: Traefik
