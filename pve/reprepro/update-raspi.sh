@@ -126,6 +126,12 @@ function get_codenames() {
 
 function get_latest_version() {
   local repo="$1"
+  # Reset variables
+  JSON_RESPONSE=""
+  TAG_NAME=""
+  LATEST_VERSION=""
+  DESCRIPTION=""
+
   local api_url="https://api.github.com/repos/${repo}/releases/latest"
   local curl_args=('-s')
   if [ -n "${GITHUB_TOKEN}" ]; then
@@ -269,7 +275,9 @@ function process_app() {
 
   log "INFO" "Processing ${app_name} (${repo})..."
 
-  get_latest_version "${repo}"
+  if ! get_latest_version "${repo}"; then
+    return 1
+  fi
   get_current_version "${app_name}"
 
   log "DEBU" "  Latest: ${LATEST_VERSION}, Current: ${CURRENT_VERSION}"
