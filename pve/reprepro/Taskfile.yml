@@ -73,6 +73,10 @@ tasks:
     desc: Package the latest neovim release
     cmds:
       - ./package-neovim.sh
+  package-pvetui:
+    desc: Package the latest pvetui release
+    cmds:
+      - ./package-pvetui.sh
   package-sops:
     desc: Package the latest sops release
     cmds:

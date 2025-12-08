@@ -14,6 +14,7 @@ task: Available tasks for this project:
 * nuke:                       Nuke the packages
 * package-lastpass-cli:       Package the latest lastpass-cli release
 * package-neovim:             Package the latest neovim release
+* package-pvetui:             Package the latest pvetui release
 * package-sops:               Package the latest sops release
 * symlinks:                   Create reprepro symlinks
 * update-raspi:               Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
