@@ -100,8 +100,8 @@ function get_latest_version() {
 
 function get_reprepro_version() {
   local dist_name
-  if [[ "${IS_ARMV6}" == "true" ]]; then
-     # For ARMv6, we only check the raspi repo if it exists
+  if [[ "${IS_RASPI_ARCH}" == "true" ]]; then
+     # For ARMv6/v7, we only check the raspi repo if it exists
      if [ ${#RASPI_CODENAMES[@]} -gt 0 ]; then
         dist_name=${RASPI_CODENAMES[0]}
         reprepro -b "$REPREPRO_BASE_PATH/debian" list "$dist_name" "$PKG_NAME" 2>/dev/null | awk '{print $2}' | sed 's/.*:\([0-9.+]*\).*/\1/' || echo "0.0.0"
@@ -126,86 +126,52 @@ function compare_versions() {
 }
 
 # --- Main build logic ---
-function main() {
-  check_dependencies
+function build_and_package() {
+  local arch="$1"
+  local suffix="$2"
+  local host_flag="$3"
+  local cxx_flags="$4"
 
-  # Detect Architecture
-  IS_ARMV6="false"
-  VERSION_SUFFIX=""
-  TARGET_DEBIAN=()
-  TARGET_UBUNTU=()
+  local version="${base_latest_version}${suffix}"
+  local build_subdir="$BUILD_DIR/build_${arch}${suffix}"
 
-  if [[ "$(uname -m)" == "armv6"* ]]; then
-    log "INFO" "Detected ARMv6 architecture."
-    IS_ARMV6="true"
-    VERSION_SUFFIX="+armv6"
-    TARGET_DEBIAN=("${RASPI_CODENAMES[@]}")
-    # Ubuntu typically doesn't support armv6
-    TARGET_UBUNTU=() 
-  else
-    log "INFO" "Detected Standard architecture."
-    TARGET_DEBIAN=("${STANDARD_DEBIAN_CODENAMES[@]}")
-    TARGET_UBUNTU=("${ALL_UBUNTU_CODENAMES[@]}")
+  log "INFO" "Starting build for ${arch}${suffix}..."
+  
+  # Copy source to separate build dir to allow parallel/sequential builds
+  mkdir -p "$build_subdir"
+  cp -r "$BUILD_DIR/$src_dir_name/"* "$build_subdir/"
+  cd "$build_subdir"
+
+  # Configure
+  log "INFO" "Configuring..."
+  if [[ -n "$cxx_flags" ]]; then
+    export CXXFLAGS="$cxx_flags"
+    export CFLAGS="$cxx_flags"
   fi
-
-  log "INFO" "Fetching latest version information..."
-  local base_latest_version
-  base_latest_version=$(get_latest_version)
-  local latest_version="${base_latest_version}${VERSION_SUFFIX}"
   
-  local current_version
-  current_version=$(get_reprepro_version)
-
-  log "INFO" "Latest lnav version: $latest_version"
-  log "INFO" "Current reprepro lnav version: $current_version"
-
-  if ! compare_versions "$latest_version" "$current_version"; then
-    log "INFO" "lnav is up to date. No build needed."
-    exit 0
+  local config_cmd="./configure"
+  if [[ -n "$host_flag" ]]; then
+    config_cmd="$config_cmd --host=$host_flag"
   fi
-
-  log "INFO" "New lnav version available. Starting build process..."
-
-  # --- Cleanup and Setup ---
-  rm -rf "$BUILD_DIR"
-  mkdir -p "$BUILD_DIR" "$REPREPRO_INCOMING_DIR"
-
-  # --- Install build dependencies ---
-  log "INFO" "Installing build dependencies..."
-  sudo apt-get update
-  sudo apt-get install -y automake autoconf libunistring-dev libpcre2-dev libsqlite3-dev
-
-  # --- Download and Extract ---
-  local tarball_url
-  tarball_url=$(curl -s "$GITHUB_API_URL" | jq -r '.tarball_url')
-  local src_dir_name="tstack-lnav-$(curl -s $GITHUB_API_URL | jq -r '.target_commitish' | cut -c1-7)"
   
-  log "INFO" "Downloading source from $tarball_url"
-  curl -L "$tarball_url" | tar -xz -C "$BUILD_DIR"
+  $config_cmd
   
-  local build_path="$BUILD_DIR/$src_dir_name"
-  cd "$build_path"
+  # Build
+  log "INFO" "Building..."
+  make -j$(nproc)
 
-  # --- Build ---
-  log "INFO" "Building lnav..."
-  ./autogen.sh
-  ./configure
-  make
-
-  # --- Package ---
-  log "INFO" "Packaging with checkinstall..."
-  local arch
-  arch=$(dpkg --print-architecture)
-  
-  # Map armv6l to armhf for Debian/Raspbian compatibility if needed, 
-  # but checkinstall usually takes the system arch. 
-  # If we are on armv6l, dpkg --print-architecture usually says armhf (on Raspbian).
-  
+  # Package
+  log "INFO" "Packaging..."
   local requires="libc6,libcurl4,libpcre2-8-0,libsqlite3-0,libtinfo6,zlib1g"
+
+  if [ -f "/usr/bin/lnav" ]; then
+    log "WARN" "Removing existing /usr/bin/lnav to avoid install conflict."
+    sudo rm -f "/usr/bin/lnav"
+  fi
 
   sudo checkinstall -y \
     --pkgname="$PKG_NAME" \
-    --pkgversion="$latest_version" \
+    --pkgversion="$version" \
     --pkgrelease="1" \
     --pkgarch="$arch" \
     --pkgsource="$tarball_url" \
@@ -218,29 +184,101 @@ function main() {
     --delspec \
     make install
 
-  # --- Import into reprepro ---
+  # Import
   local deb_file
-  deb_file=$(find "$REPREPRO_INCOMING_DIR" -name "*.deb")
+  deb_file=$(find "$REPREPRO_INCOMING_DIR" -name "${PKG_NAME}_${version}-1_${arch}.deb")
+  
+  # Checkinstall sometimes names things differently, try wildcard if exact fail
   if [ -z "$deb_file" ]; then
-    log "ERRO" "No .deb file found after build."
-    exit 1
+     deb_file=$(find "$REPREPRO_INCOMING_DIR" -name "*.deb" -printf "%T@ %p\n" | sort -n | tail -1 | awk '{print $2}')
+  fi
+
+  if [ -z "$deb_file" ]; then
+    log "ERRO" "No .deb file found after build for ${arch}${suffix}."
+    return 1
   fi
 
   log "INFO" "Importing $deb_file into reprepro..."
   
-  if [ ${#TARGET_DEBIAN[@]} -eq 0 ] && [ ${#TARGET_UBUNTU[@]} -eq 0 ]; then
-    log "WARN" "No target distributions found for this architecture."
+  # Determine target dists based on arch
+  local target_debian=()
+  local target_ubuntu=()
+  
+  if [[ "$arch" == "armhf" ]]; then
+      # Assume armhf targets raspi repo mostly, or standard debian/ubuntu
+      if [[ "$suffix" == "+armv6" ]]; then
+          target_debian=("${RASPI_CODENAMES[@]}")
+      else
+          # armv7 / generic armhf
+          target_debian=("${STANDARD_DEBIAN_CODENAMES[@]}")
+          target_ubuntu=("${ALL_UBUNTU_CODENAMES[@]}")
+      fi
+  else
+      target_debian=("${STANDARD_DEBIAN_CODENAMES[@]}")
+      target_ubuntu=("${ALL_UBUNTU_CODENAMES[@]}")
   fi
 
-  for codename in "${TARGET_DEBIAN[@]}"; do
+  for codename in "${target_debian[@]}"; do
     log "INFO" "Importing for debian $codename"
     sudo reprepro -b "$REPREPRO_BASE_PATH/debian" includedeb "$codename" "$deb_file"
   done
 
-  for codename in "${TARGET_UBUNTU[@]}"; do
+  for codename in "${target_ubuntu[@]}"; do
     log "INFO" "Importing for ubuntu $codename"
     sudo reprepro -b "$REPREPRO_BASE_PATH/ubuntu" includedeb "$codename" "$deb_file"
   done
+  
+  # Reset flags
+  unset CXXFLAGS
+  unset CFLAGS
+}
+
+function main() {
+  check_dependencies
+
+  log "INFO" "Fetching latest version information..."
+  base_latest_version=$(get_latest_version)
+  log "INFO" "Latest lnav version: $base_latest_version"
+
+  # --- Cleanup and Setup ---
+  rm -rf "$BUILD_DIR"
+  mkdir -p "$BUILD_DIR" "$REPREPRO_INCOMING_DIR"
+
+  # --- Install build dependencies ---
+  log "INFO" "Installing build dependencies..."
+  sudo apt-get update
+  sudo apt-get install -y automake autoconf libunistring-dev libpcre2-dev libsqlite3-dev
+
+  # --- Download and Extract Source ---
+  tarball_url=$(curl -s "$GITHUB_API_URL" | jq -r '.tarball_url')
+  src_dir_name="tstack-lnav-$(curl -s $GITHUB_API_URL | jq -r '.target_commitish' | cut -c1-7)"
+  
+  log "INFO" "Downloading source from $tarball_url"
+  curl -L "$tarball_url" | tar -xz -C "$BUILD_DIR"
+  
+  # Prepare source (autogen needs to run once)
+  cd "$BUILD_DIR/$src_dir_name"
+  ./autogen.sh
+  cd "$BUILD_DIR"
+  
+  # 1. Native Build
+  local native_arch
+  native_arch=$(dpkg --print-architecture)
+  build_and_package "$native_arch" "" "" ""
+
+  # 2. Cross Compile for ARM if tools available
+  if command_exists arm-linux-gnueabihf-g++; then
+      log "INFO" "Cross-compiler found. Building for ARM."
+      
+      # ARMv6
+      build_and_package "armhf" "+armv6" "arm-linux-gnueabihf" "-march=armv6 -mfpu=vfp -mfloat-abi=hard"
+      
+      # ARMv7
+      build_and_package "armhf" "+armv7" "arm-linux-gnueabihf" "-march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
+  else
+      log "INFO" "Cross-compiler arm-linux-gnueabihf-g++ not found. Skipping ARM builds."
+      log "INFO" "Install g++-arm-linux-gnueabihf to enable cross-compilation."
+  fi
 
   # --- Cleanup ---
   log "INFO" "Cleaning up build artifacts..."
