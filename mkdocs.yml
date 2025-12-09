@@ -92,6 +92,7 @@ nav:
       - micro: tools/micro.md
       - pass: tools/pass.md
       - rclone: tools/rclone.md
+      - restic: tools/restic.md
       - ripgrep: tools/ripgrep.md
       - sd: tools/sd.md
       - SOPS: tools/sops.md
