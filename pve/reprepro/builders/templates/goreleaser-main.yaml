@@ -1,0 +1,38 @@
+---
+# templates/goreleaser-master.yaml
+project_name: "{{ .Env.PROJECT_NAME }}"
+
+builds:
+  - id: "{{ .Env.PROJECT_NAME }}"
+    # We assume the code is cloned into the current directory
+    main: "{{ .Env.MAIN_PATH | default '.' }}"
+    binary: "{{ .Env.PROJECT_NAME }}"
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    # Allow injecting custom ldflags if needed, or default to standard stripping
+    ldflags:
+      - -s -w {{ .Env.EXTRA_LDFLAGS }}
+
+nfpms:
+  - id: "{{ .Env.PROJECT_NAME }}"
+    package_name: "{{ .Env.PROJECT_NAME }}"
+    formats:
+      - deb
+    maintainer: "Homelab Admin <admin@local>"
+    description: "Custom build of {{ .Env.PROJECT_NAME }}"
+    bindir: /usr/bin
+
+# Standard checksum and snapshot settings
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  version_template: "{{ .Env.VERSION_TAG | default 'SNAPSHOT' }}"

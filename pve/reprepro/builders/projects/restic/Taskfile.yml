@@ -1,0 +1,35 @@
+# projects/restic/Taskfile.yml
+version: '3'
+
+vars:
+  PROJECT_NAME: restic
+  REPO_URL: https://github.com/restic/restic.git
+  # Restic puts main.go in cmd/restic, so we need to specify that
+  MAIN_PATH: ./cmd/restic 
+  # We can pin a specific version/tag here
+  VERSION_TAG: v0.16.0
+
+tasks:
+  build:
+    desc: Build the deb files for Restic
+    cmds:
+      # 1. Clean previous builds
+      - rm -rf ../../build/{{.PROJECT_NAME}}
+      
+      # 2. Clone the repo freshly
+      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} ../../build/{{.PROJECT_NAME}}
+      
+      # 3. Run GoReleaser using the SHARED template but inside the CLONED repo
+      - dir: ../../build/{{.PROJECT_NAME}}
+        cmd: >
+          PROJECT_NAME={{.PROJECT_NAME}}
+          MAIN_PATH={{.MAIN_PATH}}
+          VERSION_TAG={{.VERSION_TAG}}
+          goreleaser release 
+          --config ../../templates/goreleaser-master.yaml 
+          --snapshot --clean --skip=publish
+
+      # 4. Move the artifacts out to a results folder
+      - mkdir -p ../../dist
+      - mv ../../build/{{.PROJECT_NAME}}/dist/*.deb ../../dist/
+      - echo "Build complete! Check homelab-builder/dist/"
