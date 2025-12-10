@@ -2,24 +2,28 @@
 version: '3'
 
 vars:
-  # Define the absolute path to the repository root
-  ROOT: "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: restic
-  REPO_URL: https://github.com/restic/restic.git
-  MAIN_PATH: ./cmd/restic
-  VERSION_TAG: v0.18.1
+  ROOT:
+    sh: realpath -m "{{.TASKFILE_DIR}}/../.."
+  PROJECT_NAME: eget
+  REPO_URL: https://github.com/zyedidia/eget.git
+  MAIN_PATH: .
+  VERSION_TAG: v1.3.4
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
+    env:
+      DIST_DIR: "{{.DIST_DIR}}"
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.PROJECT_NAME}} in {{.BUILD_DIR }} ..."
           echo "---------------------------------------------------"
           
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls {{.DIST_DIR}}/{{.PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
             echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
@@ -31,6 +35,7 @@ tasks:
             dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
             echo "---------------------------------------------------"
           done
+    silent: true
   latest:
     desc: Check the latest version available on GitHub
     cmds:
@@ -40,29 +45,28 @@ tasks:
           echo "Latest Upstream Version:    $LATEST"
         silent: true
   build:
-    desc: Build Restic (Go)
+    desc: Build "{{.PROJECT_NAME}}" (Go)
+    # FIX: Define environment variables here. 
+    # They are automatically exported to all cmds below.
     env:
       PROJECT_NAME: "{{.PROJECT_NAME}}"
       MAIN_PATH: "{{.MAIN_PATH}}"
       VERSION_TAG: "{{.VERSION_TAG}}"
+      BUILD_DIR: "{{.BUILD_DIR}}"
+      DIST_DIR: "{{.DIST_DIR}}"
     cmds:
       - echo "Building {{.PROJECT_NAME}}..."
-      
-      # Use ROOT to clean up paths
-      - rm -rf {{.ROOT}}/build/{{.PROJECT_NAME}}
-      
-      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.ROOT}}/build/{{.PROJECT_NAME}}
+      - rm -rf {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}}
 
       - cmd: |
-          cd {{.ROOT}}/build/{{.PROJECT_NAME}}
-          PROJECT_NAME={{.PROJECT_NAME}}
-          MAIN_PATH={{.MAIN_PATH}}
-          VERSION_TAG={{.VERSION_TAG}}
-          # Look how clean this path is now:
+          cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+          
+          # Now we just run the command. The variables are already in the air.
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist
-      - mv {{.ROOT}}/build/{{.PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
+      - mv {{.BUILD_DIR}}/{{.PROJECT_NAME}}/dist/*.deb {{.DIST_DIR}}/
       - echo "✅ Restic build complete."
   default:
     cmds:

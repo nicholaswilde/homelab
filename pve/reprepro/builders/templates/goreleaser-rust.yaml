@@ -1,0 +1,33 @@
+version: 2
+project_name: "{{ .Env.PROJECT_NAME }}"
+
+builds:
+  - id: "rust-copy"
+    binary: "{{ .Env.PROJECT_NAME }}"
+    # We trick GoReleaser: "The build command is just copying the file I already built"
+    cmd: cp
+    # We copy from a standard folder structure we create in the Taskfile
+    args:
+      - "../../.cache/{{ .Os }}_{{ .Arch }}{{ .Arm }}/{{ .Env.PROJECT_NAME }}"
+      - "."
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+
+nfpms:
+  - id: "rust-copy" # Must match the build ID
+    package_name: "{{ .Env.PROJECT_NAME }}"
+    formats:
+      - deb
+    maintainer: "Homelab Admin <admin@local>"
+    description: "Rust tool: {{ .Env.PROJECT_NAME }}"
+    bindir: /usr/bin
+
+checksum:
+  name_template: 'checksums.txt'

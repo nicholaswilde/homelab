@@ -2,12 +2,11 @@
 version: '3'
 
 vars:
-  # Define the absolute path to the repository root
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: restic
-  REPO_URL: https://github.com/restic/restic.git
-  MAIN_PATH: ./cmd/restic
-  VERSION_TAG: v0.18.1
+  PROJECT_NAME: sops
+  REPO_URL: https://github.com/getsops/sops.git
+  MAIN_PATH: ./cmd/sops
+  VERSION_TAG: v3.11.0
 
 tasks:
   check:
@@ -41,24 +40,22 @@ tasks:
         silent: true
   build:
     desc: Build Restic (Go)
+    # FIX: Define environment variables here. 
+    # They are automatically exported to all cmds below.
     env:
       PROJECT_NAME: "{{.PROJECT_NAME}}"
       MAIN_PATH: "{{.MAIN_PATH}}"
       VERSION_TAG: "{{.VERSION_TAG}}"
+
     cmds:
       - echo "Building {{.PROJECT_NAME}}..."
-      
-      # Use ROOT to clean up paths
       - rm -rf {{.ROOT}}/build/{{.PROJECT_NAME}}
-      
       - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.ROOT}}/build/{{.PROJECT_NAME}}
 
       - cmd: |
           cd {{.ROOT}}/build/{{.PROJECT_NAME}}
-          PROJECT_NAME={{.PROJECT_NAME}}
-          MAIN_PATH={{.MAIN_PATH}}
-          VERSION_TAG={{.VERSION_TAG}}
-          # Look how clean this path is now:
+          
+          # Now we just run the command. The variables are already in the air.
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist

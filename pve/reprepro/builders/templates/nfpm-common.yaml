@@ -1,0 +1,22 @@
+# templates/nfpm-common.yaml
+name: "{{ .Env.PROJECT_NAME }}"
+arch: "{{ .Env.ARCH }}"
+platform: "linux"
+version: "{{ .Env.VERSION_TAG | replace \"v\" \"\" }}"
+section: "default"
+priority: "extra"
+maintainer: "Homelab Admin <admin@local>"
+description: "Homelab build of {{ .Env.PROJECT_NAME }}"
+vendor: "Homelab"
+homepage: "{{ .Env.REPO_URL }}"
+license: "MIT"
+
+contents:
+  # FIX: Look for a hardcoded file path here
+  - src: "../../build/stage/binary"
+    
+    # We rename it back to the real project name when installing it to /usr/bin
+    dst: "/usr/bin/{{ .Env.PROJECT_NAME }}"
+    
+    file_info:
+      mode: 0755

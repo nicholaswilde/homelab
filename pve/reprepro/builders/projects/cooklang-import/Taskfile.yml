@@ -1,0 +1,124 @@
+version: '3'
+
+vars:
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  PROJECT_NAME: cooklang-import
+  REPO_URL: https://github.com/cooklang/cooklang-import.git
+  VERSION_TAG: v0.8.3  # Note: fd is on v10+ now
+  CACHE_DIR: "{{.ROOT}}/.cache"
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
+
+tasks:
+  check:
+    desc: Verify the metadata of .deb files for this app only
+    cmds:
+      - cmd: |
+          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "---------------------------------------------------"
+          # FIX: Filter by Project Name
+          # We use "ls" first to handle the case where no files exist without crashing the loop
+          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+
+          if [ -z "$files" ]; then
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            exit 0
+          fi
+
+          for f in $files; do
+            echo "📦 $(basename $f)"
+            dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
+            echo "---------------------------------------------------"
+          done
+    silent: true
+  build:
+    desc: "Build {{.PROJECT_NAME}} (Rust)"
+    cmds:
+      - echo "Building {{.PROJECT_NAME}}..."
+      # Use absolute paths for cleanup
+      - rm -rf {{.BUILD_DIR}}/{{.PROJECT_NAME}} {{.CACHE_DIR}}
+      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
+      
+      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+      
+      # Compile Targets
+      - task: process-target
+        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64"}
+      - task: process-target
+        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64"}
+      - task: process-target
+        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf"}
+      - task: process-target
+        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armel"}
+
+      - echo "✅ Fd build complete."
+
+  # --- Internal Helpers ---
+  
+  process-target:
+    internal: true
+    cmds:
+      - task: compile
+        vars: {RUST_TARGET: "{{.RUST}}", GO_FOLDER: "linux_{{.GO}}"}
+      - task: package
+        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}"}
+
+  compile:
+    internal: true
+    # Run this task inside the source code folder
+    dir: "{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+    cmds:
+      - echo "Building for {{.RUST_TARGET}}..."
+      - cross build --release --target {{.RUST_TARGET}}
+      - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
+      - cp target/{{.RUST_TARGET}}/release/{{.PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
+
+  package:
+    internal: true
+    # Run this task inside the staging folder (keeps your project folder clean)
+    dir: "{{.BUILD_DIR}}/stage"
+    cmds:
+      - echo "Packaging {{.ARCH}}..."
+      
+      # Copy binary to current dir (./binary)
+      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.PROJECT_NAME}} ./binary
+
+      - cmd: |
+          # Generate config in the temp folder
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
+          echo 'description: "Homelab build of {{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "MIT"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          # Src is local now, because we are running inside {{.BUILD_DIR}}/stage
+          echo '  - src: "./binary"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+
+          # Run NFPM
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.VERSION_TAG}}_{{.ARCH}}.deb
+          
+          # Cleanup
+          rm nfpm.yaml binary
+
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  latest:
+    desc: Check the latest version available on GitHub
+    cmds:
+      - cmd: |
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.VERSION_TAG}}"
+          echo "Latest Upstream Version:    $LATEST"
+        silent: true

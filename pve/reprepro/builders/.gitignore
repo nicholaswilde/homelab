@@ -1,0 +1,8 @@
+# Ignore everything inside the build directory...
+build/*
+dist/*
+.cache/*
+
+# ...but do NOT ignore the .gitkeep file
+!build/.gitkeep
+!dist/.gitkeep

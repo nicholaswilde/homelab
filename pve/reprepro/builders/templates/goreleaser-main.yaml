@@ -1,12 +1,11 @@
----
-# templates/goreleaser-master.yaml
+version: 2
+
 project_name: "{{ .Env.PROJECT_NAME }}"
 
 builds:
-  - id: "{{ .Env.PROJECT_NAME }}"
-    # We assume the code is cloned into the current directory
-    main: "{{ .Env.MAIN_PATH | default '.' }}"
-    binary: "{{ .Env.PROJECT_NAME }}"
+  - id: my-build      # <--- CHANGED: Static ID to prevent path errors
+    main: "{{ .Env.MAIN_PATH }}"
+    binary: "{{ .Env.PROJECT_NAME }}" # <--- KEEP: The actual file will still be named 'restic'
     env:
       - CGO_ENABLED=0
     goos:
@@ -18,21 +17,18 @@ builds:
     goarm:
       - 6
       - 7
-    # Allow injecting custom ldflags if needed, or default to standard stripping
-    ldflags:
-      - -s -w {{ .Env.EXTRA_LDFLAGS }}
 
 nfpms:
-  - id: "{{ .Env.PROJECT_NAME }}"
-    package_name: "{{ .Env.PROJECT_NAME }}"
+  - id: my-build      # <--- CHANGED: Must match the build ID above
+    package_name: "{{ .Env.PROJECT_NAME }}" # <--- KEEP: The .deb will be named 'restic_...'
     formats:
       - deb
     maintainer: "Homelab Admin <admin@local>"
     description: "Custom build of {{ .Env.PROJECT_NAME }}"
     bindir: /usr/bin
 
-# Standard checksum and snapshot settings
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
-  version_template: "{{ .Env.VERSION_TAG | default 'SNAPSHOT' }}"
+  version_template: "{{ if .Env.VERSION_TAG }}{{ .Env.VERSION_TAG }}{{ else }}SNAPSHOT{{ end }}"

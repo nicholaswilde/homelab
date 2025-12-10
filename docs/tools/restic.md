@@ -3,7 +3,7 @@
 Fast, secure, efficient backup program.
 
 ## :hammer_and_wrench: Install
-
+    
 === "installer"
 
     === "root"
@@ -16,6 +16,12 @@ Fast, secure, efficient backup program.
         ```shell
         curl -fsSL https://installer.l.nicholaswilde.io/restic/restic! | sudo bash
         ```
+
+=== "brew"
+
+    ```shell
+    brew install restic
+    ```
 
 ## :gear: Config
 
@@ -62,6 +68,12 @@ It is a good idea to periodically check your repository’s metadata:
 restic check
 # or full data:
 restic check --read-data
+```
+
+## :rocket: Upgrade
+
+```shell
+restic self-update
 ```
 
 ## :link: References

@@ -1,0 +1,33 @@
+---
+version: '3'
+
+includes:
+  # Register your projects here
+  restic: ./projects/restic/Taskfile.yml
+  fd: ./projects/fd/Taskfile.yml
+  bat: ./projects/bat/Taskfile.yml
+  eget: ./projects/eget/Taskfile.yml
+  sops: ./projects/sops/Taskfile.yml
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task -l
+    silent: true
+
+  build-all:
+    desc: Build DEBS for ALL projects
+    cmds:
+      - task: restic:build
+      - task: fd:build
+      - task: bat:build
+      - task: eget:build
+      - task: sops:build
+      - echo "🚀 All builds complete! Check dist/ folder."
+
+  clean-all:
+    desc: Nuke all build artifacts and caches
+    cmds:
+      - rm -rf build/ dist/ .cache/
+      - echo "✨ Cleaned up workspace."
