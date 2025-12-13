@@ -154,6 +154,12 @@ sudo ./install.sh
         dietpi-update
         ```
 
+## [rpi-update](https://github.com/raspberrypi/rpi-update)
+
+```shell
+sudo curl -L --output /usr/bin/rpi-update https://raw.githubusercontent.com/raspberrypi/rpi-update/master/rpi-update && sudo chmod +x /usr/bin/rpi-update
+```
+
 ## :link: References
 
 [1]: <https://dietpi.com/>
