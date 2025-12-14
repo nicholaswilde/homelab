@@ -17,7 +17,7 @@ http:
     localsend:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.191:3000"
+          - url: "http://192.168.2.191:80"
         passHostHeader: true
 #endregion
   middlewares:
