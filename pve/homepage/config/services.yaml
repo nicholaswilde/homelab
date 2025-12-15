@@ -127,6 +127,9 @@
     - Gitea:
         icon: si-gitea
         href: https://gitea.l.nicholaswilde.io/
+    - localsend:
+        icon: sh-localsend.svg
+        href: https://localsend.l.nicholaswilde.io/
     - netboot.xyz:
         icon: sh-netboot-xyz-light.png
         href: https://netboot.l.nicholaswilde.io/
