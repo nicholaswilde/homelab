@@ -2,26 +2,26 @@ version: '3'
 
 vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: bat
-  REPO_URL: https://github.com/sharkdp/bat.git
-  VERSION_TAG: v0.26.1  # Note: fd is on v10+ now
-  CACHE_DIR: "{{.ROOT}}/.cache"
-  DIST_DIR: "{{.ROOT}}/dist"
-  BUILD_DIR: "{{.ROOT}}/build"
+  BAT_PROJECT_NAME: bat
+  BAT_REPO_URL: https://github.com/sharkdp/bat.git
+  BAT_VERSION_TAG: v0.26.1  # Note: fd is on v10+ now
+  BAT_CACHE_DIR: "{{.ROOT}}/.cache"
+  BAT_DIST_DIR: "{{.ROOT}}/dist"
+  BAT_BUILD_DIR: "{{.ROOT}}/build"
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.BAT_PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.BAT_PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.BAT_PROJECT_NAME}}."
             exit 0
           fi
 
@@ -32,24 +32,24 @@ tasks:
           done
     silent: true
   build:
-    desc: "Build {{.PROJECT_NAME}} (Rust)"
+    desc: "Build {{.BAT_PROJECT_NAME}} (Rust)"
     cmds:
-      - echo "Building {{.PROJECT_NAME}}..."
+      - echo "Building {{.BAT_PROJECT_NAME}}..."
       # Use absolute paths for cleanup
-      - rm -rf {{.BUILD_DIR}}/{{.PROJECT_NAME}} {{.CACHE_DIR}}
-      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
+      - rm -rf {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}} {{.BAT_CACHE_DIR}}
+      - mkdir -p {{.BAT_CACHE_DIR}} {{.BAT_DIST_DIR}} {{.BAT_BUILD_DIR}}/stage
       
-      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+      - git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
       
       # Compile Targets
       - task: process-target
-        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64"}
+        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64", SUFFIX: "amd64"}
       - task: process-target
-        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64"}
+        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64", SUFFIX: "arm64"}
       - task: process-target
-        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf"}
+        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf", SUFFIX: "armhf"}
       - task: process-target
-        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armel"}
+        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armhf", SUFFIX: "armhf+armv6"}
 
       - echo "✅ Fd build complete."
 
@@ -61,50 +61,50 @@ tasks:
       - task: compile
         vars: {RUST_TARGET: "{{.RUST}}", GO_FOLDER: "linux_{{.GO}}"}
       - task: package
-        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}"}
+        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}", SUFFIX: "{{.SUFFIX}}"}
 
   compile:
     internal: true
     # Run this task inside the source code folder
-    dir: "{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+    dir: "{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}"
     cmds:
       - echo "Building for {{.RUST_TARGET}}..."
       - cross build --release --target {{.RUST_TARGET}}
-      - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
-      - cp target/{{.RUST_TARGET}}/release/{{.PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
+      - mkdir -p {{.BAT_CACHE_DIR}}/{{.GO_FOLDER}}
+      - cp target/{{.RUST_TARGET}}/release/{{.BAT_PROJECT_NAME}} {{.BAT_CACHE_DIR}}/{{.GO_FOLDER}}/
 
   package:
     internal: true
     # Run this task inside the staging folder (keeps your project folder clean)
-    dir: "{{.BUILD_DIR}}/stage"
+    dir: "{{.BAT_BUILD_DIR}}/stage"
     cmds:
       - echo "Packaging {{.ARCH}}..."
       
       # Copy binary to current dir (./binary)
-      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.PROJECT_NAME}} ./binary
+      - cp {{.BAT_CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.BAT_PROJECT_NAME}} ./binary
 
       - cmd: |
           # Generate config in the temp folder
-          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'name: "{{.BAT_PROJECT_NAME}}"' > nfpm.yaml
           echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
           echo 'platform: "linux"' >> nfpm.yaml
-          echo 'version: "{{.VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'version: "{{.BAT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
           echo 'section: "default"' >> nfpm.yaml
           echo 'priority: "extra"' >> nfpm.yaml
           echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
-          echo 'description: "Homelab build of {{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo 'description: "Homelab build of {{.BAT_PROJECT_NAME}}"' >> nfpm.yaml
           echo 'vendor: "Homelab"' >> nfpm.yaml
-          echo 'homepage: "{{.REPO_URL}}"' >> nfpm.yaml
+          echo 'homepage: "{{.BAT_REPO_URL}}"' >> nfpm.yaml
           echo 'license: "MIT"' >> nfpm.yaml
           echo 'contents:' >> nfpm.yaml
-          # Src is local now, because we are running inside {{.BUILD_DIR}}/stage
+          # Src is local now, because we are running inside {{.BAT_BUILD_DIR}}/stage
           echo '  - src: "./binary"' >> nfpm.yaml
-          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.BAT_PROJECT_NAME}}"' >> nfpm.yaml
           echo '    file_info:' >> nfpm.yaml
           echo '      mode: 0755' >> nfpm.yaml
 
           # Run NFPM
-          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.VERSION_TAG}}_{{.ARCH}}.deb
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.BAT_DIST_DIR}}/{{.BAT_PROJECT_NAME}}_{{.BAT_VERSION_TAG}}_{{.SUFFIX}}.deb
           
           # Cleanup
           rm nfpm.yaml binary
@@ -118,7 +118,7 @@ tasks:
     desc: Check the latest version available on GitHub
     cmds:
       - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.VERSION_TAG}}"
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.BAT_REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.BAT_VERSION_TAG}}"
           echo "Latest Upstream Version:    $LATEST"
         silent: true

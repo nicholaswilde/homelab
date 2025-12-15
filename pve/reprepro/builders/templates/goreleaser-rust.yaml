@@ -28,6 +28,11 @@ nfpms:
     maintainer: "Homelab Admin <admin@local>"
     description: "Rust tool: {{ .Env.PROJECT_NAME }}"
     bindir: /usr/bin
+    overrides:
+      linux:
+        arm:
+          6:
+            file_name_template: "{{ .PackageName }}_{{ .Version }}_armhf+armv6"
 
 checksum:
   name_template: 'checksums.txt'

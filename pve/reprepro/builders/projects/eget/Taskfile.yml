@@ -4,29 +4,29 @@ version: '3'
 vars:
   ROOT:
     sh: realpath -m "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: eget
-  REPO_URL: https://github.com/zyedidia/eget.git
-  MAIN_PATH: .
-  VERSION_TAG: v1.3.4
-  DIST_DIR: "{{.ROOT}}/dist"
-  BUILD_DIR: "{{.ROOT}}/build"
+  EGET_PROJECT_NAME: eget
+  EGET_REPO_URL: https://github.com/zyedidia/eget.git
+  EGET_MAIN_PATH: .
+  EGET_VERSION_TAG: v1.3.4
+  EGET_DIST_DIR: "{{.ROOT}}/dist"
+  EGET_BUILD_DIR: "{{.ROOT}}/build"
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     env:
-      DIST_DIR: "{{.DIST_DIR}}"
+      EGET_DIST_DIR: "{{.EGET_DIST_DIR}}"
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.PROJECT_NAME}} in {{.BUILD_DIR }} ..."
+          echo "Checking artifacts for {{.EGET_PROJECT_NAME}} in {{.EGET_BUILD_DIR }} ..."
           echo "---------------------------------------------------"
           
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls {{.DIST_DIR}}/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls {{.EGET_DIST_DIR}}/{{.EGET_PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.EGET_PROJECT_NAME}}."
             exit 0
           fi
 
@@ -40,33 +40,33 @@ tasks:
     desc: Check the latest version available on GitHub
     cmds:
       - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.VERSION_TAG}}"
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.EGET_REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.EGET_VERSION_TAG}}"
           echo "Latest Upstream Version:    $LATEST"
         silent: true
   build:
-    desc: Build "{{.PROJECT_NAME}}" (Go)
+    desc: Build "{{.EGET_PROJECT_NAME}}" (Go)
     # FIX: Define environment variables here. 
     # They are automatically exported to all cmds below.
     env:
-      PROJECT_NAME: "{{.PROJECT_NAME}}"
-      MAIN_PATH: "{{.MAIN_PATH}}"
-      VERSION_TAG: "{{.VERSION_TAG}}"
-      BUILD_DIR: "{{.BUILD_DIR}}"
-      DIST_DIR: "{{.DIST_DIR}}"
+      PROJECT_NAME: "{{.EGET_PROJECT_NAME}}"
+      MAIN_PATH: "{{.EGET_MAIN_PATH}}"
+      VERSION_TAG: "{{.EGET_VERSION_TAG}}"
+      BUILD_DIR: "{{.EGET_BUILD_DIR}}"
+      DIST_DIR: "{{.EGET_DIST_DIR}}"
     cmds:
-      - echo "Building {{.PROJECT_NAME}}..."
-      - rm -rf {{.BUILD_DIR}}/{{.PROJECT_NAME}}
-      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+      - echo "Building {{.EGET_PROJECT_NAME}}..."
+      - rm -rf {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+      - git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
 
       - cmd: |
-          cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+          cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
           
           # Now we just run the command. The variables are already in the air.
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist
-      - mv {{.BUILD_DIR}}/{{.PROJECT_NAME}}/dist/*.deb {{.DIST_DIR}}/
+      - mv {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}/dist/*.deb {{.EGET_DIST_DIR}}/
       - echo "✅ Restic build complete."
   default:
     cmds:

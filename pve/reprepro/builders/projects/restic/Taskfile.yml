@@ -4,25 +4,25 @@ version: '3'
 vars:
   # Define the absolute path to the repository root
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: restic
-  REPO_URL: https://github.com/restic/restic.git
-  MAIN_PATH: ./cmd/restic
-  VERSION_TAG: v0.18.1
+  RESTIC_PROJECT_NAME: restic
+  RESTIC_REPO_URL: https://github.com/restic/restic.git
+  RESTIC_MAIN_PATH: ./cmd/restic
+  RESTIC_VERSION_TAG: v0.18.1
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.RESTIC_PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
           
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.RESTIC_PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.RESTIC_PROJECT_NAME}}."
             exit 0
           fi
 
@@ -35,34 +35,34 @@ tasks:
     desc: Check the latest version available on GitHub
     cmds:
       - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.VERSION_TAG}}"
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.RESTIC_REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.RESTIC_VERSION_TAG}}"
           echo "Latest Upstream Version:    $LATEST"
         silent: true
   build:
     desc: Build Restic (Go)
     env:
-      PROJECT_NAME: "{{.PROJECT_NAME}}"
-      MAIN_PATH: "{{.MAIN_PATH}}"
-      VERSION_TAG: "{{.VERSION_TAG}}"
+      PROJECT_NAME: "{{.RESTIC_PROJECT_NAME}}"
+      MAIN_PATH: "{{.RESTIC_MAIN_PATH}}"
+      VERSION_TAG: "{{.RESTIC_VERSION_TAG}}"
     cmds:
-      - echo "Building {{.PROJECT_NAME}}..."
+      - echo "Building {{.RESTIC_PROJECT_NAME}}..."
       
       # Use ROOT to clean up paths
-      - rm -rf {{.ROOT}}/build/{{.PROJECT_NAME}}
+      - rm -rf {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
       
-      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.ROOT}}/build/{{.PROJECT_NAME}}
+      - git clone --depth 1 --branch {{.RESTIC_VERSION_TAG}} {{.RESTIC_REPO_URL}} {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
 
       - cmd: |
-          cd {{.ROOT}}/build/{{.PROJECT_NAME}}
-          PROJECT_NAME={{.PROJECT_NAME}}
-          MAIN_PATH={{.MAIN_PATH}}
-          VERSION_TAG={{.VERSION_TAG}}
+          cd {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
+          PROJECT_NAME={{.RESTIC_PROJECT_NAME}}
+          MAIN_PATH={{.RESTIC_MAIN_PATH}}
+          VERSION_TAG={{.RESTIC_VERSION_TAG}}
           # Look how clean this path is now:
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist
-      - mv {{.ROOT}}/build/{{.PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
+      - mv {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
       - echo "✅ Restic build complete."
   default:
     cmds:

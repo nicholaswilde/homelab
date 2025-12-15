@@ -3,25 +3,25 @@ version: '3'
 
 vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  PROJECT_NAME: sops
-  REPO_URL: https://github.com/getsops/sops.git
-  MAIN_PATH: ./cmd/sops
-  VERSION_TAG: v3.11.0
+  SOPS_PROJECT_NAME: sops
+  SOPS_REPO_URL: https://github.com/getsops/sops.git
+  SOPS_MAIN_PATH: ./cmd/sops
+  SOPS_VERSION_TAG: v3.11.0
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.SOPS_PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
           
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.SOPS_PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.SOPS_PROJECT_NAME}}."
             exit 0
           fi
 
@@ -34,8 +34,8 @@ tasks:
     desc: Check the latest version available on GitHub
     cmds:
       - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.VERSION_TAG}}"
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.SOPS_REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.SOPS_VERSION_TAG}}"
           echo "Latest Upstream Version:    $LATEST"
         silent: true
   build:
@@ -43,23 +43,23 @@ tasks:
     # FIX: Define environment variables here. 
     # They are automatically exported to all cmds below.
     env:
-      PROJECT_NAME: "{{.PROJECT_NAME}}"
-      MAIN_PATH: "{{.MAIN_PATH}}"
-      VERSION_TAG: "{{.VERSION_TAG}}"
+      PROJECT_NAME: "{{.SOPS_PROJECT_NAME}}"
+      MAIN_PATH: "{{.SOPS_MAIN_PATH}}"
+      VERSION_TAG: "{{.SOPS_VERSION_TAG}}"
 
     cmds:
-      - echo "Building {{.PROJECT_NAME}}..."
-      - rm -rf {{.ROOT}}/build/{{.PROJECT_NAME}}
-      - git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.ROOT}}/build/{{.PROJECT_NAME}}
+      - echo "Building {{.SOPS_PROJECT_NAME}}..."
+      - rm -rf {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}
+      - git clone --depth 1 --branch {{.SOPS_VERSION_TAG}} {{.SOPS_REPO_URL}} {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}
 
       - cmd: |
-          cd {{.ROOT}}/build/{{.PROJECT_NAME}}
+          cd {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}
           
           # Now we just run the command. The variables are already in the air.
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist
-      - mv {{.ROOT}}/build/{{.PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
+      - mv {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
       - echo "✅ Restic build complete."
   default:
     cmds:

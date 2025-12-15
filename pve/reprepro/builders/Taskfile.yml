@@ -8,6 +8,7 @@ includes:
   bat: ./projects/bat/Taskfile.yml
   eget: ./projects/eget/Taskfile.yml
   sops: ./projects/sops/Taskfile.yml
+  ubi: ./projects/ubi/Taskfile.yml
 
 tasks:
   default:
@@ -24,6 +25,7 @@ tasks:
       - task: bat:build
       - task: eget:build
       - task: sops:build
+      - task: ubi:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:
