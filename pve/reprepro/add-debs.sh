@@ -149,19 +149,15 @@ function main() {
 
   # Filter Standard vs Raspi
   local standard_debian_codenames=()
-  local raspi_codenames=()
 
   for codename in "${all_debian_codenames[@]}"; do
-    if [[ "${codename}" == "raspi" ]]; then
-      raspi_codenames+=("${codename}")
-    else
+    if [[ "${codename}" != "raspi" ]]; then
       standard_debian_codenames+=("${codename}")
     fi
   done
 
   log "INFO" "Standard Debian Codenames: ${standard_debian_codenames[*]}"
   log "INFO" "Ubuntu Codenames: ${all_ubuntu_codenames[*]}"
-  log "INFO" "Raspberry Pi Codenames: ${raspi_codenames[*]}"
 
   # 2. Process files
   shopt -s nullglob
@@ -176,19 +172,15 @@ function main() {
     local filename=$(basename "${deb_file}")
     log "INFO" "Processing: ${filename}"
 
-    local target_debian=()
-    local target_ubuntu=()
-
     # 3. Determine targets based on filename
     if [[ "${filename}" == *"+armv6"* ]]; then
-      log "INFO" "  -> Detected ARMv6 package. Targeting 'raspi' only."
-      target_debian=("${raspi_codenames[@]}")
-      # Ubuntu typically doesn't support armv6 in modern repos, skipping.
-    else
-      log "INFO" "  -> Standard package. Targeting standard Debian & Ubuntu repos."
-      target_debian=("${standard_debian_codenames[@]}")
-      target_ubuntu=("${all_ubuntu_codenames[@]}")
+      log "INFO" "  -> Detected ARMv6 package. Skipping (handled by add-raspi-debs.sh)."
+      continue
     fi
+
+    log "INFO" "  -> Standard package. Targeting standard Debian & Ubuntu repos."
+    local target_debian=("${standard_debian_codenames[@]}")
+    local target_ubuntu=("${all_ubuntu_codenames[@]}")
 
     # 4. Add to Reprepro
     # Debian
