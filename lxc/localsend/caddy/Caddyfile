@@ -1,0 +1,5 @@
+:8080 {
+    root * /opt/localsend/dist
+    file_server
+    encode gzip
+}

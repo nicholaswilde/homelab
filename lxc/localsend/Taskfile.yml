@@ -38,34 +38,38 @@ tasks:
       - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
+  stow:
+    desc: Create symbolic links for caddy files.
+    cmds:
+      - sudo stow -v -t {{ .CONFIG_DIR }} caddy
   mklinks:
     desc: Create symbolic links for configuration files.
-    preconditions:
-      - test -d {{ .CONFIG_DIR }}
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+      - task: stow
   restart:
     desc: Restart the application's systemd service.
     cmds:
-      - systemctl restart {{ .SERVICE_NAME }}.service
+      - sudo systemctl restart {{ .SERVICE_NAME }}.service
   start:
     desc: Start the application's systemd service.
     cmds:
-      - systemctl start {{ .SERVICE_NAME }}.service
+      - sudo systemctl start {{ .SERVICE_NAME }}.service
   status:
     desc: Check the status of the application's systemd service.
     cmds:
-      - systemctl status {{ .SERVICE_NAME }}.service
+      - sudo systemctl status {{ .SERVICE_NAME }}.service
   stop:
     desc: Stop the application's systemd service.
     cmds:
-      - systemctl stop {{ .SERVICE_NAME }}.service
+      - sudo systemctl stop {{ .SERVICE_NAME }}.service
   update:
     desc: Update the application or its running containers.
-    preconditions:
-      - test -f update.sh
     cmds:
-      - ./update.sh
+      - task: stop
+      - git -C {{ .INSTALL_DIR }} pull origin
+      - pnpm -C {{ .INSTALL_DIR }} run generate
+      - task: start
+      - task: status
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
@@ -78,6 +82,10 @@ tasks:
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
         msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+  logs:
+    desc: Show caddy logs
+    cmds:
+      - sudo journalctl -xeu {{ .SERVICE_NAME }}
   default:
     cmds:
       - task -l

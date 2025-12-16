@@ -17,23 +17,77 @@ I use this as a self-hosted web app to transer files between my Chromebook, or o
 
 !!! example ""
 
-    :material-console-network: Default Port: `80`
+    :material-console-network: Default Port: `8080`
 
-WIP
+Clone the repo.
 
-### Caddy
+=== "root"
+
+    ```shell
+    git clone https://github.com/localsend/web.git /opt/localsend
+    cd /opt/localsend
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo mkdir -p /opt/localsend
+    sudo chown -R $USER:$USER /opt/localsend
+    git clone https://github.com/localsend/web.git /opt/localsend
+    cd /opt/localsend
+    ```
+
+Make sure to install [pnpm](https://pnpm.io).
+
+```bash
+npm install -g pnpm
+```
+
+Get dependencies
+
+```bash
+pnpm install
+```
+
+Start the development server
+
+```bash
+pnpm run dev
+```
+
+## Deployment
+
+Generates the static website in the `dist` directory.
+
+```bash
+pnpm run generate
+```
+
+### :simple-caddy: Caddy
 
 Caddy needs to be installed to run the LXC as a webserver.
 
-WIP
+=== "root"
+
+    ```shell
+    apt install -y git curl caddy
+    ```
+
+=== "sudo"
+
+    ```shell
+    sudo apt install -y git curl caddy
+    ```
 
 ## :gear: Config
 
 WIP
 
-### Caddy
+### :simple-caddy: Caddy
 
-WIP
+```ini title="/etc/caddy/Caddyfile"
+--8<-- "localsend/caddy/Caddyfile"
+```
 
 ## :simple-traefikproxy: Traefik
 
