@@ -37,6 +37,7 @@ nav:
       - Immich-Go: apps/immich-go.md
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
+      - LocalSend: apps/localsend.md
       - mailrise: apps/mailrise.md
       - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md
@@ -88,7 +89,7 @@ nav:
       - Google Gemini CLI: tools/google-gemini-cli.md
       - jinja2-cli: tools/jinja2-cli.md
       - LVM: tools/lvm.md
-      - localsend: tools/localsend.md
+      - LocalSend Go: tools/localsend-go.md
       - micro: tools/micro.md
       - pass: tools/pass.md
       - rclone: tools/rclone.md
