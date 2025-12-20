@@ -9,6 +9,7 @@ includes:
   eget: ./projects/eget/Taskfile.yml
   sops: ./projects/sops/Taskfile.yml
   ubi: ./projects/ubi/Taskfile.yml
+  fresh: ./projects/fresh/Taskfile.yml
 
 tasks:
   default:
@@ -26,6 +27,7 @@ tasks:
       - task: eget:build
       - task: sops:build
       - task: ubi:build
+      - task: fresh:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:
