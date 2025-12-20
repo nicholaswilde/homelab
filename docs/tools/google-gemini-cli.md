@@ -121,6 +121,28 @@ The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub r
 - `general.previewFeatures`: Set to `true` to enable preview features such as Gemini 3.0.
 - `GITHUB_MCP_PAT`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
 
+## :palette: Theme
+
+The [Catppuccin theme][6] can be used to customize the appearance of the Gemini CLI.
+
+1. Download the mocha flavor of the Catppuccin theme.
+
+!!! code ""
+
+    ```shell
+    wget https://raw.githubusercontent.com/catppuccin/gemini-cli/main/themes/mocha.json -O ${HOME}/.gemini/catppuccin-mocha.json
+    ```
+
+2. Add the `theme` property to your `settings.json` file.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+      "theme": "${HOME}/.gemini/catppuccin-mocha.json"
+    }
+    ```
+
 ## :pencil: Usage
 
 Once installed and authenticated, start interacting with Gemini from the shell.
@@ -162,9 +184,11 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 
 - <https://github.com/google-gemini/gemini-cli>
 - <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
+- <https://github.com/catppuccin/gemini-cli>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
 [3]: <https://agents.md>
 [4]: <https://github.com/github/github-mcp-server>
 [5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
+[6]: <https://github.com/catppuccin/gemini-cli>
