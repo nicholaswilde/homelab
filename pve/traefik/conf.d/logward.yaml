@@ -11,6 +11,15 @@ http:
         - https-redirectscheme@file
       tls: {}
       service: logward
+    logward-backend:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`logward.l.nicholaswilde.io`) && (PathPrefix(`/api`) || PathPrefix(`/health`))"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: logward-backend
 #endregion
 #region services
   services:
@@ -19,6 +28,14 @@ http:
         servers:
           - url: "http://192.168.2.195:3000"
         passHostHeader: true
+    logward-backend:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.195:8080"
+        passHostHeader: true
+        healthCheck:
+          path: /health
+          interval: 10s
 #endregion
   middlewares:
     https-redirectscheme:
