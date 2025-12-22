@@ -251,6 +251,50 @@ image: fluent-bit-16k:latest
     --8<-- "traefik/conf.d/logward.yaml"
     ```
 
+## :wrench: Troubleshooting
+
+If you are experiencing issues with log collection, follow these steps:
+
+1.  **Verify Fluent Bit is running:**
+
+    ```shell
+    docker compose ps fluent-bit
+    ```
+
+2.  **Check Fluent Bit logs:**
+
+    ```shell
+    docker compose logs fluent-bit
+    ```
+
+3.  **Test connectivity:**
+
+    Verify you can reach LogWard's Fluent Bit port (514) from your source device.
+
+    ```shell
+    nc -zv YOUR_LOGWARD_IP 514
+    ```
+
+4.  **Verify API Key:**
+
+    Ensure `FLUENT_BIT_API_KEY` is correctly set in your `.env` file.
+
+5.  **Test Syslog Manually:**
+
+    Send a test message to verify the pipeline.
+
+    === "UDP"
+
+        ```shell
+        echo "<14>Test syslog message from terminal" | nc -u -w1 YOUR_LOGWARD_IP 514
+        ```
+
+    === "TCP"
+
+        ```shell
+        echo "<14>Test syslog message from terminal" | nc -w1 YOUR_LOGWARD_IP 514
+        ```
+
 ## :simple-task: Task List
 
 !!! example ""
