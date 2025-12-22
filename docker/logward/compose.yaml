@@ -154,15 +154,20 @@ services:
       - logward-network
 
   fluent-bit:
-    image: fluent/fluent-bit:latest
+    # image: fluent/fluent-bit:latest
+    image: fluent-bit-16k:latest
     container_name: logward-fluent-bit
-    profiles:
-      - logging
+    ports:
+      - "514:514/udp"  # Syslog UDP
+      - "514:514/tcp"  # Syslog TCP
+    # profiles:
+      # - logging
     volumes:
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
       - ./parsers.conf:/fluent-bit/etc/parsers.conf:ro
       - ./extract_container_id.lua:/fluent-bit/etc/extract_container_id.lua:ro
       - ./wrap_logs.lua:/fluent-bit/etc/wrap_logs.lua:ro
+      - ./map_syslog_level.lua:/fluent-bit/etc/map_syslog_level.lua:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:

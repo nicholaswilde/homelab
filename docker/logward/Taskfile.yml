@@ -5,6 +5,10 @@ dotenv:
   - .env
 
 tasks:
+  build:
+    desc: Build fluent bit
+    cmds:
+      - docker build -t fluent-bit-16k:latest .
   backup:
     desc: Backup the application's volume data.
     cmds:
