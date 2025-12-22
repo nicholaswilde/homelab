@@ -209,6 +209,53 @@ To enable automatic log collection from other Docker containers:
             docker compose --profile logging up -d
             ```
 
+## :material-source-branch: Integrations
+
+### :material-bash: CLI (curl)
+
+You can send a single log entry to LogWard using `curl`.
+
+!!! code ""
+
+    ```shell
+    curl -X POST https://logward.l.nicholaswilde.io/api/v1/ingest/single \
+      -H "X-API-Key: lp_your_api_key_here" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "service": "my-script",
+        "level": "info",
+        "message": "This is a test log message",
+        "timestamp": "'"$(date -u +'%Y-%m-%dT%H:%M:%SZ')"'"
+      }'
+    ```
+
+### :material-proxmox: Proxmox (rsyslog)
+
+To forward logs from a Proxmox node (or any Debian-based system) to LogWard via syslog:
+
+1.  **Install rsyslog** (if not already installed):
+
+    ```shell
+    apt update && apt install rsyslog -y
+    ```
+
+2.  **Create configuration file**:
+
+    !!! abstract "/etc/rsyslog.d/50-logward.conf"
+
+        ```ini
+        # Forward all logs to LogWard via TCP
+        *.* @@YOUR_LOGWARD_IP:514
+        ```
+
+        *Note: Use `@@` for TCP (recommended) or `@` for UDP.*
+
+3.  **Restart rsyslog**:
+
+    ```shell
+    systemctl restart rsyslog
+    ```
+
 ## :simple-raspberrypi: Raspberry Pi
 
 If you are running on a Raspberry Pi, the standard Fluent Bit docker image might not work because it requires a page size of 4k. The Raspberry Pi kernel often uses a page size of 16k.
