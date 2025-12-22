@@ -38,6 +38,7 @@ nav:
       - Installer: apps/installer.md
       - IT-TOOLS: apps/it-tools.md
       - LocalSend: apps/localsend.md
+      - LogWard: apps/logward.md
       - mailrise: apps/mailrise.md
       - MCP Server: apps/mcp-server.md
       - MySpeed: apps/myspeed.md

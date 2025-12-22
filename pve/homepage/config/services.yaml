@@ -116,6 +116,9 @@
     - WatchYourLAN:
         icon: sh-watchyourlan.png
         href: https://watch.l.nicholaswilde.io/
+    - LogWard:
+        icon: mdi-console-line
+        href: https://logward.l.nicholaswilde.io/
 
 - Files & Downloads:
     - Aria2:

@@ -10,6 +10,7 @@ includes:
   sops: ./projects/sops/Taskfile.yml
   ubi: ./projects/ubi/Taskfile.yml
   fresh: ./projects/fresh/Taskfile.yml
+  yazi: ./projects/yazi/Taskfile.yml
 
 tasks:
   default:
@@ -28,6 +29,7 @@ tasks:
       - task: sops:build
       - task: ubi:build
       - task: fresh:build
+      - task: yazi:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

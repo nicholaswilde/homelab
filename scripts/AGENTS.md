@@ -88,6 +88,7 @@ DEBUG="false"
 # Logging function
 function log() {
   local type="$1"
+  local message="$2"
   local color="$RESET"
 
   if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
@@ -107,13 +108,35 @@ function log() {
       type="LOGS";;
   esac
 
+  local timestamp
+  timestamp=$(date +'%Y-%m-%d %H:%M:%S')
+
   if [[ -t 0 ]]; then
-    local message="$2"
-    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+    echo -e "${color}${type}${RESET}[${timestamp}] ${message}"
   else
     while IFS= read -r line; do
-      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+      echo -e "${color}${type}${RESET}[${timestamp}] ${line}"
     done
+  fi
+
+  # LogWard Integration
+  if [[ -n "${LOGWARD_API_KEY}" ]]; then
+    local LOGWARD_API_URL="${LOGWARD_API_URL:-https://logward.l.nicholaswilde.io/api/v1/ingest/single}"
+    local LOGWARD_SERVICE_NAME="${LOGWARD_SERVICE_NAME:-$(basename "$0")}"
+    local json_payload
+    json_payload=$(cat <<EOF
+{
+  "service": "${LOGWARD_SERVICE_NAME}",
+  "level": "${type}",
+  "message": "${message}",
+  "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+}
+EOF
+)
+    curl -s -X POST "${LOGWARD_API_URL}" \
+      -H "X-API-Key: ${LOGWARD_API_KEY}" \
+      -H "Content-Type: application/json" \
+      -d "${json_payload}" >/dev/null 2>&1 &
   fi
 }
 
@@ -152,6 +175,19 @@ function main() {
 # Call main to start the script
 main "@"
 ```
+
+## LogWard Logging Example
+
+*Note: The `LOGWARD_API_KEY`, `LOGWARD_API_URL`, and `LOGWARD_SERVICE_NAME` variables are typically defined in the application's `.env` file.*
+
+```bash
+# In your .env file
+LOGWARD_API_KEY="lp_your_api_key_here"
+LOGWARD_API_URL="https://logward.l.nicholaswilde.io/api/v1/ingest/single"
+LOGWARD_SERVICE_NAME="my-script-name"
+```
+
+The `log` function in the "Example Script Structure" already handles sending logs to LogWard if `LOGWARD_API_KEY` is set.
 
 ## Mailrise Notification Example
 
