@@ -209,6 +209,40 @@ To enable automatic log collection from other Docker containers:
             docker compose --profile logging up -d
             ```
 
+## :simple-raspberrypi: Raspberry Pi
+
+If you are running on a Raspberry Pi, the standard Fluent Bit docker image might not work because it requires a page size of 4k. The Raspberry Pi kernel often uses a page size of 16k.
+
+To check your page size, run:
+
+!!! code ""
+
+    ```shell
+    getconf PAGESIZE
+    ```
+
+If the output is `16384`, you must generate a custom Fluent Bit docker image with `jemalloc` support disabled.
+
+!!! code ""
+
+    === "Task"
+
+        ```shell
+        task build
+        ```
+
+    === "Docker"
+
+        ```shell
+        docker build -t fluent-bit-16k:latest .
+        ```
+
+Ensure that your `compose.yaml` is using the custom image:
+
+```yaml
+image: fluent-bit-16k:latest
+```
+
 ## :simple-traefikproxy: Traefik
 
 ??? abstract "`homelab/pve/traefik/conf.d/logward.yaml`"
