@@ -73,7 +73,7 @@ services:
       - logward-network
 
   backend:
-    image: ghcr.io/logward-dev/logward-backend:0.3.2-rc1
+    image: ghcr.io/logward-dev/logward-backend:0.3.2
     container_name: logward-backend
     ports:
       - "8080:8080"
@@ -110,7 +110,7 @@ services:
       - logward-network
 
   worker:
-    image: ghcr.io/logward-dev/logward-backend:0.3.2-rc1
+    image: ghcr.io/logward-dev/logward-backend:0.3.2
     container_name: logward-worker
     command: ["worker"]
     healthcheck:
@@ -140,7 +140,7 @@ services:
       - logward-network
 
   frontend:
-    image: ghcr.io/logward-dev/logward-frontend:0.3.2-rc1
+    image: ghcr.io/logward-dev/logward-frontend:0.3.2
     container_name: logward-frontend
     ports:
       - "3000:3000"

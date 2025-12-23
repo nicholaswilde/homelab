@@ -81,6 +81,10 @@ tasks:
     desc: Watch the application's Docker container logs.
     cmds:
       - docker compose logs -f
+  logs:frontend:
+    desc: Frontend logs
+    cmds:
+      - docker compose logs frontend -f
   default:
     cmds:
       - task -l
