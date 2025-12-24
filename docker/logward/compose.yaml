@@ -160,6 +160,7 @@ services:
     ports:
       - "514:514/udp"  # Syslog UDP
       - "514:514/tcp"  # Syslog TCP
+      - "2020:2020"
     # profiles:
       # - logging
     volumes:

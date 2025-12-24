@@ -51,3 +51,15 @@ function map_syslog_level(tag, timestamp, record)
 
     return 1, timestamp, record
 end
+
+function merge_service_name(tag, timestamp, record)
+    local hostname = record["hostname"]
+    local service = record["service"]
+
+    if hostname ~= nil and service ~= nil then
+        -- Merge them: e.g., "my-host:rsyslog"
+        record["service"] = hostname .. ":" .. service
+    end
+
+    return 1, timestamp, record
+end
