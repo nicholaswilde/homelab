@@ -85,6 +85,14 @@ tasks:
     desc: Frontend logs
     cmds:
       - docker compose logs frontend -f
+  logs:fb:
+    desc: Fluent Bit logs
+    cmds:
+      - docker compose logs fluent-bit -f
+  restart:fb:
+    desc: Restart Fluent Bit
+    cmds:
+      - docker compose restart fluent-bit
   default:
     cmds:
       - task -l
