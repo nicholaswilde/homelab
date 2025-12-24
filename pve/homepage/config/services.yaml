@@ -117,8 +117,8 @@
         icon: sh-watchyourlan.png
         href: https://watch.l.nicholaswilde.io/
     - LogWard:
-        icon: mdi-console-line
-        href: https://logward.l.nicholaswilde.io/
+        icon: https://raw.githubusercontent.com/logward-dev/logward/refs/heads/main/packages/frontend/static/android-chrome-192x192.png
+        href: https://logward.l.nicholaswilde.io/dashboard
 
 - Files & Downloads:
     - Aria2:

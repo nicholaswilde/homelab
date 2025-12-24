@@ -45,7 +45,7 @@ layout:
     icon: mdi-currency-usd
   Monitoring & Analytics:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-chart-line
   Developer:
     style: row
