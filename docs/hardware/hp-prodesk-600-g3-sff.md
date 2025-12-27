@@ -12,7 +12,7 @@ This computer was inherited and so I converted it to a [Proxmox][1] node.
 
 !!! example ""
 
-    OS: `Proxmox 8.4.1`
+    OS: `Proxmox 9.1.4`
     
     RAM: `24GB`
 

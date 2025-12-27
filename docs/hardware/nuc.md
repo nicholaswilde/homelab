@@ -12,7 +12,7 @@ I'm in the process of converting my [Intel NUC][2] to be used as another `amd64`
 
 !!! example ""
 
-    OS: [Proxmox 8][1]
+    OS: [Proxmox 9][1]
 
     Manufacturer: `Intel`
 
