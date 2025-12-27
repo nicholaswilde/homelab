@@ -39,6 +39,10 @@ tasks:
     desc: Follow the logs
     cmds:
       - task: watch
+  status:
+    desc: Service status
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}.service
   default:
     cmds:
       - task -l
