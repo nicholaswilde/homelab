@@ -22,6 +22,8 @@ tasks:
     preconditions:
       - test -f AdGuardHome.yaml
       - test -f .env
+      - sh: "! diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc 2>/dev/null) || ! diff -q AdGuardHome.yaml <(sops -d --input-type yaml --output-type yaml AdGuardHome.yaml.enc 2>/dev/null)"
+        msg: "No changes detected in secrets. Skipping encryption."
     cmds:
       - sops -e .env > .env.enc
       - sops -e --input-type yaml --output-type yaml AdGuardHome.yaml > AdGuardHome.yaml.enc
