@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   export:
     silent: true
@@ -13,8 +10,7 @@ tasks:
   backup:
     desc: Backup ChangeDetection
     cmds:
-      - "curl -I http://localhost:5000/backups/request-backup"
-      # - "curl -I https://cd.l.nicholaswilde.io/backups/request-backup"
+      - curl -I http://localhost:5000/backups/request-backup
   init:
     desc: Init app
     cmds:
@@ -57,11 +53,14 @@ tasks:
     desc: Make symlinks
     cmds:
       - task: stop
-      # - task: decrypt
-      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR }}
-      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json {{ .CONFIG_DIR }}
-      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list-with-tags.txt {{ .CONFIG_DIR }}
-      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list.txt {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/secret.txt {{ .CONFIG_DIR
+        }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-watches.json
+        {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list-with-tags.txt
+        {{ .CONFIG_DIR }}
+      - ln -sf /root/git/nicholaswilde/homelab/pve/changedetection/url-list.txt {{
+        .CONFIG_DIR }}
       - task: restart
   deps:
     desc: Install dependencies
@@ -70,7 +69,7 @@ tasks:
   update:
     desc: Update ChangeDetection
     cmds:
-     - ./update.sh
+      - ./update.sh
   upgrade:
     desc: Upgrade ChangeDetection
     cmds:
@@ -82,11 +81,15 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
       - sh: diff -q secret.txt <(sops -d secret.txt.enc)
-        msg: "The encrypted secret.txt file and unencrypted secret.txt file do not match! Please re-encrypt your changes."
-      - sh: diff -q url-watches.json <(sops -d --input-type json --output-type json url-watches.json.enc)
-        msg: "The encrypted url-watches.json file and unencrypted url-watches.json file do not match! Please re-encrypt your changes."
+        msg: The encrypted secret.txt file and unencrypted secret.txt file do not
+          match! Please re-encrypt your changes.
+      - sh: diff -q url-watches.json <(sops -d --input-type json --output-type json
+          url-watches.json.enc)
+        msg: The encrypted url-watches.json file and unencrypted url-watches.json
+          file do not match! Please re-encrypt your changes.
   clean:
     desc: Clean node_modules
     cmds:

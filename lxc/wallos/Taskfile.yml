@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   export:
     silent: true
@@ -26,7 +23,6 @@ tasks:
     desc: Encrypt .env using SOPS
     cmds:
       - sops -e .env > .env.enc
-
   update:
     desc: Update Wallos
     cmds:
@@ -35,14 +31,15 @@ tasks:
     desc: Upgrade Wallos
     cmds:
       - git pull origin
-      - task: update  
+      - task: update
   verify-secrets:
     desc: Checks if the decrypted secret matches the local file
     cmds:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   mklinks:
     desc: Make client symlinks
     cmds:

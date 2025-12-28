@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   backup:
     desc: Backup the application's volume data.
@@ -34,8 +31,9 @@ tasks:
       - cp .env.tmpl .env
       - sed -i 's|JWT_SECRET=.*|JWT_SECRET='"$(openssl rand -hex 32)"'|g' .env
       - sed -i 's|USER_SECRET=.*|USER_SECRET='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|LOGIN_PASSWORD=.*|LOGIN_PASSWORD='"$(openssl rand -hex 16)"'|g' .env
-      - sed -i 's|DB_PASSWORD=.*|DB_PASSWORD='"$(openssl rand -hex 32)"'|g' .env      
+      - sed -i 's|LOGIN_PASSWORD=.*|LOGIN_PASSWORD='"$(openssl rand -hex 16)"'|g'
+        .env
+      - sed -i 's|DB_PASSWORD=.*|DB_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -44,8 +42,6 @@ tasks:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f .env
     cmds:
       - sops -e .env > .env.enc
   update:
@@ -76,7 +72,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   stop:
     desc: Stop the application's Docker containers.
     cmds:

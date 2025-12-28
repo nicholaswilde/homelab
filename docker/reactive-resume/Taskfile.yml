@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   backup:
     desc: Backup the application's volume data.
@@ -33,12 +30,18 @@ tasks:
       - test -f .env.tmpl
     cmds:
       - cp .env.tmpl .env
-      - sed -i 's|POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|MINIO_ROOT_PASSWORD=.*|MINIO_ROOT_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|ACCESS_TOKEN_SECRET=.*|ACCESS_TOKEN_SECRET='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|REFRESH_TOKEN_SECRET=.*|REFRESH_TOKEN_SECRET='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|STORAGE_ACCESS_KEY=.*|STORAGE_ACCESS_KEY='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|STORAGE_SECRET_KEY=.*|STORAGE_SECRET_KEY='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD='"$(openssl rand -hex 32)"'|g'
+        .env
+      - sed -i 's|MINIO_ROOT_PASSWORD=.*|MINIO_ROOT_PASSWORD='"$(openssl rand -hex
+        32)"'|g' .env
+      - sed -i 's|ACCESS_TOKEN_SECRET=.*|ACCESS_TOKEN_SECRET='"$(openssl rand -hex
+        32)"'|g' .env
+      - sed -i 's|REFRESH_TOKEN_SECRET=.*|REFRESH_TOKEN_SECRET='"$(openssl rand -hex
+        32)"'|g' .env
+      - sed -i 's|STORAGE_ACCESS_KEY=.*|STORAGE_ACCESS_KEY='"$(openssl rand -hex 32)"'|g'
+        .env
+      - sed -i 's|STORAGE_SECRET_KEY=.*|STORAGE_SECRET_KEY='"$(openssl rand -hex 32)"'|g'
+        .env
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     cmds:
@@ -75,7 +78,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   stop:
     desc: Stop the application's Docker containers.
     cmds:

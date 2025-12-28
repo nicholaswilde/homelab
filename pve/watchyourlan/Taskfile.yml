@@ -1,16 +1,14 @@
----
 version: '3'
-
 tasks:
   init:
     desc: Init
     cmds:
-      - 'echo "$(pwd)/update.sh" > /usr/local/bin/update'
-      - 'chmod +x /usr/local/bin/update'
+      - echo "$(pwd)/update.sh" > /usr/local/bin/update
+      - chmod +x /usr/local/bin/update
   update:
     desc: Update WakeYourLAN
     cmds:
-     - ./update.sh
+      - ./update.sh
   export:
     silent: true
     desc: Export the task list
@@ -46,7 +44,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q scan.db <(sops -d scan.db.enc)
-        msg: "The encrypted scan.db file and unencrypted scan.db file do not match! Please re-encrypt your changes."
+        msg: The encrypted scan.db file and unencrypted scan.db file do not match!
+          Please re-encrypt your changes.
   default:
     cmds:
       - task -l
