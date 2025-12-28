@@ -144,6 +144,14 @@ As the configuration files from the other nodes are still in the cluster file sy
 
     The node’s SSH keys will remain in the authorized_key file. This means that the nodes can still connect to each other with public key authentication. You should fix this by removing the respective keys from the `/etc/pve/priv/authorized_keys` file.
 
+### :twisted_rightwards_arrows: [Cluster IP Change][11]
+
+When changing the IP address of a node in a cluster, the following files need to be updated:
+
+1.  `/etc/hosts`
+2.  `/etc/network/interfaces`
+3.  `/etc/corosync/corosync.conf`
+
 ## :material-ip-network: Static IP
 
 ### :gear: Node
@@ -846,3 +854,4 @@ Check the results
 [8]: <https://pve.proxmox.com/wiki/Notifications#notification_targets>
 [9]: <https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3>
 [10]: <https://pakstech.com/blog/proxmox-increase-lxc-disk/>
+[11]: <https://forum.proxmox.com/threads/join-information-wrong.115956/#post-501492>

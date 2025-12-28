@@ -144,18 +144,24 @@ See [Raspberry Pi OS setup](../os/rpios.md).
 
 ##### :octicons-repo-24: Add the PXVIRT repository
 
-!!! abstract "/etc/apt/sources.list.d/pxvirt.list"
+!!! abstract "/etc/apt/sources.list.d/pxvirt.sources"
 
     === "Automatic"
     
         ```shell
-        echo 'deb https://download.lierfang.com/pxcloud/pxvirt bookworm main'>/etc/apt/sources.list.d/pxvirt.list
+        echo "Types: deb
+        URIs: https://download.lierfang.com/pxcloud/pxvirt
+        Suites: bookworm
+        Components: main" | tee /etc/apt/sources.list.d/pxvirt.sources > /dev/null
         ```
 
     === "Manual"
 
-        ```shell
-        deb https://download.lierfang.com/pxcloud/pxvirt bookworm main
+        ```ini
+        Types: deb
+        URIs: https://download.lierfang.com/pxcloud/pxvirt
+        Suites: bookworm
+        Components: main
         ```
 
 !!! code "Add the PXVIRT repository key"
