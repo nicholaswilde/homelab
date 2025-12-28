@@ -1,16 +1,13 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   create-template:
     desc: Create template from existing .env file
     preconditions:
       - test -f .env
     cmds:
-      - "sed '/^ *#/! s/=.*/=/' .env > .env.tmpl"
+      - sed '/^ *#/! s/=.*/=/' .env > .env.tmpl
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -19,9 +16,12 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/backend/.env.enc
       - test -f {{ .TASKFILE_DIR }}/patchmon.creds.enc
     cmds:
-      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc > {{ .TASKFILE_DIR }}/.env
-      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc > {{ .TASKFILE_DIR }}/frontend/.env
-      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc > {{ .TASKFILE_DIR }}/backend/.env
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc
+        > {{ .TASKFILE_DIR }}/.env
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc
+        > {{ .TASKFILE_DIR }}/frontend/.env
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc
+        > {{ .TASKFILE_DIR }}/backend/.env
       - sops -d {{ .TASKFILE_DIR }}/patchmon.creds.enc > {{ .TASKFILE_DIR }}/patchmon.creds
   enable:
     desc: Enable the application's systemd service.
@@ -29,14 +29,13 @@ tasks:
       - sudo systemctl enable -q --now {{ .SERVICE_NAME }}
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f {{ .TASKFILE_DIR }}/frontend/.env
-      - test -f {{ .TASKFILE_DIR }}/backend/.env
-      - test -f {{ .TASKFILE_DIR }}/patchmon.creds
     cmds:
-      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env > {{ .TASKFILE_DIR }}/.env.enc
-      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env > {{ .TASKFILE_DIR }}/frontend/.env.enc
-      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env > {{ .TASKFILE_DIR }}/backend/.env.enc
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env
+        > {{ .TASKFILE_DIR }}/.env.enc
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env
+        > {{ .TASKFILE_DIR }}/frontend/.env.enc
+      - sops -e --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env
+        > {{ .TASKFILE_DIR }}/backend/.env.enc
       - sops -e {{ .TASKFILE_DIR }}/patchmon.creds > {{ .TASKFILE_DIR }}/patchmon.creds.enc
   export:
     silent: true
@@ -93,14 +92,22 @@ tasks:
     cmds:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
-      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
-      - sh: diff -q {{ .TASKFILE_DIR }}/frontend/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc)
-        msg: "The encrypted frontend/.env file and unencrypted frontend/.env file do not match! Please re-encrypt your changes."
-      - sh: diff -q {{ .TASKFILE_DIR }}/backend/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc)
-        msg: "The encrypted backend/.env file and unencrypted backend/.env file do not match! Please re-encrypt your changes."
-      - sh: diff -q {{ .TASKFILE_DIR }}/patchmon.creds <(sops -d {{ .TASKFILE_DIR }}/patchmon.creds.enc)
-        msg: "The encrypted patchmon.creds file and unencrypted patchmon.creds file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type
+          dotenv {{ .TASKFILE_DIR }}/.env.enc)
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
+      - sh: diff -q {{ .TASKFILE_DIR }}/frontend/.env <(sops -d --input-type dotenv
+          --output-type dotenv {{ .TASKFILE_DIR }}/frontend/.env.enc)
+        msg: The encrypted frontend/.env file and unencrypted frontend/.env file do
+          not match! Please re-encrypt your changes.
+      - sh: diff -q {{ .TASKFILE_DIR }}/backend/.env <(sops -d --input-type dotenv
+          --output-type dotenv {{ .TASKFILE_DIR }}/backend/.env.enc)
+        msg: The encrypted backend/.env file and unencrypted backend/.env file do
+          not match! Please re-encrypt your changes.
+      - sh: diff -q {{ .TASKFILE_DIR }}/patchmon.creds <(sops -d {{ .TASKFILE_DIR
+          }}/patchmon.creds.enc)
+        msg: The encrypted patchmon.creds file and unencrypted patchmon.creds file
+          do not match! Please re-encrypt your changes.
   service:install:
     desc: Install service
     preconditions:

@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   build-lnav:
     desc: Build lnav
@@ -24,8 +21,6 @@ tasks:
       - cp .env.tmpl .env
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f .env
     cmds:
       - sops -e .env > .env.enc
   decrypt:
@@ -48,23 +43,14 @@ tasks:
   deps-lnav:
     desc: Install lnav dependencies
     cmds:
-      - >-
-        sudo apt install \
-          automake\
-           autoconf \
-           libunistring-dev \
-           libpcre2-dev \
-           libsqlite3-dev \
-           checkinstall \
-           zlib1g-dev
+      - "sudo apt install \\\n  automake\\\n   autoconf \\\n   libunistring-dev \\\
+        \n   libpcre2-dev \\\n   libsqlite3-dev \\\n   checkinstall \\\n   zlib1g-dev"
   deps:
     desc: Install dependencies
     cmds:
-      - >-
-        sudo apt install \
-          jq reprepro cron dpkg-dev ninja-build gettext cmake curl \
-          build-essential git build-essential cmake libcurl4-openssl-dev \
-          libxml2-dev libssl-dev libxml-security-c-dev pkg-config stow
+      - "sudo apt install \\\n  jq reprepro cron dpkg-dev ninja-build gettext cmake\
+        \ curl \\\n  build-essential git build-essential cmake libcurl4-openssl-dev\
+        \ \\\n  libxml2-dev libssl-dev libxml-security-c-dev pkg-config stow"
   package-lastpass-cli:
     desc: Package the latest lastpass-cli release
     cmds:
@@ -84,15 +70,9 @@ tasks:
   upload-debs:
     desc: Upload the deb packages to a remote server
     cmds:
-      - |
-        shopt -s nullglob
-        DEB_FILES=(*.deb)
-        if [ ${#DEB_FILES[@]} -eq 0 ]; then
-          echo "No deb files found."
-          exit 1
-        fi
-        echo "Uploading ${#DEB_FILES[@]} file(s)..."
-        scp "${DEB_FILES[@]}" {{.REMOTE_USER}}@{{.REMOTE_IP}}:{{.REMOTE_PATH}}
+      - "shopt -s nullglob\nDEB_FILES=(*.deb)\nif [ ${#DEB_FILES[@]} -eq 0 ]; then\n\
+        \  echo \"No deb files found.\"\n  exit 1\nfi\necho \"Uploading ${#DEB_FILES[@]}\
+        \ file(s)...\"\nscp \"${DEB_FILES[@]}\" {{.REMOTE_USER}}@{{.REMOTE_IP}}:{{.REMOTE_PATH}}\n"
     silent: true
   download:
     desc: Download SOPS and Task .deb files
@@ -121,7 +101,8 @@ tasks:
       - sudo stow -v -t {{ .BASE_DIR }}/ubuntu/ ubuntu
       - sudo stow -v -t {{ .BASE_DIR }}/raspi/ raspi
   update-reprepro:
-    desc: Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
+    desc: Downloads application tar.gz and .deb files, packages them as needed, and
+      adds them to a reprepro repository.
     preconditions:
       - test -f ./update-reprepro.sh
     cmds:
@@ -151,7 +132,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   default:
     cmds:
       - task -l

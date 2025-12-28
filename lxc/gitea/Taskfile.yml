@@ -1,12 +1,10 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   check-config:
-    desc: Checks if app.ini.enc needs to be updated by comparing it with the live configuration.
+    desc: Checks if app.ini.enc needs to be updated by comparing it with the live
+      configuration.
     preconditions:
       - test -f {{ .TASKFILE_DIR }}/check-config.sh
     cmds:
@@ -38,14 +36,13 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/.env.enc
       - test -f {{ .TASKFILE_DIR }}/app.ini.enc
     cmds:
-      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc > {{ .TASKFILE_DIR }}/.env
-      - sops -d --input-type ini --output-type ini {{ .TASKFILE_DIR }}/app.ini.enc | sudo tee {{ .CONFIG_DIR }}/app.ini
+      - sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc
+        > {{ .TASKFILE_DIR }}/.env
+      - sops -d --input-type ini --output-type ini {{ .TASKFILE_DIR }}/app.ini.enc
+        | sudo tee {{ .CONFIG_DIR }}/app.ini
       - task: own
   encrypt:
     desc: Encrypt .env using SOPS
-    preconditions:
-      - test -f {{ .TASKFILE_DIR }}/.env
-      - test -f {{ .CONFIG_DIR }}/app.ini
     cmds:
       - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
       - sops -e --input-type ini --output-type ini {{ .CONFIG_DIR }}/app.ini > app.ini.enc
@@ -55,7 +52,6 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/update.sh
     cmds:
       - ./update.sh
-      # - bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/gitea.sh)"
   upgrade:
     desc: Upgrade app
     cmds:
@@ -66,10 +62,14 @@ tasks:
     cmds:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
-      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type dotenv {{ .TASKFILE_DIR }}/.env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
-      - sh: diff -q {{ .CONFIG_DIR }}/app.ini <(sops -d --input-type ini --output-type ini {{ .TASKFILE_DIR }}/app.ini.enc)
-        msg: "The encrypted app.ini file and unencrypted app.ini file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/.env <(sops -d --input-type dotenv --output-type
+          dotenv {{ .TASKFILE_DIR }}/.env.enc)
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
+      - sh: diff -q {{ .CONFIG_DIR }}/app.ini <(sops -d --input-type ini --output-type
+          ini {{ .TASKFILE_DIR }}/app.ini.enc)
+        msg: The encrypted app.ini file and unencrypted app.ini file do not match!
+          Please re-encrypt your changes.
   stop:
     desc: Stop service
     cmds:

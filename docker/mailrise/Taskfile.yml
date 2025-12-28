@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   export:
     silent: true
@@ -13,11 +10,12 @@ tasks:
   test-remote:
     desc: Send a test email to remote address
     cmds:
-      - 'swaks --to email@mailrise.xyz --server smtp.l.nicholaswilde.io:8025 --body "this is the body" --header "Subject: subject"'
+      - 'swaks --to email@mailrise.xyz --server smtp.l.nicholaswilde.io:8025 --body
+        "this is the body" --header "Subject: subject"'
   test:
     desc: Send a test email
     cmds:
-      - "swaks --to email@mailrise.xyz --server localhost --port 8025"
+      - swaks --to email@mailrise.xyz --server localhost --port 8025
   status:
     desc: Check the status of the application's service or Docker containers.
     cmds:
@@ -50,7 +48,7 @@ tasks:
   restart:
     desc: Restart the application's Docker containers.
     cmds:
-      - "docker compose restart"
+      - docker compose restart
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
@@ -62,7 +60,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   stop:
     desc: Stop the application's Docker containers.
     cmds:
