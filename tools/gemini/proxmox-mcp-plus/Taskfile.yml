@@ -1,0 +1,85 @@
+---
+version: '3'
+
+vars:
+  IMAGE_NAME: "ghcr.io/nicholaswilde/proxmox-mcp-plus"
+  UPSTREAM_REPO: "RekklesNA/ProxmoxMCP-Plus"
+  BRANCH: "main"
+
+tasks:
+  decrypt:
+    desc: Decrypt sensitive configuration files using SOPS.
+    cmds:
+      - cmd: sops -d --input-type json --output-type json config.json.enc > config.json
+        ignore_error: true
+      - cmd: sops -d --input-type json --output-type json pve01/config.json.enc > pve01/config.json
+        ignore_error: true
+      - cmd: sops -d --input-type json --output-type json pve04/config.json.enc > pve04/config.json
+        ignore_error: true
+  encrypt:
+    desc: Encrypt sensitive configuration files using SOPS.
+    cmds:
+      - cmd: sops -e --input-type json --output-type json config.json > config.json.enc
+        ignore_error: true
+      - cmd: sops -e --input-type json --output-type json pve01/config.json > pve01/config.json.enc
+        ignore_error: true
+      - cmd: sops -e --input-type json --output-type json pve04/config.json > pve04/config.json.enc
+        ignore_error: true
+  verify-secrets:
+    desc: Checks if the decrypted secret matches the local file
+    cmds:
+      - echo "Secrets are in sync. Proceeding..."
+    preconditions:
+      - sh: diff -q <(jq -S . config.json) <(sops -d --input-type json --output-type json config.json.enc | jq -S .)
+        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+      - sh: diff -q <(jq -S . pve01/config.json) <(sops -d --input-type json --output-type json pve01/config.json.enc | jq -S .)
+        msg: "The encrypted file and unencrypted file (pve01) do not match! Please re-encrypt your changes."
+      - sh: diff -q <(jq -S . pve04/config.json) <(sops -d --input-type json --output-type json pve04/config.json.enc | jq -S .)
+        msg: "The encrypted file and unencrypted file (pve04) do not match! Please re-encrypt your changes."
+  init:
+    desc: Initialize the application's configuration file.
+    preconditions:
+      - test -f config.json.tmpl
+    cmds:
+      - cp config.json.tmpl config.json
+  load:
+    desc: Load
+    vars:
+      COMMIT_SHA:
+        sh: curl -s "https://api.github.com/repos/{{.UPSTREAM_REPO}}/commits/{{.BRANCH}}" | jq -r .sha
+      SHORT_SHA:
+        sh: echo "{{.COMMIT_SHA}}" | cut -c1-7
+    cmds:
+      - docker build --no-cache --build-arg COMMIT_SHA={{.COMMIT_SHA}} -t {{.IMAGE_NAME}}:{{.SHORT_SHA}} -t {{.IMAGE_NAME}}:latest . --load
+  build:
+    desc: Build
+    vars:
+      COMMIT_SHA:
+        sh: curl -s "https://api.github.com/repos/{{.UPSTREAM_REPO}}/commits/{{.BRANCH}}" | jq -r .sha
+      SHORT_SHA:
+        sh: echo "{{.COMMIT_SHA}}" | cut -c1-7
+    cmds:
+      - docker build --no-cache --build-arg COMMIT_SHA={{.COMMIT_SHA}} -t {{.IMAGE_NAME}}:{{.SHORT_SHA}} -t {{.IMAGE_NAME}}:latest .
+  push:
+    desc: Push
+    vars:
+      COMMIT_SHA:
+        sh: curl -s "https://api.github.com/repos/{{.UPSTREAM_REPO}}/commits/{{.BRANCH}}" | jq -r .sha
+      SHORT_SHA:
+        sh: echo "{{.COMMIT_SHA}}" | cut -c1-7
+    cmds:
+      - docker push {{.IMAGE_NAME}}:{{.SHORT_SHA}}
+      - docker push {{.IMAGE_NAME}}:latest
+  debug:
+    desc: Debug
+    vars:
+      COMMIT_SHA:
+        sh: curl -s "https://api.github.com/repos/{{.UPSTREAM_REPO}}/commits/{{.BRANCH}}" | jq -r .sha
+      SHORT_SHA:
+        sh: echo "{{.COMMIT_SHA}}" | cut -c1-7
+    cmds:
+      - docker build --progress=plain --no-cache --build-arg COMMIT_SHA={{.COMMIT_SHA}} -t {{.IMAGE_NAME}}:{{.SHORT_SHA}} -t {{.IMAGE_NAME}}:latest .
+  default:
+    cmds:
+      - task -l
+    silent: true

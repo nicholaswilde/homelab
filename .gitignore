@@ -62,3 +62,5 @@ patchmon.conf
 
 **/openmediavault/config.xml
 **/openmediavault/php.ini
+
+**/proxmox-mcp-plus/**/config.json
