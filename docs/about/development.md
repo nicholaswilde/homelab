@@ -6,6 +6,16 @@ tags:
 
 The development of my homelab is mainly done by watching YouTube videos and occasionally browsing Reddit.
 
+## :terminal: Command Line
+
+I generally prefer using the command line over web GUIs for managing my homelab.
+
+While I've experimented with TUIs like [pvetui][18] and [lazydocker][19], I tend to prefer the standard CLI for most operations.
+
+- **`gh`**: I use the [GitHub CLI][20] extensively for repository management.
+- **Docker**: I prefer managing Docker via the command line and avoid using tools like Portainer.
+- **Proxmox**: Currently, I still use the Proxmox web GUI, but I am working towards using the command line interface more frequently.
+
 ## :hammer_and_wrench: Installation
 
 ### :simple-github: Repo
@@ -326,4 +336,7 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 [15]: <../tools/syncthing.md>
 [16]: <https://nicholaswilde.io/homelab-playbooks>
 [17]: <../apps/mailrise.md>
+[18]: <https://github.com/mizuta3/pvetui>
+[19]: <https://github.com/jesseduffield/lazydocker>
+[20]: <https://cli.github.com/>
 
