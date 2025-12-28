@@ -1,19 +1,17 @@
----
 version: '3'
-
 tasks:
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
       - test -f {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
     cmds:
-      - sops -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
+      - sops -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc
+        > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
     cmds:
-      - sops -e --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc
+      - sops -e --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json
+        > {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc
   export:
     silent: true
     desc: Export the task list to `task-list.txt`.
@@ -28,8 +26,10 @@ tasks:
     cmds:
       - echo "Secrets are in sync."
     preconditions:
-      - sh: diff -q {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json <(sops -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+      - sh: diff -q {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json <(sops
+          -d --input-type json --output-type json {{ .TASKFILE_DIR }}/secure-shell-preferences-backup.json.enc)
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
     silent: true
   default:
     cmds:

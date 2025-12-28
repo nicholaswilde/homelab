@@ -1,12 +1,8 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 env:
   APP_NAME: '{{ .APP_NAME }}'
-
 tasks:
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
@@ -17,8 +13,6 @@ tasks:
     ignore_error: true
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f .env
     cmds:
       - sops -e .env > .env.enc
   update:
@@ -54,15 +48,14 @@ tasks:
     desc: Stop the Traefik service
     cmds:
       - systemctl stop {{ .SERVICE_NAME }}.service
-
   verify-secrets:
     desc: Checks if the decrypted secret matches the local file
     cmds:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
-
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   default:
     cmds:
       - task -l

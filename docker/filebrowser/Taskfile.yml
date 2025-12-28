@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   shell:
     desc: Shell
@@ -80,9 +77,11 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
       - sh: diff -q settings.json <(sops -d --input-type json --output-type json settings.json.enc)
-        msg: "The encrypted settings.json file and unencrypted settings.json file do not match! Please re-encrypt your changes."
+        msg: The encrypted settings.json file and unencrypted settings.json file do
+          not match! Please re-encrypt your changes.
   stop:
     desc: Stop the application's Docker containers.
     cmds:
