@@ -10,8 +10,6 @@ tasks:
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     cmds:
-      - cmd: sops -d --input-type json --output-type json config.json.enc > config.json
-        ignore_error: true
       - cmd: sops -d --input-type json --output-type json pve01/config.json.enc > pve01/config.json
         ignore_error: true
       - cmd: sops -d --input-type json --output-type json pve04/config.json.enc > pve04/config.json
@@ -19,8 +17,6 @@ tasks:
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
     cmds:
-      - cmd: sops -e --input-type json --output-type json config.json > config.json.enc
-        ignore_error: true
       - cmd: sops -e --input-type json --output-type json pve01/config.json > pve01/config.json.enc
         ignore_error: true
       - cmd: sops -e --input-type json --output-type json pve04/config.json > pve04/config.json.enc
@@ -30,8 +26,6 @@ tasks:
     cmds:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
-      - sh: diff -q <(jq -S . config.json) <(sops -d --input-type json --output-type json config.json.enc | jq -S .)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
       - sh: diff -q <(jq -S . pve01/config.json) <(sops -d --input-type json --output-type json pve01/config.json.enc | jq -S .)
         msg: "The encrypted file and unencrypted file (pve01) do not match! Please re-encrypt your changes."
       - sh: diff -q <(jq -S . pve04/config.json) <(sops -d --input-type json --output-type json pve04/config.json.enc | jq -S .)
