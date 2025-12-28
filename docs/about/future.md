@@ -45,7 +45,17 @@ I currently have 5TB external drive attached to my [HP Pro desk][1], but it's no
 My initial thoughts is to use 4 SSDs on a Raspberry Pi 5 using a [Radxa Penta SATA HAT][2] due to it's compactness, but
 the the speeds may suffer due to the RPi's 1 Gbit speeds. :question: Do I actually need more than 1Gbit speeds :thinking:?
 
+## :pencil: Text Editor
+
+I would like to learn [Neovim][5] to become more proficient at editing text files on the command line.
+
+## :clock1: NTP Server
+
+I would like to build a Stratum 1 NTP server using a Raspberry Pi and a GPS module. See [Issue #371][6].
+
 [1]: <../hardware/hp-prodesk-600-g3.md>
 [2]: <https://radxa.com/products/accessories/penta-sata-hat/>
 [3]: <https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac>
 [4]: <https://nixos.org/>
+[5]: <https://neovim.io/>
+[6]: <https://github.com/nicholaswilde/homelab/issues/371>

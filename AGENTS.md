@@ -15,6 +15,18 @@ You are an expert software engineer and system administrator specializing in Dev
 -   **Documentation:** MkDocs (Material theme), Markdown
 -   **Task Management:** Taskfile (Task)
 
+## MCP Servers
+
+The following MCP servers are configured and available for use:
+
+-   **Proxmox MCP Plus:**
+    -   **pve01 Cluster:**
+        -   Prefix: `pve01__` (e.g., `pve01__get_nodes`, `pve01__get_vms`)
+        -   Capabilities: Manage nodes, VMs, containers, and storage on the `pve01` cluster.
+    -   **pve04 Node:**
+        -   Prefix: None (e.g., `get_nodes`, `get_vms`)
+        -   Capabilities: Manage nodes, VMs, containers, and storage on the `pve04` node.
+
 ## Boundaries
 
 -   **Do not** introduce new languages or frameworks without explicit user approval.

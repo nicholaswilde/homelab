@@ -15,6 +15,11 @@ While I've experimented with TUIs like [pvetui][18] and [lazydocker][19], I tend
 - **`gh`**: I use the [GitHub CLI][20] extensively for repository management.
 - **Docker**: I prefer managing Docker via the command line and avoid using tools like Portainer.
 - **Proxmox**: Currently, I still use the Proxmox web GUI, but I am working towards using the command line interface more frequently.
+- **Editor**: My preferred text editor is [`micro`][22], though I'm hoping to learn [Neovim][23] in the future.
+
+## :robot: AI & LLM
+
+My preferred AI or LLM is [Google Gemini][21]. I use it extensively for generating scripts, documentation, and automating various aspects of my homelab management.
 
 ## :hammer_and_wrench: Installation
 
@@ -339,4 +344,7 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 [18]: <https://github.com/mizuta3/pvetui>
 [19]: <https://github.com/jesseduffield/lazydocker>
 [20]: <https://cli.github.com/>
+[21]: <../tools/google-gemini-cli.md>
+[22]: <https://micro-editor.github.io/>
+[23]: <https://neovim.io/>
 
