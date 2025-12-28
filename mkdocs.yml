@@ -104,6 +104,7 @@ nav:
       - tmux: tools/tmux.md
   - Travel: travel.md
   - Reference:
+      - Cheatsheet: reference/cheatsheet.md
       - Emoji: reference/emoji.md
       - Tags: reference/tags.md
 

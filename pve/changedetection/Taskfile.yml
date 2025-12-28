@@ -17,6 +17,12 @@ tasks:
       - cp .env.tmpl .env
   encrypt:
     desc: Encrypt scan.db using SOPS
+    preconditions:
+      - test -f .env
+      - test -f secret.txt
+      - test -f url-watches.json
+      - sh: "! diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc 2>/dev/null) || ! diff -q secret.txt <(sops -d secret.txt.enc 2>/dev/null) || ! diff -q url-watches.json <(sops -d --input-type json --output-type json url-watches.json.enc 2>/dev/null)"
+        msg: "No changes detected in secrets. Skipping encryption."
     cmds:
       - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
       - sops -e secret.txt > secret.txt.enc
