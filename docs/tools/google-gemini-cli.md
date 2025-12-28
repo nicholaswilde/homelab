@@ -73,6 +73,8 @@ Enable `gemini-cli` to use `AGENTS.md` files.
 
 ## :robot: MCP Servers
 
+### :simple-github: GitHub MCP Server
+
 The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub repositories.
 
 !!! abstract "~/.gemini/settings.json"
@@ -121,7 +123,83 @@ The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub r
 - `general.previewFeatures`: Set to `true` to enable preview features such as Gemini 3.0.
 - `GITHUB_MCP_PAT`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
 
-## :palette: Theme
+### :simple-proxmox: ProxmoxMCP-Plus
+
+The [ProxmoxMCP-Plus][7] can be used to allow Gemini to interact with Proxmox VE.
+
+!!! abstract "~/tools/gemini/proxmox-mcp-plus/config.json"
+
+    ```json
+    --8<-- "gemini/proxmox-mcp-plus/config.json.tmpl"
+    ```
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+            "proxmox": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "-v",
+                    "/path/to/proxmox-config:/app/proxmox-config",
+                    "proxmox-mcp-plus"
+                ]
+            }
+        }
+    }
+    ```
+
+!!! tip
+
+    Multiple Proxmox nodes can be managed by specifying different configuration files for each server.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+            "pve01": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "-v",
+                    "/path/to/pve01-config:/app/proxmox-config",
+                    "proxmox-mcp-plus"
+                ]
+            },
+            "pve02": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "-v",
+                    "/path/to/pve02-config:/app/proxmox-config",
+                    "proxmox-mcp-plus"
+                ]
+            }
+        }
+    }
+    ```
+
+#### Build and Load
+
+The Docker image for `proxmox-mcp-plus` needs to be built and loaded manually.
+
+!!! code
+
+    ```shell
+    cd tools/gemini/proxmox-mcp-plus
+    task load
+    ```
+
+## :art: Theme
 
 The [Catppuccin theme][6] can be used to customize the appearance of the Gemini CLI.
 
@@ -185,6 +263,7 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 - <https://github.com/google-gemini/gemini-cli>
 - <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 - <https://github.com/catppuccin/gemini-cli>
+- <https://github.com/RekklesNA/ProxmoxMCP-Plus>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
@@ -192,3 +271,4 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 [4]: <https://github.com/github/github-mcp-server>
 [5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 [6]: <https://github.com/catppuccin/gemini-cli>
+[7]: <https://github.com/RekklesNA/ProxmoxMCP-Plus>
