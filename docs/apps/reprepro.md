@@ -375,7 +375,7 @@ To add a new release codename to reprepro:
 
 Add repo and install.
 
-!!! abstract "`/etc/apt/sources.list.d/reprepro.list`"
+!!! abstract "`/etc/apt/sources.list.d/reprepro.sources`"
 
     === "Automatic"
 
@@ -384,7 +384,11 @@ Add repo and install.
             ```shell
             (
               source /etc/os-release && \
-              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main" | tee -a /etc/apt/sources.list.d/reprepro.list
+              echo "Types: deb
+            URIs: http://deb.l.nicholaswilde.io/${ID}
+            Suites: ${VERSION_CODENAME}
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg" | tee /etc/apt/sources.list.d/reprepro.sources > /dev/null
               apt update && \
               apt install sops
             )
@@ -394,7 +398,11 @@ Add repo and install.
             ```shell
             (
               source /etc/os-release && \
-              echo "deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/${ID} ${VERSION_CODENAME} main" | sudo tee -a /etc/apt/sources.list.d/reprepro.list
+              echo "Types: deb
+            URIs: http://deb.l.nicholaswilde.io/${ID}
+            Suites: ${VERSION_CODENAME}
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg" | sudo tee /etc/apt/sources.list.d/reprepro.sources > /dev/null
               sudo apt update && \
               sudo apt install sops
             )
@@ -405,7 +413,11 @@ Add repo and install.
         === "Bookworm"
 
             ```ini
-            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bookworm main
+            Types: deb
+            URIs: http://deb.l.nicholaswilde.io/debian
+            Suites: bookworm
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg
             ```
 
             ```shell
@@ -416,7 +428,11 @@ Add repo and install.
         === "Bullseye"
 
             ```ini
-            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian bullseye main
+            Types: deb
+            URIs: http://deb.l.nicholaswilde.io/debian
+            Suites: bullseye
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg
             ```
 
             ```shell
@@ -427,7 +443,11 @@ Add repo and install.
         === "Trixie"
 
             ```ini
-            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/debian trixie main
+            Types: deb
+            URIs: http://deb.l.nicholaswilde.io/debian
+            Suites: trixie
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg
             ```
 
             ```shell
@@ -438,7 +458,11 @@ Add repo and install.
         === "Raspi"
 
             ```ini
-            deb [signed-by=/etc/apt/keyrings/reprepro.gpg] http://deb.l.nicholaswilde.io/raspi trixie main
+            Types: deb
+            URIs: http://deb.l.nicholaswilde.io/raspi
+            Suites: trixie
+            Components: main
+            Signed-By: /etc/apt/keyrings/reprepro.gpg
             ```
 
             ```shell

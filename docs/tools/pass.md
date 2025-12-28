@@ -35,13 +35,35 @@ pass git push -u --all
 git clone git@github.com:nicholaswilde/pass.git ~/.password-store
 ```
 
+## :gear: Custom Password Store Directory
+
+By default, `pass` uses `~/.password-store`. You can change this by setting the `PASSWORD_STORE_DIR` environment variable.
+
+=== ".bashrc"
+
+    ```shell
+    export PASSWORD_STORE_DIR="/path/to/your/custom/directory"
+    ```
+
+=== "Manual"
+
+    ```shell
+    export PASSWORD_STORE_DIR="/path/to/your/custom/directory"
+    pass
+    ```
+
 ## [pass-import](https://github.com/roddhjav/pass-import)
 
 === "root"
 
     ```shell
     curl -fsSL https://pkg.pujol.io/debian/gpgkey | tee /etc/apt/keyrings/pass-extension-import.gpg
-    echo 'deb [arch=amd64] https://pkg.pujol.io/debian/repo all main' | tee /etc/apt/sources.list.d/pkg.pujol.io.list
+    echo "Types: deb
+    URIs: https://pkg.pujol.io/debian/repo
+    Suites: all
+    Components: main
+    Architectures: amd64
+    Signed-By: /etc/apt/keyrings/pass-extension-import.gpg" | tee /etc/apt/sources.list.d/pkg.pujol.io.sources > /dev/null
     apt update
     apt install pass-extension-import -y
     ```
@@ -50,7 +72,12 @@ git clone git@github.com:nicholaswilde/pass.git ~/.password-store
 
     ```shell
     curl -fsSL https://pkg.pujol.io/debian/gpgkey | sudo tee /etc/apt/keyrings/pass-extension-import.gpg
-    echo 'deb [arch=amd64] https://pkg.pujol.io/debian/repo all main' | sudo tee /etc/apt/sources.list.d/pkg.pujol.io.list
+    echo "Types: deb
+    URIs: https://pkg.pujol.io/debian/repo
+    Suites: all
+    Components: main
+    Architectures: amd64
+    Signed-By: /etc/apt/keyrings/pass-extension-import.gpg" | sudo tee /etc/apt/sources.list.d/pkg.pujol.io.sources > /dev/null
     sudo apt update
     sudo apt install pass-extension-import -y
     ```
