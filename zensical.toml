@@ -77,22 +77,23 @@ Apps = [
 
 [[project.nav]]
 Hardware = [
+  { "Apple TV" = "hardware/apple-tv.md" },
   { "ASUS Chromebook Plus CX34" = "hardware/asus-chromebook-plus-cx34.md" },
+  { "Chromecast" = "hardware/chromecast.md" },
   { "Digital Picture Frame" = "hardware/digital-picture-frame.md" },
   { "HP Pro desk 600 G3 SFF" = "hardware/hp-prodesk-600-g3-sff.md" },
   { "Intel NUC" = "hardware/nuc.md" },
   { "Lenovo Chromebook Flex 5" = "hardware/lenovo-chromebook-flex-5.md" },
+  { "LG Appliances" = "hardware/lg-appliances.md" },
   { "LilyGo T-Dongle S3" = "hardware/lilygo-t-dongle-s3.md" },
-  { "Raspberry Pi Zero W" = "hardware/rpi0.md" },
-  { "Raspberry Pi 1 B+" = "hardware/rpi1.md" },
-  { "Raspberry Pi 2" = "hardware/rpi2.md" },
-  { "Raspberry Pi 4" = "hardware/rpi4.md" },
-  { "Raspberry Pi 5" = "hardware/rpi5.md" },
-  { "HP ProDesk 600 G3" = "hardware/hp-prodesk-600-g3.md" },
-  { "Lenovo ChromeBook Flex 5" = "hardware/lenovo-chromebook-flex-5.md" },
   { "Raspberry Pi 1 Model B+" = "hardware/rpi1.md" },
+  { "Raspberry Pi 2" = "hardware/rpi2.md" },
   { "Raspberry Pi 4 8GB" = "hardware/rpi4.md" },
   { "Raspberry Pi 5 16GB" = "hardware/rpi5.md" },
+  { "Raspberry Pi Zero W" = "hardware/rpi0.md" },
+  { "Roborock" = "hardware/roborock.md" },
+  { "UniFi" = "hardware/unifi.md" },
+  { "Wyze Cam" = "hardware/wyze-cam.md" },
 ]
 
 [[project.nav]]
