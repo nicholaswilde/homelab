@@ -22,6 +22,12 @@ My [Raspberry Pi 5 16GB][3] is being used as another `arm64` Proxmox server.
 
     DRIVE: [`Crucial P3 500GB PCIe Gen3 3D NAND NVMe M.2 SSD`][6]
 
+    Hostname: `pve04`
+
+    IP: `192.168.2.67`
+
+    MAC: `2c:cf:67:c6:82:66`
+
 ### :pager: Enable PCIe
 
 !!! tip
@@ -333,6 +339,32 @@ For Proxmox, I'm using a [logical volume][9] instead of a swap file.
 ## :floppy_disk: LVM
 
 See [LVM](../tools/lvm.md).
+
+    $E cat /mnt/dev/p1/cmdline.txt
+    $E umount /mnt/dev/p1 || exit 1
+    ```
+
+## :zap: Speed Test
+
+| Rank | Send Speed | Receive Speed | Verdict |
+| :--- | :--- | :--- | :--- |
+| #3 | 938 Mbps | 889 Mbps | The Powerhouse. Excellent, but got slightly winded (thermal/CPU) on receive. |
+
+### :pencil: Usage
+
+To test the network speed, use `iperf3`.
+
+!!! code "Send"
+
+    ```shell
+    iperf3 -c 192.168.2.143
+    ```
+
+!!! code "Receive"
+
+    ```shell
+    iperf3 -c 192.168.2.143 -R
+    ```
 
 ## :link: References
 

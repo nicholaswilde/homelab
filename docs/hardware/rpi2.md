@@ -14,6 +14,12 @@ when my main Proxmox server goes down.
 
     OS: [Rasbperry Pi OS (Legacy) Lite][2]
 
+    Hostname: `pi02`
+
+    IP: `192.168.3.250`
+
+    MAC: `b8:27:eb:bf:c0:ee`
+
 ## :link: References
 
 [1]: <../apps/adguardhome.md>

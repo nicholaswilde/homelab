@@ -15,6 +15,12 @@ DietPi is the operating system of choice here because its optimized, minimal ins
 
     OS: [DietPi](../os/dietpi.md)
 
+    Hostname: `pi01`
+
+    IP: `192.168.3.229`
+
+    MAC: `b8:27:eb:43:a5:ab`
+
 ## :link: References
 
 [1]: <https://www.raspberrypi.com/products/raspberry-pi-1-model-b-plus/>

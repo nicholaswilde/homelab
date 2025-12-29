@@ -23,6 +23,12 @@ Proxmox node.
 
     DRIVE: `500GB NVMe`
 
+    Hostname: `pi04`
+
+    IP: `192.168.2.88`
+
+    MAC: `dc:a6:32:ba:fa:eb`
+
 ### :material-usb-flash-drive: [Raspberry Pi 4 boot from usb][6]
 
 !!! code ""
@@ -177,6 +183,28 @@ See [Raspberry Pi 5 16GB][8].
 | ON | Short Press | Nothing |
 | ON | Long Press (> 3 Secs) | Initiate Soft Shutdown (NO POWER CUT) |
 | ON | Double Tap | Reboot |
+
+## :zap: Speed Test
+
+| Rank | Send Speed | Receive Speed | Verdict |
+| :--- | :--- | :--- | :--- |
+| #2 | 942 Mbps | 934 Mbps | The Underdog. A shocking perfect score. |
+
+### :pencil: Usage
+
+To test the network speed, use `iperf3`.
+
+!!! code "Send"
+
+    ```shell
+    iperf3 -c 192.168.2.143
+    ```
+
+!!! code "Receive"
+
+    ```shell
+    iperf3 -c 192.168.2.143 -R
+    ```
 
 ## :link: References
 
