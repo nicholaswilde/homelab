@@ -147,6 +147,9 @@ function install_runner() {
   su - "${RUNNER_USER}" -c "curl -o ${INSTALL_DIR}/actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v${runner_version}/actions-runner-linux-${arch}-${runner_version}.tar.gz"
   su - "${RUNNER_USER}" -c "tar xzf ${INSTALL_DIR}/actions-runner.tar.gz -C ${INSTALL_DIR}"
   
+  log "INFO" "Installing runner dependencies via bin/installdependencies.sh..."
+  "${INSTALL_DIR}/bin/installdependencies.sh"
+
   log "INFO" "Configuring runner..."
   su - "${RUNNER_USER}" -c "cd ${INSTALL_DIR} && ./config.sh --url https://github.com/${GITHUB_REPO} --token ${GITHUB_TOKEN} --name ${RUNNER_NAME:-$(hostname)} --labels ${RUNNER_LABELS:-self-hosted} --unattended"
   
