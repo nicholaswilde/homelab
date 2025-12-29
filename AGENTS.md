@@ -26,6 +26,9 @@ The following MCP servers are configured and available for use:
     -   **pve04 Node:**
         -   Prefix: None (e.g., `get_nodes`, `get_vms`)
         -   Capabilities: Manage nodes, VMs, containers, and storage on the `pve04` node.
+-   **UniFi Network MCP:**
+    -   Prefix: `unifi_` (e.g., `unifi_tool_index`, `unifi_execute`)
+    -   Capabilities: Manage and monitor UniFi network devices, clients, and configurations. Use `unifi_tool_index` to discover available tools for finding network devices.
 
 ## Boundaries
 

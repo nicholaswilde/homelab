@@ -199,6 +199,44 @@ The Docker image for `proxmox-mcp-plus` needs to be built and loaded manually.
     task load
     ```
 
+### :material-lan: UniFi Network MCP
+
+The [UniFi Network MCP][8] allows Gemini to interact with UniFi Network controllers.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+          "unifi": {
+            "command": "docker",
+            "args": [
+              "run",
+              "-i",
+              "--rm",
+              "-e", "UNIFI_URL",
+              "-e", "UNIFI_USERNAME",
+              "-e", "UNIFI_PASSWORD",
+              "-e", "UNIFI_SITE",
+              "-e", "UNIFI_IGNORE_SSL",
+              "ghcr.io/sirkirby/unifi-network-mcp"
+            ],
+            "env": {
+              "UNIFI_URL": "https://unifi.l.nicholaswilde.io",
+              "UNIFI_USERNAME": "admin",
+              "UNIFI_PASSWORD": "password",
+              "UNIFI_SITE": "154bj8wf",
+              "UNIFI_IGNORE_SSL": "false"
+            }
+          }
+        }
+    }
+    ```
+
+!!! tip
+
+    To find the `UNIFI_SITE` value, check the URL in the UniFi GUI. For example, in `https://unifi.l.nicholaswilde.io/network/154bj8wf/dashboard`, the site ID is `154bj8wf`.
+
 ## :art: Theme
 
 The [Catppuccin theme][6] can be used to customize the appearance of the Gemini CLI.
@@ -246,6 +284,14 @@ Once installed and authenticated, start interacting with Gemini from the shell.
     echo "Explain the content of this file docs/README.md" | gemini -p
     ```
 
+!!! example "UniFi Network MCP"
+
+    ```text
+    > List all connected clients on my network.
+    > Show me the status of my UniFi devices.
+    > What are my current firewall rules?
+    ```
+
 ## List Models
 
 !!! note
@@ -264,6 +310,7 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 - <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 - <https://github.com/catppuccin/gemini-cli>
 - <https://github.com/RekklesNA/ProxmoxMCP-Plus>
+- <https://github.com/sirkirby/unifi-network-mcp>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
@@ -272,3 +319,4 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 [5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 [6]: <https://github.com/catppuccin/gemini-cli>
 [7]: <https://github.com/RekklesNA/ProxmoxMCP-Plus>
+[8]: <https://github.com/sirkirby/unifi-network-mcp>
