@@ -87,6 +87,7 @@ nav:
       - .env Files: tools/env-files.md
       - eza: tools/eza.md
       - fd: tools/fd.md
+      - fzf: tools/fzf.md
       - Google Gemini CLI: tools/google-gemini-cli.md
       - Google Jules: tools/google-jules.md
       - jinja2-cli: tools/jinja2-cli.md

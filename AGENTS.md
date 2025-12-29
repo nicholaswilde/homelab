@@ -40,6 +40,7 @@ The following MCP servers are configured and available for use:
 - Be concise and clear in all generated content.
 - Follow standard practices for the respective file types.
 - Prioritize security and efficiency in code.
+- **Git History Management:** You can rewrite generic commit messages (e.g., "update") to more descriptive ones following the conventional commit format. Use tools like `git filter-branch` or `git rebase` for this purpose. Always warn the user about destructive history changes and the need for a force push.
 
 ## Project Structure and Guidelines
 
