@@ -52,7 +52,7 @@ readonly APPS=(
   # "getsops/sops:bin:sops:sops-v.*\.linux\.armv6$:none" # Needs build from source
   "sharkdp/fd:tar:fd:arm-unknown-linux-gnueabihf\.tar\.gz$:strip"
   "chmln/sd:tar:sd:arm-unknown-linux-gnueabihf\.tar\.gz$:strip"
-  "aristocratos/btop:tar:btop:arm-linux-musleabi\.tbz$:path"
+  "aristocratos/btop:tar:btop:arm-unknown-linux-musleabi\.tbz$:path"
   "go-task/task:tar:task:linux_arm\.tar\.gz$:flat"
   "muesli/duf:deb:duf:linux_armv6\.deb$:none"
   "cli/cli:deb:gh:linux_armv6\.deb$:none"
