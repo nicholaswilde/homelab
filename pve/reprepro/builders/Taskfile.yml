@@ -10,11 +10,7 @@ includes:
   sops: ./projects/sops/Taskfile.yml
   ubi: ./projects/ubi/Taskfile.yml
   fresh: ./projects/fresh/Taskfile.yml
-<<<<<<< HEAD
-=======
   yazi: ./projects/yazi/Taskfile.yml
->>>>>>> 3faf7a4cdccfbb717557099145a721404801d20f
-
 tasks:
   default:
     desc: List available tasks
@@ -32,10 +28,7 @@ tasks:
       - task: sops:build
       - task: ubi:build
       - task: fresh:build
-<<<<<<< HEAD
-=======
       - task: yazi:build
->>>>>>> 3faf7a4cdccfbb717557099145a721404801d20f
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

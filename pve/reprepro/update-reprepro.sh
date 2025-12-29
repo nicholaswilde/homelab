@@ -381,7 +381,11 @@ function update_app_from_source() {
   local app_update_failed="false"
   for tarball in ${linux_tarballs}; do
     local github_arch
-    github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
+    if [[ "${APP_NAME}" == "btop" ]]; then
+      github_arch=$(echo "${tarball}" | grep -oP "(?<=btop-)[^-]+")
+    else
+      github_arch=$(echo "${tarball}" | grep -oP "${arch_regexp}")
+    fi
 
     local debian_arch=""
     case "${github_arch}" in
