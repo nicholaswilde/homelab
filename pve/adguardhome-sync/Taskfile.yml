@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   bootstrap:
     desc: Bootstrap {{ .SERVICE_NAME }}
@@ -24,9 +21,6 @@ tasks:
     ignore_error: true
   encrypt:
     desc: Encrypt sensitive configuration files using SOPS.
-    preconditions:
-      - test -f .env
-      - test -f adguardhome-sync.yaml
     cmds:
       - sops -e .env > .env.enc
       - sops -e adguardhome-sync.yaml > adguardhome-sync.yaml.enc
@@ -42,13 +36,13 @@ tasks:
   install:
     desc: Install {{ .SERVICE_NAME }}
     cmds:
-      - "curl {{ .INSTALLER_URL }} | bash"
+      - curl {{ .INSTALLER_URL }} | bash
   install-service:
     desc: Install the application's systemd service.
     preconditions:
       - test -f ./adguardhome-sync.service
     cmds:
-      - "sudo cp ./adguardhome-sync.service /etc/systemd/system/"
+      - sudo cp ./adguardhome-sync.service /etc/systemd/system/
       - task: enable
   reload:
     desc: Reload the application's systemd service.
@@ -84,9 +78,12 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
-      - sh: diff -q adguardhome-sync.yaml <(sops -d --input-type yaml --output-type yaml adguardhome-sync.yaml.enc)
-        msg: "The encrypted adguardhome-sync.yaml file and unencrypted adguardhome-sync.yaml file do not match! Please re-encrypt your changes."
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
+      - sh: diff -q adguardhome-sync.yaml <(sops -d --input-type yaml --output-type
+          yaml adguardhome-sync.yaml.enc)
+        msg: The encrypted adguardhome-sync.yaml file and unencrypted adguardhome-sync.yaml
+          file do not match! Please re-encrypt your changes.
   default:
     cmds:
       - task -l

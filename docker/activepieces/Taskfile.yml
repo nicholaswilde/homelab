@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   backup:
     desc: Backup the application's volume data.
@@ -19,6 +16,8 @@ tasks:
     desc: Encrypt sensitive configuration files using SOPS.
     preconditions:
       - test -f .env
+      - sh: "! diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc 2>/dev/null)"
+        msg: "The .env file has not changed. Skipping encryption."
     cmds:
       - sops -e .env > .env.enc
   export:
@@ -33,9 +32,11 @@ tasks:
     cmds:
       - cp .env.tmpl .env
       - sed -i 's|AP_API_KEY=.*|AP_API_KEY='"$(openssl rand -hex 64)"'|g' .env
-      - sed -i 's|AP_POSTGRES_PASSWORD=.*|AP_POSTGRES_PASSWORD='"$(openssl rand -hex 32)"'|g' .env
+      - sed -i 's|AP_POSTGRES_PASSWORD=.*|AP_POSTGRES_PASSWORD='"$(openssl rand -hex
+        32)"'|g' .env
       - sed -i 's|AP_JWT_SECRET=.*|AP_JWT_SECRET='"$(openssl rand -hex 32)"'|g' .env
-      - sed -i 's|ENCRYPTION_KEY=.*|ENCRYPTION_KEY='"$(openssl rand -hex 16)"'|g' .env
+      - sed -i 's|ENCRYPTION_KEY=.*|ENCRYPTION_KEY='"$(openssl rand -hex 16)"'|g'
+        .env
   pull:
     desc: Pull Docker images for the application.
     cmds:
@@ -76,7 +77,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   watch:
     desc: Watch the application's Docker container logs.
     cmds:

@@ -1,20 +1,24 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   create-nfs-override:
-    desc: "Creates or updates the systemd override file for nfs-server.service"
+    desc: Creates or updates the systemd override file for nfs-server.service
     cmds:
-      - |
-        sudo bash -c '
+      - 'sudo bash -c ''
+
         mkdir -p /etc/systemd/system/nfs-server.service.d/
+
         cat <<EOF > /etc/systemd/system/nfs-server.service.d/override.conf
+
         [Service]
+
         OnFailure={{ .TASKFILE_DIR }}/notify-nfs-failure.sh
+
         EOF
+
+        ''
+
         '
       - sudo systemctl daemon-reload
   id-nfs-service:
@@ -48,8 +52,6 @@ tasks:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
   encrypt:
     desc: Encrypt .env using SOPS
-    preconditions:
-      - test -f .env
     cmds:
       - sops -e .env > .env.enc
   update:
@@ -73,7 +75,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   stop:
     desc: Stop service
     cmds:

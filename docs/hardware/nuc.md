@@ -12,7 +12,7 @@ I'm in the process of converting my [Intel NUC][2] to be used as another `amd64`
 
 !!! example ""
 
-    OS: [Proxmox 8][1]
+    OS: [Proxmox 9][1]
 
     Manufacturer: `Intel`
 
@@ -25,6 +25,28 @@ I'm in the process of converting my [Intel NUC][2] to be used as another `amd64`
     RAM: `32GB`
 
     Drive: `WIP`
+
+    Hostname: `nuc-01`
+
+    IP: `192.168.2.143`
+
+    MAC: `1c:69:7a:a6:86:d5`
+
+## :zap: Speed Test
+
+| Rank | Send Speed | Receive Speed | Verdict |
+| :--- | :--- | :--- | :--- |
+| #1 | 936 Mbps | 936 Mbps | The King. Flawless in both directions. |
+
+### :pencil: Usage
+
+To start the `iperf3` server:
+
+!!! code "Server"
+
+    ```shell
+    iperf3 -s
+    ```
 
 ## :link: References
 

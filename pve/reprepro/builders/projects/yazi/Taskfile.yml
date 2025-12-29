@@ -1,0 +1,142 @@
+version: '3'
+
+vars:
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  YAZI_PROJECT_NAME: yazi
+  YAZI_REPO_URL: https://github.com/sxyazi/yazi.git
+  YAZI_VERSION_TAG: v25.5.31
+  YAZI_CACHE_DIR: "{{.ROOT}}/.cache"
+  YAZI_DIST_DIR: "{{.ROOT}}/dist"
+  YAZI_BUILD_DIR: "{{.ROOT}}/build"
+
+tasks:
+  check:
+    desc: Verify the metadata of .deb files for this app only
+    cmds:
+      - cmd: |
+          echo "Checking artifacts for {{.YAZI_PROJECT_NAME}} in {{.YAZI_DIST_DIR}}..."
+          echo "---------------------------------------------------"
+          files=$(ls ../../dist/{{.YAZI_PROJECT_NAME}}*.deb 2>/dev/null)
+
+          if [ -z "$files" ]; then
+            echo "⚠️  No .deb files found for {{.YAZI_PROJECT_NAME}}."
+            exit 0
+          fi
+
+          for f in $files; do
+            echo "📦 $(basename $f)"
+            dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
+            echo "---------------------------------------------------"
+          done
+    silent: true
+  build:
+    desc: Build Yazi (Rust)
+    cmds:
+      - echo "Building {{.YAZI_PROJECT_NAME}}..."
+      # Use absolute paths for cleanup
+      - rm -rf {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}} {{.YAZI_CACHE_DIR}}
+      - mkdir -p {{.YAZI_CACHE_DIR}} {{.YAZI_DIST_DIR}} {{.YAZI_BUILD_DIR}}/stage
+      
+      - git clone --depth 1 --branch {{.YAZI_VERSION_TAG}} {{.YAZI_REPO_URL}} {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}
+      
+      # Compile Targets
+      - task: process-target
+        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64", SUFFIX: "amd64"}
+      - task: process-target
+        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64", SUFFIX: "arm64"}
+      - task: process-target
+        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf", SUFFIX: "armhf"}
+      - task: process-target
+        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armhf", SUFFIX: "armhf+armv6"}
+
+      - echo "✅ Yazi build complete."
+
+  # --- Internal Helpers ---
+  
+  process-target:
+    internal: true
+    cmds:
+      - task: compile
+        vars: {RUST_TARGET: "{{.RUST}}", GO_FOLDER: "linux_{{.GO}}"}
+      - task: package
+        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}", SUFFIX: "{{.SUFFIX}}"}
+
+  compile:
+    internal: true
+    # Run this task inside the source code folder
+    dir: "{{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}"
+    cmds:
+      - echo "Building for {{.RUST_TARGET}}..."
+      - cross build --release --target {{.RUST_TARGET}}
+      - mkdir -p {{.YAZI_CACHE_DIR}}/{{.GO_FOLDER}}
+      # Note: Binaries are usually in target/release or target/<target>/release
+      - cp target/{{.RUST_TARGET}}/release/{{.YAZI_PROJECT_NAME}} {{.YAZI_CACHE_DIR}}/{{.GO_FOLDER}}/
+      # Also copy 'ya' binary if it exists, but for now just main binary or check what yazi produces.
+      # Yazi produces 'yazi' and 'ya' (scheduler/msg packer). 
+      # For simplicity in this template, we just copy 'yazi'. 
+      # If 'ya' is needed, we'd need to copy it too. 
+      # I will stick to just 'yazi' for now to match the pattern, or check if I should add 'ya'.
+      # Let's try to copy 'ya' as well if it exists, but 'cp' might fail if I try to copy both to a single filename destination.
+      # The previous 'fd' template copies to a folder? No:
+      # cp target/.../fd {{.FD_CACHE_DIR}}/{{.GO_FOLDER}}/
+      # It copies to the folder. So I can copy multiple files.
+      - cp target/{{.RUST_TARGET}}/release/ya {{.YAZI_CACHE_DIR}}/{{.GO_FOLDER}}/ || true
+
+  package:
+    internal: true
+    # Run this task inside the staging folder (keeps your project folder clean)
+    dir: "{{.YAZI_BUILD_DIR}}/stage"
+    cmds:
+      - echo "Packaging {{.ARCH}}..."
+      
+      # Copy binaries to current dir
+      - cp {{.YAZI_CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.YAZI_PROJECT_NAME}} ./yazi
+      - cp {{.YAZI_CACHE_DIR}}/linux_{{.GO_ARCH}}/ya ./ya || true
+
+      - cmd: |
+          # Generate config in the temp folder
+          echo 'name: "{{.YAZI_PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.YAZI_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
+          echo 'description: "Blazing fast terminal file manager written in Rust, based on async I/O."' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.YAZI_REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "MIT"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          echo '  - src: "./yazi"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/yazi"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+          
+          # Add ya if it exists
+          if [ -f "./ya" ]; then
+            echo '  - src: "./ya"' >> nfpm.yaml
+            echo '    dst: "/usr/bin/ya"' >> nfpm.yaml
+            echo '    file_info:' >> nfpm.yaml
+            echo '      mode: 0755' >> nfpm.yaml
+          fi
+
+          # Run NFPM
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.YAZI_DIST_DIR}}/{{.YAZI_PROJECT_NAME}}_{{.YAZI_VERSION_TAG}}_{{.SUFFIX}}.deb
+          
+          # Cleanup
+          rm nfpm.yaml yazi
+          rm ya 2>/dev/null || true
+
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  latest:
+    desc: Check the latest version available on GitHub
+    cmds:
+      - cmd: |
+          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.YAZI_REPO_URL}} | tail -n1 | sed 's/.*\///')
+          echo "Current Configured Version: {{.YAZI_VERSION_TAG}}"
+          echo "Latest Upstream Version:    $LATEST"
+        silent: true

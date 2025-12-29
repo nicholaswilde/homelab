@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   export:
     silent: true
@@ -38,10 +35,6 @@ tasks:
       - sops -d --input-type dotenv --output-type dotenv aria2.daemon.enc > aria2.daemon
   encrypt:
     desc: Encrypt .env using SOPS
-    preconditions:
-      - test -f .env
-      - test -f rpc.secret
-      - test -f aria2.daemon
     cmds:
       - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
       - sops -e --input-type yaml --output-type yaml rpc.secret > rpc.secret.enc
@@ -68,11 +61,15 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted .env file and unencrypted .env file do not match! Please re-encrypt your changes."
+        msg: The encrypted .env file and unencrypted .env file do not match! Please
+          re-encrypt your changes.
       - sh: diff -q rpc.secret <(sops -d --input-type yaml --output-type yaml rpc.secret.enc)
-        msg: "The encrypted rpc.secret file and unencrypted rpc.secret file do not match! Please re-encrypt your changes."
-      - sh: diff -q aria2.daemon <(sops -d --input-type dotenv --output-type dotenv aria2.daemon.enc)
-        msg: "The encrypted aria2.daemon file and unencrypted aria2.daemon file do not match! Please re-encrypt your changes."
+        msg: The encrypted rpc.secret file and unencrypted rpc.secret file do not
+          match! Please re-encrypt your changes.
+      - sh: diff -q aria2.daemon <(sops -d --input-type dotenv --output-type dotenv
+          aria2.daemon.enc)
+        msg: The encrypted aria2.daemon file and unencrypted aria2.daemon file do
+          not match! Please re-encrypt your changes.
   stop:
     desc: Stop service
     cmds:

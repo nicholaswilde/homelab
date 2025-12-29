@@ -1,106 +1,183 @@
 #!/usr/bin/env bash
-
 ################################################################################
 #
-# update
+# update.sh
 # ----------------
-# Update qbittorrent
+# Update qBittorrent
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 07 May 2025
-# @version 0.1.0
+# @date 28 Dec 2025
+# @version 0.2.0
 #
 ################################################################################
 
-# set -e
-# set -o pipefail
+# Options
+set -e
+set -o pipefail
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
-blue=$(tput setaf 4)
-default=$(tput setaf 9)
-white=$(tput setaf 7)
-yellow=$(tput setaf 3)
+# Catppuccin Mocha Colors
+BLUE="\033[38;2;137;180;250m"
+readonly BLUE
+RED="\033[38;2;243;139;168m"
+readonly RED
+YELLOW="\033[38;2;249;226;175m"
+readonly YELLOW
+PURPLE="\033[38;2;203;166;247m"
+readonly PURPLE
+RESET="\033[0m"
+readonly RESET
+DEBUG="false"
 
-readonly bold
-readonly normal
-readonly red
-readonly blue
-readonly default
-readonly white
-readonly yellow
+# Logging function
+function log() {
+  local type="$1"
+  local message="$2"
+  local color="$RESET"
 
-function print_text(){
-  echo "${blue}==> ${white}${bold}${1}${normal}"
+  if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
+    return 0
+  fi
+
+  case "$type" in
+    INFO)
+      color="$BLUE";;
+    WARN)
+      color="$YELLOW";;
+    ERRO)
+      color="$RED";;
+    DEBU)
+      color="$PURPLE";;
+    *)
+      type="LOGS";;
+  esac
+
+  local timestamp
+  timestamp=$(date +'%Y-%m-%d %H:%M:%S')
+
+  if [[ -t 0 ]]; then
+    echo -e "${color}${type}${RESET}[${timestamp}] ${message}"
+  else
+    while IFS= read -r line; do
+      echo -e "${color}${type}${RESET}[${timestamp}] ${line}"
+    done
+  fi
+
+  # LogWard Integration
+  if [[ -n "${LOGWARD_API_KEY}" ]]; then
+    local LOGWARD_API_URL="${LOGWARD_API_URL:-https://logward.l.nicholaswilde.io/api/v1/ingest/single}"
+    local LOGWARD_SERVICE_NAME="${LOGWARD_SERVICE_NAME:-$(basename "$0")}"
+    local json_payload
+    json_payload=$(cat <<EOF
+{
+  "service": "${LOGWARD_SERVICE_NAME}",
+  "level": "${type}",
+  "message": "${message}",
+  "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+}
+EOF
+)
+    curl -s -X POST "${LOGWARD_API_URL}" \
+      -H "X-API-Key: ${LOGWARD_API_KEY}" \
+      -H "Content-Type: application/json" \
+      -d "${json_payload}" >/dev/null 2>&1 &
+  fi
 }
 
-function show_warning(){
-  printf "${yellow}%s\n" "${1}${normal}"
-}
-
-function raise_error(){
-  printf "${red}%s\n" "${1}${normal}"
-  exit 1
-}
-
-# Check if variable is set
-# Returns false if empty
-function is_set(){
-  [ -n "${1}" ]
-}
-
-function command_exists() {
+# Checks if a command exists.
+function commandExists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-function check_url(){
-  local url="${1}"
-  local status=$(curl -sSL -o /dev/null -w "${http_code}" "${url}")
-  if [[ "${status}" -ge 200 && "${status}" -lt 400 ]]; then
-    return 0
-  else
-    return 1
-  fi
+function check_dependencies() {
+  if ! commandExists curl || ! commandExists grep || ! commandExists awk ; then
+    log "ERRO" "Required dependencies (curl, grep, awk) are not installed." >&2
+    exit 1
+  fi  
 }
 
-function check_curl(){
-  if ! command_exists curl; then
-    raise_error "curl is not installed"
-  fi
+function get_arch() {
+  local arch
+  arch=$(uname -m)
+  case "${arch}" in
+    x86_64)
+      echo "x86_64";;
+    aarch64)
+      echo "aarch64";;
+    armv7l)
+      echo "armv7";;
+    armhf)
+      echo "armhf";;
+    *)
+      log "ERRO" "Unsupported architecture: ${arch}"
+      exit 1;; 
+  esac
 }
 
 function update_script() {
-  APP=qbittorrent-nox
-  if ! command_exists /opt/qbittorrent/qbittorrent-nox; then
-    raise_error "No qbittorrent-nox Installation Found!"
+  local APP="qbittorrent-nox"
+  local BIN_PATH="${INSTALL_DIR}/${APP}"
+  local VERSION_FILE="${INSTALL_DIR}/${APP}_version.txt"
+  
+  if [[ ! -x "${BIN_PATH}" ]]; then
+    log "ERRO" "No executable qbittorrent-nox binary found at ${BIN_PATH}!"
+    exit 1
   fi
-  FULLRELEASE=$(curl -fsSL https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-  RELEASE=$(echo $FULLRELEASE | cut -c 9-13)
-  if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
-    print_text "Stopping Service"
-    systemctl stop qbittorrent-nox
-    print_text "Stopped Service"
 
-    print_text "Updating ${APP} to v${RELEASE}"
-    rm -f /opt/qbittorrent/qbittorrent-nox
-    curl -fsSL "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${FULLRELEASE}/x86_64-qbittorrent-nox" -o /opt/qbittorrent/qbittorrent-nox
-    chmod +x /opt/qbittorrent/qbittorrent-nox
-    echo "${RELEASE}" >/opt/${APP}_version.txt
-    print_text "Updated $APP to v${RELEASE}"
+  log "INFO" "Checking for updates..."
+  
+  local LATEST_RELEASE
+  LATEST_RELEASE=$(curl -fsSL https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest | grep "tag_name" | awk -F'"' '{print $4}')
+  
+  # The tag name is usually something like v4.6.3_4.0.3 or similar
+  # We extract the release version for comparison
+  local RELEASE="${LATEST_RELEASE}"
+  
+  local CURRENT_VERSION=""
+  if [[ -f "${VERSION_FILE}" ]]; then
+    CURRENT_VERSION=$(cat "${VERSION_FILE}")
+  fi
 
-    print_text "Starting Service"
-    systemctl start qbittorrent-nox
-    print_text "Started Service"
-    print_text "Updated Successfully"
+  if [[ "${RELEASE}" != "${CURRENT_VERSION}" ]]; then
+    log "INFO" "Updating ${APP} from ${CURRENT_VERSION:-unknown} to ${RELEASE}"
+    
+    local ARCH
+    ARCH=$(get_arch)
+    local DOWNLOAD_URL="https://github.com/userdocs/qbittorrent-nox-static/releases/download/${LATEST_RELEASE}/${ARCH}-qbittorrent-nox"
+    
+    log "INFO" "Stopping ${SERVICE_NAME}..."
+    systemctl stop "${SERVICE_NAME}"
+    
+    log "INFO" "Downloading ${DOWNLOAD_URL}..."
+    if ! curl -fsSL "${DOWNLOAD_URL}" -o "${BIN_PATH}"; then
+      log "ERRO" "Failed to download update!"
+      systemctl start "${SERVICE_NAME}"
+      exit 1
+    fi
+    
+    chmod +x "${BIN_PATH}"
+    echo "${RELEASE}" > "${VERSION_FILE}"
+    
+    log "INFO" "Starting ${SERVICE_NAME}..."
+    systemctl start "${SERVICE_NAME}"
+    
+    log "INFO" "Successfully updated to ${RELEASE}"
   else
-    print_text "No update required. ${APP} is already at v${RELEASE}"
+    log "INFO" "No update required. ${APP} is already at ${RELEASE}"
   fi
-  exit 0
 }
 
-function main(){
-  check_curl
+function main() {
+  # Load environment variables if .env exists
+  if [[ -f ".env" ]]; then
+    # shellcheck source=/dev/null
+    source .env
+  fi
+
+  # Set defaults if not provided in .env
+  INSTALL_DIR="${INSTALL_DIR:-/opt/qbittorrent}"
+  SERVICE_NAME="${SERVICE_NAME:-qbittorrent-nox}"
+
+  check_dependencies
   update_script
 }
 

@@ -13,6 +13,12 @@ DietPi is selected for this device due to its lightweight footprint, which is id
 
     OS: [DietPi](../os/dietpi.md)
 
+    Hostname: `pi00`
+
+    IP: `192.168.2.190`
+
+    MAC: `b8:27:eb:1c:98:df`
+
 ## :link: References
 
 [2]: <https://www.raspberrypi.com/software/>

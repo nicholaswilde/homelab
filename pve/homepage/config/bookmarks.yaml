@@ -3,9 +3,12 @@
     - Homelab:
         - icon: mdi-home
           href: https://nicholaswilde.io/homelab
-    - Homelab Pull:
-        - icon: mdi-arm-flex
-          href: https://nicholaswilde.io/homelab-pull/
+    - Recipes:
+        - icon: mdi-rice
+          href: https://nicholaswilde.io/recipes
+    - Home Assistant Site:
+        - icon: si-homeassistant
+          href: https://nicholaswilde.io/home-assistant
     - Repositories:
         - icon: si-github
           href: https://github.com/nicholaswilde?tab=repositories
@@ -34,9 +37,6 @@
     - Self Hosted Icons:
         - icon: sh-selfh-st-light.png
           href: https://selfh.st/icons/
-    - Selfh.st Icons Source:
-        - icon: si-github
-          href: https://github.com/selfhst/icons/tree/main/png
     - Zensical:
         - icon: mdi-material-ui
           href: https://zensical.org/docs/authoring/icons-emojis/

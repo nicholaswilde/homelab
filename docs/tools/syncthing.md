@@ -16,7 +16,11 @@ This is preferred over Ansible so that I can more easily update them by updating
     (
       mkdir -p /etc/apt/keyrings  && \
       curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg  && \
-      echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | tee /etc/apt/sources.list.d/syncthing.list && \
+      echo "Types: deb
+    URIs: https://apt.syncthing.net/
+    Suites: syncthing
+    Components: stable-v2
+    Signed-By: /etc/apt/keyrings/syncthing-archive-keyring.gpg" | tee /etc/apt/sources.list.d/syncthing.sources > /dev/null && \
       apt update && \
       apt install syncthing -y
     )
@@ -28,7 +32,11 @@ This is preferred over Ansible so that I can more easily update them by updating
     (
       sudo mkdir -p /etc/apt/keyrings && \
       sudo curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg && \
-      echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | sudo tee /etc/apt/sources.list.d/syncthing.list && \
+      echo "Types: deb
+    URIs: https://apt.syncthing.net/
+    Suites: syncthing
+    Components: stable-v2
+    Signed-By: /etc/apt/keyrings/syncthing-archive-keyring.gpg" | sudo tee /etc/apt/sources.list.d/syncthing.sources > /dev/null && \
       sudo apt update && \
       sudo apt install syncthing
     )

@@ -1,9 +1,6 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   export:
     silent: true
@@ -13,7 +10,7 @@ tasks:
   status:
     desc: Check the status of the application's Docker containers.
     cmds:
-      - docker compose ps
+      - docker container ps
   watch:
     desc: Watch the application's Docker container logs.
     cmds:
@@ -22,10 +19,6 @@ tasks:
     desc: Pull Docker images for the application.
     cmds:
       - docker compose pull
-  status:
-    desc: Check the status of the application's Docker containers.
-    cmds:
-      - docker container ps
   init:
     desc: Initialize the application's environment and configuration files.
     cmds:
@@ -66,7 +59,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   stop:
     desc: Stop the application's Docker containers.
     cmds:

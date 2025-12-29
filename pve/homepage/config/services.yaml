@@ -74,9 +74,6 @@
     - Immich:
         icon: si-immich
         href: https://photos.l.nicholaswilde.io
-    - Paperless:
-        icon: si-paperlessngx
-        href: https://paperless.l.nicholaswilde.io
     - Pinchflat:
         icon: sh-pinchflat.webp
         href: https://pinchflat.l.nicholaswilde.io/
@@ -116,6 +113,9 @@
     - WatchYourLAN:
         icon: sh-watchyourlan.png
         href: https://watch.l.nicholaswilde.io/
+    - LogWard:
+        icon: https://raw.githubusercontent.com/logward-dev/logward/refs/heads/main/packages/frontend/static/android-chrome-192x192.png
+        href: https://logward.l.nicholaswilde.io/dashboard
 
 - Files & Downloads:
     - Aria2:
@@ -146,6 +146,3 @@
     - IT-TOOLS:
         icon: https://github.com/CorentinTh/it-tools/raw/refs/heads/main/public/safari-pinned-tab.svg
         href: https://it-tools.l.nicholaswilde.io    
-    - VS Code:
-        icon: mdi-microsoft-visual-studio-code
-        href: https://code.l.nicholaswilde.io/

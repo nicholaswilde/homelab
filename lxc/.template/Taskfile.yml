@@ -1,16 +1,13 @@
----
 version: '3'
-
 dotenv:
   - .env
-
 tasks:
   create-template:
     desc: Create template from existing .env file
     preconditions:
       - test -f .env
     cmds:
-      - "sed '/^ *#/! s/=.*/=/' .env > .env.tmpl"
+      - sed '/^ *#/! s/=.*/=/' .env > .env.tmpl
   decrypt:
     desc: Decrypt sensitive configuration files using SOPS.
     preconditions:
@@ -25,6 +22,8 @@ tasks:
     desc: Encrypt sensitive configuration files using SOPS.
     preconditions:
       - test -f .env
+      - sh: "! diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc 2>/dev/null)"
+        msg: "The .env file has not changed. Skipping encryption."
     cmds:
       - sops -e .env > .env.enc
   export:
@@ -77,7 +76,8 @@ tasks:
       - echo "Secrets are in sync. Proceeding..."
     preconditions:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
-        msg: "The encrypted file and unencrypted file do not match! Please re-encrypt your changes."
+        msg: The encrypted file and unencrypted file do not match! Please re-encrypt
+          your changes.
   default:
     cmds:
       - task -l
