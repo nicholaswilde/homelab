@@ -17,7 +17,7 @@ http:
     netbootxyz:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.222:3000"
+          - url: "http://192.168.2.222:3000"
         passHostHeader: true
 #endregion
   middlewares:
