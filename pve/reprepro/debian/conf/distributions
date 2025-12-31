@@ -1,7 +1,7 @@
 Origin: Debian  
 Label: Bookworm apt repository  
 Codename: bookworm
-Architectures: i386 amd64 arm64 armhf armel
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Debian stable - Bookworm  
 DebOverride: override.bookworm
@@ -11,7 +11,7 @@ SignWith: 089C9FAF
 Origin: Debian  
 Label: Bullseye apt repository
 Codename: bullseye
-Architectures: i386 amd64 arm64 armhf armel
+Architectures: amd64 arm64 armhf armel
 Components: main  
 Description: Apt repository for Debian stable - Bullseye  
 DebOverride: override.bullseye
@@ -21,7 +21,7 @@ SignWith: 089C9FAF
 Origin: Debian
 Label: Trixie apt repository
 Codename: trixie
-Architectures: i386 amd64 arm64 armhf armel
+Architectures: amd64 arm64 armhf armel
 Components: main
 Description: Apt repository for Debian stable - Trixie
 DebOverride: override.trixie

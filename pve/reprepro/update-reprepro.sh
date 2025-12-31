@@ -389,11 +389,10 @@ function update_app_from_source() {
 
     local debian_arch=""
     case "${github_arch}" in
-      "amd64"|"x86_64") debian_arch="amd64";;
+      "amd64"|"x86_64"|"64") debian_arch="amd64";;
       "arm64"|"aarch64") debian_arch="arm64";;
       "armv7"|"armhf"|"arm") debian_arch="armhf";;
       "armv6"|"armv6l") debian_arch="armhf";;
-      "386") debian_arch="i386";;
       *)
         log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch//$'\n'/ }. Skipping."
         continue;;
@@ -527,7 +526,6 @@ function update_tea() {
       "arm64") debian_arch="arm64";;
       "arm-7") debian_arch="armhf";;
       "armv6"|"armel") debian_arch="armel";; # Added for armv6/armel architecture
-      "386") debian_arch="i386";;
       *)
         log "WARN" "Unsupported architecture for ${APP_NAME}: ${gitea_arch}. Skipping."
         continue;;

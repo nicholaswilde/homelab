@@ -60,6 +60,7 @@ readonly APPS=(
   "eza-community/eza:tar:eza:arm-unknown-linux-gnueabihf\.tar\.gz$:strip"
   "charmbracelet/glow:tar:glow:Linux_arm\.tar\.gz$:strip"
   "junegunn/fzf:tar:fzf:linux_armv6\.tar\.gz$:flat"
+  "zyedidia/micro:tar:micro:linux-arm\.tar\.gz$:strip"
 )
 
 # Logging function

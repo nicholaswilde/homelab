@@ -217,9 +217,7 @@ function extract_binary() {
       tar -xf "${tarball_path}" -C "${extract_dest}" "${bin_name}"  2>&1 | log "DEBU" || { log "ERRO" "Failed to extract ${tarball_path}"; return 1; }
       ;;
     "file_path")
-      local full_bin_path="${bin_name//\
-ului{ARCH
-/um{arch_github}}"
+      local full_bin_path="${bin_name//\$\{ARCH\}/${arch_github}}"
       local dir_path
       dir_path=$(dirname "${full_bin_path}")
       local strip_components=0
@@ -381,11 +379,10 @@ function update_app_from_source() {
 
     local debian_arch=""
     case "${github_arch}" in
-      "amd64"|"x86_64") debian_arch="amd64";;
+      "amd64"|"x86_64"|"64") debian_arch="amd64";;
       "arm64"|"aarch64") debian_arch="arm64";;
       "armv7"|"armhf"|"arm") debian_arch="armhf";;
       "armv6"|"armv6l") debian_arch="armhf";;
-      "386") debian_arch="i386";;
       *) 
         log "WARN" "Unsupported architecture for ${APP_NAME}: ${github_arch//$'
 '/ }. Skipping."
@@ -517,7 +514,6 @@ function update_tea() {
       "amd64") debian_arch="amd64";;
       "arm64") debian_arch="arm64";;
       "arm-7") debian_arch="armhf";;
-      "386") debian_arch="i386";;
       *) 
         log "WARN" "Unsupported architecture for ${APP_NAME}: ${gitea_arch}. Skipping."
         continue;; 
