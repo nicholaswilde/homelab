@@ -37,6 +37,7 @@ tasks:
       - task: install:proxmox
       - task: install:filesystem
       - task: install:nanobanana
+      - task: install:gitea
 
   install:unifi:
     desc: Install unifi-network-mcp
@@ -53,12 +54,12 @@ tasks:
     desc: Install ProxmoxMCP-Plus
     # deps: [deps]
     cmds:
-      - uv tool install git+https://github.com/RekklesNA/ProxmoxMCP-Plus
+      - uv tool install git+https://github.com/nicholaswilde/proxmox-mcp-plus
 
   update:proxmox:
     desc: Update ProxmoxMCP-Plus
     cmds:
-      - uv tool upgrade --force git+https://github.com/RekklesNA/ProxmoxMCP-Plus
+      - uv tool upgrade --force git+https://github.com/nicholaswilde/proxmox-mcp-plus
 
   install:filesystem:
     desc: Install filesystem MCP server
@@ -79,6 +80,16 @@ tasks:
     desc: Update nanobanana-mcp-server
     cmds:
       - uv tool upgrade --force git+https://github.com/zhongweili/nanobanana-mcp-server
+
+  install:gitea:
+    desc: Install gitea-mcp
+    cmds:
+      - ./download-gitea-mcp.sh
+
+  update:gitea:
+    desc: Update gitea-mcp
+    cmds:
+      - ./download-gitea-mcp.sh
 
 #   install:github:
 #     desc: Install github-mcp-server

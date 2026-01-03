@@ -21,9 +21,14 @@ This directory (`/root/git/nicholaswilde/homelab/tools/gemini`) contains tools a
 *   **Purpose**: Manage and monitor UniFi networks (devices, clients, etc.).
 
 ### 2. Proxmox MCP Plus
-*   **Source**: [RekklesNA/ProxmoxMCP-Plus](https://github.com/RekklesNA/ProxmoxMCP-Plus)
+*   **Source**: [nicholaswilde/proxmox-mcp-plus](https://github.com/nicholaswilde/proxmox-mcp-plus)
 *   **Type**: Docker Container.
 *   **Purpose**: Manage Proxmox VE clusters, nodes, VMs, and storage.
+
+### 3. Gitea MCP
+*   **Source**: [gitea/gitea-mcp](https://gitea.com/gitea/gitea-mcp)
+*   **Type**: Binary (downloaded via `download-gitea-mcp.sh`).
+*   **Purpose**: Interact with Gitea instances via MCP.
 
 ## Building and Running
 
@@ -42,6 +47,8 @@ This project uses `task` (Go-Task) for automation.
 | `task deps` | Installs `uv` (required for Python MCP tools). |
 | `task install:unifi` | Installs `unifi-network-mcp` using `uv`. |
 | `task update:unifi` | Updates `unifi-network-mcp` to the latest version. |
+| `task install:gitea` | Installs `gitea-mcp` using the download script. |
+| `task update:gitea` | Updates `gitea-mcp` to the latest version. |
 
 ### Proxmox Commands (`proxmox-mcp-plus/`)
 

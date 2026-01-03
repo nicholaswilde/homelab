@@ -95,9 +95,9 @@ The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub r
 
 - `GITHUB_PERSONAL_ACCESS_TOKEN`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
 
-### :simple-proxmox: ProxmoxMCP-Plus
+### :simple-proxmox: proxmox-mcp-plus
 
-The [ProxmoxMCP-Plus][7] can be used to allow Gemini to interact with Proxmox VE.
+The [proxmox-mcp-plus][7] can be used to allow Gemini to interact with Proxmox VE.
 
 !!! abstract "~/tools/gemini/pve01.config.json"
 
@@ -310,7 +310,7 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 - <https://github.com/google-gemini/gemini-cli>
 - <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 - <https://github.com/catppuccin/gemini-cli>
-- <https://github.com/RekklesNA/ProxmoxMCP-Plus>
+- <https://github.com/nicholaswilde/proxmox-mcp-plus>
 - <https://github.com/sirkirby/unifi-network-mcp>
 - <https://github.com/fcannizzaro/mcp-adguard-home>
 - <https://github.com/zhongweili/nanobanana-mcp-server>
@@ -321,7 +321,7 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 [4]: <https://github.com/github/github-mcp-server>
 [5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 [6]: <https://github.com/catppuccin/gemini-cli>
-[7]: <https://github.com/RekklesNA/ProxmoxMCP-Plus>
+[7]: <https://github.com/nicholaswilde/proxmox-mcp-plus>
 [8]: <https://github.com/sirkirby/unifi-network-mcp>
 [9]: <https://github.com/fcannizzaro/mcp-adguard-home>
 [10]: <https://www.home-assistant.io/integrations/mcp/>

@@ -55,6 +55,28 @@ bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/c
     --8<-- "traefik/conf.d/changedetection.yaml"
     ```
 
+## :pencil: Usage
+
+### :rss: Monitoring Gitea Releases
+
+To monitor Gitea releases for a repository, use the RSS feed URL format:
+
+!!! code ""
+
+    ```ini
+    https://gitea.com/<owner>/<repo>/releases.rss
+    ```
+
+### :octicons-commit-24: Monitoring GitHub Commits
+
+For repositories that do not use releases, you can monitor commits using the Atom feed URL:
+
+!!! code ""
+
+    ```ini
+    https://github.com/<owner>/<repo>/commits.atom
+    ```
+
 ## :rocket: Upgrade
 
 !!! code ""
