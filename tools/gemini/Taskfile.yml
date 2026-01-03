@@ -1,0 +1,81 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  encrypt:
+    desc: Encrypt config files
+    preconditions:
+      - test -f pve01.config.json
+      - test -f pve04.config.json
+    cmds:
+      - sops -e --input-type json --output-type json pve01.config.json > pve01.config.json.enc
+      - sops -e --input-type json --output-type json pve04.config.json > pve04.config.json.enc
+
+  decrypt:
+    desc: Decrypt config files
+    preconditions:
+      - test -f pve01.config.json.enc
+      - test -f pve04.config.json.enc
+    cmds:
+      - sops -d --input-type json --output-type json pve01.config.json.enc > pve01.config.json
+      - sops -d --input-type json --output-type json pve04.config.json.enc > pve04.config.json
+
+  deps:
+    desc: Install uv
+    cmds:
+      - curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  install:
+    desc: Install all MCP servers
+    # deps: [deps]
+    cmds:
+      - task: install:unifi
+      - task: install:proxmox
+      - task: install:filesystem
+
+  install:unifi:
+    desc: Install unifi-network-mcp
+    # deps: [deps]
+    cmds:
+      - uv tool install git+https://github.com/sirkirby/unifi-network-mcp
+
+  update:unifi:
+    desc: Update unifi-network-mcp
+    cmds:
+      - uv tool upgrade --force git+https://github.com/sirkirby/unifi-network-mcp
+
+  install:proxmox:
+    desc: Install ProxmoxMCP-Plus
+    # deps: [deps]
+    cmds:
+      - uv tool install git+https://github.com/RekklesNA/ProxmoxMCP-Plus
+
+  update:proxmox:
+    desc: Update ProxmoxMCP-Plus
+    cmds:
+      - uv tool upgrade --force git+https://github.com/RekklesNA/ProxmoxMCP-Plus
+
+  install:filesystem:
+    desc: Install filesystem MCP server
+    cmds:
+      - npx -y --package=@modelcontextprotocol/server-filesystem -- true
+
+  update:filesystem:
+    desc: Update filesystem MCP server
+    cmds:
+      - npx -y --package=@modelcontextprotocol/server-filesystem@latest -- true
+
+#   install:github:
+#     desc: Install github-mcp-server
+#     # deps: [deps]
+#     cmds:
+#       - uv tool install git+https://github.com/github/github-mcp-server
+# 
+#   update:github:
+#     desc: Update github-mcp-server
+#     cmds:
+#       - uv tool upgrade --force git+https://github.com/github/github-mcp-server

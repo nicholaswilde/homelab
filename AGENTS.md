@@ -76,3 +76,6 @@ The following MCP servers are configured and available for use:
 -   **UniFi Network MCP:**
     -   Prefix: `unifi_` (e.g., `unifi_tool_index`, `unifi_execute`)
     -   Capabilities: Manage and monitor UniFi network devices, clients, and configurations. Use `unifi_tool_index` to discover available tools for finding network devices.
+-   **AdGuard Home MCP:**
+    -   Prefix: None (e.g., `list_rewrite_dns_records`, `add_rewrite_dns_record`)
+    -   Capabilities: Find and add AdGuard Home DNS rewrites and manage DNS filtering rules.
