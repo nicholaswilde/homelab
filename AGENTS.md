@@ -43,6 +43,7 @@ Use `task` to run common operations defined in `Taskfile.yml`.
 -   `task yamllint`: Run only Yamllint.
 -   `task linkcheck`: Check for broken links in documentation.
 -   `task generate-docs-nav`: Regenerate the MkDocs navigation.
+-   `markitdown`: Use this CLI command to convert any file to Markdown.
 
 # Boundaries
 

@@ -81,84 +81,29 @@ The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub r
 
     ```json
     {
-        "context": {
-            "fileName": "AGENTS.md"
-        },
         "mcpServers": {
-            "MCP_DOCKER": {
-                "command": "docker",
-                "args": [
-                    "mcp",
-                    "gateway",
-                    "run"
-                ]
-            },
             "github": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-e",
-                    "GITHUB_PERSONAL_ACCESS_TOKEN",
-                    "ghcr.io/github/github-mcp-server"
-                ],
+                "command": "github-mcp-server",
+                "args": ["stdio"],
                 "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_MCP_PAT"
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT"
                 }
             }
-        },
-        "security": {
-            "auth": {
-                "selectedType": "oauth-personal"
-            }
-        },
-        "general": {
-            "previewFeatures": true
         }
     }
     ```
 
-- `context.fileName`: Specifies the file to use for context, in this case `AGENTS.md`.
-- `general.previewFeatures`: Set to `true` to enable preview features such as Gemini 3.0.
-- `GITHUB_MCP_PAT`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
+- `GITHUB_PERSONAL_ACCESS_TOKEN`: This environment variable must be set with your GitHub PAT for the `github` MCP server.
 
-<<<<<<< HEAD
-## :palette: Theme
-=======
 ### :simple-proxmox: ProxmoxMCP-Plus
 
 The [ProxmoxMCP-Plus][7] can be used to allow Gemini to interact with Proxmox VE.
 
-!!! abstract "~/tools/gemini/proxmox-mcp-plus/config.json"
+!!! abstract "~/tools/gemini/pve01.config.json"
 
     ```json
-    --8<-- "gemini/proxmox-mcp-plus/config.json.tmpl"
+    --8<-- "tools/gemini/pve01.config.json.enc"
     ```
-
-!!! abstract "~/.gemini/settings.json"
-
-    ```json
-    {
-        "mcpServers": {
-            "proxmox": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-v",
-                    "/path/to/proxmox-config:/app/proxmox-config",
-                    "proxmox-mcp-plus"
-                ]
-            }
-        }
-    }
-    ```
-
-!!! tip
-
-    Multiple Proxmox nodes can be managed by specifying different configuration files for each server.
 
 !!! abstract "~/.gemini/settings.json"
 
@@ -166,26 +111,18 @@ The [ProxmoxMCP-Plus][7] can be used to allow Gemini to interact with Proxmox VE
     {
         "mcpServers": {
             "pve01": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-v",
-                    "/path/to/pve01-config:/app/proxmox-config",
-                    "proxmox-mcp-plus"
-                ]
+                "command": "${HOME}/.local/share/uv/tools/proxmox-mcp/bin/python",
+                "args": ["-m", "proxmox_mcp.server"],
+                "env": {
+                    "PROXMOX_MCP_CONFIG": "${HOME}/git/nicholaswilde/homelab/tools/gemini/pve01.config.json"
+                }
             },
-            "pve02": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-v",
-                    "/path/to/pve02-config:/app/proxmox-config",
-                    "proxmox-mcp-plus"
-                ]
+            "pve04": {
+                "command": "${HOME}/.local/share/uv/tools/proxmox-mcp/bin/python",
+                "args": ["-m", "proxmox_mcp.server"],
+                "env": {
+                    "PROXMOX_MCP_CONFIG": "${HOME}/git/nicholaswilde/homelab/tools/gemini/pve04.config.json"
+                }
             }
         }
     }
@@ -212,24 +149,15 @@ The [UniFi Network MCP][8] allows Gemini to interact with UniFi Network controll
     {
         "mcpServers": {
           "unifi": {
-            "command": "docker",
-            "args": [
-              "run",
-              "-i",
-              "--rm",
-              "-e", "UNIFI_URL",
-              "-e", "UNIFI_USERNAME",
-              "-e", "UNIFI_PASSWORD",
-              "-e", "UNIFI_SITE",
-              "-e", "UNIFI_IGNORE_SSL",
-              "ghcr.io/sirkirby/unifi-network-mcp"
-            ],
+            "command": "unifi-network-mcp",
             "env": {
-              "UNIFI_URL": "https://unifi.l.nicholaswilde.io",
+              "UNIFI_HOST": "192.168.1.148",
               "UNIFI_USERNAME": "admin",
               "UNIFI_PASSWORD": "password",
+              "UNIFI_PORT": "443",
               "UNIFI_SITE": "154bj8wf",
-              "UNIFI_IGNORE_SSL": "false"
+              "UNIFI_VERIFY_SSL": "false",
+              "UNIFI_CONTROLLER_TYPE": "auto"
             }
           }
         }
@@ -240,8 +168,75 @@ The [UniFi Network MCP][8] allows Gemini to interact with UniFi Network controll
 
     To find the `UNIFI_SITE` value, check the URL in the UniFi GUI. For example, in `https://unifi.l.nicholaswilde.io/network/154bj8wf/dashboard`, the site ID is `154bj8wf`.
 
+### :simple-adguard: AdGuard Home MCP
+
+The [AdGuard Home MCP][9] allows Gemini to interact with AdGuard Home for DNS management.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+            "adguard": {
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "@fcannizzaro/mcp-adguard-home"
+                ],
+                "env":{
+                    "ADGUARD_URL": "http://192.168.2.13",
+                    "ADGUARD_USERNAME": "admin",
+                    "ADGUARD_PASSWORD": "password"
+                }
+            }
+        }
+    }
+    ```
+
+### :simple-homeassistant: Home Assistant MCP
+
+The [Home Assistant MCP][10] allows Gemini to interact with Home Assistant for IoT device control.
+
+#### :hammer_and_wrench: Activation
+
+1.  **Add Integration:** Go to your Home Assistant instance, navigate to **Settings** -> **Devices & Services**, and click **Add Integration**. Search for "Model Context Protocol" and add it.
+2.  **Generate Token:** Click on your user profile icon in the bottom left corner of the sidebar. Scroll down to the "Long-Lived Access Tokens" section and click **Create Token**. Give it a name (e.g., "Gemini MCP") and copy the generated token.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+            "homeassistant": {
+                "httpUrl": "http://ha.l.nicholaswilde.io:8123/api/mcp",
+                "headers": {
+                    "Authorization": "Bearer YOUR_LONG_LIVED_ACCESS_TOKEN"
+                }
+            }
+        }
+    }
+    ```
+
+### :material-fruit-cherries: Nanobanana MCP
+
+The [Nanobanana MCP][11] is used to watch for repository commit updates.
+
+!!! abstract "~/.gemini/settings.json"
+
+    ```json
+    {
+        "mcpServers": {
+            "nano-banana": {
+                "command": "nanobanana-mcp-server",
+                "env": {
+                    "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY"
+                }
+            }
+        }
+    }
+    ```
+
 ## :art: Theme
->>>>>>> 3faf7a4cdccfbb717557099145a721404801d20f
 
 The [Catppuccin theme][6] can be used to customize the appearance of the Gemini CLI.
 
@@ -259,7 +254,9 @@ The [Catppuccin theme][6] can be used to customize the appearance of the Gemini 
 
     ```json
     {
-      "theme": "${HOME}/.gemini/catppuccin-mocha.json"
+      "ui": {
+        "theme": "${HOME}/.gemini/catppuccin-mocha.json"
+      }
     }
     ```
 
@@ -313,11 +310,10 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 - <https://github.com/google-gemini/gemini-cli>
 - <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 - <https://github.com/catppuccin/gemini-cli>
-<<<<<<< HEAD
-=======
 - <https://github.com/RekklesNA/ProxmoxMCP-Plus>
 - <https://github.com/sirkirby/unifi-network-mcp>
->>>>>>> 3faf7a4cdccfbb717557099145a721404801d20f
+- <https://github.com/fcannizzaro/mcp-adguard-home>
+- <https://github.com/zhongweili/nanobanana-mcp-server>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
@@ -325,8 +321,8 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 [4]: <https://github.com/github/github-mcp-server>
 [5]: <https://github.com/github/github-mcp-server/blob/6a57e75d729f9767827bc4f96e80ff9bd8538a46/docs/installation-guides/install-gemini-cli.md>
 [6]: <https://github.com/catppuccin/gemini-cli>
-<<<<<<< HEAD
-=======
 [7]: <https://github.com/RekklesNA/ProxmoxMCP-Plus>
 [8]: <https://github.com/sirkirby/unifi-network-mcp>
->>>>>>> 3faf7a4cdccfbb717557099145a721404801d20f
+[9]: <https://github.com/fcannizzaro/mcp-adguard-home>
+[10]: <https://www.home-assistant.io/integrations/mcp/>
+[11]: <https://github.com/zhongweili/nanobanana-mcp-server>
