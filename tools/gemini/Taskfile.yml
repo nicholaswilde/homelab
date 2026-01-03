@@ -36,6 +36,7 @@ tasks:
       - task: install:unifi
       - task: install:proxmox
       - task: install:filesystem
+      - task: install:nanobanana
 
   install:unifi:
     desc: Install unifi-network-mcp
@@ -68,6 +69,16 @@ tasks:
     desc: Update filesystem MCP server
     cmds:
       - npx -y --package=@modelcontextprotocol/server-filesystem@latest -- true
+
+  install:nanobanana:
+    desc: Install nanobanana-mcp-server
+    cmds:
+      - uv tool install git+https://github.com/zhongweili/nanobanana-mcp-server
+
+  update:nanobanana:
+    desc: Update nanobanana-mcp-server
+    cmds:
+      - uv tool upgrade --force git+https://github.com/zhongweili/nanobanana-mcp-server
 
 #   install:github:
 #     desc: Install github-mcp-server
