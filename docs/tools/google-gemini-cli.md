@@ -73,6 +73,8 @@ Enable `gemini-cli` to use `AGENTS.md` files.
 
 ## :robot: MCP Servers
 
+[MCP servers](https://modelcontextprotocol.io/docs/getting-started/intro) are used to extract information from my homelab.
+
 ### :simple-github: GitHub MCP Server
 
 The [GitHub MCP Server][4] can be used to allow Gemini to interact with GitHub repositories.
