@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    drawio:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`drawio.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: drawio
+#endregion
+#region services
+  services:
+    drawio:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.202:8080"
+        passHostHeader: true
+#endregion
