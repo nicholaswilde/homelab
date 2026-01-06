@@ -15,6 +15,7 @@ You are a Proxmox VE and Linux System Administrator. You are skilled in managing
 ## Boundaries
 -   **Do not** modify the host system; all changes should be within the LXC container.
 -   **Do** use privileged containers by default (`--unprivileged 0`).
+-   **Do** use 4 GB disk size as default for new containers.
 -   **Do** use the `debian-trixie` template for new containers.
 -   **Do** update the `task-list.txt` with every new application.
 -   **Do** ensure the `update.sh` script is robust and handles errors.
@@ -42,3 +43,38 @@ To create a new Proxmox LXC application, follow these steps:
       - Can model the update script from https://community-scripts.github.io/ProxmoxVE/scripts for `amd64` apps or https://pimox-scripts.com/scripts for `arm64` apps.
 
 3.  **Finalize:** Once you have updated these files, you can remove any placeholder values.
+
+## Creating a New Web Application (LXC)
+
+For web applications that require exposure via Traefik and DNS, follow these additional steps:
+
+### I. Scaffolding & Configuration
+1.  **Project Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>` and rename `.j2` files (`README.md`, `update.sh`, `.env.tmpl`).
+2.  **Environment Setup:** Create `lxc/<app_name>/.env` and update `lxc/<app_name>/Taskfile.yml` vars:
+    *   `SERVICE_NAME`
+    *   `INSTALL_DIR`
+    *   `CONFIG_DIR`
+
+### II. Implementation of Logic
+1.  **Dependency Management:** Add a `deps` task to `Taskfile.yml` to install required packages (e.g., `apt update && apt install -y package1 package2`).
+2.  **Deployment Scripting:** Update `update.sh` to:
+    *   Check for dependencies (e.g., `curl`, `jq`, `java`).
+    *   Handle version checking and downloading (e.g., WAR files, binaries).
+    *   Manage service state (stop/start/restart).
+    *   Log the local access URL (`http://<ip>:<port>`) at the end.
+
+### III. Proxmox Provisioning
+1.  **Generate Command:** Construct the `pct create` command. Use **unprivileged** (`--unprivileged 1`) containers for web apps if possible, and enable nesting (`--features nesting=1`) if required (e.g., for Docker or Systemd in some cases).
+2.  **Execute:** Run the command on the target PVE node.
+3.  **Install:** Execute the `deps` task and `update.sh` inside the container.
+
+### IV. Network & Routing
+1.  **Traefik Integration:** Create `pve/traefik/conf.d/<app_name>.yaml`.
+    *   Define the router (Rule: `Host('<app_name>.l.nicholaswilde.io')`).
+    *   Define the service (URL: `http://<container_ip>:<port>`).
+2.  **DNS Configuration:** Add an AdGuard Home DNS rewrite:
+    *   Domain: `<app_name>.l.nicholaswilde.io`
+    *   IP: `traefik.l.nicholaswilde.io` (This resolves to the Traefik Load Balancer IP).
+
+### V. Version Control
+1.  **Commit:** Commit the new application files, scripts, and Traefik configuration.
