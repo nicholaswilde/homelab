@@ -64,7 +64,10 @@ For web applications that require exposure via Traefik and DNS, follow these add
     *   Log the local access URL (`http://<ip>:<port>`) at the end.
 
 ### III. Proxmox Provisioning
-1.  **Generate Command:** Construct the `pct create` command. Use **unprivileged** (`--unprivileged 1`) containers for web apps if possible, and enable nesting (`--features nesting=1`) if required (e.g., for Docker or Systemd in some cases).
+1.  **Generate Command:** Construct the `pct create` command.
+    *   Use **privileged** (`--unprivileged 0`) containers by default.
+    *   Enable nesting (`--features nesting=1`) if required.
+    *   Use `pass` to supply the password securely: `--password $(pass show <path/to/password>)`.
 2.  **Execute:** Run the command on the target PVE node.
 3.  **Install:** Execute the `deps` task and `update.sh` inside the container.
 
