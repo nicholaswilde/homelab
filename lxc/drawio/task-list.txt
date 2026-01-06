@@ -1,0 +1,15 @@
+task: create-template  Create template from existing .env file
+task: decrypt          Decrypt sensitive configuration files using SOPS.
+task: default          List all available tasks.
+task: enable           Enable service
+task: encrypt          Encrypt sensitive configuration files using SOPS.
+task: export           Export the task list
+task: init             Init
+task: mklinks          Make client symlinks
+task: restart          Resart service
+task: start            Start service
+task: status           Service status
+task: stop             Stop service
+task: update           Update the application or its running containers.
+task: upgrade          upgrade
+task: verify-secrets   Checks if the decrypted secret matches the local file
