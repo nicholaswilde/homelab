@@ -8,8 +8,8 @@
 # latest version, and restarts the service.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 22 Dec 2025
-# @version 0.1.0
+# @date 05 Jan 2026
+# @version 0.1.1
 #
 ################################################################################
 
@@ -76,8 +76,8 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  if ! command_exists curl || ! command_exists jq; then
-    log "ERRO" "Required dependencies (curl, jq) are not installed." >&2
+  if ! command_exists curl || ! command_exists jq || ! command_exists java; then
+    log "ERRO" "Required dependencies (curl, jq, java) are not installed." >&2
     exit 1
   fi
 }
@@ -103,8 +103,6 @@ function get_latest_version() {
 }
 
 function get_current_version() {
-  # For WAR deployment, we might check a version file or the WAR timestamp/name
-  # Here we'll check if a version file exists or assume 0
   if [ -f "${INSTALL_DIR}/draw.version" ]; then
       CURRENT_VERSION=$(cat "${INSTALL_DIR}/draw.version")
   else
@@ -137,15 +135,20 @@ function main() {
 
   log "INFO" "Downloading and installing update..."
   
-  # Download WAR
-  DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/draw.war"
-  
-  # Backup old war?
-  if [ -f "${INSTALL_DIR}/draw.war" ]; then
-      mv "${INSTALL_DIR}/draw.war" "${INSTALL_DIR}/draw.war.bak"
+  # Remove default ROOT application if it exists
+  if [ -d "${INSTALL_DIR}/ROOT" ]; then
+      log "INFO" "Removing default ROOT application..."
+      rm -rf "${INSTALL_DIR}/ROOT"
+  fi
+
+  # Backup old ROOT.war?
+  if [ -f "${INSTALL_DIR}/ROOT.war" ]; then
+      mv "${INSTALL_DIR}/ROOT.war" "${INSTALL_DIR}/ROOT.war.bak"
   fi
   
-  if ! curl -L -o "${INSTALL_DIR}/draw.war" "${DOWNLOAD_URL}"; then
+  DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/draw.war"
+  
+  if ! curl -L -o "${INSTALL_DIR}/ROOT.war" "${DOWNLOAD_URL}"; then
      log "ERRO" "Failed to download ${DOWNLOAD_URL}"
      exit 1
   fi
@@ -168,6 +171,11 @@ function main() {
   else
     log "ERRO" "Failed to update ${GITHUB_REPO}. Still on ${CURRENT_VERSION}."
   fi
+
+  # Log Access URL
+  local ip_address
+  ip_address=$(hostname -I | awk '{print $1}')
+  log "INFO" "Access Draw.io at http://${ip_address}:8080/"
 
   log "INFO" "Script finished."
 }

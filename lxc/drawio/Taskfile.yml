@@ -19,6 +19,10 @@ tasks:
       - test -f .env.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+  deps:
+    desc: Install dependencies
+    cmds:
+      - apt update && apt install -y tomcat10 curl jq
   enable:
     desc: Enable the application's systemd service.
     cmds:
