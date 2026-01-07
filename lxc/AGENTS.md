@@ -49,36 +49,53 @@ To create a new Proxmox LXC application, follow these steps:
 For web applications that require exposure via Traefik and DNS, follow these additional steps:
 
 ### I. Scaffolding & Configuration
-1.  **Project Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>` and rename `.j2` files (`README.md`, `update.sh`, `.env.tmpl`).
-2.  **Environment Setup:** Create `lxc/<app_name>/.env` and update `lxc/<app_name>/Taskfile.yml` vars:
-    *   `SERVICE_NAME`
-    *   `INSTALL_DIR`
-    *   `CONFIG_DIR`
+1. **Project Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>`.
+   - Perform variable substitution using Jinja2 for all files that end in
+     `*.j2`.
+   - Rename the `.j2` files by removing the extension (e.g.,
+     `README.md.j2` -> `README.md`, `.env.tmpl.j2` -> `.env.tmpl`).
+2. **Environment Setup:** Create `lxc/<app_name>/.env` and update
+   `lxc/<app_name>/Taskfile.yml` vars:
+   - `SERVICE_NAME`
+   - `INSTALL_DIR`
+   - `CONFIG_DIR`
 
 ### II. Implementation of Logic
-1.  **Dependency Management:** Add a `deps` task to `Taskfile.yml` to install required packages (e.g., `apt update && apt install -y package1 package2`).
-2.  **Deployment Scripting:** Update `update.sh` to:
-    *   Check for dependencies (e.g., `curl`, `jq`, `java`).
-    *   Handle version checking and downloading (e.g., WAR files, binaries).
-    *   Manage service state (stop/start/restart).
-    *   Log the local access URL (`http://<ip>:<port>`) at the end.
+1. **Dependency Management:** Add a `deps` task to `Taskfile.yml` to install
+   required packages (e.g., `apt update && apt install -y package1 package2`).
+2. **Deployment Scripting:** Update `update.sh` to:
+   - Check for dependencies (e.g., `curl`, `jq`, `java`).
+   - Handle version checking and downloading (e.g., WAR files, binaries).
+   - Manage service state (stop/start/restart).
+   - Log the local access URL (`http://<ip>:<port>`) at the end.
 
 ### III. Proxmox Provisioning
-1.  **Generate Command:** Construct the `pct create` command.
-    *   Use **privileged** (`--unprivileged 0`) containers by default.
-    *   Enable nesting (`--features nesting=1`) if required.
-    *   Use the app name without any dashes or dots for the hostname (`--hostname <app_name>`).
-    *   Use `pass` to supply the password securely: `--password $(pass show <path/to/password>)`.
-2.  **Execute:** Run the command on the target PVE node.
-3.  **Install:** Execute the `deps` task and `update.sh` inside the container.
+1. **Generate Command:** Construct the `pct create` command.
+   - Use **privileged** (`--unprivileged 0`) containers by default.
+   - Enable nesting (`--features nesting=1`) if required.
+   - Use the app name without any dashes or dots for the hostname
+     (`--hostname <app_name>`).
+   - Use `pass` to supply the password securely:
+     `--password $(pass show <path/to/password>)`.
+2. **Execute:** Run the command on the target PVE node.
+3. **Install:** Execute the `deps` task and `update.sh` inside the container.
 
 ### IV. Network & Routing
-1.  **Traefik Integration:** Create `pve/traefik/conf.d/<app_name>.yaml`.
-    *   Define the router (Rule: `Host('<app_name>.l.nicholaswilde.io')`).
-    *   Define the service (URL: `http://<container_ip>:<port>`).
-2.  **DNS Configuration:** Add an AdGuard Home DNS rewrite:
-    *   Domain: `<app_name>.l.nicholaswilde.io`
-    *   IP: `traefik.l.nicholaswilde.io` (This resolves to the Traefik Load Balancer IP).
+1. **Traefik Integration:** Create `pve/traefik/conf.d/<app_name>.yaml`.
+   - Define the router (Rule: `Host('<app_name>.l.nicholaswilde.io')`).
+   - Define the service (URL: `http://<container_ip>:<port>`).
+2. **DNS Configuration:** Add an AdGuard Home DNS rewrite:
+   - Domain: `<app_name>.l.nicholaswilde.io`
+   - IP: `traefik.l.nicholaswilde.io` (This resolves to the Traefik Load
+     Balancer IP).
 
-### V. Version Control
-1.  **Commit:** Commit the new application files, scripts, and Traefik configuration.
+### V. Dashboard Integration
+1. **Homepage:** Update `pve/homepage/config/services.yaml` to add a shortcut
+   to the new web application.
+   - Add the application under the appropriate category.
+   - Use a suitable icon.
+   - URL: `https://<app_name>.l.nicholaswilde.io`
+
+### VI. Version Control
+1. **Commit:** Commit the new application files, scripts, Traefik
+   configuration, and homepage configuration.
