@@ -64,13 +64,17 @@ For web applications that require exposure via Traefik and DNS, follow these add
     *   Log the local access URL (`http://<ip>:<port>`) at the end.
 
 ### III. Proxmox Provisioning
-1.  **Generate Command:** Construct the `pct create` command.
+1.  **Select Template:**
+    *   Use the MCP tool `list_templates` (or node specific equivalent like `pve04__list_templates`) to list available templates on the target node.
+    *   Select the `volid` matching the desired OS (usually `debian-trixie`).
+2.  **Generate Command:** Construct the `pct create` command.
+    *   Use the `volid` found in step 1 for the `--ostemplate` argument.
     *   Use **privileged** (`--unprivileged 0`) containers by default.
     *   Enable nesting (`--features nesting=1`) if required.
     *   Use the app name without any dashes or dots for the hostname (`--hostname <app_name>`).
     *   Use `pass` to supply the password securely: `--password $(pass show <path/to/password>)`.
-2.  **Execute:** Run the command on the target PVE node.
-3.  **Install:** Execute the `deps` task and `update.sh` inside the container.
+3.  **Execute:** Run the command on the target PVE node.
+4.  **Install:** Execute the `deps` task and `update.sh` inside the container.
 
 ### IV. Network & Routing
 1.  **Traefik Integration:** Create `pve/traefik/conf.d/<app_name>.yaml`.
