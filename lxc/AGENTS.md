@@ -72,7 +72,7 @@ For web applications that require exposure via Traefik and DNS, follow these add
     *   Use **privileged** (`--unprivileged 0`) containers by default.
     *   Enable nesting (`--features nesting=1`) if required.
     *   Use the app name without any dashes or dots for the hostname (`--hostname <app_name>`).
-    *   Use `pass` to supply the password securely: `--password $(pass show <path/to/password>)`.
+    *   Use `pass` to supply the password securely: `--password $(pass show default-lxc-password)`.
 3.  **Execute:** Run the command on the target PVE node.
 4.  **Install:** Execute the `deps` task and `update.sh` inside the container.
 
