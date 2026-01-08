@@ -4,9 +4,15 @@ tags:
 ---
 # ![gemini](https://cdn.jsdelivr.net/gh/selfhst/icons/png/google-gemini.png){ width="32" } Google Gemini CLI
 
-[Google Gemini CLI][1] is used as an AI agent that can be used directly in a terminal.
+[Google Gemini CLI][1] is used as an AI agent that can be used directly in a
+terminal.
 
-I use the Gemini CLI to help generate bash script files and markdown documents for zensical. It is my preferred coding agent at the moment since I already pay for Google One.
+I use the Gemini CLI to help generate bash script files and markdown documents
+for zensical. It is my preferred coding agent at the moment since I already pay
+for Google One.
+
+I also use the Gemini CLI to provision Proxmox containers using the provided MCP
+servers.
 
 ## :hammer_and_wrench: Installation
 
@@ -36,6 +42,7 @@ I use the Gemini CLI to help generate bash script files and markdown documents f
 
 1. Generate a key from [Google AI Studio][2].
 2. Set it as an environment variable in your terminal. Replace `YOUR_API_KEY` with your generated key.
+3. My current [settings.json][12] can be found in my dotfiles repository.
 
 !!! code ""
 
@@ -316,6 +323,7 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 - <https://github.com/sirkirby/unifi-network-mcp>
 - <https://github.com/fcannizzaro/mcp-adguard-home>
 - <https://github.com/zhongweili/nanobanana-mcp-server>
+- <https://github.com/nicholaswilde/dotfiles2/blob/main/.gemini/settings.json>
 
 [1]: <https://github.com/google-gemini/gemini-cli>
 [2]: <https://aistudio.google.com/apikey>
@@ -328,3 +336,4 @@ Once installed and authenticated, start interacting with Gemini from the shell.
 [9]: <https://github.com/fcannizzaro/mcp-adguard-home>
 [10]: <https://www.home-assistant.io/integrations/mcp/>
 [11]: <https://github.com/zhongweili/nanobanana-mcp-server>
+[12]: <https://github.com/nicholaswilde/dotfiles2/blob/main/.gemini/settings.json>
