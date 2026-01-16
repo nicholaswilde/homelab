@@ -7,11 +7,11 @@
 - [x] Task: Conductor - User Manual Verification 'Scaffolding and Methodology' (Protocol in workflow.md)
 
 ## Phase 2: Installation and Setup
-- [ ] Task: Document Installation
-    - [ ] Write the "Installation" section with instructions for adding the Conductor extension.
-- [ ] Task: Document Setup
-    - [ ] Write the "Setup" section detailing the `/conductor:setup` process and its outputs.
-- [ ] Task: Conductor - User Manual Verification 'Installation and Setup' (Protocol in workflow.md)
+- [x] Task: Document Installation
+    - [x] Write the "Installation" section with instructions for adding the Conductor extension.
+- [x] Task: Document Setup
+    - [x] Write the "Setup" section detailing the `/conductor:setup` process and its outputs.
+- [x] Task: Conductor - User Manual Verification 'Installation and Setup' (Protocol in workflow.md)
 
 ## Phase 3: Project Context and Usage
 - [ ] Task: Document Project Context

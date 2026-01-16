@@ -17,11 +17,58 @@ Conductor follows a **Spec-Driven Development** methodology. This approach ensur
 
 ## :hammer_and_wrench: Installation
 
-(Coming soon...)
+To install the Google Conductor extension, use the `extension:add` command within the Gemini CLI:
 
-## :gear: Config
+!!! code ""
 
-(Coming soon...)
+    ```shell
+    gemini extension:add google/conductor
+    ```
+
+Once added, you can verify the installation by checking the available commands:
+
+!!! code ""
+
+    ```shell
+    gemini --help | grep conductor
+    ```
+
+## :gear: Setup
+
+To initialize Conductor in a repository, run the `/conductor:setup` command. This interactive process guides you through defining the product vision, selecting a tech stack, and configuring workflows.
+
+!!! code ""
+
+    ```shell
+    /conductor:setup
+    ```
+
+### Initialization Steps
+
+1.  **Project Discovery:** Analyzes the directory to determine project maturity (Greenfield vs. Brownfield).
+2.  **Product Definition:** Collaboratively creates `product.md`.
+3.  **Guideline Generation:** Creates `product-guidelines.md` for persona and boundaries.
+4.  **Tech Stack Selection:** Defines the core technologies in `tech-stack.md`.
+5.  **Workflow Customization:** Sets up the task lifecycle and quality gates in `workflow.md`.
+6.  **Scaffolding:** Creates the `conductor/` directory and index files.
+
+### Key Outputs
+
+After setup, you will have a `conductor/` directory structured as follows:
+
+!!! abstract "conductor/"
+
+    ```text
+    conductor/
+    ├── code_styleguides/   # Language-specific style guides
+    ├── index.md            # Project context index
+    ├── product-guidelines.md # Persona and boundaries
+    ├── product.md          # Vision and goals
+    ├── tech-stack.md       # Core technologies
+    ├── tracks.md           # Registry of all work tracks
+    ├── tracks/             # Implementation plans for each track
+    └── workflow.md         # Operational procedures
+    ```
 
 ## :pencil: Usage
 
