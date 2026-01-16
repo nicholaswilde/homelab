@@ -7,15 +7,15 @@
 - [x] Task: Conductor - User Manual Verification 'Analysis and Mapping' (Protocol in workflow.md)
 
 ## Phase 2: Migration - Tech Stack & MCP
-- [ ] Task: Migrate Tech Stack Section
-    - [ ] Sub-task: Create a test plan (checklist) to verify `tech-stack.md` updates.
-    - [ ] Sub-task: Update `conductor/tech-stack.md` with detailed "Tech Stack" info from `AGENTS.md` (OS details, Containerization specifics).
-    - [ ] Sub-task: Verify updates against the test checklist.
-- [ ] Task: Migrate MCP Servers Section
-    - [ ] Sub-task: Create a test plan (checklist) to verify MCP server info in `tech-stack.md`.
-    - [ ] Sub-task: Add an "MCP Servers" section to `conductor/tech-stack.md` with details on Proxmox, UniFi, and AdGuard Home MCPs.
-    - [ ] Sub-task: Verify updates against the test checklist.
-- [ ] Task: Conductor - User Manual Verification 'Migration - Tech Stack & MCP' (Protocol in workflow.md)
+- [x] Task: Migrate Tech Stack Section
+    - [x] Sub-task: Create a test plan (checklist) to verify `tech-stack.md` updates.
+    - [x] Sub-task: Update `conductor/tech-stack.md` with detailed "Tech Stack" info from `AGENTS.md` (OS details, Containerization specifics).
+    - [x] Sub-task: Verify updates against the test checklist.
+- [x] Task: Migrate MCP Servers Section
+    - [x] Sub-task: Create a test plan (checklist) to verify MCP server info in `tech-stack.md`.
+    - [x] Sub-task: Add an "MCP Servers" section to `conductor/tech-stack.md` with details on Proxmox, UniFi, and AdGuard Home MCPs.
+    - [x] Sub-task: Verify updates against the test checklist.
+- [x] Task: Conductor - User Manual Verification 'Migration - Tech Stack & MCP' (Protocol in workflow.md)
 
 ## Phase 3: Migration - Guidelines & Workflow
 - [ ] Task: Migrate Persona and Boundaries
