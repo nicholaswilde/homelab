@@ -1,7 +1,7 @@
 # Implementation Plan - Migrate AGENTS.md to Conductor
 
-## Phase 1: Analysis and Mapping
-- [x] Task: Analyze Root AGENTS.md
+## Phase 1: Analysis and Mapping [checkpoint: 2c0acaf]
+- [x] Task: Analyze Root AGENTS.md 2c0acaf
     - [x] Sub-task: Read `AGENTS.md` and identify all distinct sections.
     - [x] Sub-task: Map each section to its target Conductor file (`product.md`, `tech-stack.md`, `product-guidelines.md`, `workflow.md`).
 - [x] Task: Conductor - User Manual Verification 'Analysis and Mapping' (Protocol in workflow.md)
