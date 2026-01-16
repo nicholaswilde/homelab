@@ -5,6 +5,25 @@
 - **Commit Frequency:** After each phase
 - **Task Summary Location:** Git Notes
 
+## Project Structure
+- **`docker/`**: Docker applications. Use `.template` for new apps.
+- **`docs/`**: Markdown documentation (Applications, Tools, Hardware).
+- **`lxc/`**: Proxmox LXC application configurations.
+- **`pve/`**: Proxmox VE cluster management and specific node configs.
+- **`scripts/`**: Bash and Python automation scripts.
+- **`vm/`**: Virtual Machine configurations.
+
+## Common Commands
+Use `task` to run common operations defined in `Taskfile.yml`.
+- `task build`: Build the documentation site using Zensical.
+- `task serve`: Start the documentation development server (default port 8000).
+- `task lint`: Run all linters (Yamllint, Markdownlint, Linkcheck).
+- `task markdownlint`: Run only Markdownlint.
+- `task yamllint`: Run only Yamllint.
+- `task linkcheck`: Check for broken links in documentation.
+- `task generate-docs-nav`: Regenerate the MkDocs navigation.
+- `markitdown`: Use this CLI command to convert any file to Markdown.
+
 ## Guiding Principles
 
 1. **The Plan is the Source of Truth:** All work must be tracked in `plan.md`
