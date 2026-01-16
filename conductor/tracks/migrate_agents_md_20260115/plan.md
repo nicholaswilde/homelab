@@ -1,10 +1,10 @@
 # Implementation Plan - Migrate AGENTS.md to Conductor
 
 ## Phase 1: Analysis and Mapping
-- [ ] Task: Analyze Root AGENTS.md
-    - [ ] Sub-task: Read `AGENTS.md` and identify all distinct sections.
-    - [ ] Sub-task: Map each section to its target Conductor file (`product.md`, `tech-stack.md`, `product-guidelines.md`, `workflow.md`).
-- [ ] Task: Conductor - User Manual Verification 'Analysis and Mapping' (Protocol in workflow.md)
+- [x] Task: Analyze Root AGENTS.md
+    - [x] Sub-task: Read `AGENTS.md` and identify all distinct sections.
+    - [x] Sub-task: Map each section to its target Conductor file (`product.md`, `tech-stack.md`, `product-guidelines.md`, `workflow.md`).
+- [x] Task: Conductor - User Manual Verification 'Analysis and Mapping' (Protocol in workflow.md)
 
 ## Phase 2: Migration - Tech Stack & MCP
 - [ ] Task: Migrate Tech Stack Section
