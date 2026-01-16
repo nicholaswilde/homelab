@@ -14,11 +14,11 @@
 - [x] Task: Conductor - User Manual Verification 'Installation and Setup' (Protocol in workflow.md)
 
 ## Phase 3: Project Context and Usage
-- [ ] Task: Document Project Context
-    - [ ] Detail the purpose of `product.md`, `tech-stack.md`, `workflow.md`, and `index.md`.
-- [ ] Task: Document Usage
-    - [ ] Provide a practical guide for `/conductor:newTrack` and `/conductor:implement`.
-- [ ] Task: Conductor - User Manual Verification 'Project Context and Usage' (Protocol in workflow.md)
+- [x] Task: Document Project Context
+    - [x] Detail the purpose of `product.md`, `tech-stack.md`, `workflow.md`, and `index.md`.
+- [x] Task: Document Usage
+    - [x] Provide a practical guide for `/conductor:newTrack` and `/conductor:implement`.
+- [x] Task: Conductor - User Manual Verification 'Project Context and Usage' (Protocol in workflow.md)
 
 ## Phase 4: Configuration and Finalization
 - [ ] Task: Document Configuration

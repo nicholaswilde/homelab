@@ -70,11 +70,48 @@ After setup, you will have a `conductor/` directory structured as follows:
     └── workflow.md         # Operational procedures
     ```
 
+## :open_file_folder: Project Context
+
+Conductor stores the project's metadata and implementation strategies in the `conductor/` directory. These files are used by AI agents to maintain a consistent state and adhere to project standards.
+
+### Key Files
+
+- **`product.md`**: Defines the project's vision, target users, and core goals.
+- **`tech-stack.md`**: Lists the primary technologies, frameworks, and tools used in the project.
+- **`workflow.md`**: Outlines the development procedures, task lifecycles, and quality gates.
+- **`product-guidelines.md`**: Specifies the AI agent persona, boundaries (Always/Ask/Never), and documentation style.
+- **`tracks.md`**: A registry of all major units of work (tracks) and their current status.
+- **`index.md`**: Serves as the project context index, linking all relevant Conductor files.
+
 ## :pencil: Usage
 
-(Coming soon...)
+Conductor uses "Tracks" to organize work. A track is a high-level unit of work, such as a new feature or a bug fix.
 
-## :link: References
+### Creating a New Track
+
+To start a new task, use the `/conductor:newTrack` command. You can provide a brief description as an argument.
+
+!!! code ""
+
+    ```shell
+    /conductor:newTrack "Add user authentication"
+    ```
+
+Conductor will guide you through an interactive specification and planning phase, resulting in a new directory under `conductor/tracks/` containing `spec.md` and `plan.md`.
+
+### Implementing a Track
+
+To begin working on an existing track, use the `/conductor:implement` command.
+
+!!! code ""
+
+    ```shell
+    /conductor:implement "Add user authentication"
+    ```
+
+If no track name is provided, Conductor will automatically select the next incomplete track from `tracks.md`. The implementation process follows the project's `workflow.md`, performing tasks, running tests, and creating Git checkpoints.
+
+## :rocket: Upgrade
 
 - [Google Conductor GitHub][1]
 
