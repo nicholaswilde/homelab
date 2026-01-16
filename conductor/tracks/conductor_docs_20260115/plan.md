@@ -13,10 +13,10 @@
     - [x] Write the "Setup" section detailing the `/conductor:setup` process and its outputs.
 - [x] Task: Conductor - User Manual Verification 'Installation and Setup' (Protocol in workflow.md)
 
-## Phase 3: Project Context and Usage
-- [x] Task: Document Project Context
+## Phase 3: Project Context and Usage [checkpoint: 024645d]
+- [x] Task: Document Project Context 024645d
     - [x] Detail the purpose of `product.md`, `tech-stack.md`, `workflow.md`, and `index.md`.
-- [x] Task: Document Usage
+- [x] Task: Document Usage 024645d
     - [x] Provide a practical guide for `/conductor:newTrack` and `/conductor:implement`.
 - [x] Task: Conductor - User Manual Verification 'Project Context and Usage' (Protocol in workflow.md)
 
