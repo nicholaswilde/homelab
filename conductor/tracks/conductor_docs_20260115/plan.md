@@ -6,10 +6,10 @@
 - [x] Task: Document Methodology 0b41b9b
 - [x] Task: Conductor - User Manual Verification 'Scaffolding and Methodology' (Protocol in workflow.md)
 
-## Phase 2: Installation and Setup
-- [x] Task: Document Installation
+## Phase 2: Installation and Setup [checkpoint: 201cf97]
+- [x] Task: Document Installation 201cf97
     - [x] Write the "Installation" section with instructions for adding the Conductor extension.
-- [x] Task: Document Setup
+- [x] Task: Document Setup 201cf97
     - [x] Write the "Setup" section detailing the `/conductor:setup` process and its outputs.
 - [x] Task: Conductor - User Manual Verification 'Installation and Setup' (Protocol in workflow.md)
 
