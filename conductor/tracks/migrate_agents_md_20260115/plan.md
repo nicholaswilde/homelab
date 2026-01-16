@@ -29,8 +29,8 @@
 - [x] Task: Conductor - User Manual Verification 'Migration - Guidelines & Workflow' (Protocol in workflow.md)
 
 ## Phase 4: Cleanup and Redirection
-- [ ] Task: Refactor Root AGENTS.md
-    - [ ] Sub-task: Create a test plan (verification step) to ensure `AGENTS.md` points to new docs.
-    - [ ] Sub-task: Replace content of `AGENTS.md` with a summary and links to the Conductor files.
-    - [ ] Sub-task: Verify `AGENTS.md` renders correctly and links are valid.
-- [ ] Task: Conductor - User Manual Verification 'Cleanup and Redirection' (Protocol in workflow.md)
+- [x] Task: Refactor Root AGENTS.md
+    - [x] Sub-task: Create a test plan (verification step) to ensure `AGENTS.md` points to new docs.
+    - [x] Sub-task: Replace content of `AGENTS.md` with a summary and links to the Conductor files.
+    - [x] Sub-task: Verify `AGENTS.md` renders correctly and links are valid.
+- [x] Task: Conductor - User Manual Verification 'Cleanup and Redirection' (Protocol in workflow.md)
