@@ -1,0 +1,8 @@
+{
+  "track_id": "migrate_subdir_agents_20260115",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-15T00:00:00Z",
+  "updated_at": "2026-01-15T00:00:00Z",
+  "description": "Scan all sub directories of this repo and find all other AGENTS.md files and migrate them to conductor."
+}
