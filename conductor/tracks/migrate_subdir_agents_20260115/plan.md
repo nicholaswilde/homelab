@@ -1,7 +1,7 @@
 # Implementation Plan - Migrate Subdirectory AGENTS.md to Conductor
 
-## Phase 1: Discovery and Archival
-- [x] Task: Discovery and Archival
+## Phase 1: Discovery and Archival [checkpoint: ff1507e]
+- [x] Task: Discovery and Archival ff1507e
     - [x] Search for all `AGENTS.md` files in subdirectories using `find . -mindepth 2 -name "AGENTS.md"`.
     - [x] Create an archival directory `conductor/archive/subdirectory_agents/`.
     - [x] Move each found `AGENTS.md` file to the archival directory, renaming them to include their original path (e.g., `docker_AGENTS.md`).
