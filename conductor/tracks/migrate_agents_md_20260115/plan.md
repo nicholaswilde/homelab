@@ -17,12 +17,12 @@
     - [x] Sub-task: Verify updates against the test checklist.
 - [x] Task: Conductor - User Manual Verification 'Migration - Tech Stack & MCP' (Protocol in workflow.md)
 
-## Phase 3: Migration - Guidelines & Workflow
-- [x] Task: Migrate Persona and Boundaries
+## Phase 3: Migration - Guidelines & Workflow [checkpoint: 70dabf4]
+- [x] Task: Migrate Persona and Boundaries 70dabf4
     - [x] Sub-task: Create a test plan (checklist) to verify `product-guidelines.md` updates.
     - [x] Sub-task: Update `conductor/product-guidelines.md` with "Persona" and "Boundaries" (Always, Ask, Never) from `AGENTS.md`.
     - [x] Sub-task: Verify updates against the test checklist.
-- [x] Task: Migrate Project Structure and Commands
+- [x] Task: Migrate Project Structure and Commands 70dabf4
     - [x] Sub-task: Create a test plan (checklist) to verify `workflow.md` updates.
     - [x] Sub-task: Update `conductor/workflow.md` with "Project Structure" and "Common Commands" (Taskfile operations).
     - [x] Sub-task: Verify updates against the test checklist.
