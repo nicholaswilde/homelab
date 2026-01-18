@@ -2,7 +2,7 @@
 services:
   convertx:
     container_name: "${CONTAINER_NAME}"
-    image: "ghcr.io/c4illin/convertx:v0.15.1"
+    image: "ghcr.io/c4illin/convertx:v0.17.0"
     env_file:
       - .env
     ports:
