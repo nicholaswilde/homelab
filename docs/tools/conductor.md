@@ -111,8 +111,24 @@ To begin working on an existing track, use the `/conductor:implement` command.
 
 If no track name is provided, Conductor will automatically select the next incomplete track from `tracks.md`. The implementation process follows the project's `workflow.md`, performing tasks, running tests, and creating Git checkpoints.
 
-## :rocket: Upgrade
+## :gear: Configuration
 
-- [Google Conductor GitHub][1]
+Conductor is highly customizable. You can adapt the development workflow and style guides to meet your specific project needs.
 
-[1]: <https://github.com/google/conductor>
+### Customizing the Workflow
+
+The `conductor/workflow.md` file defines the rules and procedures for your project. You can modify this file to change:
+
+- **Quality Gates:** Required test coverage, linting standards, and mobile testing requirements.
+- **Commit Strategy:** Frequency of commits (per task vs. per phase) and whether to use Git Notes for summaries.
+- **Development Commands:** Language-specific setup, testing, and linting commands.
+
+### Adding Style Guides
+
+Code style guides are stored in `conductor/code_styleguides/`. You can add new guides or modify existing ones to enforce specific coding standards for different languages used in your project.
+
+### Updating Documentation Navigation
+
+If you add new Conductor-related pages, ensure they are linked in `conductor/index.md` to maintain a clear organizational hierarchy.
+
+## :link: References

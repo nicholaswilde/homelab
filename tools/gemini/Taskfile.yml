@@ -48,7 +48,7 @@ tasks:
   update:unifi:
     desc: Update unifi-network-mcp
     cmds:
-      - uv tool upgrade --force git+https://github.com/sirkirby/unifi-network-mcp
+      - uv tool upgrade unifi-network-mcp@git+https://github.com/sirkirby/unifi-network-mcp
 
   install:proxmox:
     desc: Install ProxmoxMCP-Plus
@@ -59,7 +59,7 @@ tasks:
   update:proxmox:
     desc: Update ProxmoxMCP-Plus
     cmds:
-      - uv tool upgrade --force git+https://github.com/nicholaswilde/proxmox-mcp-plus
+      - uv tool upgrade proxmox-mcp@git+https://github.com/nicholaswilde/proxmox-mcp-plus
 
   install:filesystem:
     desc: Install filesystem MCP server
