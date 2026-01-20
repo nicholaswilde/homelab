@@ -86,6 +86,9 @@
     - Reactive Resume:
         icon: sh-reactive-resume.svg
         href: https://resume.l.nicholaswilde.io/dashboard/resumes
+    - BentoPDF:
+        icon: sh-bentopdf.svg
+        href: https://bentopdf.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
