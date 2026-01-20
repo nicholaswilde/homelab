@@ -34,6 +34,7 @@ Apps = [
   { "aria2" = "apps/aria2.md" },
   { "authentik" = "apps/authentik.md" },
   { "Beszel" = "apps/beszel.md" },
+  { "BentoPDF" = "apps/bentopdf.md" },
   { "ChangeDetection" = "apps/changedetection.md" },
   { "ConvertX" = "apps/convertx.md" },
   { "CyberKeyGen" = "apps/cyberkeygen.md" },

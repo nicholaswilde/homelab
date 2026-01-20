@@ -64,3 +64,5 @@ patchmon.conf
 **/openmediavault/php.ini
 
 **/proxmox-mcp-plus/**/config.json
+
+.gemini/settings.json

@@ -5,7 +5,9 @@ tags:
 ---
 # ![Stirling PDF](https://cdn.jsdelivr.net/gh/selfhst/icons/webp/stirling-pdf.webp){ width="32" } Stirling PDF
 
-[Stirling PDF][1] is a locally hosted web application that allows you to perform various operations on PDF files.
+[Stirling PDF][1] is a powerful, self-hosted web-based PDF manipulation tool that offers a wide range of features, including merging, splitting, OCR, and advanced conversions.
+
+I use Stirling PDF in conjunction with [BentoPDF][2] to provide a complete PDF management solution. While Stirling PDF handles heavy-duty processing and complex operations, BentoPDF serves as a minimalist alternative for quick edits and viewing. Together, they ensure I have the right tool for any PDF task, from simple viewing to complex document transformations.
 
 ## :hammer_and_wrench: Installation
 
@@ -47,3 +49,4 @@ Make symlinks to repo.
 - <https://pimox-scripts.com/scripts?id=stirling-pdf>
 
 [1]: <https://github.com/Stirling-Tools/Stirling-PDF>
+[2]: <./bentopdf.md>

@@ -90,6 +90,21 @@ tasks:
     desc: Update Zensical
     cmds:
       - uv pip install --upgrade zensical
+
+  encrypt:
+    desc: Encrypt secrets
+    cmds:
+      - >-
+        sops -e --input-type json --output-type json
+        .gemini/settings.json > .gemini/settings.json.enc
+
+  decrypt:
+    desc: Decrypt secrets
+    cmds:
+      - >-
+        sops -d --input-type json --output-type json
+        .gemini/settings.json.enc > .gemini/settings.json
+
   default:
     cmds:
       - task -l
