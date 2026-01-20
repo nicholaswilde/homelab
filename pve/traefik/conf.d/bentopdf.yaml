@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    bentopdf:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`bentopdf.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: bentopdf
+#endregion
+#region services
+  services:
+    bentopdf:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.205:8080"
+        passHostHeader: true
+#endregion
