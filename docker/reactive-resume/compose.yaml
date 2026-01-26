@@ -80,7 +80,7 @@ services:
       
   reactive-resume:
     container_name: "${CONTAINER_NAME}"
-    image: ghcr.io/amruthpillai/reactive-resume:v4.5.5
+    image: ghcr.io/amruthpillai/reactive-resume:v5.0.3
     restart: unless-stopped
     ports:
       - "3000:3000"
