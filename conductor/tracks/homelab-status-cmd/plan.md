@@ -1,9 +1,9 @@
 # Implementation Plan: /homelab status command
 
 ## Phase 1: Research & Discovery
-- [ ] Research `proxmox-mcp-rs` capabilities for status checks.
-- [ ] Map all `docker/` subdirectories to check for `compose.yaml` presence.
-- [ ] Study `conductor/tracks.md` parsing logic.
+- [x] Research `proxmox-mcp-rs` capabilities for status checks.
+- [x] Map all `docker/` subdirectories to check for `compose.yaml` presence.
+- [x] Study `conductor/tracks.md` parsing logic.
 
 ## Phase 2: Implementation
 - [ ] Create `.gemini/commands/homelab_status.md`.
