@@ -5,8 +5,8 @@
 - [x] (243525b) Map services to their sensitive environment variables.
 
 ## Phase 2: Implementation
-- [ ] Create `.gemini/commands/rotate_secret.md`.
-- [ ] Develop `scripts/rotate_secret.py` to handle generation, replacement, and encryption.
+- [x] Create `.gemini/commands/rotate_secret.md`.
+- [x] Develop `scripts/rotate_secret.py` to handle generation, replacement, and encryption.
 
 ## Phase 3: Validation
 - [ ] Test rotating a dummy secret in a test app.
