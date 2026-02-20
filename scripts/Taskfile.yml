@@ -5,10 +5,10 @@ tasks:
   venv-create:
     desc: Create a Python virtual environment
     cmds:
-      - python3 -m venv .venv
+      - python3 -m venv {{.TASKFILE_DIR}}/.venv
   deps:
     desc: Install Python dependencies for scripts
     cmds:
-      - ./.venv/bin/pip install -r requirements.txt
+      - "{{.TASKFILE_DIR}}/.venv/bin/pip install -r {{.TASKFILE_DIR}}/requirements.txt"
     deps:
       - venv-create

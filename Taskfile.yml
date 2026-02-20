@@ -1,6 +1,9 @@
 ---
 version: '3'
 
+includes:
+  scripts: ./scripts/Taskfile.yml
+
 vars:
   PORT: 8000
 
@@ -74,9 +77,7 @@ tasks:
   generate-docs-nav:
     desc: Generate MkDocs navigation from content
     cmds:
-      - scripts/.venv/bin/python3 scripts/generate_mkdocs_nav.py
-    deps:
-      - scripts:deps
+      - uv run python scripts/generate_mkdocs_nav.py
   docs:deps:
     desc: Install Zensical
     cmds:
