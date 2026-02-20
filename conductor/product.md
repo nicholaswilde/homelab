@@ -19,6 +19,7 @@ The Homelab project is a centralized, automated repository designed to manage an
 ## Key Features
 - **Automated Provisioning:** Full automation for container (Docker) and VM/LXC (Proxmox) provisioning.
 - **Secure Networking:** Integrated secure remote access via VPNs and reverse proxies (Traefik).
+- **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Gemini CLI.
 - **Centralized Documentation:** A comprehensive knowledge base built with MkDocs, prioritizing clarity and accessibility.
 
 ## Identity and Style

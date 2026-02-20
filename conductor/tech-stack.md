@@ -10,6 +10,7 @@
 ## Automation & Scripting
 
 - **Task Runner:** Task (`go-task`) - Primary entry point for all operations.
+- **Gemini CLI Commands:** Custom interactive commands for status and deployment.
 - **Shell Scripting:** Bash - Used for system maintenance, updates, and glue code. (ShellCheck compliant)
 - **Programming:** Python (>=3.11) - Used for complex automation, MCP tools, and data processing. (PEP 8 compliant)
 - **Templating:** Jinja2 (for `.tmpl.j2` files)
