@@ -17,6 +17,6 @@ http:
     drawio:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.202:8080"
+          - url: "http://192.168.2.204:8080"
         passHostHeader: true
 #endregion
