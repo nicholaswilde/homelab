@@ -46,5 +46,9 @@ are followed.
    - Add the new track to `conductor/tracks.md`:
      `- [Deploy <app_name>](conductor/tracks/deploy-<app_name>/) [ ]`
 
-7. **Announce Completion:**
+7. **Dashboard Integration (Optional):**
+   - Ask the user if they would like to add the service to the `homepage` dashboard.
+   - If yes, use `/dashboard add <app_name> <group>` to register it.
+
+8. **Announce Completion:**
    - Provide the path to the new application directory and the new track.

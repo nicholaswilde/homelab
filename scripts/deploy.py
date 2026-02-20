@@ -138,6 +138,16 @@ def deploy(app_name, deploy_type, variables):
         with open(track_dir / "plan.md", "w") as f:
             f.write(plan_content)
 
+    # Optional Dashboard Integration
+    if variables.get('ADD_TO_DASHBOARD') == 'true':
+        log_info("Integrating with dashboard...")
+        group = variables.get('DASHBOARD_GROUP', 'IoT')
+        icon = variables.get('DASHBOARD_ICON', 'si-simpleicons')
+        subprocess.run([
+            sys.executable, str(root_dir / "scripts" / "dashboard_add.py"),
+            app_name, group, "--icon", icon
+        ], check=True)
+
     log_success(f"Successfully deployed {app_name} to {target_dir}")
 
 if __name__ == "__main__":
