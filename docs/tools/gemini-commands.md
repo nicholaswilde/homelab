@@ -76,6 +76,24 @@ The command uses `scripts/task_summary.py` to:
 3. **Update Status:** Changes the task status to `[x]` in `plan.md`.
 4. **Checkpoint Check:** Alerts if a phase or track is complete and requires a checkpoint.
 
+## :lock: /check secrets
+
+Verify the encryption status of all sensitive files project-wide to prevent accidental leaks.
+
+### :pencil: Usage
+
+```bash
+/check secrets
+```
+
+### :gear: Implementation
+
+The command uses `scripts/check_secrets.py` to:
+1. **Scan:** Identifies `.env`, `*.enc`, and files with `secret` or `creds` in their name.
+2. **Verify:** Decrypts `.enc` files and compares them with unencrypted versions if they exist.
+3. **Audit:** Reports unencrypted sensitive files that are not ignored by Git.
+4. **Report:** Provides a summarized status of all sensitive files.
+
 ## :arrows_counterclockwise: /homelab update `<app_name>`
 
 Pull updates and restart services for Docker and LXC applications.
