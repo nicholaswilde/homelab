@@ -165,14 +165,42 @@ The command uses `scripts/homelab_backup.py` to:
 2. **Execute Backup:** Runs the `task backup` command in the target directory.
 3. **Verify:** Checks for the update of `.enc` files to confirm the backup was successful and encrypted.
 
-## :construction: Planned Commands
+## :key: /rotate secret `<app_name>` `<key>`
 
-The following commands are currently in the implementation queue:
+Securely generate and rotate credentials in encrypted environment files.
 
-- **`/rotate secret <app_name> <key>`**: Securely generate and rotate credentials in `.env` files.
-- **`/audit deps`**: Scan for outdated Docker images and security advisories.
-- **`/verify backups`**: Automate the integrity and decryption verification of backups.
-- **`/map network`**: Generate a visual Mermaid map of the homelab network and traffic flow.
+### :pencil: Usage
+
+```bash
+/rotate secret activepieces DB_PASSWORD
+```
+
+### :gear: Implementation
+
+The command uses `scripts/rotate_secret.py` to:
+1. **Decrypt:** Temporarily decrypts the `.env.enc` file for the specified application using SOPS.
+2. **Generate:** Generates a new high-entropy secret string.
+3. **Update:** Replaces the existing value for the specified key in the decrypted `.env` file.
+4. **Encrypt:** Re-encrypts the file and securely deletes the temporary unencrypted file.
+
+## :search: /audit deps `[path]`
+
+Scan Docker image dependencies across `compose.yaml` files and report outdated versions.
+
+### :pencil: Usage
+
+```bash
+/audit deps docker/filebrowser
+```
+
+### :gear: Implementation
+
+The command uses `scripts/audit_deps.py` to:
+1. **Scan:** Recursively searches the specified path (defaults to `docker/`) for `compose.yaml` files.
+2. **Extract:** Parses image tags from identified files.
+3. **Query:** Fetches the latest available tags from Docker Hub or GHCR.
+4. **Compare:** Identifies outdated versions using semantic version comparison (handling 'v' prefixes and common suffixes).
+5. **Report:** Displays a formatted table with current vs. latest versions and update status.
 
 ## :material-view-dashboard: /dashboard add `<name>` `<group>`
 
@@ -190,3 +218,10 @@ The command uses `scripts/dashboard_add.py` to:
 1. **Validate Group:** Ensures the target group exists in `services.yaml`.
 2. **Metadata Prompt:** Prompts for icon, URL, and description.
 3. **YAML Update:** Appends the service to the correct group while preserving comments and formatting using `ruamel.yaml`.
+
+## :construction: Planned Commands
+
+The following commands are currently in the implementation queue:
+
+- **`/verify backups`**: Automate the integrity and decryption verification of backups.
+- **`/map network`**: Generate a visual Mermaid map of the homelab network and traffic flow.

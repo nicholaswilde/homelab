@@ -271,7 +271,7 @@ The [Catppuccin theme][6] can be used to customize the appearance of the Gemini 
 
 ## :pencil: Usage
 
-Once installed and authenticated, start interacting with Gemini from the shell.
+Once installed and authenticated, start interacting with Gemini from the shell. See [Gemini CLI Commands](gemini-commands.md) for custom commands available in this project.
 
 !!! example
 
