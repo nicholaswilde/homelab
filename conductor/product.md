@@ -29,6 +29,7 @@ The Homelab project is a centralized, automated repository designed to manage an
 - **Automated Dashboard Integration:** Automated addition of new services to the homepage dashboard via Gemini CLI.
 - **Automated Task Summarization:** Automated progress tracking and Git Note generation for development tasks via Gemini CLI.
 - **Automated Documentation Scaffolding:** Automated creation of new documentation files from templates via Gemini CLI, ensuring style guide consistency.
+- **Automated Dependency Auditing:** Verification of Docker image versions and identification of outdated dependencies across the entire project via Gemini CLI.
 - **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Gemini CLI.
 - **Centralized Documentation:** A comprehensive knowledge base built with MkDocs, prioritizing clarity and accessibility.
 
