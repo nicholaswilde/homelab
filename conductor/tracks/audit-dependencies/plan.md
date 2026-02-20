@@ -9,5 +9,5 @@
 - [x] Develop `scripts/audit_deps.py` to scan files and report discrepancies. (2ee501b)
 
 ## Phase 3: Validation
-- [ ] Test scanning a single `compose.yaml`.
-- [ ] Test reporting across the entire `docker/` directory.
+- [x] Test scanning a single `compose.yaml`.
+- [x] Test reporting across the entire `docker/` directory.
