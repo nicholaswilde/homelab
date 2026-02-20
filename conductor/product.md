@@ -21,6 +21,7 @@ The Homelab project is a centralized, automated repository designed to manage an
 - **Secure Networking:** Integrated secure remote access via VPNs and reverse proxies (Traefik).
 - **Automated Application Scaffolding:** Streamlined creation of new Docker and LXC applications from templates via Gemini CLI.
 - **Cross-Node Configuration Synchronization:** Triggered synchronization and consistency verification for DNS rewrites and Traefik configurations across multiple nodes via Gemini CLI.
+- **Automated Task Summarization:** Automated progress tracking and Git Note generation for development tasks via Gemini CLI.
 - **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Gemini CLI.
 - **Centralized Documentation:** A comprehensive knowledge base built with MkDocs, prioritizing clarity and accessibility.
 
