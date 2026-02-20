@@ -1,4 +1,5 @@
 *.deb
+*.log
 site/
 *.swp
 **/AdGuardHome.yaml
@@ -66,3 +67,8 @@ patchmon.conf
 **/proxmox-mcp-plus/**/config.json
 
 .gemini/settings.json
+
+**/config.toml
+**/config.yaml
+**/config.yml
+**/config.json
