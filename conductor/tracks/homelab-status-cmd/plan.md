@@ -5,13 +5,13 @@
 - [x] Map all `docker/` subdirectories to check for `compose.yaml` presence.
 - [x] Study `conductor/tracks.md` parsing logic.
 
-## Phase 2: Implementation
+## Phase 2: Implementation [checkpoint: d615a33]
 - [x] Create `.gemini/commands/homelab_status.md`.
 - [x] Implement Proxmox status checks using `pve04__get_cluster_status` or similar tools.
 - [x] Implement Docker container discovery and status check using `run_shell_command`.
 - [x] Implement Track status summary check.
 
 ## Phase 3: Validation
-- [ ] Verify command output format and readability.
-- [ ] Test command under various node/container states.
-- [ ] Document usage in `docs/tools/gemini-commands.md`.
+- [x] Verify command output format and readability.
+- [x] Test command under various node/container states.
+- [x] Document usage in `docs/tools/gemini-commands.md`.
