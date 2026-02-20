@@ -8,6 +8,6 @@
 - [x] (77e1b50) Create `.gemini/commands/rotate_secret.md`.
 - [x] (77e1b50) Develop `scripts/rotate_secret.py` to handle generation, replacement, and encryption.
 
-## Phase 3: Validation
-- [x] Test rotating a dummy secret in a test app.
-- [x] Verify that the file remains properly encrypted and the value is updated.
+## Phase 3: Validation [checkpoint: 29188b5]
+- [x] (29188b5) Test rotating a dummy secret in a test app.
+- [x] (29188b5) Verify that the file remains properly encrypted and the value is updated.
