@@ -41,6 +41,24 @@ The command uses `scripts/deploy.py` to:
 3. **Substitution:** Replaces Jinja2 variables (e.g., `{{ APP_NAME }}`) in `.j2` files.
 4. **Register Track:** Automatically creates a new Conductor track for the deployment.
 
+## :page_facing_up: /doc new `<name>` `<category>`
+
+Automate the creation of new documentation files using existing templates.
+
+### :pencil: Usage
+
+```bash
+/doc new my-app apps
+```
+
+### :gear: Implementation
+
+The command uses `scripts/doc_new.py` to:
+1. **Template Selection:** Selects appropriate template based on category (apps, tools, etc.).
+2. **Variable Substitution:** Prompts for and replaces variables like `APP_PORT`, `CONFIG_PATH`, etc.
+3. **File Creation:** Creates the new Markdown file in the correct directory.
+4. **Navigation Update:** Triggers `task generate-docs-nav` to update the site navigation.
+
 ## :material-sync: /pve sync
 
 Trigger synchronization tasks and verify that DNS rewrites and configurations are consistent across multiple Proxmox nodes.
@@ -146,3 +164,13 @@ The command uses `scripts/homelab_backup.py` to:
 1. **Resolve Target:** Maps aliases (e.g., `agh`, `patchmon`) or direct names to directories.
 2. **Execute Backup:** Runs the `task backup` command in the target directory.
 3. **Verify:** Checks for the update of `.enc` files to confirm the backup was successful and encrypted.
+
+## :construction: Planned Commands
+
+The following commands are currently in the implementation queue:
+
+- **`/dashboard add <app_name>`**: Automate the addition of new services to the `homepage` dashboard.
+- **`/rotate secret <app_name> <key>`**: Securely generate and rotate credentials in `.env` files.
+- **`/audit deps`**: Scan for outdated Docker images and security advisories.
+- **`/verify backups`**: Automate the integrity and decryption verification of backups.
+- **`/map network`**: Generate a visual Mermaid map of the homelab network and traffic flow.
