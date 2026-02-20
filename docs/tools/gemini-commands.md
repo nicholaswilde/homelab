@@ -75,3 +75,22 @@ The command uses `scripts/task_summary.py` to:
 2. **Draft Note:** Generates a Git Note draft with modified files and a summary placeholder.
 3. **Update Status:** Changes the task status to `[x]` in `plan.md`.
 4. **Checkpoint Check:** Alerts if a phase or track is complete and requires a checkpoint.
+
+## :arrows_counterclockwise: /homelab update `<app_name>`
+
+Pull updates and restart services for Docker and LXC applications.
+
+### :pencil: Usage
+
+```bash
+/homelab update my-app
+```
+
+### :gear: Implementation
+
+The command uses `scripts/homelab_update.py` to:
+1. **Identify App:** Locates the application in `docker/`, `lxc/`, or `pve/`.
+2. **Execute Update:**
+    - For Docker: Runs `docker compose pull` and `docker compose up -d`.
+    - For LXC: Executes the application's `update.sh` script.
+3. **Report:** Provides a status summary of the update process.
