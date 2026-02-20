@@ -58,6 +58,23 @@ The command uses `scripts/pve_sync.py` to:
 2. **Traefik Check:** Scans `pve/traefik/conf.d/` for consistency.
 3. **DNS Check:** Encourages manual rewrite verification via `manage_dns`.
 
+## :material-math-log: /pve log `<node>` `[service]`
+
+Fetch and summarize recent logs from a specific Proxmox node or service.
+
+### :pencil: Usage
+
+```bash
+/pve log pve04 pveupdate
+```
+
+### :gear: Implementation
+
+The command uses `scripts/pve_log.py` to:
+1. **Fetch Logs:** Retrieves cluster logs via Proxmox API.
+2. **Filter:** Filters by node and optional service keyword.
+3. **Summarize:** Formats entries with level-based coloring and timestamps.
+
 ## :memo: /task summary
 
 Automatically summarize work done in the current task and update the project plan.
