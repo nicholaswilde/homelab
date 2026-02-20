@@ -69,7 +69,15 @@ def check_secrets():
         unenc_path = enc_path.parent / unenc_name
         
         # Try to decrypt (using binary mode to avoid UnicodeDecodeError)
-        decrypted_content = run_command(f"sops -d {enc_path}", text=False)
+        sops_cmd = f"sops -d {enc_path}"
+        if unenc_name.endswith(".env"):
+            sops_cmd = f"sops -d --input-type dotenv --output-type dotenv {enc_path}"
+        elif unenc_name.endswith(".json"):
+            sops_cmd = f"sops -d --output-type json {enc_path}"
+        elif unenc_name.endswith(".yaml") or unenc_name.endswith(".yml"):
+            sops_cmd = f"sops -d --output-type yaml {enc_path}"
+            
+        decrypted_content = run_command(sops_cmd, text=False)
         
         if decrypted_content is None:
             errors.append(f"{rel_enc} (Decryption failed)")

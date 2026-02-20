@@ -48,7 +48,7 @@ def decrypt_file(enc_file: str, raw_file: str) -> bool:
     """Decrypt a file using SOPS."""
     try:
         subprocess.run(
-            ["sops", "-d", enc_file],
+            ["sops", "-d", "--input-type", "dotenv", "--output-type", "dotenv", enc_file],
             stdout=open(raw_file, "w"),
             check=True
         )
@@ -61,7 +61,7 @@ def encrypt_file(raw_file: str, enc_file: str) -> bool:
     """Encrypt a file using SOPS."""
     try:
         subprocess.run(
-            ["sops", "-e", raw_file],
+            ["sops", "-e", "--input-type", "dotenv", "--output-type", "dotenv", raw_file],
             stdout=open(enc_file, "w"),
             check=True
         )

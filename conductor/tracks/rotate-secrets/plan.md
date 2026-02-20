@@ -9,5 +9,5 @@
 - [x] (77e1b50) Develop `scripts/rotate_secret.py` to handle generation, replacement, and encryption.
 
 ## Phase 3: Validation
-- [ ] Test rotating a dummy secret in a test app.
-- [ ] Verify that the file remains properly encrypted and the value is updated.
+- [x] Test rotating a dummy secret in a test app.
+- [x] Verify that the file remains properly encrypted and the value is updated.
