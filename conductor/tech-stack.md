@@ -15,6 +15,7 @@
 - **Programming:** Python (>=3.11) - Used for complex automation, MCP tools, and data processing. (PEP 8 compliant)
 - **Templating:** Jinja2 (for `.tmpl.j2` files)
 - **Dependency Management:** `uv` (for Python)
+- **YAML Processing:** `ruamel.yaml` (for comment-preserving YAML manipulation)
 - **Configuration Management:** Ansible (via external repo/submodule usage patterns), Cloud-Init
 - **CLI Utilities:** `tabulate` (fancy_grid format for tables), `markitdown` (file to Markdown conversion)
 

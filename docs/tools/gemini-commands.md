@@ -169,8 +169,24 @@ The command uses `scripts/homelab_backup.py` to:
 
 The following commands are currently in the implementation queue:
 
-- **`/dashboard add <app_name>`**: Automate the addition of new services to the `homepage` dashboard.
 - **`/rotate secret <app_name> <key>`**: Securely generate and rotate credentials in `.env` files.
 - **`/audit deps`**: Scan for outdated Docker images and security advisories.
 - **`/verify backups`**: Automate the integrity and decryption verification of backups.
 - **`/map network`**: Generate a visual Mermaid map of the homelab network and traffic flow.
+
+## :material-view-dashboard: /dashboard add `<name>` `<group>`
+
+Automate the addition of new services to the `homepage` dashboard.
+
+### :pencil: Usage
+
+```bash
+/dashboard add my-app IoT
+```
+
+### :gear: Implementation
+
+The command uses `scripts/dashboard_add.py` to:
+1. **Validate Group:** Ensures the target group exists in `services.yaml`.
+2. **Metadata Prompt:** Prompts for icon, URL, and description.
+3. **YAML Update:** Appends the service to the correct group while preserving comments and formatting using `ruamel.yaml`.
