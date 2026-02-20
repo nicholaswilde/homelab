@@ -94,3 +94,20 @@ The command uses `scripts/homelab_update.py` to:
     - For Docker: Runs `docker compose pull` and `docker compose up -d`.
     - For LXC: Executes the application's `update.sh` script.
 3. **Report:** Provides a status summary of the update process.
+
+## :floppy_disk: /homelab backup `<target>`
+
+Trigger manual backups for specific applications or configurations.
+
+### :pencil: Usage
+
+```bash
+/homelab backup agh
+```
+
+### :gear: Implementation
+
+The command uses `scripts/homelab_backup.py` to:
+1. **Resolve Target:** Maps aliases (e.g., `agh`, `patchmon`) or direct names to directories.
+2. **Execute Backup:** Runs the `task backup` command in the target directory.
+3. **Verify:** Checks for the update of `.enc` files to confirm the backup was successful and encrypted.
