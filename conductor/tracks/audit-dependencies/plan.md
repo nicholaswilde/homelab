@@ -5,8 +5,8 @@
 - [x] Identify tools (e.g., `skopeo`) that might simplify registry inspection. (5b1ec92)
 
 ## Phase 2: Implementation
-- [ ] Create `.gemini/commands/audit_deps.md`.
-- [ ] Develop `scripts/audit_deps.py` to scan files and report discrepancies.
+- [x] Create `.gemini/commands/audit_deps.md`.
+- [~] Develop `scripts/audit_deps.py` to scan files and report discrepancies.
 
 ## Phase 3: Validation
 - [ ] Test scanning a single `compose.yaml`.

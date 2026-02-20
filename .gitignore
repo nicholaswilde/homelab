@@ -72,3 +72,4 @@ patchmon.conf
 **/config.yaml
 **/config.yml
 **/config.json
+__pycache__/
