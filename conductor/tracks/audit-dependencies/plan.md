@@ -8,6 +8,6 @@
 - [x] Create `.gemini/commands/audit_deps.md`. (2ee501b)
 - [x] Develop `scripts/audit_deps.py` to scan files and report discrepancies. (2ee501b)
 
-## Phase 3: Validation
-- [x] Test scanning a single `compose.yaml`.
-- [x] Test reporting across the entire `docker/` directory.
+## Phase 3: Validation [checkpoint: 18f071e]
+- [x] Test scanning a single `compose.yaml`. (18f071e)
+- [x] Test reporting across the entire `docker/` directory. (18f071e)
