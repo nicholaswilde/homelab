@@ -1,17 +1,17 @@
 # Implementation Plan: /task summary command
 
 ## Phase 1: Summary Format Analysis
-- [ ] Review `conductor/workflow.md` task summary requirements.
-- [ ] Study existing Git Note formats in the repository (`git notes show`).
+- [x] Review `conductor/workflow.md` task summary requirements.
+- [x] Study existing Git Note formats in the repository (`git notes show`).
 
 ## Phase 2: Implementation
-- [ ] Create `.gemini/commands/task_summary.md`.
-- [ ] Implement `plan.md` parsing and status update.
-- [ ] Implement Git Note draft generation.
-- [ ] Implement phase completion check logic.
+- [x] Create `.gemini/commands/task_summary.md`.
+- [x] Implement `plan.md` parsing and status update.
+- [x] Implement Git Note draft generation.
+- [x] Implement phase completion check logic.
 
 ## Phase 3: Validation
-- [ ] Test summary generation for a dummy task.
-- [ ] Test `plan.md` update.
-- [ ] Ensure Git Note content meets quality standards.
-- [ ] Document in `docs/tools/gemini-commands.md`.
+- [x] Test summary generation for a dummy task.
+- [x] Test `plan.md` update.
+- [x] Ensure Git Note content meets quality standards.
+- [x] Document in `docs/tools/gemini-commands.md`.

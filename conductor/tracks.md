@@ -2,4 +2,4 @@
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
-- [/task summary command](conductor/tracks/task-summary-cmd/) [ ]
+- [/task summary command](conductor/tracks/task-summary-cmd/) [x]
