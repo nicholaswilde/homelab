@@ -21,7 +21,7 @@ layout:
     icon: mdi-wall-fire
   Media:
     style: row
-    columns: 4
+    columns: 3
     icon: mdi-camera-iris
   Development Tools:
     style: row

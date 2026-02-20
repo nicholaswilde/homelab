@@ -89,6 +89,9 @@
     - BentoPDF:
         icon: sh-bentopdf.svg
         href: https://bentopdf.l.nicholaswilde.io/
+    - Draw.io:
+        icon: sh-draw-io.svg
+        href: https://drawio.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
