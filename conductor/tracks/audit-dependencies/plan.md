@@ -1,8 +1,8 @@
 # Implementation Plan: /audit dependencies
 
 ## Phase 1: Registry Interaction
-- [ ] Determine API methods for querying Docker Hub and GHCR for tags.
-- [ ] Identify tools (e.g., `skopeo`) that might simplify registry inspection.
+- [x] Determine API methods for querying Docker Hub and GHCR for tags.
+- [x] Identify tools (e.g., `skopeo`) that might simplify registry inspection.
 
 ## Phase 2: Implementation
 - [ ] Create `.gemini/commands/audit_deps.md`.
