@@ -11,7 +11,7 @@
 - [x] Implement Docker container discovery and status check using `run_shell_command`.
 - [x] Implement Track status summary check.
 
-## Phase 3: Validation
+## Phase 3: Validation [checkpoint: c817216]
 - [x] Verify command output format and readability.
 - [x] Test command under various node/container states.
 - [x] Document usage in `docs/tools/gemini-commands.md`.
