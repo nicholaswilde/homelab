@@ -24,6 +24,7 @@ The Homelab project is a centralized, automated repository designed to manage an
 - **Unified Application Maintenance:** Simplified updating and service restarting for Docker and LXC applications via Gemini CLI.
 - **Manual Backup Orchestration:** Triggered manual backups for specific applications and verification of encrypted backup files via Gemini CLI.
 - **Project-Wide Secrets Auditing:** Verification of encryption status and synchronization for all sensitive files project-wide via Gemini CLI.
+- **Rapid Log Retrieval:** Summarized log retrieval from Proxmox nodes and services for efficient troubleshooting via Gemini CLI.
 - **Automated Task Summarization:** Automated progress tracking and Git Note generation for development tasks via Gemini CLI.
 - **Automated Documentation Scaffolding:** Automated creation of new documentation files from templates via Gemini CLI, ensuring style guide consistency.
 - **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Gemini CLI.
