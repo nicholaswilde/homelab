@@ -110,4 +110,3 @@ For repositories that do not use releases, you can monitor commits using the Ato
 
 [1]: <https://changedetection.io/>
 [2]: <../tools/apprise.md>
-

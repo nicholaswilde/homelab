@@ -352,4 +352,3 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 [22]: <https://micro-editor.github.io/>
 [23]: <https://neovim.io/>
 [24]: <https://github.com/nicholaswilde/zensical>
-

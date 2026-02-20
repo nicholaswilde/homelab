@@ -220,4 +220,4 @@ To test the network speed, use `iperf3`.
 [12]: <https://github.com/nicholaswilde/home-assistant> 
 [13]: <./nuc.md> 
 [14]: <https://wiki.52pi.com/index.php?title=EP-0171> 
-[15]: <https://argon40.com/products/argon-fan-hat> 
+[15]: <https://argon40.com/products/argon-fan-hat>
