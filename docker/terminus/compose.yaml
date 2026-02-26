@@ -25,7 +25,7 @@ services:
           cpus: "1.0"
 
   database:
-    image: postgres:17.5
+    image: postgres:17.9
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_DB: ${PG_DATABASE}
