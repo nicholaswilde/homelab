@@ -219,6 +219,22 @@ The command uses `scripts/dashboard_add.py` to:
 2. **Metadata Prompt:** Prompts for icon, URL, and description.
 3. **YAML Update:** Appends the service to the correct group while preserving comments and formatting using `ruamel.yaml`.
 
+## :material-update: /homepage update
+
+Update the `homepage` dashboard by syncing configuration changes and restarting the service.
+
+### :pencil: Usage
+
+```bash
+/homepage update
+```
+
+### :gear: Implementation
+
+1. **Identify Configuration:** Locates the local configuration in `pve/homepage/config/`.
+2. **Sync Configuration:** The homepage LXC (vmid 110) on pve04 has the configs symlinked to the repository. Ensure local changes are committed and pushed.
+3. **Restart Service:** Executes `task restart` within the `pve/homepage` directory to restart the `homepage.service` in the LXC on `pve04`.
+
 ## :construction: Planned Commands
 
 The following commands are currently in the implementation queue:
