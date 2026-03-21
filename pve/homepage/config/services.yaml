@@ -109,6 +109,9 @@
     - Mealie:
         icon: si-mealie
         href: https://mealie.l.nicholaswilde.io
+    - Homebox:
+        icon: si-homebox
+        href: https://homebox.l.nicholaswilde.io
 - Monitoring & Analytics:
     - Beszel:
         icon: sh-beszel.svg
