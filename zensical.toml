@@ -42,6 +42,7 @@ Apps = [
   { "FrameFi" = "apps/frame-fi.md" },
   { "File Browser" = "apps/filebrowser.md" },
   { "Gitea" = "apps/gitea.md" },
+  { "Homebox" = "apps/homebox.md" },
   { "Home Assistant" = "apps/home-assistant.md" },
   { "homepage" = "apps/homepage.md" },
   { "Immich" = "apps/immich.md" },
