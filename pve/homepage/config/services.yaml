@@ -110,7 +110,7 @@
         icon: si-mealie
         href: https://mealie.l.nicholaswilde.io
     - Homebox:
-        icon: si-homebox
+        icon: https://raw.githubusercontent.com/loganmarchione/homelab-svg-assets/main/assets/homebox.svg
         href: https://homebox.l.nicholaswilde.io
 - Monitoring & Analytics:
     - Beszel:
