@@ -87,6 +87,16 @@ To upgrade homepage, run the `update.sh` script located in `pve/homepage/`.
         sudo /root/git/nicholaswilde/homelab/pve/homepage/update.sh
         ```
 
+## :robot: Gemini CLI
+
+The `homepage` configuration can be synchronized and the service restarted using the Gemini CLI.
+
+!!! code ""
+
+    ```bash
+    /homepage update
+    ```
+
 ## :simple-task: Task List
 
 !!! example ""

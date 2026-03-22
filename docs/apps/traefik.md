@@ -263,6 +263,15 @@ Update `EnvironmentFile` and `ExecStart` to point to your homelab directories.
         tail -f /var/log/traefik/traefik.log
         ```
 
+## :robot: Gemini CLI
+
+The `traefik` configuration can be synchronized and the service restarted using the Gemini CLI.
+
+!!! code ""
+
+    ```bash
+    /traefik update
+    ```
 
 ## :simple-task: Task List
 
