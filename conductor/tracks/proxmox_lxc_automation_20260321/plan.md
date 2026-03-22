@@ -17,9 +17,20 @@
 - [ ] Task: Implement the container creation command logic and make tests pass.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
 
-## Phase 3: Integration & Manual Verification
+## Phase 3: Implementation - Post-Creation Setup (TDD)
+- [ ] Task: Write a failing test for APT update/upgrade command generation.
+- [ ] Task: Implement system update and upgrade task and make tests pass.
+- [ ] Task: Write a failing test for essential package installation command generation.
+- [ ] Task: Implement utility package installation task and make tests pass.
+- [ ] Task: Write a failing test for user and SSH key configuration commands.
+- [ ] Task: Implement user setup and SSH key deployment logic and make tests pass.
+- [ ] Task: Write a failing test for hostname and timezone configuration commands.
+- [ ] Task: Implement hostname and timezone configuration and make tests pass.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Implementation - Post-Creation Setup' (Protocol in workflow.md)
+
+## Phase 4: Integration & Manual Verification
 - [ ] Task: Integrate `pass show default-lxc-password` for password retrieval.
 - [ ] Task: Verify script handles unprivileged container creation correctly.
-- [ ] Task: Manually verify LXC creation on an x86_64 node.
-- [ ] Task: Manually verify LXC creation on an aarch64 node (if available).
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Manual Verification' (Protocol in workflow.md)
+- [ ] Task: Manually verify LXC creation and setup on an x86_64 node.
+- [ ] Task: Manually verify LXC creation and setup on an aarch64 node (if available).
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Manual Verification' (Protocol in workflow.md)

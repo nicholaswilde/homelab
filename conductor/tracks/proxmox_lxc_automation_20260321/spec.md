@@ -13,6 +13,12 @@ This track aims to automate the creation and configuration of Proxmox LXC contai
     - Privileges: Toggle between privileged and unprivileged containers (defaulting to the project's standard).
 5.  **Automation Interface:** Implement as a `Taskfile` task or a supporting Bash script.
 6.  **Password Management:** Integrate with `pass show default-lxc-password` as defined in `workflow.md`.
+7.  **Post-Creation Setup:** Automatically perform baseline configuration steps within the new LXC (mimicking project Ansible playbooks):
+    - **System Updates:** Update APT cache and upgrade all packages.
+    - **Essential Packages:** Install `curl`, `vim`, `git`, `htop`, and `sudo`.
+    - **User & Security:** Create/configure the primary user, enable passwordless sudo, and deploy authorized SSH keys.
+    - **Environment:** Set the system hostname and timezone (default to `UTC`).
+    - **Cleanup:** Remove or disable redundant services in the container environment.
 
 ## Non-Functional Requirements
 1.  **Consistency:** Ensure created containers follow the standards in `workflow.md` (unprivileged: 0).
