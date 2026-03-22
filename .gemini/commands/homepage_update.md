@@ -3,7 +3,7 @@
 Update the `homepage` dashboard by syncing configuration changes and restarting the service.
 
 ## Description
-Syncs the `homepage` dashboard configuration and restarts the service to apply changes.
+Syncs the `homepage` dashboard configuration via SSH and restarts the service to apply changes.
 
 ## Protocol
 
@@ -12,11 +12,12 @@ Syncs the `homepage` dashboard configuration and restarts the service to apply c
 
 2. **Sync Configuration:**
    - The homepage LXC (vmid 110) on pve04 has the configs symlinked to `/root/git/nicholaswilde/homelab/pve/homepage/config/`.
-   - Ensure local changes are committed and pushed.
+   - **Step:** Execute a `git pull` inside the LXC via SSH.
+   - **Command:** `ssh root@192.168.2.47 "cd /root/git/nicholaswilde/homelab && git pull origin main"`
 
 3. **Restart Service:**
-   - Execute `task restart` within the `pve/homepage` directory.
-   - Alternatively, use `mcp_pve04_manage_resource_config` to execute `systemctl restart homepage` in LXC 110.
+   - **Step:** Restart the `homepage` service inside the LXC via SSH.
+   - **Command:** `ssh root@192.168.2.47 "systemctl restart homepage"`
 
 4. **Verify:**
-   - Announce: "Homepage configuration updated and service restarted."
+   - Announce: "Homepage configuration synced and service restarted."
