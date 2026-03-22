@@ -7,6 +7,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Automate Proxmox LXC creation for x86_64 and aarch64 nodes.**
+- [x] **Track: Automate Proxmox LXC creation for x86_64 and aarch64 nodes.**
 *Link: [./tracks/proxmox_lxc_automation_20260321/](./tracks/proxmox_lxc_automation_20260321/)*
 
