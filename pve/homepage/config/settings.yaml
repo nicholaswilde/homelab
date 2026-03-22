@@ -25,7 +25,7 @@ layout:
     icon: mdi-camera-iris
   Development Tools:
     style: row
-    columns: 3
+    columns: 1
     icon: mdi-robot
   Files & Downloads:
     style: row
@@ -41,7 +41,7 @@ layout:
     icon: mdi-shield-key
   Finance:
     style: row
-    columns: 2
+    columns: 3
     icon: mdi-currency-usd
   Monitoring & Analytics:
     style: row

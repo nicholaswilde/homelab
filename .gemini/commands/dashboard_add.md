@@ -16,6 +16,7 @@ Automate the addition of a new service to the `homepage` dashboard.
 
 3. **Update Configuration:**
    - Use `scripts/dashboard_add.py` to parse and append the new service to the specified group.
+   - The script will automatically calculate and update the `columns` setting in `pve/homepage/config/settings.yaml` to ensure the category remains balanced (max 4 columns).
    - Ensure no duplicate names exist in that group.
 
 4. **Verification:**

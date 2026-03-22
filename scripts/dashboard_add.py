@@ -19,6 +19,49 @@ def log_error(msg):
 def log_success(msg):
     print(f"{GREEN}SUCC{RESET}: {msg}")
 
+def get_balanced_columns(item_count):
+    """
+    Heuristic to balance columns for Homepage dashboard.
+    Max 4 columns.
+    """
+    if item_count <= 4:
+        return item_count
+    if item_count % 4 == 0:
+        return 4
+    if item_count % 3 == 0:
+        return 3
+    if item_count == 5:
+        return 3
+    if item_count == 7:
+        return 4
+    return 4
+
+def update_settings_columns(group, item_count):
+    root_dir = Path.cwd()
+    settings_file = root_dir / "pve" / "homepage" / "config" / "settings.yaml"
+    
+    if not settings_file.exists():
+        log_info(f"Settings file not found: {settings_file}. Skipping column balancing.")
+        return
+
+    yaml = YAML()
+    yaml.indent(mapping=2, sequence=4, offset=2)
+    yaml.preserve_quotes = True
+
+    with open(settings_file, 'r') as f:
+        data = yaml.load(f)
+
+    if 'layout' in data and group in data['layout']:
+        new_cols = get_balanced_columns(item_count)
+        old_cols = data['layout'][group].get('columns')
+        if new_cols != old_cols:
+            data['layout'][group]['columns'] = new_cols
+            log_info(f"Updating '{group}' columns from {old_cols} to {new_cols} for {item_count} items.")
+            with open(settings_file, 'w') as f:
+                yaml.dump(data, f)
+        else:
+            log_info(f"'{group}' columns already balanced at {old_cols} for {item_count} items.")
+
 def add_to_dashboard(name, group, icon, href, description=None):
     root_dir = Path.cwd()
     services_file = root_dir / "pve" / "homepage" / "config" / "services.yaml"
@@ -36,6 +79,7 @@ def add_to_dashboard(name, group, icon, href, description=None):
 
     # Homepage services.yaml is a list of dictionaries where each key is a group name
     group_found = False
+    item_count = 0
     for item in data:
         if group in item:
             group_found = True
@@ -56,6 +100,7 @@ def add_to_dashboard(name, group, icon, href, description=None):
                 new_service[name]['description'] = description
             
             item[group].append(new_service)
+            item_count = len(item[group])
             break
 
     if not group_found:
@@ -73,11 +118,15 @@ def add_to_dashboard(name, group, icon, href, description=None):
         if description:
             new_group[group][0][name]['description'] = description
         data.append(new_group)
+        item_count = 1
 
     with open(services_file, 'w') as f:
         yaml.dump(data, f)
     
     log_success(f"Added '{name}' to group '{group}' in {services_file.relative_to(root_dir)}")
+    
+    # Balance columns in settings.yaml
+    update_settings_columns(group, item_count)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Add a service to the homepage dashboard.")
