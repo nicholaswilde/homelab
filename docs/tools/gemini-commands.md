@@ -219,6 +219,24 @@ The command uses `scripts/dashboard_add.py` to:
 2. **Metadata Prompt:** Prompts for icon, URL, and description.
 3. **YAML Update:** Appends the service to the correct group while preserving comments and formatting using `ruamel.yaml`.
 
+## :material-delete-sweep: /app remove `<name>`
+
+Automate the removal of a service from the homelab, including Traefik, DNS, and Homepage.
+
+### :pencil: Usage
+
+```bash
+/app remove my-old-app
+```
+
+### :gear: Implementation
+
+The command performs the following cleanup:
+1. **Traefik:** Deletes the service's configuration file in `pve/traefik/conf.d/`.
+2. **Dashboard:** Uses `scripts/dashboard_remove.py` to remove the service from `services.yaml` and re-balance category columns.
+3. **DNS:** Removes corresponding DNS rewrites in AdGuard Home.
+4. **Sync:** Commits changes and triggers `/traefik update` and `/homepage update`.
+
 ## :material-update: /homepage update
 
 Update the `homepage` dashboard by syncing configuration changes and restarting the service.
