@@ -233,7 +233,23 @@ Update the `homepage` dashboard by syncing configuration changes and restarting 
 
 1. **Identify Configuration:** Locates the local configuration in `pve/homepage/config/`.
 2. **Sync Configuration:** The homepage LXC (vmid 110) on pve04 has the configs symlinked to the repository. Ensure local changes are committed and pushed.
-3. **Restart Service:** Executes `task restart` within the `pve/homepage` directory to restart the `homepage.service` in the LXC on `pve04`.
+3. **Restart Service:** Executes `task restart` within the `pve/homepage` directory or via SSH to restart the `homepage.service` in the LXC on `pve04`.
+
+## :material-traffic-light: /traefik update
+
+Update the `traefik` edge router by syncing configuration changes and restarting the service.
+
+### :pencil: Usage
+
+```bash
+/traefik update
+```
+
+### :gear: Implementation
+
+1. **Identify Configuration:** Locates the local configuration in `pve/traefik/`.
+2. **Sync Configuration:** The traefik LXC (vmid 111) on pve04 has the repository in `/root/git/nicholaswilde/homelab/`. Ensure local changes are committed and pushed.
+3. **Restart Service:** Executes `systemctl restart traefik` via SSH in the LXC on `pve04`.
 
 ## :construction: Planned Commands
 
