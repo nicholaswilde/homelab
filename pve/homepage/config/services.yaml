@@ -48,7 +48,6 @@
     - MySpeed:
         icon: si-speedtest
         href: https://myspeed.l.nicholaswilde.io
-
     - UniFi:
         icon: si-ubiquiti
         href: https://unifi.l.nicholaswilde.io
@@ -61,9 +60,9 @@
     - PortNote:
         icon: sh-portnote.svg
         href: https://portnote.l.nicholaswilde.io/
-    - PatchMon:
-        icon: sh-patchmon.svg
-        href: https://patchmon.l.nicholaswilde.io/
+    - Gatus:
+        icon: sh-gatus.svg
+        href: https://gatus.l.nicholaswilde.io
 - Media:
     - Jellyfin:
         icon: si-jellyfin
