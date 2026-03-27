@@ -14,6 +14,7 @@ tasks:
       - test -f .env.enc
     cmds:
       - sops -d --input-type dotenv --output-type dotenv .env.enc > .env
+      - sops -d --input-type yaml --output-type yaml config.yaml.enc > config.yaml
   enable:
     desc: Enable the application's systemd service.
     cmds:
@@ -22,10 +23,10 @@ tasks:
     desc: Encrypt sensitive configuration files using SOPS.
     preconditions:
       - test -f .env
-      - sh: "! diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc 2>/dev/null)"
-        msg: "The .env file has not changed. Skipping encryption."
+      - test -f config.yaml
     cmds:
-      - sops -e .env > .env.enc
+      - sops -e --input-type dotenv --output-type dotenv .env > .env.enc
+      - sops -e --input-type yaml --output-type yaml config.yaml > config.yaml.enc
   export:
     silent: true
     desc: Export the task list to `task-list.txt`.
