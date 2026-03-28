@@ -40,6 +40,7 @@ Apps = [
   { "CyberKeyGen" = "apps/cyberkeygen.md" },
   { "Excalidraw" = "apps/excalidraw.md" },
   { "FrameFi" = "apps/frame-fi.md" },
+  { "Gatus" = "apps/gatus.md" },
   { "File Browser" = "apps/filebrowser.md" },
   { "Gitea" = "apps/gitea.md" },
   { "Homebox" = "apps/homebox.md" },
