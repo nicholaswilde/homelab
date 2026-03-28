@@ -35,7 +35,8 @@
     - Create Traefik config in `pve/traefik/conf.d/`.
     - Add AdGuard Home DNS rewrite.
     - Add to Homepage dashboard in `pve/homepage/config/services.yaml`.
-    - **Finalize:** Execute `/homepage update` and `/traefik update` to sync and refresh services.
+    - Add to Gatus dashboard in `lxc/gatus/config.yaml.enc` (decrypt/edit/encrypt).
+    - **Finalize:** Execute `/homepage update`, `/traefik update`, and `/gatus update` to sync and refresh services.
 
 ## Common Commands
 
