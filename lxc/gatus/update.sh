@@ -26,8 +26,9 @@ readonly PURPLE="\033[38;2;203;166;247m"
 readonly RESET="\033[0m"
 SERVICE_NAME="gatus"
 INSTALL_DIR="/opt/gatus"
-GITHUB_REPO=""
+GITHUB_REPO="TwiN/gatus"
 DEBUG="false"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
@@ -68,26 +69,6 @@ function log() {
       echo -e "${color}${type}${RESET}[${timestamp}] ${line}"
     done
   fi
-
-  # LogWard Integration
-  if [[ -n "${LOGWARD_API_KEY}" ]]; then
-    local LOGWARD_API_URL="${LOGWARD_API_URL:-https://logward.l.nicholaswilde.io/api/v1/ingest/single}"
-    local LOGWARD_SERVICE_NAME="${LOGWARD_SERVICE_NAME:-$(basename "$0")}"
-    local json_payload
-    json_payload=$(cat <<EOF
-{
-  "service": "${LOGWARD_SERVICE_NAME}",
-  "level": "${type}",
-  "message": "${message:-$(cat)}",
-  "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-}
-EOF
-)
-    curl -s -X POST "${LOGWARD_API_URL}" \
-      -H "X-API-Key: ${LOGWARD_API_KEY}" \
-      -H "Content-Type: application/json" \
-      -d "${json_payload}" >/dev/null 2>&1 &
-  fi
 }
 
 # Checks if a command exists.
@@ -96,8 +77,8 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  if ! command_exists curl || ! command_exists jq; then
-    log "ERRO" "Required dependencies (curl, jq) are not installed." >&2
+  if ! command_exists curl || ! command_exists jq || ! command_exists go; then
+    log "ERRO" "Required dependencies (curl, jq, go) are not installed." >&2
     exit 1
   fi
 }
@@ -116,15 +97,17 @@ function get_latest_version() {
     echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
     return 1
   fi
-
+  log "DEBU" "${json_response}"
   local tag_name
   tag_name=$(echo "${json_response}" | jq -r '.tag_name')
   LATEST_VERSION=${tag_name#v}
   log "INFO" "Latest ${SERVICE_NAME} version: ${LATEST_VERSION}"
+  TARBALL_URL=$(echo "${json_response}" | grep '"tarball_url":' | sed -E 's/.*"tarball_url": "(.*)",/\1/')
+  export TARBALL_URL
 }
 
 function get_current_version() {
-  if [ ! -x "${INSTALL_DIR}/${SERVICE_NAME}" ]; then
+  if [ ! -f "/opt/${SERVICE_NAME}_version.txt" ]; then
     log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
     CURRENT_VERSION="0"
     return
@@ -132,7 +115,7 @@ function get_current_version() {
   log "INFO" "Getting current version of ${SERVICE_NAME}..."
   local current_version_full
   # Note: Adjust version command and parsing if needed for the specific app
-  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" --version 2>&1)
+  current_version_full=$(cat "/opt/${SERVICE_NAME}_version.txt")
   CURRENT_VERSION=$(echo "${current_version_full}" | awk '{print $NF}' | sed 's/v//')
   log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
 }
@@ -141,33 +124,51 @@ function get_current_version() {
 function main() {
   log "INFO" "Starting ${SERVICE_NAME} update script..."
   check_dependencies
-
+  
   get_latest_version
   get_current_version
-
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
     log "INFO" "${SERVICE_NAME} is already up-to-date: ${CURRENT_VERSION}"
     log "INFO" "Script finished."
     exit 0
   fi
 
+  tmp_dir=$(mktemp -d)
+  trap 'rm -rf "$tmp_dir"' EXIT
+
   log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
     systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+    log "WARN" "Service ${SERVICE_NAME} is not running, skipping stop."
   fi
 
-  log "INFO" "Downloading and installing update..."
-  # Note: Using i.jpillora.com as a generic installer for Go binaries.
-  # Adjust if the app requires a different installation method.
-  if ! ( { curl -fsSL "https://i.jpillora.com/${GITHUB_REPO}" | bash; } 2>&1 | log "INFO"); then
-    log "ERRO" "Failed to download update. Aborting."
-    exit 1
+  if [ -f /opt/gatus/config/config.yaml ]; then
+    log "INFO" "Removing previous config"
+    unlink "${CONFIG_DIR}/config.yaml"
   fi
 
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  log "INFO" "Removing previous version..."
+  rm -rf "${INSTALL_DIR}/*"
+
+  log "INFO" "Downloading update..."
+  curl -fsSL "${TARBALL_URL}" -o "${tmp_dir}/gatus.tar.gz"
+
+  log "INFO" "Extracting to ${INSTALL_DIR}..." 
+  tar -xf "${tmp_dir}/gatus.tar.gz" -C "${INSTALL_DIR}/" --strip-components=1
+
+  log "INFO" "Building ${SERVICE_NAME}..."
+  cd "${INSTALL_DIR}"
+  go mod tidy
+  CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gatus .
+  setcap CAP_NET_RAW+ep gatus
+  
+  log "INFO" "Making link to config"
+  ln -sf "${SCRIPT_DIR}/config.yaml" "${CONFIG_DIR}/config.yaml"
+  echo "${LATEST_VERSION}" > "/opt/${SERVICE_NAME}_version.txt"
+  
+  if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
     systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
