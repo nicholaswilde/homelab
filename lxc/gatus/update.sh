@@ -26,14 +26,15 @@ readonly PURPLE="\033[38;2;203;166;247m"
 readonly RESET="\033[0m"
 SERVICE_NAME="gatus"
 INSTALL_DIR="/opt/gatus"
+CONFIG_DIR="/etc/gatus"
 GITHUB_REPO="TwiN/gatus"
 DEBUG="false"
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 # Source .env file if it exists
-if [ -f "$(dirname "$0")/.env" ]; then
+if [ -f "${SCRIPT_DIR}/.env" ]; then
   # shellcheck source=/dev/null
-  source "$(dirname "$0")/.env"
+  source "${SCRIPT_DIR}/.env"
 fi
 
 # Logging function
@@ -102,7 +103,7 @@ function get_latest_version() {
   tag_name=$(echo "${json_response}" | jq -r '.tag_name')
   LATEST_VERSION=${tag_name#v}
   log "INFO" "Latest ${SERVICE_NAME} version: ${LATEST_VERSION}"
-  TARBALL_URL=$(echo "${json_response}" | grep '"tarball_url":' | sed -E 's/.*"tarball_url": "(.*)",/\1/')
+  TARBALL_URL=$(echo "${json_response}" | jq -r '.tarball_url')
   export TARBALL_URL
 }
 
@@ -144,13 +145,13 @@ function main() {
     log "WARN" "Service ${SERVICE_NAME} is not running, skipping stop."
   fi
 
-  if [ -f /opt/gatus/config/config.yaml ]; then
-    log "INFO" "Removing previous config"
+  if [ -L "${CONFIG_DIR}/config.yaml" ]; then
+    log "INFO" "Removing previous config symlink"
     unlink "${CONFIG_DIR}/config.yaml"
   fi
 
   log "INFO" "Removing previous version..."
-  rm -rf "${INSTALL_DIR}/*"
+  rm -rf "${INSTALL_DIR:?}"/*
 
   log "INFO" "Downloading update..."
   curl -fsSL "${TARBALL_URL}" -o "${tmp_dir}/gatus.tar.gz"
@@ -162,10 +163,18 @@ function main() {
   cd "${INSTALL_DIR}"
   go mod tidy
   CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gatus .
-  setcap CAP_NET_RAW+ep gatus
+  if command_exists setcap; then
+    setcap CAP_NET_RAW+ep gatus
+  fi
   
-  log "INFO" "Making link to config"
-  ln -sf "${SCRIPT_DIR}/config.yaml" "${CONFIG_DIR}/config.yaml"
+  if [ -f "${SCRIPT_DIR}/config.yaml" ]; then
+    log "INFO" "Making link to config"
+    mkdir -p "${CONFIG_DIR}"
+    ln -sf "${SCRIPT_DIR}/config.yaml" "${CONFIG_DIR}/config.yaml"
+  else
+    log "WARN" "config.yaml not found in ${SCRIPT_DIR}. Skipping symlink creation."
+  fi
+
   echo "${LATEST_VERSION}" > "/opt/${SERVICE_NAME}_version.txt"
   
   if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
