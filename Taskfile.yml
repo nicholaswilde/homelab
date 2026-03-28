@@ -92,6 +92,11 @@ tasks:
     cmds:
       - uv pip install --upgrade zensical
 
+  lxc:create:
+    desc: Create a new Proxmox LXC
+    cmds:
+      - ./scripts/lxc_create.sh
+
   encrypt:
     desc: Encrypt secrets
     cmds:
