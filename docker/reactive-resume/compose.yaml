@@ -1,158 +1,120 @@
----
+name: reactive_resume
+
 services:
-  # Database (Postgres)
   postgres:
-    image: postgres:16-alpine
+    image: postgres:latest
     restart: unless-stopped
-    env_file:
-      - .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_PASSWORD} -d postgres"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  browserless:
+    image: ghcr.io/browserless/chromium:latest
+    restart: unless-stopped
+    environment:
+      - QUEUED=10
+      - HEALTH=true
+      - CONCURRENT=5
+      - TOKEN=1234567890
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/pressure?token=1234567890"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
 
-  # Storage (for image uploads)
-  minio:
-    image: minio/minio:RELEASE.2025-05-24T17-08-30Z
+  # As an alternative to browserless, you can also use a lightweight image like chromedp/headless-shell:latest
+  # See https://docs.rxresu.me/self-hosting/docker#alternative-printer-options for more information.
+  # chrome:
+  #   image: chromedp/headless-shell:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9222:9222"
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
     restart: unless-stopped
-    command: server /data
-    ports:
-      - "9000:9000"
-    volumes:
-      - minio_data:/data
+    command: server -s3 -filer -dir=/data -ip=0.0.0.0
     environment:
-      MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
-      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
-
-  # Chrome Browser (for printing and previews)
-  chrome:
-    image: ghcr.io/browserless/chromium:v2.18.0 # Upgrading to newer versions causes issues
-    restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      TIMEOUT: 10000
-      CONCURRENT: 10
-      TOKEN: "${CHROME_TOKEN}"
-      EXIT_ON_HEALTH_FAILURE: true
-      PRE_REQUEST_HEALTH_CHECK: true
-
-  # https://offen.github.io/docker-volume-backup/
-  backup_postgres: &backup_service
-    image: offen/docker-volume-backup:v2.44.0
-    environment: &backup_environment
-      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
-      BACKUP_LATEST_SYMLINK: backup-postgres-latest.tar.gz
-      BACKUP_PRUNING_PREFIX: backup-postgres-
-      BACKUP_RETENTION_DAYS: '14'
-      AGE_PUBLIC_KEYS: "${AGE_PUBLIC_KEYS}"
-      BACKUP_STOP_DURING_BACKUP_LABEL: service-postgres
+      - AWS_ACCESS_KEY_ID=seaweedfs
+      - AWS_SECRET_ACCESS_KEY=seaweedfs
     volumes:
-      - postgres_data:/backup/my-app-backup:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ${HOME}/backups:/archive
-      - /mnt/storage/backup/reactive-resume:/archive
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - seaweedfs_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:8888"]
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  backup_minio:
-    <<: *backup_service
+  seaweedfs_create_bucket:
+    image: quay.io/minio/mc:latest
+    restart: on-failure
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        mc alias set seaweedfs http://seaweedfs:8333 seaweedfs seaweedfs;
+        mc mb seaweedfs/reactive-resume;
+        exit 0;
+      "
+    depends_on:
+      seaweedfs:
+        condition: service_healthy
+
+  reactive_resume:
+    # image: amruthpillai/reactive-resume:latest
+    image: ghcr.io/amruthpillai/reactive-resume:v5.0.16
+    env_file:
+      - .env
     environment:
-      <<: *backup_environment
-      BACKUP_FILENAME: backup2-%Y-%m-%dT%H-%M-%S.tar.gz
-      BACKUP_LATEST_SYMLINK: backup-minio-latest.tar.gz
-      BACKUP_PRUNING_PREFIX: backup-minio-
-      BACKUP_STOP_DURING_BACKUP_LABEL: service-minio
+      # Server
+      - TZ=Etc/UTC
+      - NODE_ENV=production
+      # - APP_URL=http://localhost:3000
+      - APP_URL=https://resume.l.nicholaswilde.io
+      # - STORAGE_URL: http://192.168.2.147:9000/default
+
+      - PRINTER_APP_URL=http://reactive_resume:3000
+      # Printer
+      - PRINTER_ENDPOINT=ws://browserless:3000?token=1234567890
+      # - PRINTER_ENDPOINT=http://chrome:9222 # Or, if you're using chromedp/headless-shell
+      # Database
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+      # Authentication
+      - AUTH_SECRET=change-me-to-a-secure-secret-key-in-production
+      # Storage
+      - S3_ACCESS_KEY_ID=seaweedfs
+      - S3_SECRET_ACCESS_KEY=seaweedfs
+      - S3_ENDPOINT=http://seaweedfs:8333
+      - S3_BUCKET=reactive-resume
+      - S3_FORCE_PATH_STYLE=true
     volumes:
-      - minio_data:/backup/my-app-backup:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ${HOME}/backups:/archive
-      - /mnt/storage/backup/reactive-resume:/archive
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-      
-  reactive-resume:
-    container_name: "${CONTAINER_NAME}"
-    image: ghcr.io/amruthpillai/reactive-resume:v5.0.3
-    restart: unless-stopped
+      - reactive_resume_data:/app/data
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
-      - minio
-      - chrome
-    env_file:
-      - .env
-    environment:
-      # -- Environment Variables --
-      PORT: 3000
-      NODE_ENV: production
-
-      # -- URLs --
-      PUBLIC_URL: http://192.168.2.147:3000
-      STORAGE_URL: http://192.168.2.147:9000/default
-
-      # -- Printer (Chrome) --
-      CHROME_TOKEN: "${CHROME_TOKEN}"
-      CHROME_URL: ws://chrome:3000
-
-      # -- Database (Postgres) --
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres
-
-      # -- Auth --
-      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
-      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
-
-      # -- Emails --
-      MAIL_FROM: noreply@localhost
-      # SMTP_URL: smtp://user:pass@smtp:587 # Optional
-
-      # -- Storage (Minio) --
-      STORAGE_ENDPOINT: minio
-      STORAGE_PORT: 9000
-      STORAGE_REGION: us-west-1 # Optional
-      STORAGE_BUCKET: default
-      STORAGE_ACCESS_KEY: "${STORAGE_ACCESS_KEY}"
-      STORAGE_SECRET_KEY: "${STORAGE_SECRET_KEY}"
-      STORAGE_USE_SSL: false
-      STORAGE_SKIP_BUCKET_CHECK: false
-
-      # -- Crowdin (Optional) --
-      # CROWDIN_PROJECT_ID:
-      # CROWDIN_PERSONAL_TOKEN:
-
-      # -- Email (Optional) --
-      # DISABLE_SIGNUPS: "false"
-      # DISABLE_EMAIL_AUTH: "false"
-
-      # -- GitHub (Optional) --
-      # GITHUB_CLIENT_ID: github_client_id
-      # GITHUB_CLIENT_SECRET: github_client_secret
-      # GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
-
-      # -- Google (Optional) --
-      # GOOGLE_CLIENT_ID: google_client_id
-      # GOOGLE_CLIENT_SECRET: google_client_secret
-      # GOOGLE_CALLBACK_URL: http://localhost:3000/api/auth/google/callback
-
-      # -- OpenID (Optional) --
-      # VITE_OPENID_NAME: OpenID
-      # OPENID_AUTHORIZATION_URL:
-      # OPENID_CALLBACK_URL: http://localhost:3000/api/auth/openid/callback
-      # OPENID_CLIENT_ID:
-      # OPENID_CLIENT_SECRET:
-      # OPENID_ISSUER:
-      # OPENID_SCOPE: openid profile email
-      # OPENID_TOKEN_URL:
-      # OPENID_USER_INFO_URL:
+      postgres:
+        condition: service_healthy
+      browserless:
+        condition: service_healthy
+      seaweedfs_create_bucket:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
-  minio_data:
   postgres_data:
+  seaweedfs_data:
+  reactive_resume_data:
