@@ -30,7 +30,8 @@
 2. **Environment:** Update `Taskfile.yml` (SERVICE_NAME, INSTALL_DIR, CONFIG_DIR).
 3. **Provisioning:**
     - Use `list_templates` to select `debian-trixie`.
-    - Use `pct create` with `--unprivileged 0` and `--password $(pass show default-lxc-password)`.
+    - Use `pct create` with `--unprivileged 0`, `--net0 name=eth0,bridge=vmbr0,ip=dhcp,ip6=slaac`, and `--features nesting=1`.
+    - Use `--password $(pass show default-lxc-password)`.
 4. **Network & Routing:**
     - Create Traefik config in `pve/traefik/conf.d/`.
     - Add AdGuard Home DNS rewrite.

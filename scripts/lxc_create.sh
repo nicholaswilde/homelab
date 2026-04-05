@@ -49,7 +49,7 @@ function generate_command() {
   local bridge=$4
   local ip=$5
   local gw=$6
-  echo "pct create $vmid $template --hostname=$hostname --net0 name=eth0,bridge=$bridge,ip=$ip,gw=$gw --unprivileged 0"
+  echo "pct create $vmid $template --hostname=$hostname --net0 name=eth0,bridge=$bridge,ip=$ip,gw=$gw,ip6=slaac --features nesting=1 --unprivileged 0"
 }
 
 function generate_setup() {
@@ -112,7 +112,7 @@ function main() {
       detect_arch "$2"
       ;;
     "--generate-command")
-      generate_command "$3" "$4" "$5" "$6" "$7" "$8"
+      generate_command "$2" "$3" "$4" "$5" "$6" "$7"
       ;;
     "--generate-setup")
       generate_setup "$2"

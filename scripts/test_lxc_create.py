@@ -27,12 +27,20 @@ def test_command_generation():
     script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
     
     # Test for standard x86_64 LXC creation command
-    # Arguments: --generate-command <node> <vmid> <hostname> <template> <bridge> <ip> <gw>
-    args = ["--generate-command", "pve01", "100", "test-lxc", "debian-12-standard_12.0-1_amd64.tar.zst", "vmbr0", "192.168.1.10/24", "192.168.1.1"]
+    # Arguments: --generate-command <vmid> <hostname> <template> <bridge> <ip> <gw>
+    # In main(), --generate-command calls generate_command "$2" "$3" "$4" "$5" "$6" "$7"
+    # Actually main() says: "--generate-command") generate_command "$2" "$3" "$4" "$5" "$6" "$7"
+    # Wait, let me re-read main.
+    # main() { case "$1" in ... "--generate-command") generate_command "$2" "$3" "$4" "$5" "$6" "$7" ... }
+    # So $2 is vmid, $3 is hostname, etc.
+    args = ["--generate-command", "100", "test-lxc", "debian-12-standard_12.0-1_amd64.tar.zst", "vmbr0", "192.168.1.10/24", "192.168.1.1"]
     result = subprocess.run([script_path] + args, capture_output=True, text=True)
     
     assert "pct create 100" in result.stdout
+    assert "test-lxc" in result.stdout
     assert "debian-12-standard_12.0-1_amd64.tar.zst" in result.stdout
+    assert "ip6=slaac" in result.stdout
+    assert "--features nesting=1" in result.stdout
 def test_post_setup_commands():
     script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
     

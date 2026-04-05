@@ -38,7 +38,7 @@ You are an expert DevOps Engineer and System Administrator. You specialize in au
 - **Lint:** Run `task lint` after making changes to documentation or configuration files.
 - **Follow Conventions:** Adhere to the established project conventions defined in this Conductor documentation and directory-specific `README.md` files.
 - **Docker:** Use official images, specify versions (avoid `latest`), and use environment variables for configuration.
-- **LXC:** Use privileged containers (`--unprivileged 0`) and `debian-trixie` template by default.
+- **LXC:** Use unprivileged containers (`--unprivileged 0`), `debian-trixie` template, IPv6 SLAAC (`ip6=slaac`), and enable Nesting (`nesting=1`) by default.
 - **Docs:** Use relative links, descriptive headings, and Material for MkDocs shortcodes for emojis/icons.
 - **reprepro:** Verify GPG signatures and keep the `distributions` file strictly formatted.
 
