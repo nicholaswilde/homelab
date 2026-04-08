@@ -1,4 +1,4 @@
-#!/usr//bin/env bash
+#!/usr/bin/env bash
 ################################################################################
 #
 # Script Name: update.sh
@@ -55,8 +55,8 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  if ! command_exists curl || ! command_exists jq; then
-    log "ERRO" "Required dependencies (curl, jq) are not installed." >&2
+  if ! command_exists curl || ! command_exists jq || ! command_exists tar; then
+    log "ERRO" "Required dependencies (curl, jq, tar) are not installed." >&2
     exit 1
   fi
 }
@@ -65,10 +65,11 @@ function get_latest_version() {
   log "INFO" "Getting latest version of ${SERVICE_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local json_response
+  local curl_args=('-s')
   if [ -n "${GITHUB_TOKEN}" ]; then
-    local curl_args=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+    curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
-  json_response=$(curl -s "${curl_args[@]}" "${api_url}")
+  json_response=$(curl "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
     echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
@@ -95,6 +96,37 @@ function get_current_version() {
   log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
 }
 
+function download_and_install() {
+  log "INFO" "Downloading and installing update..."
+  local os
+  local arch
+  os=$(uname -s | tr '[:upper:]' '[:lower:]')
+  arch=$(uname -m)
+  case $arch in
+      x86_64) arch="amd64" ;;
+      aarch64) arch="arm64" ;;
+      armv7l) arch="armv7" ;;
+      armv6l) arch="armv6" ;;
+      i386|i686) arch="386" ;;
+  esac
+
+  local download_url="https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/traefik_v${LATEST_VERSION}_${os}_${arch}.tar.gz"
+  log "INFO" "Downloading ${download_url}..."
+  
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+  if ! curl -fsSL "${download_url}" -o "${tmp_dir}/traefik.tar.gz"; then
+    log "ERRO" "Failed to download Traefik from ${download_url}"
+    rm -rf "${tmp_dir}"
+    return 1
+  fi
+  
+  tar -xzf "${tmp_dir}/traefik.tar.gz" -C "${tmp_dir}"
+  mv "${tmp_dir}/traefik" "${INSTALL_DIR}/${SERVICE_NAME}"
+  chmod +x "${INSTALL_DIR}/${SERVICE_NAME}"
+  rm -rf "${tmp_dir}"
+}
+
 # Main function to orchestrate the script execution
 function main() {
   log "INFO" "Starting ${SERVICE_NAME} update script..."
@@ -112,21 +144,19 @@ function main() {
   log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
-    systemctl stop "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+    systemctl stop "${SERVICE_NAME}.service"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
 
-  log "INFO" "Downloading and installing update..."
-  if [ -z "${INSTALLER_URL}" ]; then
-      log "ERRO" "INSTALLER_URL is not set. Please set it in the .env file."
-      exit 1
+  if ! download_and_install; then
+    log "ERRO" "Failed to install update."
+    exit 1
   fi
-  { curl -fsSL "${INSTALLER_URL}" | bash; } 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
 
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
-    systemctl restart "${SERVICE_NAME}.service" 2>&1 | while IFS= read -r line; do log "INFO" "$line"; done
+    systemctl restart "${SERVICE_NAME}.service"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi
