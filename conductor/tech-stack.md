@@ -44,4 +44,5 @@
     - **pve04 Node:** No prefix.
   - **UniFi Network MCP:** Python package (via `uv`); manages UniFi network devices and clients. Prefix `unifi_`.
   - **Gitea MCP:** Binary; interacts with Gitea instances.
-  - **AdGuard Home MCP:** Manages DNS rewrites and filtering rules. No prefix.
+  - **AdGuard Home MCP:** Manages DNS rewrites, filtering rules, and system status. No prefix.
+  - **Syncthing MCP:** Manages Syncthing instances, devices, and folder synchronization. Prefix `syncthing_`.
