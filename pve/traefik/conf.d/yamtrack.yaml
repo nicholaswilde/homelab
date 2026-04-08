@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    yamtrack:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`yamtrack.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: yamtrack
+#endregion
+#region services
+  services:
+    yamtrack:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.125:80"
+        passHostHeader: true
+#endregion
