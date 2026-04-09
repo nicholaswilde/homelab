@@ -26,17 +26,34 @@
 
 ### Proxmox LXC Applications
 
-1. **Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>`.
-2. **Environment:** Update `Taskfile.yml` (SERVICE_NAME, INSTALL_DIR, CONFIG_DIR).
-3. **Provisioning:**
+1. **Research & Reference:**
+    - Before creating a new LXC, search [community-scripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install) for a corresponding installation script.
+    - If found, use the script as the primary reference for installation, configuration, and dependencies.
+    - If no community script exists, search for the application's official documentation or community installation guides.
+2. **Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>`.
+3. **Environment:** Update `Taskfile.yml` (SERVICE_NAME, INSTALL_DIR, CONFIG_DIR).
+4. **Provisioning:**
     - Use `list_templates` to select `debian-trixie`.
     - Use `pct create` with `--unprivileged 0`, `--net0 name=eth0,bridge=vmbr0,ip=dhcp,ip6=slaac`, and `--features nesting=1`.
     - Use `--password $(pass show default-lxc-password)`.
-4. **Network & Routing:**
-    - Create Traefik config in `pve/traefik/conf.d/`.
-    - Add AdGuard Home DNS rewrite.
-    - Add to Homepage dashboard in `pve/homepage/config/services.yaml`.
-    - Add to Gatus dashboard in `lxc/gatus/config.yaml.enc` (decrypt/edit/encrypt).
+5. **Post-Setup:**
+    - Install `openssh-server` and `syncthing`.
+    - Purge `cloud-init`.
+    - Update `/etc/ssh/sshd_config`:
+        - Set `PermitRootLogin yes`.
+        - Ensure `PubkeyAuthentication yes`.
+    - Enable and start `syncthing@root` service.
+    - Restart SSH service.
+    - **Note:** Do not create a default user; use root with the password from `pass`.
+6. **Network & Routing:**
+    - **Traefik:** Create Traefik config in `pve/traefik/conf.d/`.
+    - **DNS:** Add AdGuard Home DNS rewrite.
+    - **Syncthing:**
+        - Retrieve Device ID: `pct exec <vmid> -- syncthing --device-id`.
+        - Add device to host: Use `syncthing_manage_devices` with `action: "add"`, `device_id`, and `name`.
+    - **Dashboards:**
+        - Add to Homepage dashboard in `pve/homepage/config/services.yaml`.
+        - Add to Gatus dashboard in `lxc/gatus/config.yaml.enc` (decrypt/edit/encrypt).
     - **Finalize:** Execute `/homepage update`, `/traefik update`, and `/gatus update` to sync and refresh services.
 
 ## Common Commands

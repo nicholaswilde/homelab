@@ -56,11 +56,15 @@ function generate_setup() {
   local vmid=$1
   echo "pct exec $vmid -- apt update"
   echo "pct exec $vmid -- apt upgrade -y"
-  echo "pct exec $vmid -- apt install -y curl vim git htop sudo"
-  echo "pct exec $vmid -- useradd -m -s /bin/bash nicholas"
-  echo "pct exec $vmid -- tee /etc/sudoers.d/nicholas <<EOF
-nicholas ALL=(ALL) NOPASSWD:ALL
-EOF"
+  echo "pct exec $vmid -- apt install -y curl vim git htop sudo openssh-server syncthing"
+  echo "pct exec $vmid -- apt purge -y cloud-init"
+  echo "pct exec $vmid -- sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config"
+  echo "pct exec $vmid -- sed -i 's/^#PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config"
+  echo "pct exec $vmid -- systemctl enable syncthing@root"
+  echo "pct exec $vmid -- systemctl start syncthing@root"
+  echo "pct exec $vmid -- systemctl restart ssh"
+  echo "# To get Syncthing Device ID, run:"
+  echo "pct exec $vmid -- syncthing --device-id"
 }
 
 function interactive_create() {
