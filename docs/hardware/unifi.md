@@ -51,7 +51,7 @@ SSH into your UniFi Controller (e.g., your CloudKey at `192.168.1.148`) and conn
 
 ```shell
 mongo --port 27117
-````
+```
 
 Switch to the UniFi database:
 
@@ -67,18 +67,22 @@ List all sites to find the `_id` for both the current "default" site and the one
 db.site.find()
 ```
 
-  * **[ID\_1]**: The `_id` of the site where `"name": "default"`.
-  * **[ID\_2]**: The `_id` of your target site (e.g., "Main Site").
+  * **[ID_1]**: The `_id` of the site where `"name": "default"`.
+  * **[ID_2]**: The `_id` of your target site (e.g., "Main Site").
 
 #### 3. Swap Default Attributes
 
 Remove the default flags from the old site and assign them to the new site:
 
-```javascript
-// Remove default flags from current site
-db.site.update({ _id: ObjectId("[ID_1]") }, { $unset: { attr_hidden_id: "", attr_no_delete: "" } })
+Remove default flags from current site
 
-// Assign default flags to new site
+```javascript
+db.site.update({ _id: ObjectId("[ID_1]") }, { $unset: { attr_hidden_id: "", attr_no_delete: "" } })
+```
+
+Assign default flags to new site
+
+```
 db.site.update({ _id: ObjectId("[ID_2]") }, { $set: { attr_hidden_id: "default", attr_no_delete: true } })
 ```
 
