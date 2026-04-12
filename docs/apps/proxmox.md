@@ -836,6 +836,19 @@ Check the results
     ```shell
     pvecm status
     ```
+## Theme Switching - [ProxMorph][12]
+
+### Install
+
+```shell
+bash <(curl -fsSL https://raw.githubusercontent.com/IT-BAER/proxmorph/main/install.sh) install
+```
+
+### Apply Theme
+
+1. Hard refresh browser (Ctrl+Shift+R)
+2. Click username → Color Theme
+3. Select a ProxMorph theme
 
 ## :link: References
 
@@ -855,3 +868,4 @@ Check the results
 [9]: <https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3>
 [10]: <https://pakstech.com/blog/proxmox-increase-lxc-disk/>
 [11]: <https://forum.proxmox.com/threads/join-information-wrong.115956/#post-501492>
+[12]: <https://github.com/IT-BAER/proxmorph/>
