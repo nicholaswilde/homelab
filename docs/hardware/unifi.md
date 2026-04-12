@@ -19,7 +19,7 @@ I have a UniFi network setup with the following devices.
 | Man Cave AP | UAP6MP | uap | 192.168.1.113 | 70:a7:41:6a:2b:15 | online |
 | Man Cave Switch | USMINI | usw | 192.168.1.68 | 78:45:58:47:c2:70 | online |
 | LTE | ULTE | uap | 192.168.1.153 | f4:92:bf:6c:95:ec | offline |
-| UCG | UCG-Max | ugw | 68.111.82.103 | fc:ec:da:46:02:9e | online |
+| UCG | UCG-Max | ugw | 68.111.82.103 | 58:d6:1f:47:8e:89 | online |
 | Kitchen AP | U6IW | uap | 192.168.1.130 | 70:a7:41:af:30:43 | online |
 | Attic Switch | USMINI | usw | 192.168.1.23 | f4:92:bf:a3:fa:81 | online |
 
@@ -30,12 +30,6 @@ I have a UniFi network setup with the following devices.
 | Guest Room Protect | 192.168.1.199 | 18:b4:30:aa:1d:d0 | online |
 | Upstairs Hallway Protect | 192.168.1.214 | 18:b4:30:aa:48:93 | online |
 | Master Bedroom Protect | 192.168.1.208 | 18:b4:30:aa:47:e7 | online |
-
-## :control_knobs: Controllers
-
-| Name | IP | MAC | Status |
-| :--- | :--- | :--- | :--- |
-| CloudKey | 192.168.1.148 | 18:e8:29:4f:60:a9 | online |
 
 ## :simple-ubiquiti: Changing the Default Site in UniFi
 
