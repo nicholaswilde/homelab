@@ -86,7 +86,7 @@
         icon: sh-draw-io.svg
         href: https://drawio.l.nicholaswilde.io/
     - Yamtrack:
-        icon: https://raw.githubusercontent.com/FuzzyGrim/Yamtrack/refs/heads/main/src/static/favicon.ico
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/yamtrack.svg
         href: https://yamtrack.l.nicholaswilde.io
 - Authentication & Security:
     - Authentik:
