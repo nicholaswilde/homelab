@@ -44,7 +44,60 @@ While the UniFi UI does not allow you to change which site is designated as "def
 !!! warning "Backup Required"
     Before proceeding, take a full backup of your UniFi Controller settings. Direct database manipulation carries risk.
 
-### :material-console: Procedure
+You can also make the output a little friendlier by installing `jq`.
+
+### TL;DR
+
+```shell
+apt-get update && apt-get install jq -y
+```
+
+```shell
+mongo --quiet --port 27117 ace --eval "printjsononeline(db.site.find().toArray())" | \
+sed 's/ObjectId(//g; s/UUID(//g; s/)//g' | \
+jq -r '.[] | {name: .name, desc: .desc, id: ._id, protected: .attr_no_delete}'
+```
+
+```json title="Output"
+{
+  "name": "default",
+  "desc": "Default",
+  "id": "5cb82d182372ca03dc6e0b19",
+  "protected": true
+}
+{
+  "name": "super",
+  "desc": null,
+  "id": "69daecabfa53fbc3a2990e53",
+  "protected": true
+}
+```
+
+Capture the `default` network `id` in a variable:
+
+```
+DEFAULT_ID=$(mongo --quiet --port 27117 ace --eval "printjsononeline(db.site.find().toArray())" | sed 's/ObjectId(//g; s/UUID(//g; s/)//g' | jq -r '.[] | select(.name=="default") | ._id')
+echo $DEFAULT_ID
+```
+
+Only see which site is set to the default:
+
+```shell
+mongo --quiet --port 27117 ace --eval "printjsononeline(db.site.find().toArray())" | \
+sed 's/ObjectId(//g; s/UUID(//g; s/)//g' | \
+jq -r '.[] | select(.name=="default") | {name, desc, id: ._id, protected: .attr_no_delete}'
+```
+
+```json title="Output"
+{
+  "name": "default",
+  "desc": "Default",
+  "id": "5cb82d182372ca03dc6e0b19",
+  "protected": true
+}
+```
+
+### :material-console: Manual Procedure
 
 #### 1. Access the Database
 SSH into your UniFi Controller (e.g., your CloudKey at `192.168.1.148`) and connect to the local MongoDB instance:
