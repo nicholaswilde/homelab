@@ -16,6 +16,9 @@
     - AdGuardHome 02:
         icon: si-adguard
         href: http://adguard02.l.nicholaswilde.io/
+    - AdGuardHome 03:
+        icon: si-adguard
+        href: http://adguard03.l.nicholaswilde.io/
     - AdGuardHome Sync:
         icon: si-adguard
         href: https://adguard-sync.l.nicholaswilde.io/

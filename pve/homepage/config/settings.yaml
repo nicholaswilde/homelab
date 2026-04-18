@@ -13,7 +13,7 @@ layout:
     icon: si-proxmox
   DNS:
     style: row
-    columns: 4
+    columns: 5
     icon: mdi-dns
   Networking:
     style: row
