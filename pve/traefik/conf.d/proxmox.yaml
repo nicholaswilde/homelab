@@ -11,15 +11,6 @@ http:
         - https-redirectscheme@file
       tls: {}
       service: proxmox01
-    proxmox02:
-      entryPoints:
-        - "websecure"
-      rule: "Host(`pve02.l.nicholaswilde.io`)"
-      middlewares:
-        - default-headers@file
-        - https-redirectscheme@file
-      tls: {}
-      service: proxmox02
     proxmox03:
       entryPoints:
         - "websecure"
@@ -45,22 +36,17 @@ http:
     proxmox01:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.128:8006"
-        passHostHeader: true
-    proxmox02:
-      loadBalancer:
-        servers:
-          - url: "https://192.168.2.88:8006"
+          - url: "https://192.168.1.128:8006"
         passHostHeader: true
     proxmox03:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.143:8006"
+          - url: "https://192.168.1.141:8006"
         passHostHeader: true
     proxmox04:
       loadBalancer:
         servers:
-          - url: "https://192.168.2.67:8006"
+          - url: "https://192.168.1.66:8006"
         passHostHeader: true
 
 
