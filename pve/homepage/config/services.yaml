@@ -57,6 +57,9 @@
     - Gatus:
         icon: sh-gatus.svg
         href: https://gatus.l.nicholaswilde.io
+    - DNS Speed Test:
+        icon: https://raw.githubusercontent.com/BrainicHQ/DoHSpeedTest/refs/heads/main/favicon/android-chrome-192x192.png
+        href: https://dnsspeedtest.l.nicholaswilde.io/
 - Media:
     - Jellyfin:
         icon: si-jellyfin

@@ -1,6 +1,6 @@
 ---
 theme: dark
-color: slate
+# color: slate
 target: _self
 
 providers:
