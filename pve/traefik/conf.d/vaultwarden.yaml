@@ -17,7 +17,7 @@ http:
     vaultwarden:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.25:8000/"
+          - url: "http://192.168.1.209:8000/"
         passHostHeader: true
 #endregion
   middlewares:

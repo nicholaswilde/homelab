@@ -17,6 +17,6 @@ http:
     it-tools:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.52:8080"
+          - url: "http://192.168.1.132:8080"
         passHostHeader: true
 #endregion

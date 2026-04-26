@@ -17,6 +17,6 @@ http:
     portnote:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.159:3000"
+          - url: "http://192.168.1.36:3000"
         passHostHeader: true
 #endregion

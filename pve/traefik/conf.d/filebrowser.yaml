@@ -17,6 +17,6 @@ http:
     filebrowser:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.98:8095"
+          - url: "http://192.168.1.85:8095"
         passHostHeader: true
 #endregion

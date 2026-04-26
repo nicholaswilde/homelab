@@ -2,22 +2,22 @@
 http:
  #region routers 
   routers:
-    netbootxyz:
+    dnsspeedtest:
       entryPoints:
         - "websecure"
-      rule: "Host(`netboot.l.nicholaswilde.io`)"
+      rule: "Host(`dnsspeedtest.l.nicholaswilde.io`)"
       middlewares:
         - default-headers@file
         - https-redirectscheme@file
       tls: {}
-      service: netbootxyz
+      service: dnsspeedtest
 #endregion
 #region services
   services:
-    netbootxyz:
+    dnsspeedtest:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.70:3000"
+          - url: "http://192.168.1.86"
         passHostHeader: true
 #endregion
   middlewares:
