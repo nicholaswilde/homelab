@@ -85,6 +85,9 @@
     - Yamtrack:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/yamtrack.svg
         href: https://yamtrack.l.nicholaswilde.io
+    - FreshRSS:
+        icon: sh-freshrss.svg
+        href: https://freshrss.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
