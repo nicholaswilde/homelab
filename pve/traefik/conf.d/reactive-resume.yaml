@@ -17,7 +17,7 @@ http:
     reactive-resume:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.147:3000"
+          - url: "http://192.168.1.174:3000"
         passHostHeader: true
 #endregion
   middlewares:

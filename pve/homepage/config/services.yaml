@@ -16,6 +16,9 @@
     - AdGuardHome 02:
         icon: si-adguard
         href: http://adguard02.l.nicholaswilde.io/
+    - AdGuardHome 03:
+        icon: si-adguard
+        href: http://adguard03.l.nicholaswilde.io/
     - AdGuardHome Sync:
         icon: si-adguard
         href: https://adguard-sync.l.nicholaswilde.io/
@@ -89,7 +92,7 @@
         icon: sh-draw-io.svg
         href: https://drawio.l.nicholaswilde.io/
     - Yamtrack:
-        icon: https://raw.githubusercontent.com/FuzzyGrim/Yamtrack/refs/heads/main/src/static/favicon.ico
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/yamtrack.svg
         href: https://yamtrack.l.nicholaswilde.io
 - Authentication & Security:
     - Authentik:

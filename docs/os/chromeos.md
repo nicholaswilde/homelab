@@ -46,7 +46,7 @@ x-row {
 'Caskaydia Cove NFM', 'Fira Code', 'Noto Sans Mono'
 ```
 
-## :cat: Secure Shell Catpucchin Theme
+## :cat: Secure Shell Catppuccin Theme
 
 I use the [Secure Shell Chrome extensions](https://chromewebstore.google.com/detail/secure-shell/iodihamcpbpeioajjeobimgagajmlibd) for my SSH session.
 
@@ -78,6 +78,15 @@ Background color:
   "#a6adc8"
 ]
 ```
+
+## :material-brush: [Catppuccin Userstyles (Stylus)][5]
+
+I use [Catppuccin userstyles](https://userstyles.catppuccin.com/) with the [Stylus](https://chromewebstore.google.com/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne) Chrome extension to theme various websites.
+
+1. Install the [Stylus](https://chromewebstore.google.com/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne) extension.
+2. Browse the [Catppuccin Userstyles](https://userstyles.catppuccin.com/) catalog.
+3. Select a style and click the **Install** button.
+4. Stylus will open a new tab to confirm the installation. Click **Install style**.
 
 ## :material-console: [Pin Secure Shell Profile][3]
 
@@ -220,8 +229,10 @@ vmc container termina nixos
 ## :link: References
 
 - <https://www.youtube.com/watch?v=sIU5qOyBO-Q>
+- <https://userstyles.catppuccin.com/getting-started/usage/>
 
 [1]: <https://adamtheautomator.com/ssh-chrome-extension/#Connecting_to_a_Remote_Host_using_the_Search_Bar>
 [2]: <https://www.reddit.com/r/chromeos/comments/7n3jc1/setting_up_brother_hl2270dw_printer_on_chromebook/>
 [3]: <https://chromium.googlesource.com/apps/libapps/+/HEAD/nassh/docs/FAQ.md#can-i-create-bookmarks-to-specific-sites>
 [4]: <https://ricma.co/posts/tech/tutorials/chrome-os-nerd-fonts/>
+[5]: <https://userstyles.catppuccin.com/getting-started/usage/>

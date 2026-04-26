@@ -17,6 +17,6 @@ http:
     wallos:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.95"
+          - url: "http://192.168.1.163"
         passHostHeader: true
 #endregion

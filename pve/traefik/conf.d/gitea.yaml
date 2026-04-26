@@ -18,6 +18,6 @@ http:
     gitea:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.20:3000"
+          - url: "http://192.168.1.29:3000"
         passHostHeader: true
 #endregion

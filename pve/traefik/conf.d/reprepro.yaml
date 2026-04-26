@@ -17,6 +17,6 @@ http:
     reprepro:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.32"
+          - url: "http://192.168.1.58"
         passHostHeader: true
 # #endregion
