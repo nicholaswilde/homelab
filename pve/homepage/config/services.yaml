@@ -16,12 +16,12 @@
     - AdGuardHome 02:
         icon: si-adguard
         href: http://adguard02.l.nicholaswilde.io/
-    - AdGuardHome 03:
-        icon: si-adguard
-        href: http://adguard03.l.nicholaswilde.io/
     - AdGuardHome Sync:
         icon: si-adguard
         href: https://adguard-sync.l.nicholaswilde.io/
+    - DNS Speed Test:
+        icon: https://raw.githubusercontent.com/BrainicHQ/DoHSpeedTest/refs/heads/main/favicon/android-chrome-192x192.png
+        href: https://dnsspeedtest.l.nicholaswilde.io/
     - Traefik:
         icon: si-traefikproxy
         href: https://traefik.l.nicholaswilde.io/    
@@ -35,9 +35,6 @@
     - Z-Wave JS UI:
         icon: sh-z-wave-js-ui.png
         href: https://zwave.l.nicholaswilde.io/
-    - activepieces:
-        icon: sh-activepieces.png
-        href: https://ap.l.nicholaswilde.io/
 - Networking:
     - Apt-Cacher NG:
         icon: mdi-package-variant
@@ -51,18 +48,12 @@
     - Wireguard:
         icon: si-wireguard
         href: https://wireguard.l.nicholaswilde.io
-    - Dockflare:
-        icon: si-cloudflare
-        href: https://dockflare.l.nicholaswilde.io
     - PortNote:
         icon: sh-portnote.svg
         href: https://portnote.l.nicholaswilde.io/
     - Gatus:
         icon: sh-gatus.svg
         href: https://gatus.l.nicholaswilde.io
-    - DNS Speed Test:
-        icon: https://raw.githubusercontent.com/BrainicHQ/DoHSpeedTest/refs/heads/main/favicon/android-chrome-192x192.png
-        href: https://dnsspeedtest.l.nicholaswilde.io/
 - Media:
     - Jellyfin:
         icon: si-jellyfin
@@ -108,9 +99,6 @@
     - Wallos:
         icon: sh-wallos.svg
         href: https://wallos.l.nicholaswilde.io
-    - Mealie:
-        icon: si-mealie
-        href: https://mealie.l.nicholaswilde.io
     - Homebox:
         icon: https://raw.githubusercontent.com/loganmarchione/homelab-svg-assets/main/assets/homebox.svg
         href: https://homebox.l.nicholaswilde.io
@@ -121,12 +109,6 @@
     - Change Detection:
         icon: sh-changedetection.png
         href: https://cd.l.nicholaswilde.io/
-    - WatchYourLAN:
-        icon: sh-watchyourlan.png
-        href: https://watch.l.nicholaswilde.io/
-    - LogWard:
-        icon: https://raw.githubusercontent.com/logward-dev/logward/refs/heads/main/packages/frontend/static/android-chrome-192x192.png
-        href: https://logward.l.nicholaswilde.io/dashboard
 
 - Files & Downloads:
     - Aria2:
@@ -146,7 +128,7 @@
         href: https://netboot.l.nicholaswilde.io/
     - OpenMediaVault:
         icon: si-openmediavault
-        href: http://omv.l.nicholaswilde.io
+        href: http://openmediavault.local/
     - qBittorrent:
         icon: si-qbittorrent
         href: https://qbittorrent.l.nicholaswilde.io/
