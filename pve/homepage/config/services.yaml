@@ -88,6 +88,9 @@
     - FreshRSS:
         icon: sh-freshrss.svg
         href: https://freshrss.l.nicholaswilde.io/
+    - withoutbg:
+        icon: sh-withoutbg.svg
+        href: https://withoutbg.l.nicholaswilde.io/
 - Authentication & Security:
     - Authentik:
         icon: si-authentik
