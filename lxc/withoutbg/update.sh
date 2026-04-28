@@ -173,10 +173,23 @@ function download_and_extract(){
 
 function setup_app(){
   log "INFO" "Running setup..."
+  setup_backend
+  setup_frontend
 }
 
 function setup_backend(){
   cd "${BACKEND_DIR}"
+  
+  uv python install 3.12
+  uv python pin 3.12
+  uv sync
+}
+
+function setup_frontend(){
+  cd "${FRONTEND_DIR}"
+  npm install .
+  npm run build
+    
 }
 
 # Main function to orchestrate the script execution

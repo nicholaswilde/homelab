@@ -1,0 +1,12 @@
+[Unit]
+Description=withoutBG Backend
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/withoutbg/apps/web/backend
+ExecStart=/opt/withoutbg/apps/web/backend/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=always
+
+[Install]
+WantedBy=multi-user.targetf
