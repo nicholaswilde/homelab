@@ -3,12 +3,12 @@
 #
 # Script Name: update.sh
 # ----------------
-# Checks for the latest release of withoutbg}} and compares it to
+# Checks for the latest release of withoutbg and compares it to
 # the local version. If out of date, it stops the service, downloads the
 # latest version, and restarts the service.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 22 Dec 2025
+# @date 28 Apr 2026
 # @version 0.1.0
 #
 ################################################################################
@@ -29,7 +29,7 @@ INSTALL_DIR="/opt/withoutbg"
 GITHUB_REPO="withoutbg/withoutbg"
 BACKEND_DIR="${INSTALL_DIR}/apps/web/backend"
 FRONTEND_DIR="${INSTALL_DIR}/apps/web/frontend"
-DEBUG="true"
+DEBUG="false"
 
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
@@ -87,12 +87,11 @@ function check_dependencies() {
 function get_latest_version() {
   log "INFO" "Getting latest version of ${SERVICE_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
-  local json_response
   local curl_args=()
   if [ -n "${GITHUB_TOKEN}" ]; then
     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
-  json_response=$(curl -s "${curl_args[@]}" "${api_url}")
+  export json_response=$(curl -s "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
     echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
@@ -128,27 +127,36 @@ function stop_services(){
     log "INFO" "Stopping ${SERVICE_NAME}-frontend.service..."
     systemctl restart "${SERVICE_NAME}-frontend.service" 2>&1 | log "INFO"
   else
-    log "INFO" "${SERVICE_NAME}-frontend not running"
+    log "WARN" "Service ${SERVICE_NAME}-frontend.service not found, skipping stop."
   fi
 
   if systemctl status "${SERVICE_NAME}-backendend.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME}-backend.service..."
     systemctl restart "${SERVICE_NAME}-backend.service" 2>&1 | log "INFO"
   else
-    log "INFO" "${SERVICE_NAME}-backend not running"
+    log "WARN" "Service ${SERVICE_NAME}-backend.service not found, skipping stop."
   fi
 }
 
 function backup_and_remove(){  
-  local basedir
-  basedir=$(dirname "${}")
-  if [ -f "${FRONTEND_DIR}/.env.local" ]; then
+  export basedir=$(dirname "${INSTALL_DIR}")
+  log "DEBU" "basedir: ${basedir}"
+  
+  if [[ -f "${FRONTEND_DIR}/.env.local" ]]; then
     log "INFO" "Backing up settings..."
-    cp "${FRONTEND_DIR}/.env.local" "${basedir}/.env.local"
+    if ! cp "${FRONTEND_DIR}/.env.local" "${basedir}/.env.local"; then
+      log "ERRO" "An error occurred while copying the .env.local file"
+      exit 1
+    fi
+  else
+    log "WARN" "Settings file .env.local doesn't exist"
   fi
 
   log "INFO" "Removing application..."
-  rm -rf "${INSTALL_DIR}"
+  if ! rm -rf "${INSTALL_DIR}"; then
+    log "ERRO" "There was an error removing the application"
+    exit 1
+  fi
 }
 
 function restart_services(){
@@ -168,28 +176,96 @@ function restart_services(){
 }
 
 function download_and_extract(){
-  log "INFO" "Downloading and extracting update..."
+  TEMP_DIR=$(mktemp -d)
+  trap 'rm -rf "${TEMP_DIR}"' EXIT
+  log "DEBU" "TEMP_DIR: ${TEMP_DIR}"
+  cd ${TEMP_DIR}
+  
+  tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
+  log "DEBU" "tarball_url: ${tarball_url}"
+  log "INFO" "Downloading update..."
+  if ! curl -LsSf "${tarball_url}" -o "${TEMP_DIR}/withoutbg.tar.gz"; then
+    log "ERRO" "There was an error downloading the update"
+    exit 1
+  fi
+
+  mkdir -p "${INSTALL_DIR}"
+  log "INFO" "Extracting update..."
+  if ! tar -xzf "${TEMP_DIR}/withoutbg.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
+    log "ERRO" "There was an error extracting the update"
+    exit 1
+  fi
 }
 
 function setup_app(){
-  log "INFO" "Running setup..."
   setup_backend
   setup_frontend
 }
 
 function setup_backend(){
   cd "${BACKEND_DIR}"
+  log "INFO" "Setting up backend..."
+  if uv python install 3.12 --force  &> /dev/null; then
+    log "INFO" "uv python install successful"
+  else
+    exit 1
+  fi
+  if uv python pin 3.12  &> /dev/null; then
+    log "INFO" "Python 3.12 pinned"
+  else
+    exit 1
+  fi
   
-  uv python install 3.12
-  uv python pin 3.12
-  uv sync
+  if uv sync  &> /dev/null; then
+    log "INFO" "uv sync successful"
+  else
+    exit 1
+  fi
 }
 
 function setup_frontend(){
   cd "${FRONTEND_DIR}"
-  npm install .
-  npm run build
-    
+  log "INFO" "Setting up frontend..."
+  if npm install .  &> /dev/null; then
+    log "INFO" "npm install successful"
+  else
+    log "ERRO" "There was an error installing npm"
+    exit 1
+  fi
+  
+  if npm run build  &> /dev/null; then
+    log "INFO" "npm run build successful"
+  else
+    log "ERRO" "There was an error building npm"
+    exit 1
+  fi
+}
+
+function restore_settings(){
+  if [[ -f "${basedir}/.env.local" ]]; then
+    log "INFO" "Restoring settings..."
+    cp "${basedir}/.env.local" "${FRONTEND_DIR}/.env.local"
+  else
+    log "WARN" "Settings file doesn't exist"
+  fi
+}
+
+function check_version(){
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "${SERVICE_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    log "INFO" "Script finished."
+    exit 0
+  else
+    log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
+  fi
+}
+
+function verify_version(){
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
+    log "INFO" "Successfully updated ${SERVICE_NAME} to ${LATEST_VERSION}."
+  else
+    log "ERRO" "Failed to update ${SERVICE_NAME}. Still on ${CURRENT_VERSION}."
+  fi
 }
 
 # Main function to orchestrate the script execution
@@ -199,36 +275,17 @@ function main() {
 
   get_latest_version
   get_current_version
-
-  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "${SERVICE_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    log "INFO" "Script finished."
-    exit 0
-  fi
-
-  log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
-    log "INFO" "Stopping ${SERVICE_NAME} service..."
-    systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
-  else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
-  fi
-
+  check_version
   stop_services
   backup_and_remove
 
   download_and_extract
+  restore_settings
   setup_app
-  
   restart_services
 
   get_current_version
-  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "Successfully updated ${SERVICE_NAME} to ${LATEST_VERSION}."
-  else
-    log "ERRO" "Failed to update ${SERVICE_NAME}. Still on ${CURRENT_VERSION}."
-  fi
-
+  verify_version
   log "INFO" "Script finished."
 }
 

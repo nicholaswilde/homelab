@@ -7,8 +7,11 @@ Type=simple
 User=root
 WorkingDirectory=/opt/withoutbg/apps/web/frontend
 
+# THIS IS THE MISSING PIECE:
+Environment="PATH=/root/.local/share/fnm/node-versions/v24.15.0/installation/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 # Pointing directly to the permanent bin directory
-ExecStart=/home/nicholas/.local/share/fnm/node-versions/v24.15.0/installation/bin/npx serve -s dist -l 3000
+ExecStart=/root/.local/share/fnm/node-versions/v24.15.0/installation/bin/npx serve -s dist -l 3000
 
 Restart=always
 RestartSec=5
