@@ -2,6 +2,12 @@ version: '3'
 dotenv:
   - .env
 tasks:
+  deps:
+    desc: Install dependencies
+    cmds:
+      - "apt install nginx -y"
+      - "curl -LsSf https://astral.sh/uv/install.sh | sh"
+      - "curl -fsSL https://fnm.vercel.app/install | bash"
   create-template:
     desc: Create template from existing .env file
     preconditions:

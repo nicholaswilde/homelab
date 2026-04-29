@@ -3,7 +3,7 @@
 #
 # Script Name: update.sh
 # ----------------
-# Checks for the latest release of withoutbg and compares it to
+# Checks for the latest release of omni-tools and compares it to
 # the local version. If out of date, it stops the service, downloads the
 # latest version, and restarts the service.
 #
@@ -24,12 +24,10 @@ readonly RED="\033[38;2;243;139;168m"
 readonly YELLOW="\033[38;2;249;226;175m"
 readonly PURPLE="\033[38;2;203;166;247m"
 readonly RESET="\033[0m"
-SERVICE_NAME="withoutbg"
+SERVICE_NAME="nginx"
 INSTALL_DIR="/opt/withoutbg"
-GITHUB_REPO="withoutbg/withoutbg"
-BACKEND_DIR="${INSTALL_DIR}/apps/web/backend"
-FRONTEND_DIR="${INSTALL_DIR}/apps/web/frontend"
-DEBUG="false"
+GITHUB_REPO="iib0011/omni-tools"
+DEBUG="true"
 
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
@@ -110,68 +108,48 @@ function get_current_version() {
     CURRENT_VERSION="0"
     return
   fi
+  export basedir=$(dirname "${INSTALL_DIR}")
+  log "DEBU" "basedir: ${basedir}"
+    
   log "INFO" "Getting current version of ${SERVICE_NAME}..."
   local current_version_full
   # Note: Adjust version command and parsing if needed for the specific app
-  if [ -f "${FRONTEND_DIR}/package.json" ]; then
-    current_version_full=$(jq -r '.version' "${FRONTEND_DIR}/package.json")
+  if [ -f "${basedir}/omni-tools_version.txt" ]; then
+    current_version_full=$(cat "${basedir}/omni-tools_version.txt")
   else
     current_version_full="0.0.0"
   fi
-  CURRENT_VERSION=$(echo "${current_version_full}" | awk '{print $NF}' | sed 's/v//')
+  log "DEBU" "current_version_full: ${current_version_full}"
+  CURRENT_VERSION=$(echo "${current_version_full}" | sed 's/v//')
   log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
 }
 
 function stop_services(){
-  if systemctl status "${SERVICE_NAME}-frontend.service" &> /dev/null; then
-    log "INFO" "Stopping ${SERVICE_NAME}-frontend.service..."
-    systemctl restart "${SERVICE_NAME}-frontend.service" 2>&1 | log "INFO"
+  if sudo systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Stopping ${SERVICE_NAME}.service..."
+    sudo systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
-    log "WARN" "Service ${SERVICE_NAME}-frontend.service not found, skipping stop."
-  fi
-
-  if systemctl status "${SERVICE_NAME}-backendend.service" &> /dev/null; then
-    log "INFO" "Stopping ${SERVICE_NAME}-backend.service..."
-    systemctl restart "${SERVICE_NAME}-backend.service" 2>&1 | log "INFO"
-  else
-    log "WARN" "Service ${SERVICE_NAME}-backend.service not found, skipping stop."
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
 }
 
 function backup_and_remove(){  
   export basedir=$(dirname "${INSTALL_DIR}")
   log "DEBU" "basedir: ${basedir}"
-  
-  if [[ -f "${FRONTEND_DIR}/.env.local" ]]; then
-    log "INFO" "Backing up settings..."
-    if ! cp "${FRONTEND_DIR}/.env.local" "${basedir}/.env.local"; then
-      log "ERRO" "An error occurred while copying the .env.local file"
-      exit 1
-    fi
-  else
-    log "WARN" "Settings file .env.local doesn't exist"
-  fi
 
   log "INFO" "Removing application..."
-  if ! rm -rf "${INSTALL_DIR}"; then
+  if ! sudo rm -rf "${INSTALL_DIR}"; then
     log "ERRO" "There was an error removing the application"
     exit 1
   fi
 }
 
 function restart_services(){
-  if systemctl status "${SERVICE_NAME}-backend.service" &> /dev/null; then
-    log "INFO" "Restarting ${SERVICE_NAME}-backend service..."
-    systemctl restart "${SERVICE_NAME}-backend.service" 2>&1 | log "INFO"
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+    log "INFO" "Restarting ${SERVICE_NAME} service..."
+    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
-    log "WARN" "Service ${SERVICE_NAME}-backend.service not found, skipping restart."
-  fi
-
-  if systemctl status "${SERVICE_NAME}-frontend.service" &> /dev/null; then
-    log "INFO" "Restarting ${SERVICE_NAME}-frontend service..."
-    systemctl restart "${SERVICE_NAME}-frontend.service" 2>&1 | log "INFO"
-  else
-    log "WARN" "Service ${SERVICE_NAME}-frontend.service not found, skipping restart."
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi
 }
 
@@ -184,69 +162,38 @@ function download_and_extract(){
   tarball_url=$(echo "${json_response}" | jq -r '.tarball_url')
   log "DEBU" "tarball_url: ${tarball_url}"
   log "INFO" "Downloading update..."
-  if ! curl -LsSf "${tarball_url}" -o "${TEMP_DIR}/withoutbg.tar.gz"; then
+  if ! curl -LsSf "${tarball_url}" -o "${TEMP_DIR}/omni-tools.tar.gz"; then
     log "ERRO" "There was an error downloading the update"
     exit 1
   fi
 
-  mkdir -p "${INSTALL_DIR}"
+  sudo mkdir -p "${INSTALL_DIR}"
   log "INFO" "Extracting update..."
-  if ! tar -xzf "${TEMP_DIR}/withoutbg.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
+  if ! sudo tar -xzf "${TEMP_DIR}/omni-tools.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
     log "ERRO" "There was an error extracting the update"
     exit 1
   fi
 }
 
 function setup_app(){
-  setup_backend
   setup_frontend
-}
-
-function setup_backend(){
-  cd "${BACKEND_DIR}"
-  log "INFO" "Setting up backend..."
-  if uv python install 3.12 --force  &> /dev/null; then
-    log "INFO" "uv python install successful"
-  else
-    exit 1
-  fi
-  if uv python pin 3.12  &> /dev/null; then
-    log "INFO" "Python 3.12 pinned"
-  else
-    exit 1
-  fi
-  
-  if uv sync  &> /dev/null; then
-    log "INFO" "uv sync successful"
-  else
-    exit 1
-  fi
 }
 
 function setup_frontend(){
   cd "${FRONTEND_DIR}"
   log "INFO" "Setting up frontend..."
-  if npm install .  &> /dev/null; then
+  if sudo npm install .  &> /dev/null; then
     log "INFO" "npm install successful"
   else
     log "ERRO" "There was an error installing npm"
     exit 1
   fi
   
-  if npm run build  &> /dev/null; then
+  if sudo npm run build  &> /dev/null; then
     log "INFO" "npm run build successful"
   else
     log "ERRO" "There was an error building npm"
     exit 1
-  fi
-}
-
-function restore_settings(){
-  if [[ -f "${basedir}/.env.local" ]]; then
-    log "INFO" "Restoring settings..."
-    cp "${basedir}/.env.local" "${FRONTEND_DIR}/.env.local"
-  else
-    log "WARN" "Settings file doesn't exist"
   fi
 }
 
@@ -280,7 +227,6 @@ function main() {
   backup_and_remove
 
   download_and_extract
-  restore_settings
   setup_app
   restart_services
 
