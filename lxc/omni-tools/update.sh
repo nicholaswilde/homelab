@@ -8,7 +8,7 @@
 # latest version, and restarts the service.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 28 Apr 2026
+# @date 29 Apr 2026
 # @version 0.1.0
 #
 ################################################################################
@@ -25,9 +25,11 @@ readonly YELLOW="\033[38;2;249;226;175m"
 readonly PURPLE="\033[38;2;203;166;247m"
 readonly RESET="\033[0m"
 SERVICE_NAME="nginx"
-INSTALL_DIR="/opt/withoutbg"
+APP_NAME="omni-tools"
+INSTALL_DIR="/opt/omni-tools"
 GITHUB_REPO="iib0011/omni-tools"
-DEBUG="true"
+DEBUG="false"
+readonly VERSION_FILENAME="omni-tools_version.txt"
 
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
@@ -76,14 +78,14 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  if ! command_exists curl || ! command_exists jq || ! command_exists uv || ! command_exists npx; then
+  if ! command_exists curl || ! command_exists jq || ! command_exists npx; then
     log "ERRO" "Required dependencies (curl, jq, uv, npx) are not installed." >&2
     exit 1
   fi
 }
 
 function get_latest_version() {
-  log "INFO" "Getting latest version of ${SERVICE_NAME} from GitHub..."
+  log "INFO" "Getting latest version of ${APP_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local curl_args=()
   if [ -n "${GITHUB_TOKEN}" ]; then
@@ -91,7 +93,7 @@ function get_latest_version() {
   fi
   export json_response=$(curl -s "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
-    log "ERRO" "Failed to get latest version for ${SERVICE_NAME} from GitHub API."
+    log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
     echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
     return 1
   fi
@@ -99,35 +101,35 @@ function get_latest_version() {
   local tag_name
   tag_name=$(echo "${json_response}" | jq -r '.tag_name')
   LATEST_VERSION=${tag_name#v}
-  log "INFO" "Latest ${SERVICE_NAME} version: ${LATEST_VERSION}"
+  log "INFO" "Latest ${APP_NAME} version: ${LATEST_VERSION}"
 }
 
 function get_current_version() {
   if [ ! -d "${INSTALL_DIR}" ]; then
-    log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
+    log "WARN" "${APP_NAME} is not installed at ${INSTALL_DIR}."
     CURRENT_VERSION="0"
     return
   fi
   export basedir=$(dirname "${INSTALL_DIR}")
   log "DEBU" "basedir: ${basedir}"
     
-  log "INFO" "Getting current version of ${SERVICE_NAME}..."
+  log "INFO" "Getting current version of ${APP_NAME}..."
   local current_version_full
   # Note: Adjust version command and parsing if needed for the specific app
-  if [ -f "${basedir}/omni-tools_version.txt" ]; then
-    current_version_full=$(cat "${basedir}/omni-tools_version.txt")
+  if [ -f "${basedir}/${VERSION_FILENAME}" ]; then
+    current_version_full=$(cat "${basedir}/${VERSION_FILENAME}")
   else
     current_version_full="0.0.0"
   fi
   log "DEBU" "current_version_full: ${current_version_full}"
   CURRENT_VERSION=$(echo "${current_version_full}" | sed 's/v//')
-  log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
+  log "INFO" "Current ${APP_NAME} version: ${CURRENT_VERSION}"
 }
 
 function stop_services(){
-  if sudo systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME}.service..."
-    sudo systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
   fi
@@ -138,7 +140,7 @@ function backup_and_remove(){
   log "DEBU" "basedir: ${basedir}"
 
   log "INFO" "Removing application..."
-  if ! sudo rm -rf "${INSTALL_DIR}"; then
+  if ! rm -rf "${INSTALL_DIR}"; then
     log "ERRO" "There was an error removing the application"
     exit 1
   fi
@@ -167,9 +169,9 @@ function download_and_extract(){
     exit 1
   fi
 
-  sudo mkdir -p "${INSTALL_DIR}"
+  mkdir -p "${INSTALL_DIR}"
   log "INFO" "Extracting update..."
-  if ! sudo tar -xzf "${TEMP_DIR}/omni-tools.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
+  if ! tar -xzf "${TEMP_DIR}/omni-tools.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
     log "ERRO" "There was an error extracting the update"
     exit 1
   fi
@@ -180,16 +182,17 @@ function setup_app(){
 }
 
 function setup_frontend(){
-  cd "${FRONTEND_DIR}"
+  log "DEBU" "INSTALL_DIR: ${INSTALL_DIR}"
+  cd "${INSTALL_DIR}"
   log "INFO" "Setting up frontend..."
-  if sudo npm install .  &> /dev/null; then
+  if npm install .  &> /dev/null; then
     log "INFO" "npm install successful"
   else
     log "ERRO" "There was an error installing npm"
     exit 1
   fi
   
-  if sudo npm run build  &> /dev/null; then
+  if npm run build  &> /dev/null; then
     log "INFO" "npm run build successful"
   else
     log "ERRO" "There was an error building npm"
@@ -199,25 +202,29 @@ function setup_frontend(){
 
 function check_version(){
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "${SERVICE_NAME} is already up-to-date: ${CURRENT_VERSION}"
+    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
     log "INFO" "Script finished."
     exit 0
   else
-    log "INFO" "New version available for ${SERVICE_NAME}: ${LATEST_VERSION}"
+    log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
   fi
 }
 
 function verify_version(){
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "Successfully updated ${SERVICE_NAME} to ${LATEST_VERSION}."
+    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
   else
-    log "ERRO" "Failed to update ${SERVICE_NAME}. Still on ${CURRENT_VERSION}."
+    log "ERRO" "Failed to update ${APP_NAME}. Still on ${CURRENT_VERSION}."
   fi
+}
+
+function write_version(){
+  printf "%s" "${LATEST_VERSION}" > "${basedir}/${VERSION_FILENAME}"
 }
 
 # Main function to orchestrate the script execution
 function main() {
-  log "INFO" "Starting ${SERVICE_NAME} update script..."
+  log "INFO" "Starting ${APP_NAME} update script..."
   check_dependencies
 
   get_latest_version
@@ -228,8 +235,9 @@ function main() {
 
   download_and_extract
   setup_app
+  write_version
   restart_services
-
+  
   get_current_version
   verify_version
   log "INFO" "Script finished."
