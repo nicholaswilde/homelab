@@ -198,6 +198,12 @@ function setup_frontend(){
     log "ERRO" "There was an error building npm"
     exit 1
   fi
+
+  log "INFO" "Copying dist files"
+  if ! cp -r "${INSTALL_DIR}/dist/"* /var/www/html/; then
+    log "ERRO" "There was an error copying the dist files"
+    exit 1
+  fi
 }
 
 function check_version(){
