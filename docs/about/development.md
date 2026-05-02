@@ -168,9 +168,8 @@ My general workflow when creating a new LXC or VM.
 8. Add to [Traefik][4].
 9. Add to [homepage][5].
 10. Add to homelab docs.
-11. Add to [WatchYourLAN][6].
-12. Add to [Beszel][7].
-13. Add to [authentik][12].
+11. Add to [Beszel][7].
+12. Add to [authentik][12].
 
 ## :page_facing_up: New Document Pages
 
@@ -333,7 +332,6 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 [2]: <../apps/adguardhome-sync.md>
 [4]: <../apps/traefik.md>
 [5]: <../apps/homepage.md>
-[6]: <../apps/watchyourlan.md>
 [7]: <../apps/beszel.md>
 [8]: <../apps/reprepro.md>
 [9]: <../apps/installer.md>
