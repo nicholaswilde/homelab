@@ -513,7 +513,7 @@ and added to reprepro and deb files located in the `SYNC_APPS_GITHUB_REPOS` vari
 
 !!! note "Automation"
 
-    The `update-reprepro-service.sh` script can be triggered automatically using a [webhook](./webhook.md). This is useful for continuous integration, for example, triggering an update after a new package has been built and pushed.
+    The `update-reprepro-service.sh` script can be triggered automatically using a webhook. This is useful for continuous integration, for example, triggering an update after a new package has been built and pushed.
 
 !!! code "`homelab/pve/reprepro`"
 

@@ -22,6 +22,45 @@ I am using it over Portainer and kubernetes for ease of use and feature set.
 
     :material-console-network: Default Port: `8006`
 
+## :material-script: Helper Scripts
+
+### :material-container: LXC Create
+
+A helper script for creating Proxmox LXC containers using the `pct` command. Includes an automated cleanup trap for failed deployments.
+
+**Features:**
+
+*   **Automatic ID:** Automatically finds the next available LXC ID if none is provided.
+*   **Security:** Retrieves the root password from `pass` (`proxmox/lxc-default-password`).
+*   **Networking:** Automatically sets a static IP based on the DHCP-assigned address.
+*   **Configuration:** Performs `apt update`, installs specified packages, and enables root SSH login.
+*   **Safety:** Includes a cleanup trap that purges the container if deployment fails.
+
+**Location:** `pve/pve03/scripts/lxc-create.sh`
+
+**Usage:**
+
+```shell
+./lxc-create.sh [options] <hostname>
+```
+
+**Options:**
+
+| Option | Description | Default |
+| :--- | :--- | :--- |
+| `--id` | Specific LXC ID to use | Next available |
+| `--storage` | Storage pool | `local-lvm` |
+| `--template` | Template path | `debian-13` |
+| `--packages` | Packages to install | `openssh-server micro python3` |
+| `--dns` | DNS servers | `192.168.1.88 192.168.1.250` |
+| `--debug` | Enable debug logging | `false` |
+
+**Example:**
+
+```shell
+./lxc-create.sh --packages "git rsync" my-new-app
+```
+
 !!! code "Post Install"
 
     === "AMD64"

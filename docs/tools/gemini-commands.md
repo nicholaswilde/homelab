@@ -161,7 +161,7 @@ Trigger manual backups for specific applications or configurations.
 ### :gear: Implementation
 
 The command uses `scripts/homelab_backup.py` to:
-1. **Resolve Target:** Maps aliases (e.g., `agh`, `patchmon`) or direct names to directories.
+1. **Resolve Target:** Maps aliases (e.g., `agh`, `adguard`) or direct names to directories.
 2. **Execute Backup:** Runs the `task backup` command in the target directory.
 3. **Verify:** Checks for the update of `.enc` files to confirm the backup was successful and encrypted.
 
