@@ -28,7 +28,7 @@ DEBUG=false
 ENV_FILE=".env"
 DEFAULT_PASS_ENTRY="proxmox/lxc-default-password"
 # DEFAULT_TEMPLATE="/var/lib/vz/template/cache/debian-13-standard_13.1-2_amd64.tar.zst"
-DEFAULT_TEMPLATE="/var/lib/vz/template/cache/debian-13-standard_13.4-1_amd64.tar.zst"
+DEFAULT_TEMPLATE="/var/lib/vz/template/cache/debian-13-standard_13.4-1_arm64.tar.zst"
 DEFAULT_STORAGE="local-lvm"
 DEFAULT_OSTYPE="debian"
 DEFAULT_MEMORY="512"
@@ -115,23 +115,6 @@ function get_next_id() {
   done
   echo "$next_id"
 }
-
-# function get_lxc_ip() {
-  # local lxc_id="$1"
-  # local counter=0
-  # local ip=""
-  # while [ $counter -lt 10 ]; do
-    # log "DEBU" "Polling for IP (Attempt $((counter+1)))..."
-    # ip=$(pct exec "$lxc_id" -- ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}/\d+' || true)
-    # if [[ -n "$ip" ]]; then
-      # echo "$ip"
-      # return 0
-    # fi
-    # sleep 2
-    # ((counter++))
-  # done
-  # return 1
-# }
 
 function get_lxc_ip() {
   local lxc_id="$1"
