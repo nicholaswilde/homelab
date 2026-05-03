@@ -269,7 +269,7 @@ Where `eth0` is the current existing network interface
     )
     ```
 
-## :broom: [Swap][8]
+## Swap
 
 The Raspberry Pi uses [`dphys-swapfile`][1] to manage it's swap.
 
@@ -310,7 +310,7 @@ For Proxmox, I'm using a [logical volume][9] instead of a swap file.
     free -h
     ```
 
-### :no_entry_sign: Disable Permanently
+### Disable Permanently
 
 !!! code "Disable dphys-swapfile temporarily"
 
@@ -379,7 +379,8 @@ To test the network speed, use `iperf3`.
 [6]: <https://www.amazon.com/dp/B0B25LQQPC>
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
-[9]: <../tools/lvm.md#swap>
+[9]: ../tools/lvm.md#swap
+
 [10]: <https://community-scripts.github.io/ProxmoxVE/>
 [11]: <https://www.reddit.com/r/debian/comments/ca3se6/for_people_who_gets_this_error_inrelease_changed/>
 [12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>

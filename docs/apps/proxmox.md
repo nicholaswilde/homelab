@@ -61,6 +61,40 @@ A helper script for creating Proxmox LXC containers using the `pct` command. Inc
 ./lxc-create.sh --packages "git rsync" my-new-app
 ```
 
+### :material-update: LXC Update
+
+A maintenance script that automates the process of keeping LXC templates up-to-date by creating a temporary builder, performing system upgrades, and exporting the result as a new standard template.
+
+**Features:**
+
+*   **Automation:** Fully automated creation, update, and export lifecycle.
+*   **Template Versioning:** Automatically increments instance numbers to avoid overwriting existing templates.
+*   **Environment Integration:** Automatically updates the `.env` file with the path of the newest template.
+*   **Safety:** Uses lock files to prevent concurrent runs and includes automated cleanup of temporary resources.
+*   **Cleanup:** Strips unique identifiers (machine-id, SSH host keys) from the new template for "clean" deployments.
+
+**Location:** `pve/pve03/scripts/lxc-update.sh`
+
+**Usage:**
+
+```shell
+./lxc-update.sh --template <path> [options]
+```
+
+**Options:**
+
+| Option | Description | Default |
+| :--- | :--- | :--- |
+| `--template` | Path to the base template to update | **Required** |
+| `--storage` | Storage pool for the temporary builder | `local-lvm` |
+| `--debug` | Enable debug logging | `false` |
+
+**Example:**
+
+```shell
+./lxc-update.sh --template /var/lib/vz/template/cache/debian-12-standard_12.0-1_amd64.tar.zst
+```
+
 !!! code "Post Install"
 
     === "AMD64"
@@ -233,7 +267,7 @@ WIP
         sgdisk -N 1 /dev/sdb
         ```
     
-!!! code "Create a [P]hysical [V]olume (PV) without confirmation and 250K metadatasize."
+!!! code "Create a \[P\]hysical \[V\]olume (PV) without confirmation and 250K metadatasize."
 
     === "root"
     

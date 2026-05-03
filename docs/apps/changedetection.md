@@ -18,7 +18,7 @@ tags:
     === "AMD64"
 
         ```shell
-bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/changedetection.sh)"
         ```
 
     === "ARM64"
@@ -57,7 +57,7 @@ bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/c
 
 ## :pencil: Usage
 
-### :rss: Monitoring Gitea Releases
+### :octicons-rss-24: Monitoring Gitea Releases
 
 To monitor Gitea releases for a repository, use the RSS feed URL format:
 
@@ -67,7 +67,7 @@ To monitor Gitea releases for a repository, use the RSS feed URL format:
     https://gitea.com/<owner>/<repo>/releases.rss
     ```
 
-### :octicons-commit-24: Monitoring GitHub Commits
+### :octicons-git-commit-24: Monitoring GitHub Commits
 
 For repositories that do not use releases, you can monitor commits using the Atom feed URL:
 
@@ -93,13 +93,77 @@ For repositories that do not use releases, you can monitor commits using the Ato
 
 1. [Apprise][2]
 
+## :robot: Automated LXC Updates
+
+I use ChangeDetection to monitor for new Debian standard releases and automatically trigger a Proxmox LXC template rebuild.
+
+### :key: SSH Key Configuration
+
+The automation requires passwordless SSH access from the ChangeDetection LXC to the Proxmox nodes.
+
+!!! code "Generate Automation Key"
+
+    ```shell
+    ssh-keygen -t ed25519 -f /root/.ssh/id_pve_automation -N ""
+    ```
+
+!!! code "Add to Proxmox Nodes"
+
+    ```shell
+    ssh-copy-id -i /root/.ssh/id_pve_automation root@<pve_node_ip>
+    ```
+
+### :anchor: Webhook Setup
+
+The [webhook][3] tool listens for HTTP requests from ChangeDetection and executes the trigger script.
+
+!!! abstract "Hooks Configuration (`pve/changedetection/hooks.json`)"
+
+    ```json
+    --8<-- "pve/changedetection/hooks.json"
+    ```
+
+!!! abstract "Systemd Service (`pve/changedetection/webhook-pve.service`)"
+
+    ```ini
+    --8<-- "pve/changedetection/webhook-pve.service"
+    ```
+
+!!! code "Enable Service"
+
+    ```shell
+    cp pve/changedetection/webhook-pve.service /etc/systemd/system/
+    systemctl enable --now webhook-pve
+    ```
+
+For general installation and service setup, see the [Webhook Tool Documentation][3].
+
+### :material-shimmer: Trigger Script
+
+The `trigger-lxc-update.sh` script orchestrates the remote execution of the rebuild process on the specified Proxmox host.
+
+**Location:** `pve/changedetection/trigger-lxc-update.sh`
+
+### :material-web: ChangeDetection.io Setup
+
+To trigger the rebuild when a change is detected:
+
+1.  Edit the watch item for the Debian standard release.
+2.  Go to the **Notifications** tab.
+3.  Add the following URL to the **Notification URL List**:
+
+!!! success "Notification URL"
+
+    ```text
+    json://localhost:9000/hooks/rebuild-amd64
+    ```
 
 ## :simple-task: Task List
 
 !!! example ""
 
     ```yaml
-    --8<-- "changedetection/task-list.txt"
+    --8<-- "pve/changedetection/task-list.txt"
     ```
 
 ## :link: References
@@ -110,3 +174,4 @@ For repositories that do not use releases, you can monitor commits using the Ato
 
 [1]: <https://changedetection.io/>
 [2]: <../tools/apprise.md>
+[3]: <../tools/webhook.md>

@@ -383,7 +383,7 @@ Reboot and hold the `spacebar` to get to the boot menu. Choose `6` for NVMe.
 
 If successful, use `raspi-config` to set the boot order to be NVMe drive first.
 
-## :broom: [Swap][10]
+## Swap
 
 This sets up a logical volume for swap instead of using the default Raspberry Pi OS file swap.
 
@@ -543,8 +543,7 @@ Create an LVM thin pool which allocates blocks when they are written, thereby sa
 [7]: <https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#PSU_MAX_CURRENT>
 [8]: <https://forums.raspberrypi.com/viewtopic.php?t=46472>
 [9]: <https://forums.raspberrypi.com/viewtopic.php?t=366552>
-[10]: <https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/system_administration_guide/adding_swap_space-creating_an_lvm2_logical_volume_for_swap#Adding_Swap_Space-Creating_an_LVM2_Logical_Volume_for_Swap>
 [11]: <https://pve.proxmox.com/wiki/Storage:_LVM_Thin>
 [12]: <https://forums.raspberrypi.com/viewtopic.php?t=359643>
 [13]: <https://en.wikipedia.org/wiki/Logical_volume_management>
-[14]: <../hardware/rpi5.md#disable-permanently>
+[14]: ../hardware/rpi5.md#disable-permanently

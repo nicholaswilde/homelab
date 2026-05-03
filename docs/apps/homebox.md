@@ -13,32 +13,26 @@ tags:
 
     :material-console-network: Default Port: `7745`
 
-!!! code "`homelab/docker/homebox`"
+!!! code ""
 
-    === "Task"
-    
+    === "AMD64"
+
         ```shell
-        task up
+        bash -c "$(curl -sL https://github.com/community-scripts/ProxmoxVE/raw/main/ct/homebox.sh)"
         ```
 
-    === "Docker Compose"
-    
+    === "ARM64"
+
         ```shell
-        docker compose up
+        bash -c "$(curl -sL https://github.com/asylumexp/Proxmox/raw/main/ct/homebox.sh)"
         ```
 
 ## :gear: Config
 
-!!! abstract "`homelab/docker/homebox/.env`"
+!!! abstract "`homelab/lxc/homebox/.env`"
 
     ```ini
     --8<-- "homebox/.env.tmpl"
-    ```
-
-??? abstract "`homelab/docker/homebox/compose.yaml`"
-
-    ```yaml
-    --8<-- "homebox/compose.yaml"
     ```
 
 ## :simple-traefikproxy: Traefik

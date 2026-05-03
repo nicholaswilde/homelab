@@ -114,8 +114,8 @@ List all sites to find the `_id` for both the current "default" site and the one
 db.site.find()
 ```
 
-  * **[ID_1]**: The `_id` of the site where `"name": "default"`.
-  * **[ID_2]**: The `_id` of your target site (e.g., "Main Site").
+  * **\[ID_1\]**: The `_id` of the site where `"name": "default"`.
+  * **\[ID_2\]**: The `_id` of your target site (e.g., "Main Site").
 
 #### 3. Swap Default Attributes
 

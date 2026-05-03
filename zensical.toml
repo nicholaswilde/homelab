@@ -107,6 +107,7 @@ Tools = [
   { "Autofs" = "tools/autofs.md" },
   { "bat" = "tools/bat.md" },
   { "cheat" = "tools/cheat.md" },
+  { "Conductor" = "tools/conductor.md" },
   { "docker-volume-backup" = "tools/docker-volume-backup.md" },
   { "duf" = "tools/duf.md" },
   { ".env Files" = "tools/env-files.md" },
@@ -130,6 +131,7 @@ Tools = [
   { "Task" = "tools/task.md" },
   { "tmux" = "tools/tmux.md" },
   { "LocalSend" = "tools/localsend.md" },
+  { "Webhook" = "tools/webhook.md" },
 ]
 
 [[project.nav]]
@@ -227,7 +229,7 @@ repo = "homepage"
 [project.markdown_extensions.pymdownx.mark]
 
 [project.markdown_extensions.pymdownx.snippets]
-base_path = [ "./pve", "./docker", "./vm", "./docs", "./lxc", "./tools" ]
+base_path = [ ".", "./pve", "./docker", "./vm", "./docs", "./lxc", "./tools" ]
 
 [project.markdown_extensions.pymdownx.smartsymbols]
 

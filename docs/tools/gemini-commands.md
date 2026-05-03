@@ -20,7 +20,7 @@ The command performs the following checks:
 3. **Conductor Status:** Parses `conductor/tracks.md` to identify active tracks and their progress.
 
 ### :link: References
-- [Conductor Workflow](../../conductor/workflow.md)
+- [Conductor Workflow](./conductor.md)
 - [Proxmox API](https://pve.proxmox.com/wiki/Proxmox_VE_API)
 
 ## :rocket: /deploy `<app_name>` `<type>`
