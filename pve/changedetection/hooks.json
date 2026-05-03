@@ -1,0 +1,8 @@
+[
+  {
+    "id": "pve-update",
+    "execute-command": "/root/git/nicholaswilde/homelab/pve/changedetection/trigger-lxc-update.sh",
+    "command-working-directory": "/root/git/nicholaswilde/homelab/pve/changedetection",
+    "response-message": "Proxmox maintenance triggered."
+  }
+]

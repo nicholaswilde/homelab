@@ -1,0 +1,15 @@
+[Unit]
+Description=Webhook Listener for PVE LXC Automation
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/git/nicholaswilde/homelab/pve/changedetection
+ExecStart=/usr/bin/webhook -hooks /root/git/nicholaswilde/homelab/pve/changedetection/hooks.json -verbose -port 9000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
