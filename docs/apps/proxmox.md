@@ -95,6 +95,10 @@ A maintenance script that automates the process of keeping LXC templates up-to-d
 ./lxc-update.sh --template /var/lib/vz/template/cache/debian-12-standard_12.0-1_amd64.tar.zst
 ```
 
+!!! tip "Automation"
+
+    This script can be triggered automatically when a new Debian release is detected using [ChangeDetection](./changedetection.md#robot-automated-lxc-updates).
+
 !!! code "Post Install"
 
     === "AMD64"
