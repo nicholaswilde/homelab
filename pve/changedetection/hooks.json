@@ -1,8 +1,20 @@
 [
   {
-    "id": "pve-update",
+    "id": "rebuild-amd64",
     "execute-command": "/root/git/nicholaswilde/homelab/pve/changedetection/trigger-lxc-update.sh",
     "command-working-directory": "/root/git/nicholaswilde/homelab/pve/changedetection",
-    "response-message": "Proxmox maintenance triggered."
+    "pass-arguments-to-command": [
+      { "source": "string", "name": "--host" },
+      { "source": "string", "name": "192.168.1.141" }
+    ]
+  },
+  {
+    "id": "rebuild-arm64",
+    "execute-command": "/root/git/nicholaswilde/homelab/pve/changedetection/trigger-lxc-update.sh",
+    "command-working-directory": "/root/git/nicholaswilde/homelab/pve/changedetection",
+    "pass-arguments-to-command": [
+      { "source": "string", "name": "--host" },
+      { "source": "string", "name": "192.168.1.66" }
+    ]
   }
 ]
