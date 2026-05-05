@@ -433,7 +433,7 @@ function update_app_from_deb() {
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
   local linux_debs
-  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
+  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not) and (contains("fips") | not)) | .name')
 
   local app_update_failed="false"
   for deb in ${linux_debs}; do
@@ -582,43 +582,6 @@ EOF
   fi
 }
 
-function update_cloudflared() {
-  export GITHUB_REPO="cloudflare/cloudflared"
-  export APP_NAME="cloudflared"
-
-  print_separator "Processing deb package: ${APP_NAME} from ${GITHUB_REPO}"
-
-  get_latest_version || { FAILED_APPS+=("${APP_NAME}"); return 1; }
-  get_current_version
-
-  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    return 0
-  fi
-
-  APPS_OUT_OF_DATE="true"
-  log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
-
-  local linux_debs
-  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not) and (contains("fips") | not)) | .name')
-
-  local app_update_failed="false"
-  for deb in ${linux_debs}; do
-    download_and_add_deb "${deb}" || { app_update_failed="true"; continue; }
-  done
-
-  get_current_version
-  if [[ "${LATEST_VERSION}" != "${CURRENT_VERSION}" || "${app_update_failed}" == "true" ]]; then
-    log "ERRO" "Failed to update ${APP_NAME} to ${LATEST_VERSION}."
-    FAILED_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
-    return 1
-  else
-    log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
-    SUCCESSFUL_APPS+=("${APP_NAME}: ${LATEST_VERSION}")
-    return 0
-  fi
-}
-
 function send_notification(){
   if [[ "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
     log "WARN" "Notifications are disabled. Skipping."
@@ -728,7 +691,6 @@ function main() {
   fi
   
   update_tea || UPDATE_SUCCESS="false"
-  update_cloudflared || UPDATE_SUCCESS="false"
   
   send_notification
   log "INFO" "Script finished."
