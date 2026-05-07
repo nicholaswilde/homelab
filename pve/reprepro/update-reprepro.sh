@@ -444,7 +444,7 @@ function update_app_from_deb() {
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
   local linux_debs
-  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not)) | .name')
+  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not) and (contains("fips") | not)) | .name')
 
   local app_update_failed="false"
   for deb in ${linux_debs}; do
