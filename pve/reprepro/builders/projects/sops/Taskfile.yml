@@ -6,7 +6,7 @@ vars:
   SOPS_PROJECT_NAME: sops
   SOPS_REPO_URL: https://github.com/getsops/sops.git
   SOPS_MAIN_PATH: ./cmd/sops
-  SOPS_VERSION_TAG: v3.11.0
+  SOPS_VERSION_TAG: '{{default "v3.11.0" .VERSION}}'
 
 tasks:
   check:

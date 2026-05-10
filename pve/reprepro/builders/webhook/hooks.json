@@ -1,0 +1,13 @@
+[
+  {
+    "id": "build-app",
+    "execute-command": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders/scripts/webhook_trigger.sh",
+    "command-working-directory": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders",
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "app"
+      }
+    ]
+  }
+]

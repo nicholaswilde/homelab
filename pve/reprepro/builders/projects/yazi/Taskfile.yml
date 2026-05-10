@@ -4,7 +4,7 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   YAZI_PROJECT_NAME: yazi
   YAZI_REPO_URL: https://github.com/sxyazi/yazi.git
-  YAZI_VERSION_TAG: v25.5.31
+  YAZI_VERSION_TAG: '{{default "v25.5.31" .VERSION}}'
   YAZI_CACHE_DIR: "{{.ROOT}}/.cache"
   YAZI_DIST_DIR: "{{.ROOT}}/dist"
   YAZI_BUILD_DIR: "{{.ROOT}}/build"

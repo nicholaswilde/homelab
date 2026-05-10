@@ -473,7 +473,7 @@ function update_tea() {
   # log "INFO" "--------------------------------------------------"
   # log "INFO" "${header}"
 
-  local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases/latest"
+  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   export json_response=$(curl -s "${api_url}")
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then

@@ -7,7 +7,7 @@ vars:
   EGET_PROJECT_NAME: eget
   EGET_REPO_URL: https://github.com/zyedidia/eget.git
   EGET_MAIN_PATH: .
-  EGET_VERSION_TAG: v1.3.4
+  EGET_VERSION_TAG: '{{default "v1.3.4" .VERSION}}'
   EGET_DIST_DIR: "{{.ROOT}}/dist"
   EGET_BUILD_DIR: "{{.ROOT}}/build"
 

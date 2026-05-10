@@ -7,7 +7,7 @@ vars:
   RESTIC_PROJECT_NAME: restic
   RESTIC_REPO_URL: https://github.com/restic/restic.git
   RESTIC_MAIN_PATH: ./cmd/restic
-  RESTIC_VERSION_TAG: v0.18.1
+  RESTIC_VERSION_TAG: '{{default "v0.18.1" .VERSION}}'
 
 tasks:
   check:

@@ -4,7 +4,7 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   UBI_PROJECT_NAME: ubi
   UBI_REPO_URL: https://github.com/houseabsolute/ubi.git
-  UBI_VERSION_TAG: v0.8.4
+  UBI_VERSION_TAG: '{{default "v0.8.4" .VERSION}}'
   UBI_CACHE_DIR: "{{.ROOT}}/.cache"
   UBI_DIST_DIR: "{{.ROOT}}/dist"
   UBI_BUILD_DIR: "{{.ROOT}}/build"

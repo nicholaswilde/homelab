@@ -4,7 +4,7 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   BAT_PROJECT_NAME: bat
   BAT_REPO_URL: https://github.com/sharkdp/bat.git
-  BAT_VERSION_TAG: v0.26.1  # Note: fd is on v10+ now
+  BAT_VERSION_TAG: '{{default "v0.26.1" .VERSION}}'
   BAT_CACHE_DIR: "{{.ROOT}}/.cache"
   BAT_DIST_DIR: "{{.ROOT}}/dist"
   BAT_BUILD_DIR: "{{.ROOT}}/build"

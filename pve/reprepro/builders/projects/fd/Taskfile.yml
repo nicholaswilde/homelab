@@ -4,7 +4,7 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   FD_PROJECT_NAME: fd
   FD_REPO_URL: https://github.com/sharkdp/fd.git
-  FD_VERSION_TAG: v10.2.0  # Note: fd is on v10+ now
+  FD_VERSION_TAG: '{{default "v10.2.0" .VERSION}}'
   FD_CACHE_DIR: "{{.ROOT}}/.cache"
   FD_DIST_DIR: "{{.ROOT}}/dist"
   FD_BUILD_DIR: "{{.ROOT}}/build"

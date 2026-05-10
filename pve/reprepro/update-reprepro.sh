@@ -476,15 +476,9 @@ function update_tea() {
   local binary_name="tea"
   export APP_NAME="gitea-tea" # This is the package name
 
-  # local header=$(printf '%.0s-' {1..60})
-  # log "INFO" "--------------------------------------------------"
-  # log "INFO" "${header}"
-  # log "INFO" "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
   print_separator "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
-  # log "INFO" "--------------------------------------------------"
-  # log "INFO" "${header}"
 
-  local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases/latest"
+  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   export json_response=$(curl -s "${api_url}")
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
@@ -510,7 +504,7 @@ function update_tea() {
   APPS_OUT_OF_DATE="true"
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
-  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_binaries
   linux_binaries=$(echo "${json_response}" | jq -r '.assets[] | select(.name | contains("-linux-") and (endswith(".asc") | not) and (endswith(".sha256") | not) and (endswith(".tar.gz") | not) and (endswith(".zip") | not)) | .name')

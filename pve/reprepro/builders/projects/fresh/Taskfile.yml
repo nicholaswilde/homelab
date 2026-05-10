@@ -4,7 +4,7 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   FRESH_PROJECT_NAME: fresh
   FRESH_REPO_URL: https://github.com/sinelaw/fresh.git
-  FRESH_VERSION_TAG: v0.1.52
+  FRESH_VERSION_TAG: '{{default "v0.1.52" .VERSION}}'
   FRESH_CACHE_DIR: "{{.ROOT}}/.cache"
   FRESH_DIST_DIR: "{{.ROOT}}/dist"
   FRESH_BUILD_DIR: "{{.ROOT}}/build"

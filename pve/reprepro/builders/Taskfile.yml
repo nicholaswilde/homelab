@@ -18,6 +18,17 @@ tasks:
       - task -l
     silent: true
 
+  webhook:
+    desc: Start the webhook listener
+    cmds:
+      - webhook -hooks webhook/hooks.json -verbose
+
+  sync:
+    desc: Check and build all outdated projects
+    cmds:
+      - ./scripts/sync.sh
+    silent: true
+
   build-all:
     desc: Build DEBS for ALL projects
     cmds:
