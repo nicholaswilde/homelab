@@ -632,6 +632,9 @@ Set the `MAILRISE_*` variables and the `ENABLE_NOTIFICATIONS` variable in the `.
 
 The builder system in `pve/reprepro/builders/` provides an automated way to build and sync packages using a [Webhook](../tools/webhook.md) listener.
 
+!!! info "Purpose"
+    This system is mainly used when remote app releases do not include `armv7` releases. It ensures the correct architecture is available for my [Raspberry Pi 2](../hardware/rpi2.md) and Raspberry Pi W.
+
 ### :anchor: Webhook Listener
 
 A systemd service is used to listen for build requests.
