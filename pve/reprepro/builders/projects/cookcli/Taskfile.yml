@@ -42,9 +42,20 @@ tasks:
       
       - cmd: |
           if [ -d "{{.BUILD_DIR}}/{{.PROJECT_NAME}}/.git" ]; then
-            cd {{.BUILD_DIR}}/{{.PROJECT_NAME}} && git fetch --tags && git checkout {{.VERSION_TAG}}
+            cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+            git fetch --tags --quiet
+            if ! git rev-parse {{.VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.VERSION_TAG}} not found in {{.PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.VERSION_TAG}} --quiet
           else
-            git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+            if ! git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}} --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
+              exit 1
+            fi
           fi
       
       # --- FIX: Inject Cross.toml using safe block echo ---

@@ -50,9 +50,20 @@ tasks:
       
       - cmd: |
           if [ -d "{{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}/.git" ]; then
-            cd {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}} && git fetch --tags && git checkout {{.RESTIC_VERSION_TAG}}
+            cd {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
+            git fetch --tags --quiet
+            if ! git rev-parse {{.RESTIC_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.RESTIC_VERSION_TAG}} not found in {{.RESTIC_PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.RESTIC_VERSION_TAG}} --quiet
           else
-            git clone --depth 1 --branch {{.RESTIC_VERSION_TAG}} {{.RESTIC_REPO_URL}} {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
+            if ! git clone --depth 1 --branch {{.RESTIC_VERSION_TAG}} {{.RESTIC_REPO_URL}} {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}} --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.RESTIC_PROJECT_NAME}}"
+              exit 1
+            fi
           fi
 
       - cmd: |

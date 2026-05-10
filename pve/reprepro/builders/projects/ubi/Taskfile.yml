@@ -38,9 +38,20 @@ tasks:
       
       - cmd: |
           if [ -d "{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}/.git" ]; then
-            cd {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}} && git fetch --tags && git checkout {{.UBI_VERSION_TAG}}
+            cd {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}
+            git fetch --tags --quiet
+            if ! git rev-parse {{.UBI_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.UBI_VERSION_TAG}} not found in {{.UBI_PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.UBI_VERSION_TAG}} --quiet
           else
-            git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}
+            if ! git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}} --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.UBI_PROJECT_NAME}}"
+              exit 1
+            fi
           fi
       
       # Compile Targets

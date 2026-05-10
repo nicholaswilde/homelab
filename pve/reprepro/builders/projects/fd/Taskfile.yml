@@ -40,9 +40,20 @@ tasks:
       
       - cmd: |
           if [ -d "{{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}/.git" ]; then
-            cd {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}} && git fetch --tags && git checkout {{.FD_VERSION_TAG}}
+            cd {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}
+            git fetch --tags --quiet
+            if ! git rev-parse {{.FD_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.FD_VERSION_TAG}} not found in {{.FD_PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.FD_VERSION_TAG}} --quiet
           else
-            git clone --depth 1 --branch {{.FD_VERSION_TAG}} {{.FD_REPO_URL}} {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}
+            if ! git clone --depth 1 --branch {{.FD_VERSION_TAG}} {{.FD_REPO_URL}} {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}} --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.FD_PROJECT_NAME}}"
+              exit 1
+            fi
           fi
       
       # Compile Targets

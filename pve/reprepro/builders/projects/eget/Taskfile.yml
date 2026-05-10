@@ -58,9 +58,20 @@ tasks:
       - echo "Building {{.EGET_PROJECT_NAME}}..."
       - cmd: |
           if [ -d "{{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}/.git" ]; then
-            cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}} && git fetch --tags && git checkout {{.EGET_VERSION_TAG}}
+            cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+            git fetch --tags --quiet
+            if ! git rev-parse {{.EGET_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.EGET_VERSION_TAG}} not found in {{.EGET_PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.EGET_VERSION_TAG}} --quiet
           else
-            git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+            if ! git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}} --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.EGET_PROJECT_NAME}}"
+              exit 1
+            fi
           fi
 
       - cmd: |

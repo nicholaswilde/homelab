@@ -40,11 +40,17 @@ tasks:
         if [ -d "{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}/.git" ]; then
           echo "🔄 Updating existing repository..."
           cd {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
-          git fetch --tags
-          git checkout {{.BAT_VERSION_TAG}}
+          git fetch --tags --quiet
+          if ! git rev-parse "{{.BAT_VERSION_TAG}}" >/dev/null 2>&1; then
+            echo "❌ Error: Tag {{.BAT_VERSION_TAG}} not found for {{.BAT_PROJECT_NAME}}."
+            exit 1
+          fi
+          git reset --hard --quiet
+          git clean -fd --quiet
+          git checkout {{.BAT_VERSION_TAG}} --quiet
         else
           echo "📥 Cloning fresh repository..."
-          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
+          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}} --quiet || (echo "❌ Error: Failed to clone {{.BAT_PROJECT_NAME}} at {{.BAT_VERSION_TAG}}." && exit 1)
         fi
       
       # Compile Targets
