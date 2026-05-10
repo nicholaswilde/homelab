@@ -39,6 +39,8 @@ case "$APP" in
     "ubi")    REPO="houseabsolute/ubi" ;;
     "fresh")  REPO="sinelaw/fresh" ;;
     "yazi")   REPO="sxyazi/yazi" ;;
+    "cookcli") REPO="cooklang/cookcli" ;;
+    "cooklang-import") REPO="cooklang/cooklang-import" ;;
     *)
         echo "Error: Unknown app '$APP'."
         exit 1
