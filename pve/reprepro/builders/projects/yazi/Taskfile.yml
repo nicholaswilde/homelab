@@ -37,8 +37,14 @@ tasks:
       - mkdir -p {{.YAZI_CACHE_DIR}} {{.YAZI_DIST_DIR}} {{.YAZI_BUILD_DIR}}/stage
       
       - cmd: |
-          if [ -d "{{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}/.git" ]; then
-            cd {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}
+          DIR="{{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.YAZI_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
             git fetch --tags --quiet
             if ! git rev-parse {{.YAZI_VERSION_TAG}} >/dev/null 2>&1; then
               echo -e "\033[31mX\033[0m Error: Tag {{.YAZI_VERSION_TAG}} not found in {{.YAZI_PROJECT_NAME}}"
@@ -48,7 +54,7 @@ tasks:
             git clean -fd --quiet
             git checkout {{.YAZI_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.YAZI_VERSION_TAG}} {{.YAZI_REPO_URL}} {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}} --quiet; then
+            if ! git clone --depth 1 --branch {{.YAZI_VERSION_TAG}} {{.YAZI_REPO_URL}} "$DIR" --quiet; then
               echo -e "\033[31mX\033[0m Error: Failed to clone {{.YAZI_PROJECT_NAME}}"
               exit 1
             fi

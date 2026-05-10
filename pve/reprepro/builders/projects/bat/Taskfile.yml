@@ -37,12 +37,18 @@ tasks:
       - echo "Building {{.BAT_PROJECT_NAME}}..."
       - mkdir -p {{.BAT_CACHE_DIR}} {{.BAT_DIST_DIR}} {{.BAT_BUILD_DIR}}/stage
       - |
-        if [ -d "{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}/.git" ]; then
+        DIR="{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}"
+        DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+        if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS 2>/dev/null)" ]; then
+          echo "🗑️ Cache for {{.BAT_PROJECT_NAME}} is stale (older than $DAYS days), cleaning up..."
+          rm -rf "$DIR"
+        fi
+        if [ -d "$DIR/.git" ]; then
           echo "🔄 Updating existing repository..."
-          cd {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
+          cd "$DIR"
           git fetch --tags --quiet
           if ! git rev-parse "{{.BAT_VERSION_TAG}}" >/dev/null 2>&1; then
-            echo "❌ Error: Tag {{.BAT_VERSION_TAG}} not found for {{.BAT_PROJECT_NAME}}."
+            echo -e "\033[31mX\033[0m Error: Tag {{.BAT_VERSION_TAG}} not found for {{.BAT_PROJECT_NAME}}."
             exit 1
           fi
           git reset --hard --quiet
@@ -50,7 +56,7 @@ tasks:
           git checkout {{.BAT_VERSION_TAG}} --quiet
         else
           echo "📥 Cloning fresh repository..."
-          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}} --quiet || (echo "❌ Error: Failed to clone {{.BAT_PROJECT_NAME}} at {{.BAT_VERSION_TAG}}." && exit 1)
+          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} "$DIR" --quiet || (echo -e "\033[31mX\033[0m Error: Failed to clone {{.BAT_PROJECT_NAME}} at {{.BAT_VERSION_TAG}}." && exit 1)
         fi
       
       # Compile Targets

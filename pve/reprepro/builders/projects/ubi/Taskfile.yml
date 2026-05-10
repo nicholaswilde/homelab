@@ -37,8 +37,14 @@ tasks:
       - mkdir -p {{.UBI_CACHE_DIR}} {{.UBI_DIST_DIR}} {{.UBI_BUILD_DIR}}/stage
       
       - cmd: |
-          if [ -d "{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}/.git" ]; then
-            cd {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}
+          DIR="{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.UBI_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
             git fetch --tags --quiet
             if ! git rev-parse {{.UBI_VERSION_TAG}} >/dev/null 2>&1; then
               echo -e "\033[31mX\033[0m Error: Tag {{.UBI_VERSION_TAG}} not found in {{.UBI_PROJECT_NAME}}"
@@ -48,7 +54,7 @@ tasks:
             git clean -fd --quiet
             git checkout {{.UBI_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}} --quiet; then
+            if ! git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} "$DIR" --quiet; then
               echo -e "\033[31mX\033[0m Error: Failed to clone {{.UBI_PROJECT_NAME}}"
               exit 1
             fi

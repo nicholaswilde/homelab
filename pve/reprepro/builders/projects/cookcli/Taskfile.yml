@@ -41,8 +41,14 @@ tasks:
       - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
       
       - cmd: |
-          if [ -d "{{.BUILD_DIR}}/{{.PROJECT_NAME}}/.git" ]; then
-            cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
             git fetch --tags --quiet
             if ! git rev-parse {{.VERSION_TAG}} >/dev/null 2>&1; then
               echo -e "\033[31mX\033[0m Error: Tag {{.VERSION_TAG}} not found in {{.PROJECT_NAME}}"
@@ -52,7 +58,7 @@ tasks:
             git clean -fd --quiet
             git checkout {{.VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} {{.BUILD_DIR}}/{{.PROJECT_NAME}} --quiet; then
+            if ! git clone --depth 1 --branch {{.VERSION_TAG}} {{.REPO_URL}} "$DIR" --quiet; then
               echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
               exit 1
             fi

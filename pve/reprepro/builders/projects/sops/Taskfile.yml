@@ -50,8 +50,14 @@ tasks:
     cmds:
       - echo "Building {{.SOPS_PROJECT_NAME}}..."
       - cmd: |
-          if [ -d "{{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}/.git" ]; then
-            cd {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}
+          DIR="{{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.SOPS_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
             git fetch --tags --quiet
             if ! git rev-parse {{.SOPS_VERSION_TAG}} >/dev/null 2>&1; then
               echo -e "\033[31mX\033[0m Error: Tag {{.SOPS_VERSION_TAG}} not found in {{.SOPS_PROJECT_NAME}}"
@@ -61,7 +67,7 @@ tasks:
             git clean -fd --quiet
             git checkout {{.SOPS_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.SOPS_VERSION_TAG}} {{.SOPS_REPO_URL}} {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}} --quiet; then
+            if ! git clone --depth 1 --branch {{.SOPS_VERSION_TAG}} {{.SOPS_REPO_URL}} "$DIR" --quiet; then
               echo -e "\033[31mX\033[0m Error: Failed to clone {{.SOPS_PROJECT_NAME}}"
               exit 1
             fi

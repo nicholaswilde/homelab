@@ -49,9 +49,9 @@ tasks:
       - echo "✨ Cleaned up workspace."
 
   prune:
-    desc: Remove .deb files in dist/ older than 7 days
+    desc: Remove .deb files in dist/ older than the configured cache age
     cmds:
-      - find dist/ -name "*.deb" -type f -mtime +7 -delete
+      - find dist/ -name "*.deb" -type f -mtime +{{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}} -delete
       - echo "🧹 Pruned old artifacts."
 
   clean-targets:

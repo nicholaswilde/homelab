@@ -37,8 +37,14 @@ tasks:
       - mkdir -p {{.FRESH_CACHE_DIR}} {{.FRESH_DIST_DIR}} {{.FRESH_BUILD_DIR}}/stage
       
       - cmd: |
-          if [ -d "{{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}/.git" ]; then
-            cd {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}
+          DIR="{{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.FRESH_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
             git fetch --tags --quiet
             if ! git rev-parse {{.FRESH_VERSION_TAG}} >/dev/null 2>&1; then
               echo -e "\033[31mX\033[0m Error: Tag {{.FRESH_VERSION_TAG}} not found in {{.FRESH_PROJECT_NAME}}"
@@ -48,7 +54,7 @@ tasks:
             git clean -fd --quiet
             git checkout {{.FRESH_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.FRESH_VERSION_TAG}} {{.FRESH_REPO_URL}} {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}} --quiet; then
+            if ! git clone --depth 1 --branch {{.FRESH_VERSION_TAG}} {{.FRESH_REPO_URL}} "$DIR" --quiet; then
               echo -e "\033[31mX\033[0m Error: Failed to clone {{.FRESH_PROJECT_NAME}}"
               exit 1
             fi
