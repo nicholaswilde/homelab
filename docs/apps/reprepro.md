@@ -628,6 +628,45 @@ Some scripts can send notifications via [Mailrise](./mailrise.md).
 
 Set the `MAILRISE_*` variables and the `ENABLE_NOTIFICATIONS` variable in the `.env` file.
 
+## :robot: Automated Builder
+
+The builder system in `pve/reprepro/builders/` provides an automated way to build and sync packages using a [Webhook](../tools/webhook.md) listener.
+
+### :anchor: Webhook Listener
+
+A systemd service is used to listen for build requests.
+
+!!! abstract "reprepro-webhook.service"
+    ```ini
+    --8<-- "reprepro/builders/webhook/reprepro-webhook.service"
+    ```
+
+!!! code "Installation"
+    ```shell
+    cd pve/reprepro/builders
+    task install-service
+    ```
+
+### :test_tube: Triggering a Build
+
+You can trigger a build for a specific app (e.g., `restic`) by sending a JSON POST request.
+
+!!! example "Local Trigger"
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{"app": "restic"}' \
+      http://localhost:9000/hooks/build-app
+    ```
+
+### :brain: Smart Caching
+
+The builder uses a smart caching strategy to balance build speed and storage usage.
+
+- **Incremental Builds:** Existing source directories are updated (`git fetch`) instead of being deleted.
+- **Cache Age:** Caches older than `BUILDER_CACHE_MAX_AGE_DAYS` (set in [.env](#key-environmental-file)) are automatically refreshed.
+- **Compiler Caches:** Rust (`target/`) and Go (`GOCACHE`) caches persist between builds.
+
 ## :alarm_clock: Cronjob
 
 A cronjob can be setup to run every night to check the released versions.
