@@ -34,10 +34,14 @@ tasks:
     desc: "Build {{.UBI_PROJECT_NAME}} (Rust)"
     cmds:
       - echo "Building {{.UBI_PROJECT_NAME}}..."
-      - rm -rf {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}} {{.UBI_CACHE_DIR}}
       - mkdir -p {{.UBI_CACHE_DIR}} {{.UBI_DIST_DIR}} {{.UBI_BUILD_DIR}}/stage
       
-      - git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}/.git" ]; then
+            cd {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}} && git fetch --tags && git checkout {{.UBI_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.UBI_VERSION_TAG}} {{.UBI_REPO_URL}} {{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}
+          fi
       
       # Compile Targets
       - task: process-target

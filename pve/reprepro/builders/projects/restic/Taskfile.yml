@@ -48,10 +48,12 @@ tasks:
     cmds:
       - echo "Building {{.RESTIC_PROJECT_NAME}}..."
       
-      # Use ROOT to clean up paths
-      - rm -rf {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
-      
-      - git clone --depth 1 --branch {{.RESTIC_VERSION_TAG}} {{.RESTIC_REPO_URL}} {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}/.git" ]; then
+            cd {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}} && git fetch --tags && git checkout {{.RESTIC_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.RESTIC_VERSION_TAG}} {{.RESTIC_REPO_URL}} {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}
+          fi
 
       - cmd: |
           cd {{.ROOT}}/build/{{.RESTIC_PROJECT_NAME}}

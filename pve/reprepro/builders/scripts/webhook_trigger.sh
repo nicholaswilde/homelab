@@ -58,9 +58,8 @@ if NEW_TAG=$(./scripts/check_version.sh "$APP" "$REPO" 2>/dev/null); then
     else
         echo "Warning: upload.sh not found."
     fi
-    
-    # Cleanup
-    task clean-all
+    # 3. (Optional) Selective cleanup
+    # We no longer run 'task clean-all' here to preserve compiler caches.
 else
     echo "✅ $APP is already up to date ($NEW_TAG), skipping."
 fi

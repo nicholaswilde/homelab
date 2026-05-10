@@ -36,10 +36,14 @@ tasks:
     cmds:
       - echo "Building {{.FD_PROJECT_NAME}}..."
       # Use absolute paths for cleanup
-      - rm -rf {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}} {{.FD_CACHE_DIR}}
       - mkdir -p {{.FD_CACHE_DIR}} {{.FD_DIST_DIR}} {{.FD_BUILD_DIR}}/stage
       
-      - git clone --depth 1 --branch {{.FD_VERSION_TAG}} {{.FD_REPO_URL}} {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}/.git" ]; then
+            cd {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}} && git fetch --tags && git checkout {{.FD_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.FD_VERSION_TAG}} {{.FD_REPO_URL}} {{.FD_BUILD_DIR}}/{{.FD_PROJECT_NAME}}
+          fi
       
       # Compile Targets
       - task: process-target

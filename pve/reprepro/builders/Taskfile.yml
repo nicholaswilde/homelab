@@ -47,3 +47,22 @@ tasks:
     cmds:
       - rm -rf build/ dist/ .cache/
       - echo "✨ Cleaned up workspace."
+
+  prune:
+    desc: Remove .deb files in dist/ older than 7 days
+    cmds:
+      - find dist/ -name "*.deb" -type f -mtime +7 -delete
+      - echo "🧹 Pruned old artifacts."
+
+  clean-targets:
+    desc: Delete heavy Rust target directories to free up space
+    cmds:
+      - find build/ -name "target" -type d -exec rm -rf {} +
+      - echo "🗑️  Cleared compiler targets."
+
+  status:
+    desc: Show current storage usage of the builders
+    cmds:
+      - echo "📊 Storage Usage:"
+      - du -sh build/ .cache/ dist/ 2>/dev/null || true
+    silent: true

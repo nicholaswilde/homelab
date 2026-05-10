@@ -59,8 +59,9 @@ for entry in "${PROJECTS[@]}"; do
         continue
     fi
     
-    # 4. Cleanup
-    task clean-all
+    # 4. (Optional) Selective cleanup
+    # We no longer run 'task clean-all' here to preserve compiler caches.
+    # task restic:clean # if you add per-project cleanup
   else
     echo "✅ $alias is up to date."
   fi

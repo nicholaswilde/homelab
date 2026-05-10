@@ -56,8 +56,12 @@ tasks:
       DIST_DIR: "{{.EGET_DIST_DIR}}"
     cmds:
       - echo "Building {{.EGET_PROJECT_NAME}}..."
-      - rm -rf {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
-      - git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}/.git" ]; then
+            cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}} && git fetch --tags && git checkout {{.EGET_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+          fi
 
       - cmd: |
           cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}

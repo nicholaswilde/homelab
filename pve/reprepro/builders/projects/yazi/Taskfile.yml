@@ -34,10 +34,14 @@ tasks:
     cmds:
       - echo "Building {{.YAZI_PROJECT_NAME}}..."
       # Use absolute paths for cleanup
-      - rm -rf {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}} {{.YAZI_CACHE_DIR}}
       - mkdir -p {{.YAZI_CACHE_DIR}} {{.YAZI_DIST_DIR}} {{.YAZI_BUILD_DIR}}/stage
       
-      - git clone --depth 1 --branch {{.YAZI_VERSION_TAG}} {{.YAZI_REPO_URL}} {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}/.git" ]; then
+            cd {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}} && git fetch --tags && git checkout {{.YAZI_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.YAZI_VERSION_TAG}} {{.YAZI_REPO_URL}} {{.YAZI_BUILD_DIR}}/{{.YAZI_PROJECT_NAME}}
+          fi
       
       # Compile Targets
       - task: process-target

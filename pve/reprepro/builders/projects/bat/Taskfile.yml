@@ -35,11 +35,17 @@ tasks:
     desc: "Build {{.BAT_PROJECT_NAME}} (Rust)"
     cmds:
       - echo "Building {{.BAT_PROJECT_NAME}}..."
-      # Use absolute paths for cleanup
-      - rm -rf {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}} {{.BAT_CACHE_DIR}}
       - mkdir -p {{.BAT_CACHE_DIR}} {{.BAT_DIST_DIR}} {{.BAT_BUILD_DIR}}/stage
-      
-      - git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
+      - |
+        if [ -d "{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}/.git" ]; then
+          echo "🔄 Updating existing repository..."
+          cd {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
+          git fetch --tags
+          git checkout {{.BAT_VERSION_TAG}}
+        else
+          echo "📥 Cloning fresh repository..."
+          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} {{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}
+        fi
       
       # Compile Targets
       - task: process-target

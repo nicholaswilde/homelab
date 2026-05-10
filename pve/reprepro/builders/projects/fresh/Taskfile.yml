@@ -34,10 +34,14 @@ tasks:
     desc: "Build {{.FRESH_PROJECT_NAME}} (Rust)"
     cmds:
       - echo "Building {{.FRESH_PROJECT_NAME}}..."
-      - rm -rf {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}} {{.FRESH_CACHE_DIR}}
       - mkdir -p {{.FRESH_CACHE_DIR}} {{.FRESH_DIST_DIR}} {{.FRESH_BUILD_DIR}}/stage
       
-      - git clone --depth 1 --branch {{.FRESH_VERSION_TAG}} {{.FRESH_REPO_URL}} {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}
+      - cmd: |
+          if [ -d "{{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}/.git" ]; then
+            cd {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}} && git fetch --tags && git checkout {{.FRESH_VERSION_TAG}}
+          else
+            git clone --depth 1 --branch {{.FRESH_VERSION_TAG}} {{.FRESH_REPO_URL}} {{.FRESH_BUILD_DIR}}/{{.FRESH_PROJECT_NAME}}
+          fi
       
       # --- FIX: Inject Cross.toml using safe block echo ---
       - cmd: |
