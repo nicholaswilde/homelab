@@ -24,10 +24,12 @@ RED='\033[38;5;203m'
 GREEN='\033[38;5;120m'
 
 # --- Configuration ---
-ENV_FILE=".env"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+PARENT_DIR=$(dirname "${SCRIPT_DIR}")
+ENV_FILE="${PARENT_DIR}/.env"
 DEFAULT_REMOTE_HOST="root@reprepro.l.nicholaswilde.io"
 DEFAULT_REMOTE_REPO_PATH="/root/git/nicholaswilde/homelab/pve/reprepro"
-LOCAL_DIST_DIR="./dist"
+LOCAL_DIST_DIR="${SCRIPT_DIR}/dist"
 REMOTE_TEMP_DIR="/tmp/reprepro-upload"
 
 # --- Functions ---
@@ -69,11 +71,20 @@ function cleanup() {
 trap cleanup ERR INT EXIT
 
 function main() {
-  local REMOTE_HOST="${DEFAULT_REMOTE_HOST}"
+  local REMOTE_HOST=""
   local REMOTE_REPO_PATH="${DEFAULT_REMOTE_REPO_PATH}"
   
   # Load environment variables if available
-  [[ -f "$ENV_FILE" ]] && source "$ENV_FILE"
+  if [[ -f "$ENV_FILE" ]]; then
+    source "$ENV_FILE"
+  fi
+
+  # Build REMOTE_HOST from .env variables if available
+  if [[ -n "${REMOTE_USER}" && -n "${REMOTE_IP}" ]]; then
+    REMOTE_HOST="${REMOTE_USER}@${REMOTE_IP}"
+  else
+    REMOTE_HOST="${DEFAULT_REMOTE_HOST}"
+  fi
 
   # Parse arguments
   while [[ $# -gt 0 ]]; do

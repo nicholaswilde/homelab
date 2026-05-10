@@ -12,7 +12,15 @@
 ################################################################################
 
 APP=$1
-BUILDERS_DIR="/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+BUILDERS_DIR=$(dirname "$SCRIPT_DIR")
+PARENT_DIR=$(dirname "$BUILDERS_DIR")
+
+# Load Configuration
+ENV_FILE="${PARENT_DIR}/.env"
+if [[ -f "$ENV_FILE" ]]; then
+  source "$ENV_FILE"
+fi
 
 if [ -z "$APP" ]; then
     echo "Error: No app name provided."

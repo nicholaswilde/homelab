@@ -17,6 +17,13 @@ set -o pipefail
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 BUILDERS_DIR=$(dirname "$SCRIPT_DIR")
+PARENT_DIR=$(dirname "$BUILDERS_DIR")
+
+# Load Configuration
+ENV_FILE="${PARENT_DIR}/.env"
+if [[ -f "$ENV_FILE" ]]; then
+  source "$ENV_FILE"
+fi
 
 cd "$BUILDERS_DIR"
 

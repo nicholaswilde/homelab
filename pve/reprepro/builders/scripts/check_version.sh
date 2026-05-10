@@ -3,7 +3,20 @@
 PKG=$1
 REPO=$2
 DIST=${3:-bookworm}
-BASE_URL="${4:-http://192.168.1.58/debian}"
+
+# Load Configuration
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+ENV_FILE="${SCRIPT_DIR}/../../.env"
+if [[ -f "$ENV_FILE" ]]; then
+  source "$ENV_FILE"
+fi
+
+DEFAULT_BASE_URL="http://192.168.1.58/debian"
+if [[ -n "${REMOTE_IP}" ]]; then
+  DEFAULT_BASE_URL="http://${REMOTE_IP}/debian"
+fi
+
+BASE_URL="${4:-$DEFAULT_BASE_URL}"
 
 # 1. Get Local Version from remote apt repo
 # We check amd64 as a reference for the latest version in the repo
