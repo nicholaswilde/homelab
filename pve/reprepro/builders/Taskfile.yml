@@ -19,9 +19,22 @@ tasks:
     silent: true
 
   webhook:
-    desc: Start the webhook listener
+    desc: Start the webhook listener (interactive)
     cmds:
-      - webhook -hooks webhook/hooks.json -verbose
+      - webhook -hooks webhook/hooks.json -verbose -port 9000
+
+  install-service:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - sudo cp webhook/reprepro-webhook.service /etc/systemd/system/
+      - sudo systemctl daemon-reload
+      - sudo systemctl enable --now reprepro-webhook
+      - echo "🚀 Webhook service installed and started!"
+
+  logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u reprepro-webhook -f
 
   sync:
     desc: Check and build all outdated projects

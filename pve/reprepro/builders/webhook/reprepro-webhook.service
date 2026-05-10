@@ -1,0 +1,15 @@
+[Unit]
+Description=Reprepro Builder Webhook Listener
+After=network.target
+
+[Service]
+Type=simple
+User=nicholas
+Group=nicholas
+WorkingDirectory=/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders
+ExecStart=/usr/bin/webhook -hooks webhook/hooks.json -verbose -port 9000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
