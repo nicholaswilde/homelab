@@ -3,6 +3,12 @@
     "id": "update-app",
     "execute-command": "/root/git/nicholaswilde/homelab/lxc/omni-tools/update.sh",
     "command-working-directory": "/root/git/nicholaswilde/homelab/lxc/omni-tools",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "-s"
+      }
+    ],
     "response-message": "Updating omni-tools..."
   }
 ]
