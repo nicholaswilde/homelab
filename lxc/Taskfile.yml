@@ -17,6 +17,8 @@ tasks:
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/README.md.j2 > ./{{ .APP_NAME_LOWER }}/README.md
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/.env.tmpl.j2 > ./{{ .APP_NAME_LOWER }}/.env.tmpl
       - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/update.sh.j2 > ./{{ .APP_NAME_LOWER }}/update.sh
+      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/hooks.json.j2 > ./{{ .APP_NAME_LOWER }}/hooks.json
+      - jinja2 -D APP_NAME={{ .APP_NAME}} ./.template/webhook.service.j2 > ./{{ .APP_NAME_LOWER }}/{{ .APP_NAME_LOWER }}-webhook.service
       - cp ./.template/Taskfile.yml ./{{ .APP_NAME_LOWER }}/Taskfile.yml
   default:
     cmds:
