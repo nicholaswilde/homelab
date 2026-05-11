@@ -55,11 +55,11 @@ function log() {
 
   # Define colors only if stdout is a terminal and not in service mode
   if [[ -t 1 ]] && [[ "${SERVICE_MODE}" == "false" ]]; then
-    readonly BLUE_COL="\033[38;2;137;180;250m"
-    readonly RED_COL="\033[38;2;243;139;168m"
-    readonly YELLOW_COL="\033[38;2;249;226;175m"
-    readonly PURPLE_COL="\033[38;2;203;166;247m"
-    readonly RESET_COL="\033[0m"
+    BLUE_COL="\033[38;2;137;180;250m"
+    RED_COL="\033[38;2;243;139;168m"
+    YELLOW_COL="\033[38;2;249;226;175m"
+    PURPLE_COL="\033[38;2;203;166;247m"
+    RESET_COL="\033[0m"
     
     case "$type" in
       INFO) color="$BLUE_COL";;
