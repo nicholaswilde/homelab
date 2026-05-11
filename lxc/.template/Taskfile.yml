@@ -76,6 +76,10 @@ tasks:
     desc: View the webhook service logs
     cmds:
       - journalctl -u {{ .SERVICE_NAME }}-webhook -f
+  test-webhook:
+    desc: Test the webhook listener locally
+    cmds:
+      - curl -X POST http://localhost:9000/hooks/update-app
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
