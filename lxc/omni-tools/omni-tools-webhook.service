@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
+Environment="PATH=/root/.local/share/fnm/aliases/default/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/omni-tools
 ExecStart=/usr/local/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always

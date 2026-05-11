@@ -85,7 +85,7 @@ tasks:
   test-webhook:
     desc: Test the webhook listener locally
     cmds:
-      - curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:

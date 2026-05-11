@@ -14,7 +14,6 @@
 ################################################################################
 
 # Options
-set -e
 set -o pipefail
 
 # These are constants
@@ -25,6 +24,11 @@ GITHUB_REPO="iib0011/omni-tools"
 DEBUG="false"
 SERVICE_MODE="false"
 readonly VERSION_FILENAME="omni-tools_version.txt"
+
+# Default variables
+ENABLE_NOTIFICATIONS="false"
+UPDATE_SUCCESS="true"
+UPDATE_MESSAGES=()
 
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
@@ -83,6 +87,47 @@ function command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+function send_notification(){
+  if [[ "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    log "WARN" "Notifications are disabled. Skipping."
+    return 0
+  fi
+  if [[ -z "${MAILRISE_URL}" || -z "${MAILRISE_FROM}" || -z "${MAILRISE_RCPT}" ]]; then
+    log "WARN" "Notification variables not set. Skipping notification."
+    return 1
+  fi
+
+  local EMAIL_SUBJECT="Homelab - Update ${APP_NAME} Summary"
+  local EMAIL_BODY
+
+  if [[ "${UPDATE_SUCCESS}" == "true" ]]; then
+    EMAIL_BODY="${APP_NAME} update completed successfully."
+  else
+    EMAIL_BODY="${APP_NAME} update encountered errors."
+  fi
+
+  if [ ${#UPDATE_MESSAGES[@]} -gt 0 ]; then
+    EMAIL_BODY+=$'\\n\\nUpdate details:\\n'
+    for msg in "${UPDATE_MESSAGES[@]}"; do
+      EMAIL_BODY+="- ${msg}"$'\n'
+    done
+  fi
+
+  log "INFO" "Sending email notification..."
+  curl -s \
+    --url "${MAILRISE_URL}" \
+    --mail-from "${MAILRISE_FROM}" \
+    --mail-rcpt "${MAILRISE_RCPT}" \
+    --upload-file - <<EOF
+From: ${APP_NAME} Update <${MAILRISE_FROM}>
+To: Nicholas Wilde <${MAILRISE_RCPT}>
+Subject: ${EMAIL_SUBJECT}
+
+${EMAIL_BODY}
+EOF
+  log "INFO" "Email notification sent."
+}
+
 function check_dependencies() {
   local missing_deps=()
   for cmd in curl jq npm; do
@@ -93,7 +138,9 @@ function check_dependencies() {
 
   if [ ${#missing_deps[@]} -ne 0 ]; then
     log "ERRO" "Required dependencies are not installed: ${missing_deps[*]}" >&2
-    exit 1
+    UPDATE_SUCCESS="false"
+    UPDATE_MESSAGES+=("Missing dependencies: ${missing_deps[*]}")
+    return 1
   fi
 }
 
@@ -150,7 +197,7 @@ function remove_old_install(){
   log "INFO" "Removing old application files..."
   if ! rm -rf "${INSTALL_DIR}"; then
     log "ERRO" "There was an error removing the application"
-    exit 1
+    return 1
   fi
 }
 
@@ -171,14 +218,14 @@ function download_and_extract(){
   log "INFO" "Downloading update..."
   if ! curl -LsSf "${tarball_url}" -o "${TEMP_DIR}/omni-tools.tar.gz"; then
     log "ERRO" "There was an error downloading the update"
-    exit 1
+    return 1
   fi
 
   mkdir -p "${INSTALL_DIR}"
   log "INFO" "Extracting update..."
   if ! tar -xzf "${TEMP_DIR}/omni-tools.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
     log "ERRO" "There was an error extracting the update"
-    exit 1
+    return 1
   fi
 }
 
@@ -195,7 +242,7 @@ function setup_frontend(){
     log "INFO" "  -> npm install successful"
   else
     log "ERRO" "  -> There was an error installing npm packages"
-    exit 1
+    return 1
   fi
   
   log "INFO" "  -> Running npm run build..."
@@ -203,31 +250,46 @@ function setup_frontend(){
     log "INFO" "  -> npm build successful"
   else
     log "ERRO" "  -> There was an error building the application"
-    exit 1
+    return 1
   fi
 
   log "INFO" "  -> Copying distribution files to /var/www/html/"
   if ! cp -r "${INSTALL_DIR}/dist/"* /var/www/html/; then
     log "ERRO" "  -> There was an error copying the distribution files"
-    exit 1
+    return 1
   fi
 }
 
-function check_version(){
+function update_script() {
+  get_latest_version || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to get latest version from GitHub."); return 1; }
+  get_current_version || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to get current version."); return 1; }
+  
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
     log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
-    log "INFO" "Script finished."
-    exit 0
-  else
-    log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
+    UPDATE_MESSAGES+=("${APP_NAME} is already up-to-date: ${CURRENT_VERSION}")
+    return 0
   fi
-}
+  
+  log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
+  UPDATE_MESSAGES+=("Updating ${APP_NAME} from ${CURRENT_VERSION} to ${LATEST_VERSION}.")
+  
+  stop_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to stop services."); }
+  remove_old_install || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to remove old installation."); return 1; }
 
-function verify_version(){
+  download_and_extract || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to download or extract update."); return 1; }
+  setup_app || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to setup application."); return 1; }
+  write_version || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to write version file."); }
+  restart_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to restart services."); }
+  
+  get_current_version
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
     log "INFO" "Successfully updated ${APP_NAME} to ${LATEST_VERSION}."
+    UPDATE_MESSAGES+=("Successfully updated to ${LATEST_VERSION}.")
   else
     log "ERRO" "Failed to update ${APP_NAME}. Still on ${CURRENT_VERSION}."
+    UPDATE_SUCCESS="false"
+    UPDATE_MESSAGES+=("Update verification failed. Still on ${CURRENT_VERSION}.")
+    return 1
   fi
 }
 
@@ -246,23 +308,15 @@ function main() {
   done
 
   log "INFO" "Starting ${APP_NAME} update script..."
-  check_dependencies
-
-  get_latest_version
-  get_current_version
-  check_version
+  if check_dependencies; then
+    update_script
+  fi
   
-  stop_services
-  remove_old_install
-
-  download_and_extract
-  setup_app
-  write_version
-  restart_services
-  
-  get_current_version
-  verify_version
+  send_notification
   log "INFO" "Script finished."
+  if [[ "${UPDATE_SUCCESS}" == "false" ]]; then
+    exit 1
+  fi
 }
 
 # Call main to start the script
