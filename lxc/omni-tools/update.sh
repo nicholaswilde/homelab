@@ -32,6 +32,12 @@ if [ -f "$(dirname "$0")/.env" ]; then
   source "$(dirname "$0")/.env"
 fi
 
+# Load fnm if it exists (useful for background services)
+if [ -d "$HOME/.local/share/fnm" ]; then
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "$(fnm env --use-on-cd)"
+fi
+
 # Logging function
 function log() {
   local type="$1"
@@ -78,8 +84,15 @@ function command_exists() {
 }
 
 function check_dependencies() {
-  if ! command_exists curl || ! command_exists jq || ! command_exists npm; then
-    log "ERRO" "Required dependencies (curl, jq, npm) are not installed." >&2
+  local missing_deps=()
+  for cmd in curl jq npm; do
+    if ! command_exists "$cmd"; then
+      missing_deps+=("$cmd")
+    fi
+  done
+
+  if [ ${#missing_deps[@]} -ne 0 ]; then
+    log "ERRO" "Required dependencies are not installed: ${missing_deps[*]}" >&2
     exit 1
   fi
 }
