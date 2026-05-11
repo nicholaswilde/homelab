@@ -1,0 +1,14 @@
+[
+  {
+    "id": "update-app",
+    "execute-command": "/root/git/nicholaswilde/homelab/lxc/{{ APP_NAME | lower }}/update.sh",
+    "command-working-directory": "/root/git/nicholaswilde/homelab/lxc/{{ APP_NAME | lower }}",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "-s"
+      }
+    ],
+    "response-message": "Updating {{ APP_NAME | lower }}..."
+  }
+]
