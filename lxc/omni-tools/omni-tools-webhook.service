@@ -1,0 +1,14 @@
+[Unit]
+Description=Omni-tools Webhook Listener
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/omni-tools
+ExecStart=/usr/local/bin/webhook -hooks hooks.json -verbose -port 9000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

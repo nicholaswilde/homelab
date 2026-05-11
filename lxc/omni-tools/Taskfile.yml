@@ -71,6 +71,17 @@ tasks:
       - test -f update.sh
     cmds:
       - ./update.sh
+  install-webhook-service:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp omni-tools-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now omni-tools-webhook
+      - echo "🚀 Webhook service installed and started!"
+  webhook-logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u omni-tools-webhook -f
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:
