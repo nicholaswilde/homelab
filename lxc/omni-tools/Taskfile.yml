@@ -82,6 +82,10 @@ tasks:
     desc: View the webhook service logs
     cmds:
       - journalctl -u omni-tools-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status omni-tools-webhook
   wh:test:
     desc: Test the webhook listener locally
     cmds:
