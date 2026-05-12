@@ -89,6 +89,7 @@ Hardware = [
   { "Raspberry Pi 2" = "hardware/rpi2.md" },
   { "Raspberry Pi 4 8GB" = "hardware/rpi4.md" },
   { "Raspberry Pi 5 16GB" = "hardware/rpi5.md" },
+  { "Third Reality Moisture Sensor" = "hardware/third-reality-moisture-sensor.md" },
   { "UniFi" = "hardware/unifi.md" },
   { "Wyze Cams" = "hardware/wyze-cam.md" },
 ]
