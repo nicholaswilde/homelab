@@ -111,7 +111,7 @@ function send_notification(){
   if [ ${#UPDATE_MESSAGES[@]} -gt 0 ]; then
     EMAIL_BODY+=$'\n\nUpdate details:\n'
     for msg in "${UPDATE_MESSAGES[@]}"; do
-      EMAIL_BODY+="- ${msg}"
+      EMAIL_BODY+="- ${msg}"$'\n'
     done
   fi
 
