@@ -71,18 +71,18 @@ tasks:
       - test -f update.sh
     cmds:
       - ./update.sh
-  install-webhook-service:
+  wh:install:
     desc: Install and start the systemd webhook service
     cmds:
       - cp omni-tools-webhook.service /etc/systemd/system/
       - systemctl daemon-reload
       - systemctl enable --now omni-tools-webhook
       - echo "🚀 Webhook service installed and started!"
-  webhook-logs:
+  wh:logs:
     desc: View the webhook service logs
     cmds:
       - journalctl -u omni-tools-webhook -f
-  test-webhook:
+  wh:test:
     desc: Test the webhook listener locally
     cmds:
       - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
