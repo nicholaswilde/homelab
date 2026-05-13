@@ -187,17 +187,18 @@ function get_current_version() {
   
   log "INFO" "Getting current version of ${APP_NAME}..."
   local current_version_full
-  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" --version 2>&1)
-  CURRENT_VERSION=$(echo "${current_version_full}" | awk '{print $NF}' | sed 's/v//')
+  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" version 2>&1)
+  # Extract version using regex to be more robust
+  CURRENT_VERSION=$(echo "${current_version_full}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
   log "INFO" "Current ${APP_NAME} version: ${CURRENT_VERSION}"
 }
 
 function stop_services(){
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  if systemctl is-active --quiet "${SERVICE_NAME}.service"; then
     log "INFO" "Stopping ${SERVICE_NAME}.service..."
     systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+    log "WARN" "Service ${SERVICE_NAME}.service is not running, skipping stop."
   fi
 }
 
@@ -213,10 +214,18 @@ function restart_services(){
 function download_and_install(){
   log "INFO" "Downloading and installing update..."
   # Note: Using i.jpillora.com as a generic installer for Go binaries.
+  # We download to the current directory and then move it to the INSTALL_DIR.
   if ! ( { curl -fsSL "https://i.jpillora.com/${GITHUB_REPO}" | bash; } 2>&1 | log "INFO"); then
     log "ERRO" "Failed to download update. Aborting."
     return 1
   fi
+  
+  log "INFO" "Moving binary to ${INSTALL_DIR}..."
+  if ! mv "./${SERVICE_NAME}" "${INSTALL_DIR}/${SERVICE_NAME}"; then
+    log "ERRO" "Failed to move binary to ${INSTALL_DIR}."
+    return 1
+  fi
+  chmod +x "${INSTALL_DIR}/${SERVICE_NAME}"
 }
 
 function update_script() {
