@@ -9,7 +9,7 @@
 #
 # @author Nicholas Wilde, 0xb299a622
 # @date 12 May 2026
-# @version 0.2.0
+# @version 0.3.0
 #
 ################################################################################
 
@@ -17,7 +17,8 @@
 set -o pipefail
 
 # These are constants
-SERVICE_NAME="pocket-id"
+SERVICE_NAME="pocketid"
+BINARY_NAME="pocket-id"
 APP_NAME="pocket-id"
 INSTALL_DIR="/opt/pocket-id"
 GITHUB_REPO="pocket-id/pocket-id"
@@ -179,15 +180,15 @@ function get_latest_version() {
 }
 
 function get_current_version() {
-  if [ ! -x "${INSTALL_DIR}/${SERVICE_NAME}" ]; then
-    log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
+  if [ ! -x "${INSTALL_DIR}/${BINARY_NAME}" ]; then
+    log "WARN" "${BINARY_NAME} is not installed or not executable at ${INSTALL_DIR}/${BINARY_NAME}."
     CURRENT_VERSION="0"
     return
   fi
   
   log "INFO" "Getting current version of ${APP_NAME}..."
   local current_version_full
-  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" version 2>&1)
+  current_version_full=$("${INSTALL_DIR}/${BINARY_NAME}" version 2>&1)
   # Extract version using regex to be more robust
   CURRENT_VERSION=$(echo "${current_version_full}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
   log "INFO" "Current ${APP_NAME} version: ${CURRENT_VERSION}"
@@ -221,11 +222,11 @@ function download_and_install(){
   fi
   
   log "INFO" "Moving binary to ${INSTALL_DIR}..."
-  if ! mv "./${SERVICE_NAME}" "${INSTALL_DIR}/${SERVICE_NAME}"; then
+  if ! mv "./${BINARY_NAME}" "${INSTALL_DIR}/${BINARY_NAME}"; then
     log "ERRO" "Failed to move binary to ${INSTALL_DIR}."
     return 1
   fi
-  chmod +x "${INSTALL_DIR}/${SERVICE_NAME}"
+  chmod +x "${INSTALL_DIR}/${BINARY_NAME}"
 }
 
 function update_script() {
