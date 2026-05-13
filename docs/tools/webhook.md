@@ -5,7 +5,16 @@ tags:
 ---
 # :anchor: Webhook
 
-[Webhook][1] is a lightweight incoming webhook server that allows you to create HTTP endpoints (hooks) on your server, which you can use to execute configured commands.
+[Webhook][1] is a lightweight incoming webhook server that allows you to create
+HTTP endpoints (hooks) on your server, which you can use to execute configured
+commands.
+
+!!! danger "Security Warning"
+
+    The webhooks as configured in this repository are **insecure**. They do not
+    currently implement signature verification (e.g., X-Hub-Signature) or
+    authentication tokens. They should only be used in a trusted network
+    environment or properly secured with a reverse proxy and authentication.
 
 ## :hammer_and_wrench: Installation
 
@@ -17,7 +26,8 @@ tags:
 
 ## :gear: Configuration
 
-Webhooks are defined in a JSON file (typically `hooks.json`). Each hook specifies an ID, the command to execute, and how to handle arguments.
+Webhooks are defined in a JSON file (typically `hooks.json`). Each hook
+specifies an ID, the command to execute, and how to handle arguments.
 
 ### :material-file-code: Example `hooks.json`
 
