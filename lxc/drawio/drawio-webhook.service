@@ -5,9 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-Environment=PATH=/home/root/.local/share/pnpm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/bin:/bin:/root/.local/bin
 WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/drawio
-ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
+ExecStart=/usr/local/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always
 RestartSec=5
 

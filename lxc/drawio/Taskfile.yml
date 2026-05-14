@@ -77,18 +77,18 @@ tasks:
   wh:install:
     desc: Install and start the systemd webhook service
     cmds:
-      - cp {{ .SERVICE_NAME }}-webhook.service /etc/systemd/system/
+      - cp drawio-webhook.service /etc/systemd/system/
       - systemctl daemon-reload
-      - systemctl enable --now {{ .SERVICE_NAME }}-webhook
+      - systemctl enable --now drawio-webhook
       - echo "🚀 Webhook service installed and started!"
   wh:logs:
     desc: View the webhook service logs
     cmds:
-      - journalctl -u {{ .SERVICE_NAME }}-webhook -f
+      - journalctl -u drawio-webhook -f
   wh:status:
     desc: Check the status of the systemd webhook service
     cmds:
-      - systemctl status {{ .SERVICE_NAME }}-webhook
+      - systemctl status drawio-webhook
   wh:test:
     desc: Test the webhook listener locally
     cmds:
