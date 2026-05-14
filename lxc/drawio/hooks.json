@@ -1,0 +1,14 @@
+[
+  {
+    "id": "update-app",
+    "execute-command": "/root/git/nicholaswilde/homelab/lxc/drawio/update.sh",
+    "command-working-directory": "/root/git/nicholaswilde/homelab/lxc/drawio",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "-s"
+      }
+    ],
+    "response-message": "Updating drawio..."
+  }
+]
