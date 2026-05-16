@@ -1,13 +1,16 @@
 version: '3'
 
 vars:
-  ROOT: "{{.TASKFILE_DIR}}/../.."
+  ROOT:
+    sh: realpath -m "{{.TASKFILE_DIR}}/../.."
   UBI_PROJECT_NAME: ubi
   UBI_REPO_URL: https://github.com/houseabsolute/ubi.git
-  UBI_VERSION_TAG: '{{default "v0.8.4" .VERSION}}'
-  UBI_CACHE_DIR: "{{.ROOT}}/.cache"
-  UBI_DIST_DIR: "{{.ROOT}}/dist"
-  UBI_BUILD_DIR: "{{.ROOT}}/build"
+  UBI_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.UBI_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  UBI_VERSION_TAG: '{{default .UBI_LATEST_VERSION .VERSION}}'
+  CACHE_DIR: "{{.ROOT}}/.cache"
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
 
 tasks:
   check:
@@ -34,10 +37,9 @@ tasks:
     desc: "Build {{.UBI_PROJECT_NAME}} (Rust)"
     cmds:
       - echo "Building {{.UBI_PROJECT_NAME}}..."
-      - mkdir -p {{.UBI_CACHE_DIR}} {{.UBI_DIST_DIR}} {{.UBI_BUILD_DIR}}/stage
-      
+      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
       - cmd: |
-          DIR="{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}"
+          DIR="{{.BUILD_DIR}}/{{.UBI_PROJECT_NAME}}"
           DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
           if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
             echo "🗑️ Cache for {{.UBI_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
@@ -59,8 +61,6 @@ tasks:
               exit 1
             fi
           fi
-      
-      # Compile Targets
       - task: process-target
         vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64", SUFFIX: "amd64"}
       - task: process-target
@@ -69,11 +69,8 @@ tasks:
         vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf", SUFFIX: "armhf"}
       - task: process-target
         vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armhf", SUFFIX: "armhf+armv6"}
-
       - echo "✅ {{.UBI_PROJECT_NAME}} build complete."
 
-  # --- Internal Helpers ---
-  
   process-target:
     internal: true
     cmds:
@@ -84,19 +81,19 @@ tasks:
 
   compile:
     internal: true
-    dir: "{{.UBI_BUILD_DIR}}/{{.UBI_PROJECT_NAME}}"
+    dir: "{{.BUILD_DIR}}/{{.UBI_PROJECT_NAME}}"
     cmds:
       - echo "Building for {{.RUST_TARGET}}..."
       - cross build --release --target {{.RUST_TARGET}}
-      - mkdir -p {{.UBI_CACHE_DIR}}/{{.GO_FOLDER}}
-      - cp target/{{.RUST_TARGET}}/release/{{.UBI_PROJECT_NAME}} {{.UBI_CACHE_DIR}}/{{.GO_FOLDER}}/
+      - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
+      - cp target/{{.RUST_TARGET}}/release/{{.UBI_PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
 
   package:
     internal: true
-    dir: "{{.UBI_BUILD_DIR}}/stage"
+    dir: "{{.BUILD_DIR}}/stage"
     cmds:
       - echo "Packaging {{.ARCH}}..."
-      - cp {{.UBI_CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.UBI_PROJECT_NAME}} ./binary
+      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.UBI_PROJECT_NAME}} ./binary
       - cmd: |
           echo 'name: "{{.UBI_PROJECT_NAME}}"' > nfpm.yaml
           echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
@@ -114,9 +111,7 @@ tasks:
           echo '    dst: "/usr/bin/{{.UBI_PROJECT_NAME}}"' >> nfpm.yaml
           echo '    file_info:' >> nfpm.yaml
           echo '      mode: 0755' >> nfpm.yaml
-
-          nfpm pkg --config nfpm.yaml --packager deb --target {{.UBI_DIST_DIR}}/{{.UBI_PROJECT_NAME}}_{{.UBI_VERSION_TAG}}_{{.SUFFIX}}.deb
-          
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.UBI_PROJECT_NAME}}_{{.UBI_VERSION_TAG}}_{{.SUFFIX}}.deb
           rm nfpm.yaml binary
 
   default:
@@ -127,8 +122,5 @@ tasks:
   latest:
     desc: Check the latest version available on GitHub
     cmds:
-      - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.UBI_REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.UBI_VERSION_TAG}}"
-          echo "Latest Upstream Version:    $LATEST"
-        silent: true
+      - echo "Latest Version {{.UBI_VERSION_TAG}}"
+    silent: true

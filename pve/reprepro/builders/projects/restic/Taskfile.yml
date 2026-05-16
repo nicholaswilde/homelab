@@ -6,8 +6,10 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   RESTIC_PROJECT_NAME: restic
   RESTIC_REPO_URL: https://github.com/restic/restic.git
+  RESTIC_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.RESTIC_REPO_URL}} | tail -n1 | sed 's/.*\///'
   RESTIC_MAIN_PATH: ./cmd/restic
-  RESTIC_VERSION_TAG: '{{default "v0.18.1" .VERSION}}'
+  RESTIC_VERSION_TAG: '{{default .RESTIC_LATEST_VERSION .VERSION}}'
 
 tasks:
   check:
@@ -31,14 +33,13 @@ tasks:
             dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
             echo "---------------------------------------------------"
           done
+
   latest:
     desc: Check the latest version available on GitHub
     cmds:
-      - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.RESTIC_REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.RESTIC_VERSION_TAG}}"
-          echo "Latest Upstream Version:    $LATEST"
-        silent: true
+      - echo "Latest Version {{.RESTIC_VERSION_TAG}}"
+    silent: true
+
   build:
     desc: Build Restic (Go)
     env:

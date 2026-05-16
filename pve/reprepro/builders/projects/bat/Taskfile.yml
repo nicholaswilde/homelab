@@ -4,7 +4,9 @@ vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
   BAT_PROJECT_NAME: bat
   BAT_REPO_URL: https://github.com/sharkdp/bat.git
-  BAT_VERSION_TAG: '{{default "v0.26.1" .VERSION}}'
+  BAT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.BAT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  BAT_VERSION_TAG: '{{default .BAT_LATEST_VERSION .VERSION}}'
   BAT_CACHE_DIR: "{{.ROOT}}/.cache"
   BAT_DIST_DIR: "{{.ROOT}}/dist"
   BAT_BUILD_DIR: "{{.ROOT}}/build"
@@ -31,6 +33,7 @@ tasks:
             echo "---------------------------------------------------"
           done
     silent: true
+
   build:
     desc: "Build {{.BAT_PROJECT_NAME}} (Rust)"
     cmds:
@@ -127,16 +130,13 @@ tasks:
           # Cleanup
           rm nfpm.yaml binary
 
+  latest:
+    desc: Check the latest version available on GitHub
+    cmds:
+      - echo "Latest Version {{.BAT_VERSION_TAG}}"
+    silent: true
+
   default:
     cmds:
       - task -l
     silent: true
-
-  latest:
-    desc: Check the latest version available on GitHub
-    cmds:
-      - cmd: |
-          LATEST=$(git ls-remote --tags --refs --sort="v:refname" {{.BAT_REPO_URL}} | tail -n1 | sed 's/.*\///')
-          echo "Current Configured Version: {{.BAT_VERSION_TAG}}"
-          echo "Latest Upstream Version:    $LATEST"
-        silent: true
