@@ -71,7 +71,7 @@ services:
 
   reactive_resume:
     # image: amruthpillai/reactive-resume:latest
-    image: ghcr.io/amruthpillai/reactive-resume:v5.0.16
+    image: ghcr.io/amruthpillai/reactive-resume:v5.1.4
     env_file:
       - .env
     environment:
