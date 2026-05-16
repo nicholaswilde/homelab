@@ -47,6 +47,33 @@ case "$APP" in
         ;;
 esac
 
+function send_notification(){
+  if [[ "${ENABLE_NOTIFICATIONS}" == "false" ]]; then
+    return 0
+  fi
+  if [[ -z "${MAILRISE_URL}" || -z "${MAILRISE_FROM}" || -z "${MAILRISE_RCPT}" ]]; then
+    echo "Warning: Notification variables not set. Skipping notification."
+    return 1
+  fi
+
+  local EMAIL_SUBJECT="Homelab - Update ${APP} Summary"
+  local EMAIL_BODY="${APP} version ${NEW_TAG} build and upload completed successfully."
+
+  echo "INFO: Sending email notification..."
+  curl -s \
+    --url "${MAILRISE_URL}" \
+    --mail-from "${MAILRISE_FROM}" \
+    --mail-rcpt "${MAILRISE_RCPT}" \
+    --upload-file - <<EOF
+From: ${APP} Builder <${MAILRISE_FROM}>
+To: Nicholas Wilde <${MAILRISE_RCPT}>
+Subject: ${EMAIL_SUBJECT}
+
+${EMAIL_BODY}
+EOF
+  echo "INFO: Email notification sent."
+}
+
 # 2. Check if a new version is actually needed
 # This uses the check_version.sh script we created earlier.
 if NEW_TAG=$(./scripts/check_version.sh "$APP" "$REPO" 2>/dev/null); then
@@ -57,6 +84,7 @@ if NEW_TAG=$(./scripts/check_version.sh "$APP" "$REPO" 2>/dev/null); then
     # Upload the resulting .deb files
     if [ -f "./upload.sh" ]; then
         ./upload.sh
+        send_notification
     else
         echo "Warning: upload.sh not found."
     fi
