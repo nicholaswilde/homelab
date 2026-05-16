@@ -84,6 +84,25 @@ tasks:
     desc: Stop the application's Docker containers.
     cmds:
       - docker compose stop
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - sudo cp reactive-resume-webhook.service /etc/systemd/system/
+      - sudo systemctl daemon-reload
+      - sudo systemctl enable --now reactive-resume-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - sudo journalctl -u reactive-resume-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - sudo systemctl status reactive-resume-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
