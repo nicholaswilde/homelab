@@ -79,3 +79,8 @@ tasks:
       - echo "📊 Storage Usage:"
       - du -sh build/ .cache/ dist/ 2>/dev/null || true
     silent: true
+
+  upload:
+    desc: Upload built .deb files to the remote server and trigger import
+    cmds:
+      - ./upload.sh

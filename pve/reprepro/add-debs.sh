@@ -173,7 +173,7 @@ function main() {
     log "INFO" "Processing: ${filename}"
 
     # 3. Determine targets based on filename
-    if [[ "${filename}" == *"+armv6"* ]]; then
+    if [[ "${filename}" == *"+armv6"* ]] || [[ "${filename}" == *"_armv6"* ]]; then
       log "INFO" "  -> Detected ARMv6 package. Skipping (handled by add-raspi-debs.sh)."
       continue
     fi

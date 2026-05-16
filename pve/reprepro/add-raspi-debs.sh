@@ -141,7 +141,7 @@ function main() {
 
   # 2. Process files
   shopt -s nullglob
-  local deb_files=("${INPUT_DIR}"/*+armv6*.deb)
+  local deb_files=("${INPUT_DIR}"/*+armv6*.deb "${INPUT_DIR}"/*_armv6*.deb)
   
   if [ ${#deb_files[@]} -eq 0 ]; then
     log "WARN" "No ARMv6 .deb files found in ${INPUT_DIR}."
