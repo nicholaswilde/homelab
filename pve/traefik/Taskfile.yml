@@ -56,6 +56,25 @@ tasks:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
         msg: The encrypted file and unencrypted file do not match! Please re-encrypt
           your changes.
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp {{ .SERVICE_NAME }}-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now {{ .SERVICE_NAME }}-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u {{ .SERVICE_NAME }}-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status {{ .SERVICE_NAME }}-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
