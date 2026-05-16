@@ -1,12 +1,16 @@
 [
   {
     "id": "update-app",
-    "execute-command": "PHS_SILENT=1 /usr/bin/update",
+    "execute-command": "/usr/bin/env",
     "command-working-directory": "/root/git/nicholaswilde/homelab/pve/traefik",
     "pass-arguments-to-command": [
       {
         "source": "string",
-        "name": "-s"
+        "name": "PHS_SILENT=1"
+      },
+      {
+        "source": "string",
+        "name": "/usr/bin/update"
       }
     ],
     "response-message": "Updating traefik..."
