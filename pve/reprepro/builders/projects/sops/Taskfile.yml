@@ -3,27 +3,29 @@ version: '3'
 
 vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  SOPS_PROJECT_NAME: sops
-  SOPS_REPO_URL: https://github.com/getsops/sops.git
-  SOPS_LATEST_VERSION:
-    sh: git ls-remote --tags --refs --sort="v:refname" {{.SOPS_REPO_URL}} | tail -n1 | sed 's/.*\///'
-  SOPS_MAIN_PATH: ./cmd/sops
-  SOPS_VERSION_TAG: '{{default .SOPS_LATEST_VERSION .VERSION}}'
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+  PROJECT_NAME: sops
+  PROJECT_REPO_URL: https://github.com/getsops/sops.git
+  PROJECT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.PROJECT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  PROJECT_MAIN_PATH: ./cmd/sops
+  PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.SOPS_PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
           
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.SOPS_PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.SOPS_PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
             exit 0
           fi
 
@@ -34,55 +36,64 @@ tasks:
           done
 
   latest:
-    desc: Check the latest version available on GitHub
+    desc: Compare latest GitHub version with current reprepro version
     cmds:
-      - echo "Latest Version {{.SOPS_VERSION_TAG}}"
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
     silent: true
 
   build:
-    desc: Build Restic (Go)
+    desc: Build Sops (Go)
     # FIX: Define environment variables here. 
     # They are automatically exported to all cmds below.
     env:
-      PROJECT_NAME: "{{.SOPS_PROJECT_NAME}}"
-      MAIN_PATH: "{{.SOPS_MAIN_PATH}}"
-      VERSION_TAG: "{{.SOPS_VERSION_TAG}}"
+      PROJECT_NAME: "{{.PROJECT_NAME}}"
+      MAIN_PATH: "{{.PROJECT_MAIN_PATH}}"
+      VERSION_TAG: "{{.PROJECT_VERSION_TAG}}"
 
     cmds:
-      - echo "Building {{.SOPS_PROJECT_NAME}}..."
+      - echo "Building {{.PROJECT_NAME}}..."
       - cmd: |
-          DIR="{{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}"
+          DIR="{{.ROOT}}/build/{{.PROJECT_NAME}}"
           DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
           if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
-            echo "🗑️ Cache for {{.SOPS_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            echo "🗑️ Cache for {{.PROJECT_NAME}} is older than $DAYS days. Cleaning..."
             rm -rf "$DIR"
           fi
           if [ -d "$DIR/.git" ]; then
             cd "$DIR"
             git fetch --tags --quiet
-            if ! git rev-parse {{.SOPS_VERSION_TAG}} >/dev/null 2>&1; then
-              echo -e "\033[31mX\033[0m Error: Tag {{.SOPS_VERSION_TAG}} not found in {{.SOPS_PROJECT_NAME}}"
+            if ! git rev-parse {{.PROJECT_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found in {{.PROJECT_NAME}}"
               exit 1
             fi
             git reset --hard --quiet
             git clean -fd --quiet
-            git checkout {{.SOPS_VERSION_TAG}} --quiet
+            git checkout {{.PROJECT_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.SOPS_VERSION_TAG}} {{.SOPS_REPO_URL}} "$DIR" --quiet; then
-              echo -e "\033[31mX\033[0m Error: Failed to clone {{.SOPS_PROJECT_NAME}}"
+            if ! git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
               exit 1
             fi
           fi
 
       - cmd: |
-          cd {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}
+          cd {{.ROOT}}/build/{{.PROJECT_NAME}}
           
           # Now we just run the command. The variables are already in the air.
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
 
       - mkdir -p {{.ROOT}}/dist
-      - mv {{.ROOT}}/build/{{.SOPS_PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
-      - echo "✅ Restic build complete."
+      - mv {{.ROOT}}/build/{{.PROJECT_NAME}}/dist/*.deb {{.ROOT}}/dist/
+      - echo "✅ Sops build complete."
   default:
     cmds:
       - task -l

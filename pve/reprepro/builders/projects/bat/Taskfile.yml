@@ -2,28 +2,30 @@ version: '3'
 
 vars:
   ROOT: "{{.TASKFILE_DIR}}/../.."
-  BAT_PROJECT_NAME: bat
-  BAT_REPO_URL: https://github.com/sharkdp/bat.git
-  BAT_LATEST_VERSION:
-    sh: git ls-remote --tags --refs --sort="v:refname" {{.BAT_REPO_URL}} | tail -n1 | sed 's/.*\///'
-  BAT_VERSION_TAG: '{{default .BAT_LATEST_VERSION .VERSION}}'
-  BAT_CACHE_DIR: "{{.ROOT}}/.cache"
-  BAT_DIST_DIR: "{{.ROOT}}/dist"
-  BAT_BUILD_DIR: "{{.ROOT}}/build"
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+  PROJECT_NAME: bat
+  PROJECT_REPO_URL: https://github.com/sharkdp/bat.git
+  PROJECT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.PROJECT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+  CACHE_DIR: "{{.ROOT}}/.cache"
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.BAT_PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
           # FIX: Filter by Project Name
           # We use "ls" first to handle the case where no files exist without crashing the loop
-          files=$(ls ../../dist/{{.BAT_PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.BAT_PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
             exit 0
           fi
 
@@ -35,31 +37,31 @@ tasks:
     silent: true
 
   build:
-    desc: "Build {{.BAT_PROJECT_NAME}} (Rust)"
+    desc: "Build {{.PROJECT_NAME}} (Rust)"
     cmds:
-      - echo "Building {{.BAT_PROJECT_NAME}}..."
-      - mkdir -p {{.BAT_CACHE_DIR}} {{.BAT_DIST_DIR}} {{.BAT_BUILD_DIR}}/stage
+      - echo "Building {{.PROJECT_NAME}}..."
+      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
       - |
-        DIR="{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}"
+        DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
         DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
         if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS 2>/dev/null)" ]; then
-          echo "🗑️ Cache for {{.BAT_PROJECT_NAME}} is stale (older than $DAYS days), cleaning up..."
+          echo "🗑️ Cache for {{.PROJECT_NAME}} is stale (older than $DAYS days), cleaning up..."
           rm -rf "$DIR"
         fi
         if [ -d "$DIR/.git" ]; then
           echo "🔄 Updating existing repository..."
           cd "$DIR"
           git fetch --tags --quiet
-          if ! git rev-parse "{{.BAT_VERSION_TAG}}" >/dev/null 2>&1; then
-            echo -e "\033[31mX\033[0m Error: Tag {{.BAT_VERSION_TAG}} not found for {{.BAT_PROJECT_NAME}}."
+          if ! git rev-parse "{{.PROJECT_VERSION_TAG}}" >/dev/null 2>&1; then
+            echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found for {{.PROJECT_NAME}}."
             exit 1
           fi
           git reset --hard --quiet
           git clean -fd --quiet
-          git checkout {{.BAT_VERSION_TAG}} --quiet
+          git checkout {{.PROJECT_VERSION_TAG}} --quiet
         else
           echo "📥 Cloning fresh repository..."
-          git clone --depth 1 --branch {{.BAT_VERSION_TAG}} {{.BAT_REPO_URL}} "$DIR" --quiet || (echo -e "\033[31mX\033[0m Error: Failed to clone {{.BAT_PROJECT_NAME}} at {{.BAT_VERSION_TAG}}." && exit 1)
+          git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet || (echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}} at {{.PROJECT_VERSION_TAG}}." && exit 1)
         fi
       
       # Compile Targets
@@ -72,7 +74,7 @@ tasks:
       - task: process-target
         vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armhf", SUFFIX: "armhf+armv6"}
 
-      - echo "✅ Fd build complete."
+      - echo "✅ {{.PROJECT_NAME}} build complete."
 
   # --- Internal Helpers ---
   
@@ -87,53 +89,62 @@ tasks:
   compile:
     internal: true
     # Run this task inside the source code folder
-    dir: "{{.BAT_BUILD_DIR}}/{{.BAT_PROJECT_NAME}}"
+    dir: "{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
     cmds:
       - echo "Building for {{.RUST_TARGET}}..."
       - cross build --release --target {{.RUST_TARGET}}
-      - mkdir -p {{.BAT_CACHE_DIR}}/{{.GO_FOLDER}}
-      - cp target/{{.RUST_TARGET}}/release/{{.BAT_PROJECT_NAME}} {{.BAT_CACHE_DIR}}/{{.GO_FOLDER}}/
+      - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
+      - cp target/{{.RUST_TARGET}}/release/{{.PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
 
   package:
     internal: true
     # Run this task inside the staging folder (keeps your project folder clean)
-    dir: "{{.BAT_BUILD_DIR}}/stage"
+    dir: "{{.BUILD_DIR}}/stage"
     cmds:
       - echo "Packaging {{.ARCH}}..."
       
       # Copy binary to current dir (./binary)
-      - cp {{.BAT_CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.BAT_PROJECT_NAME}} ./binary
+      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.PROJECT_NAME}} ./binary
 
       - cmd: |
           # Generate config in the temp folder
-          echo 'name: "{{.BAT_PROJECT_NAME}}"' > nfpm.yaml
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
           echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
           echo 'platform: "linux"' >> nfpm.yaml
-          echo 'version: "{{.BAT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
           echo 'section: "default"' >> nfpm.yaml
           echo 'priority: "extra"' >> nfpm.yaml
           echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
-          echo 'description: "Homelab build of {{.BAT_PROJECT_NAME}}"' >> nfpm.yaml
+          echo 'description: "Homelab build of {{.PROJECT_NAME}}"' >> nfpm.yaml
           echo 'vendor: "Homelab"' >> nfpm.yaml
-          echo 'homepage: "{{.BAT_REPO_URL}}"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
           echo 'license: "MIT"' >> nfpm.yaml
           echo 'contents:' >> nfpm.yaml
-          # Src is local now, because we are running inside {{.BAT_BUILD_DIR}}/stage
+          # Src is local now, because we are running inside {{.BUILD_DIR}}/stage
           echo '  - src: "./binary"' >> nfpm.yaml
-          echo '    dst: "/usr/bin/{{.BAT_PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
           echo '    file_info:' >> nfpm.yaml
           echo '      mode: 0755' >> nfpm.yaml
 
           # Run NFPM
-          nfpm pkg --config nfpm.yaml --packager deb --target {{.BAT_DIST_DIR}}/{{.BAT_PROJECT_NAME}}_{{.BAT_VERSION_TAG}}_{{.SUFFIX}}.deb
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_{{.SUFFIX}}.deb
           
           # Cleanup
           rm nfpm.yaml binary
 
   latest:
-    desc: Check the latest version available on GitHub
+    desc: Compare latest GitHub version with current reprepro version
     cmds:
-      - echo "Latest Version {{.BAT_VERSION_TAG}}"
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
     silent: true
 
   default:

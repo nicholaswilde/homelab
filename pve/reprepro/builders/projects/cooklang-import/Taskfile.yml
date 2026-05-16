@@ -1,28 +1,29 @@
 version: '3'
 
 vars:
-  ROOT:
-    sh: realpath -m "{{.TASKFILE_DIR}}/../.."
-  COOKLANG_IMPORT_PROJECT_NAME: cooklang-import
-  COOKLANG_IMPORT_REPO_URL: https://github.com/cooklang/cooklang-import.git
-  COOKLANG_IMPORT_LATEST_VERSION:
-    sh: git ls-remote --tags --refs --sort="v:refname" {{.COOKLANG_IMPORT_REPO_URL}} | tail -n1 | sed 's/.*\///'
-  COOKLANG_IMPORT_VERSION_TAG: '{{default .COOKLANG_IMPORT_LATEST_VERSION .VERSION}}'
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+  PROJECT_NAME: cooklang-import
+  PROJECT_REPO_URL: https://github.com/cooklang/cooklang-import.git
+  PROJECT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.PROJECT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
   CACHE_DIR: "{{.ROOT}}/.cache"
   DIST_DIR: "{{.ROOT}}/dist"
   BUILD_DIR: "{{.ROOT}}/build"
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.COOKLANG_IMPORT_PROJECT_NAME}} in ../../dist/..."
+          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
           echo "---------------------------------------------------"
-          files=$(ls ../../dist/{{.COOKLANG_IMPORT_PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.COOKLANG_IMPORT_PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
             exit 0
           fi
 
@@ -34,30 +35,30 @@ tasks:
     silent: true
 
   build:
-    desc: "Build {{.COOKLANG_IMPORT_PROJECT_NAME}} (Rust)"
+    desc: "Build {{.PROJECT_NAME}} (Rust)"
     cmds:
-      - echo "Building {{.COOKLANG_IMPORT_PROJECT_NAME}}..."
+      - echo "Building {{.PROJECT_NAME}}..."
       - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
       - cmd: |
-          DIR="{{.BUILD_DIR}}/{{.COOKLANG_IMPORT_PROJECT_NAME}}"
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
           DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
           if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
-            echo "🗑️ Cache for {{.COOKLANG_IMPORT_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            echo "🗑️ Cache for {{.PROJECT_NAME}} is older than $DAYS days. Cleaning..."
             rm -rf "$DIR"
           fi
           if [ -d "$DIR/.git" ]; then
             cd "$DIR"
             git fetch --tags --quiet
-            if ! git rev-parse {{.COOKLANG_IMPORT_VERSION_TAG}} >/dev/null 2>&1; then
-              echo -e "\033[31mX\033[0m Error: Tag {{.COOKLANG_IMPORT_VERSION_TAG}} not found in {{.COOKLANG_IMPORT_PROJECT_NAME}}"
+            if ! git rev-parse {{.PROJECT_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found in {{.PROJECT_NAME}}"
               exit 1
             fi
             git reset --hard --quiet
             git clean -fd --quiet
-            git checkout {{.COOKLANG_IMPORT_VERSION_TAG}} --quiet
+            git checkout {{.PROJECT_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.COOKLANG_IMPORT_VERSION_TAG}} {{.COOKLANG_IMPORT_REPO_URL}} "$DIR" --quiet; then
-              echo -e "\033[31mX\033[0m Error: Failed to clone {{.COOKLANG_IMPORT_PROJECT_NAME}}"
+            if ! git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
               exit 1
             fi
           fi
@@ -69,7 +70,7 @@ tasks:
         vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf"}
       - task: process-target
         vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armel"}
-      - echo "✅ {{.COOKLANG_IMPORT_PROJECT_NAME}} build complete."
+      - echo "✅ {{.PROJECT_NAME}} build complete."
 
   process-target:
     internal: true
@@ -81,46 +82,55 @@ tasks:
 
   compile:
     internal: true
-    dir: "{{.BUILD_DIR}}/{{.COOKLANG_IMPORT_PROJECT_NAME}}"
+    dir: "{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
     cmds:
       - echo "Building for {{.RUST_TARGET}}..."
       - cross build --release --target {{.RUST_TARGET}}
       - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
-      - cp target/{{.RUST_TARGET}}/release/{{.COOKLANG_IMPORT_PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
+      - cp target/{{.RUST_TARGET}}/release/{{.PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
 
   package:
     internal: true
     dir: "{{.BUILD_DIR}}/stage"
     cmds:
       - echo "Packaging {{.ARCH}}..."
-      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.COOKLANG_IMPORT_PROJECT_NAME}} ./binary
+      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.PROJECT_NAME}} ./binary
       - cmd: |
-          echo 'name: "{{.COOKLANG_IMPORT_PROJECT_NAME}}"' > nfpm.yaml
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
           echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
           echo 'platform: "linux"' >> nfpm.yaml
-          echo 'version: "{{.COOKLANG_IMPORT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
           echo 'section: "default"' >> nfpm.yaml
           echo 'priority: "extra"' >> nfpm.yaml
           echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
-          echo 'description: "Homelab build of {{.COOKLANG_IMPORT_PROJECT_NAME}}"' >> nfpm.yaml
+          echo 'description: "Homelab build of {{.PROJECT_NAME}}"' >> nfpm.yaml
           echo 'vendor: "Homelab"' >> nfpm.yaml
-          echo 'homepage: "{{.COOKLANG_IMPORT_REPO_URL}}"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
           echo 'license: "MIT"' >> nfpm.yaml
           echo 'contents:' >> nfpm.yaml
           echo '  - src: "./binary"' >> nfpm.yaml
-          echo '    dst: "/usr/bin/{{.COOKLANG_IMPORT_PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
           echo '    file_info:' >> nfpm.yaml
           echo '      mode: 0755' >> nfpm.yaml
-          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.COOKLANG_IMPORT_PROJECT_NAME}}_{{.COOKLANG_IMPORT_VERSION_TAG}}_{{.ARCH}}.deb
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_{{.ARCH}}.deb
           rm nfpm.yaml binary
+
+  latest:
+    desc: Compare latest GitHub version with current reprepro version
+    cmds:
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
+    silent: true
 
   default:
     cmds:
       - task -l
-    silent: true
-
-  latest:
-    desc: Check the latest version available on GitHub
-    cmds:
-      - echo "Latest Version {{.COOKLANG_IMPORT_VERSION_TAG}}"
     silent: true

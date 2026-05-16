@@ -1,28 +1,29 @@
 version: '3'
 
 vars:
-  ROOT:
-    sh: realpath -m "{{.TASKFILE_DIR}}/../.."
-  EGET_PROJECT_NAME: eget
-  EGET_REPO_URL: https://github.com/zyedidia/eget.git
-  EGET_LATEST_VERSION:
-    sh: git ls-remote --tags --refs --sort="v:refname" {{.EGET_REPO_URL}} | tail -n1 | sed 's/.*\///'
-  EGET_VERSION_TAG: '{{default .EGET_LATEST_VERSION .VERSION}}'
-  EGET_MAIN_PATH: .
-  EGET_DIST_DIR: "{{.ROOT}}/dist"
-  EGET_BUILD_DIR: "{{.ROOT}}/build"
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+  PROJECT_NAME: eget
+  PROJECT_REPO_URL: https://github.com/zyedidia/eget.git
+  PROJECT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.PROJECT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+  PROJECT_MAIN_PATH: .
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
 
 tasks:
   check:
     desc: Verify the metadata of .deb files for this app only
     cmds:
       - cmd: |
-          echo "Checking artifacts for {{.EGET_PROJECT_NAME}} in {{.EGET_DIST_DIR}}..."
+          echo "Checking artifacts for {{.PROJECT_NAME}} in {{.DIST_DIR}}..."
           echo "---------------------------------------------------"
-          files=$(ls {{.EGET_DIST_DIR}}/{{.EGET_PROJECT_NAME}}*.deb 2>/dev/null)
+          files=$(ls {{.DIST_DIR}}/{{.PROJECT_NAME}}*.deb 2>/dev/null)
 
           if [ -z "$files" ]; then
-            echo "⚠️  No .deb files found for {{.EGET_PROJECT_NAME}}."
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
             exit 0
           fi
 
@@ -34,52 +35,61 @@ tasks:
     silent: true
 
   build:
-    desc: Build "{{.EGET_PROJECT_NAME}}" (Go)
+    desc: Build "{{.PROJECT_NAME}}" (Go)
     env:
-      PROJECT_NAME: "{{.EGET_PROJECT_NAME}}"
-      MAIN_PATH: "{{.EGET_MAIN_PATH}}"
-      VERSION_TAG: "{{.EGET_VERSION_TAG}}"
-      BUILD_DIR: "{{.EGET_BUILD_DIR}}"
-      DIST_DIR: "{{.EGET_DIST_DIR}}"
+      PROJECT_NAME: "{{.PROJECT_NAME}}"
+      MAIN_PATH: "{{.PROJECT_MAIN_PATH}}"
+      VERSION_TAG: "{{.PROJECT_VERSION_TAG}}"
+      BUILD_DIR: "{{.BUILD_DIR}}"
+      DIST_DIR: "{{.DIST_DIR}}"
     cmds:
-      - echo "Building {{.EGET_PROJECT_NAME}}..."
+      - echo "Building {{.PROJECT_NAME}}..."
       - cmd: |
-          DIR="{{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}"
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
           DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
           if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
-            echo "🗑️ Cache for {{.EGET_PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            echo "🗑️ Cache for {{.PROJECT_NAME}} is older than $DAYS days. Cleaning..."
             rm -rf "$DIR"
           fi
           if [ -d "$DIR/.git" ]; then
             cd "$DIR"
             git fetch --tags --quiet
-            if ! git rev-parse {{.EGET_VERSION_TAG}} >/dev/null 2>&1; then
-              echo -e "\033[31mX\033[0m Error: Tag {{.EGET_VERSION_TAG}} not found in {{.EGET_PROJECT_NAME}}"
+            if ! git rev-parse {{.PROJECT_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found in {{.PROJECT_NAME}}"
               exit 1
             fi
             git reset --hard --quiet
             git clean -fd --quiet
-            git checkout {{.EGET_VERSION_TAG}} --quiet
+            git checkout {{.PROJECT_VERSION_TAG}} --quiet
           else
-            if ! git clone --depth 1 --branch {{.EGET_VERSION_TAG}} {{.EGET_REPO_URL}} "$DIR" --quiet; then
-              echo -e "\033[31mX\033[0m Error: Failed to clone {{.EGET_PROJECT_NAME}}"
+            if ! git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
               exit 1
             fi
           fi
       - cmd: |
-          cd {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}
+          cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
           goreleaser release --config {{.ROOT}}/templates/goreleaser-main.yaml --snapshot --clean --skip=publish
-      - mkdir -p {{.EGET_DIST_DIR}}
-      - mv {{.EGET_BUILD_DIR}}/{{.EGET_PROJECT_NAME}}/dist/*.deb {{.EGET_DIST_DIR}}/
-      - echo "✅ {{.EGET_PROJECT_NAME}} build complete."
+      - mkdir -p {{.DIST_DIR}}
+      - mv {{.BUILD_DIR}}/{{.PROJECT_NAME}}/dist/*.deb {{.DIST_DIR}}/
+      - echo "✅ {{.PROJECT_NAME}} build complete."
+
+  latest:
+    desc: Compare latest GitHub version with current reprepro version
+    cmds:
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
+    silent: true
 
   default:
     cmds:
       - task -l
-    silent: true
-
-  latest:
-    desc: Check the latest version available on GitHub
-    cmds:
-      - echo "Latest Version {{.EGET_VERSION_TAG}}"
     silent: true
