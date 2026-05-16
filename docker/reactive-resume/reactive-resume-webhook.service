@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/root/git/nicholaswilde/homelab/docker/reactive-resume
-ExecStart=/usr/local/bin/webhook -hooks hooks.json -verbose -port 9000
+ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always
 RestartSec=5
 
