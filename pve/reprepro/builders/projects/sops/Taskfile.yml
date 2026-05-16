@@ -1,4 +1,4 @@
-# projects/restic/Taskfile.yml
+# projects/sops/Taskfile.yml
 version: '3'
 
 vars:
@@ -6,7 +6,7 @@ vars:
   SOPS_PROJECT_NAME: sops
   SOPS_REPO_URL: https://github.com/getsops/sops.git
   SOPS_MAIN_PATH: ./cmd/sops
-  SOPS_VERSION_TAG: '{{default "v3.11.0" .VERSION}}'
+  SOPS_VERSION_TAG: '{{default "v3.13.1" .VERSION}}'
 
 tasks:
   check:
