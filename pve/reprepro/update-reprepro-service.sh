@@ -171,7 +171,7 @@ function get_latest_version() {
 }
 
 function get_current_version(){
-  CURRENT_VERSION=$(sudo reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
+  CURRENT_VERSION=$(reprepro --confdir "${BASE_DIR}/ubuntu/conf/" list "${UBUNTU_CODENAMES[0]}" "${APP_NAME}" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/[-+].*//' || true)
   export CURRENT_VERSION
   log "INFO" "Current ${APP_NAME} version in reprepro: ${CURRENT_VERSION}"
 }
@@ -563,10 +563,10 @@ EOF
 
     log "INFO" "Adding ${deb_file} to reprepro..."
     for codename in "${UBUNTU_CODENAMES[@]}"; do
-      sudo reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
+      reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}" 2>&1 | log "DEBU" || true
     done
     for codename in "${STANDARD_DEBIAN_CODENAMES[@]}"; do
-      sudo reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
+      reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${TEMP_PATH}/${deb_file}"  2>&1 | log "DEBU" || true
     done
   done
 
@@ -641,6 +641,7 @@ function main() {
   while [[ "$#" -gt 0 ]]; do
     case $1 in
       -d|--debug) DEBUG="true"; shift;; 
+      -s|--sync) shift;; # Consumer flag for webhooks, falls through to default behavior
       -r|--remove)
         if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
           package_to_remove="$2"; shift 2;

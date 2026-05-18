@@ -156,7 +156,7 @@ tasks:
   wh:test:
     desc: Test the webhook listener locally
     cmds:
-      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
+      - 'curl -X POST -H "Content-Type: application/json" -d "{}" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
