@@ -373,7 +373,7 @@ function update_app_from_source() {
   APPS_OUT_OF_DATE="true"
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
-  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_tarballs
   linux_tarballs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | (endswith(".tar.gz") or endswith(".tar.bz2") or endswith(".tbz")) and (contains("openbsd") | not) and (contains("darwin") | not) and (contains("freebsd")| not) and (contains("android") | not) and (contains("windows") | not)) | .name')
@@ -478,8 +478,8 @@ function update_tea() {
 
   print_separator "Processing binary package: ${binary_name} from gitea.com as ${APP_NAME}"
 
-  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
-  export json_response=$(curl -s "${api_url}")
+  local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases"
+  export json_response=$(curl -s "${api_url}" | jq '.[0]')
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from Gitea API."
@@ -504,7 +504,7 @@ function update_tea() {
   APPS_OUT_OF_DATE="true"
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
-  export DESCRIPTION=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  export DESCRIPTION=$(curl -s "https://gitea.com/api/v1/repos/${GITHUB_REPO}" | jq -r '.description' | sed -e 's/:\w\+://g' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
   local linux_binaries
   linux_binaries=$(echo "${json_response}" | jq -r '.assets[] | select(.name | contains("-linux-") and (endswith(".asc") | not) and (endswith(".sha256") | not) and (endswith(".tar.gz") | not) and (endswith(".zip") | not)) | .name')

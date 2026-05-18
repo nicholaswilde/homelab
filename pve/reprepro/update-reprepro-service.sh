@@ -409,8 +409,8 @@ function update_app_from_deb() {
   local github_repo
   local app_name
 
-  if [[ "${app_config}" == *"|"* ]]; then
-    IFS='|' read -r github_repo app_name <<< "${app_config}"
+  if [[ "${app_config}" == *":"* ]]; then
+    IFS=':' read -r github_repo app_name <<< "${app_config}"
   else
     github_repo="${app_config}"
     app_name=$(basename "${github_repo}")
@@ -473,8 +473,8 @@ function update_tea() {
   # log "INFO" "--------------------------------------------------"
   # log "INFO" "${header}"
 
-  local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
-  export json_response=$(curl -s "${api_url}")
+  local api_url="https://gitea.com/api/v1/repos/${GITHUB_REPO}/releases"
+  export json_response=$(curl -s "${api_url}" | jq '.[0]')
 
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from Gitea API."
