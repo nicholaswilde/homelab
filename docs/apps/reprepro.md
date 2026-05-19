@@ -513,7 +513,19 @@ and added to reprepro and deb files located in the `SYNC_APPS_GITHUB_REPOS` vari
 
 !!! note "Automation"
 
-    The `update-reprepro-service.sh` script can be triggered automatically using a webhook. This is useful for continuous integration, for example, triggering an update after a new package has been built and pushed.
+    The `update-reprepro-service.sh` script can be triggered automatically using a webhook. This is useful for continuous integration, for example, triggering an update after a new package has been built and pushed to GitHub. I use [ChangeDetection.io](changedetection.md) to monitor GitHub releases and trigger this webhook.
+
+!!! abstract "hooks.json"
+
+    ```json
+    --8<-- "reprepro/hooks.json"
+    ```
+
+!!! abstract "reprepro-webhook.service"
+
+    ```ini
+    --8<-- "reprepro/reprepro-webhook.service"
+    ```
 
 !!! code "`homelab/pve/reprepro`"
 
