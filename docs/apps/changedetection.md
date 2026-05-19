@@ -87,6 +87,12 @@ I use [Muspy](https://muspy.com/) to monitor music releases and get notified. To
     https://muspy.com/feed?id=<my-feed-id>
     ```
 
+!!! code "Filters and Triggers -> CSS/xPath Filter"
+
+    ```ini
+    xpath://*[local-name()='entry']/*[local-name()='title']/text()
+    ```
+
 **How to find your Feed ID:**
 
 1.  Log in to [muspy.com](https://muspy.com/).
