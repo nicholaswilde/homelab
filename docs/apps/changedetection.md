@@ -77,6 +77,22 @@ For repositories that do not use releases, you can monitor commits using the Ato
     https://github.com/<owner>/<repo>/commits.atom
     ```
 
+### :material-music: Monitoring Music Releases
+
+I use [Muspy](https://muspy.com/) to monitor music releases and get notified. To monitor your personal feed:
+
+!!! code ""
+
+    ```ini
+    https://muspy.com/feed?id=<my-feed-id>
+    ```
+
+**How to find your Feed ID:**
+
+1.  Log in to [muspy.com](https://muspy.com/).
+2.  On the dashboard, look for the **RSS icon** or the **"Subscribe in a reader"** link.
+3.  Copy the link address. The alphanumeric string following `id=` is your unique **Feed ID**.
+
 ## :rocket: Upgrade
 
 !!! code ""
