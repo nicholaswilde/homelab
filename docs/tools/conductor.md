@@ -17,12 +17,12 @@ Conductor follows a **Spec-Driven Development** methodology. This approach ensur
 
 ## :hammer_and_wrench: Installation
 
-To install the Google Conductor extension, use the `extension:add` command within the Gemini CLI:
+To install the Google Conductor extension, use the `extension:add` command within the Antigravity CLI:
 
 !!! code ""
 
     ```shell
-    gemini extension:add google/conductor
+    antigravity extension:add google/conductor
     ```
 
 Once added, you can verify the installation by checking the available commands:
@@ -30,7 +30,7 @@ Once added, you can verify the installation by checking the available commands:
 !!! code ""
 
     ```shell
-    gemini --help | grep conductor
+    antigravity --help | grep conductor
     ```
 
 ## :gear: Setup

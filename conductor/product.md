@@ -8,7 +8,7 @@ The Homelab project is a centralized, automated repository designed to manage an
 
 ## Target Users
 - **Primary User:** The owner (Nicholas Wilde) for personal use and infrastructure management.
-- **Automated Agents:** CI/CD bots and AI agents (like Gemini) that interact with the repository for automation and maintenance.
+- **Automated Agents:** CI/CD bots and AI agents (like Antigravity) that interact with the repository for automation and maintenance.
 
 ## Core Goals
 - **Automation:** Streamline the deployment and maintenance of all homelab services using Infrastructure as Code (IaC) principles.
@@ -19,18 +19,18 @@ The Homelab project is a centralized, automated repository designed to manage an
 ## Key Features
 - **Automated Provisioning:** Full automation for container (Docker) and VM/LXC (Proxmox) provisioning.
 - **Secure Networking:** Integrated secure remote access via VPNs and reverse proxies (Traefik).
-- **Automated Application Scaffolding:** Streamlined creation of new Docker and LXC applications from templates via Gemini CLI.
-- **Cross-Node Configuration Synchronization:** Triggered synchronization and consistency verification for DNS rewrites and Traefik configurations across multiple nodes via Gemini CLI.
-- **Unified Application Maintenance:** Simplified updating and service restarting for Docker and LXC applications via Gemini CLI.
-- **Automated Secret Rotation:** Secure rotation of sensitive credentials by generating new values and updating encrypted files via Gemini CLI.
-- **Manual Backup Orchestration:** Triggered manual backups for specific applications and verification of encrypted backup files via Gemini CLI.
-- **Project-Wide Secrets Auditing:** Verification of encryption status and synchronization for all sensitive files project-wide via Gemini CLI.
-- **Rapid Log Retrieval:** Summarized log retrieval from Proxmox nodes and services for efficient troubleshooting via Gemini CLI.
-- **Automated Dashboard Integration:** Automated addition of new services to the homepage dashboard via Gemini CLI.
-- **Automated Task Summarization:** Automated progress tracking and Git Note generation for development tasks via Gemini CLI.
-- **Automated Documentation Scaffolding:** Automated creation of new documentation files from templates via Gemini CLI, ensuring style guide consistency.
-- **Automated Dependency Auditing:** Verification of Docker image versions and identification of outdated dependencies across the entire project via Gemini CLI.
-- **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Gemini CLI.
+- **Automated Application Scaffolding:** Streamlined creation of new Docker and LXC applications from templates via Antigravity CLI.
+- **Cross-Node Configuration Synchronization:** Triggered synchronization and consistency verification for DNS rewrites and Traefik configurations across multiple nodes via Antigravity CLI.
+- **Unified Application Maintenance:** Simplified updating and service restarting for Docker and LXC applications via Antigravity CLI.
+- **Automated Secret Rotation:** Secure rotation of sensitive credentials by generating new values and updating encrypted files via Antigravity CLI.
+- **Manual Backup Orchestration:** Triggered manual backups for specific applications and verification of encrypted backup files via Antigravity CLI.
+- **Project-Wide Secrets Auditing:** Verification of encryption status and synchronization for all sensitive files project-wide via Antigravity CLI.
+- **Rapid Log Retrieval:** Summarized log retrieval from Proxmox nodes and services for efficient troubleshooting via Antigravity CLI.
+- **Automated Dashboard Integration:** Automated addition of new services to the homepage dashboard via Antigravity CLI.
+- **Automated Task Summarization:** Automated progress tracking and Git Note generation for development tasks via Antigravity CLI.
+- **Automated Documentation Scaffolding:** Automated creation of new documentation files from templates via Antigravity CLI, ensuring style guide consistency.
+- **Automated Dependency Auditing:** Verification of Docker image versions and identification of outdated dependencies across the entire project via Antigravity CLI.
+- **Integrated Status Monitoring:** Unified status reporting for Proxmox, Docker, and project tracks via Antigravity CLI.
 - **Centralized Documentation:** A comprehensive knowledge base built with MkDocs, prioritizing clarity and accessibility.
 
 ## Identity and Style

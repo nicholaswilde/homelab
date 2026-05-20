@@ -1,6 +1,6 @@
-# :gem: Gemini CLI Commands
+# :robot: Antigravity CLI Commands
 
-This document describes the custom commands available in the Gemini CLI for the Homelab project.
+This document describes the custom commands available in the Antigravity CLI for the Homelab project.
 
 ## :house: /homelab status
 

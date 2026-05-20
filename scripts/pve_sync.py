@@ -57,9 +57,9 @@ def check_traefik_consistency():
 
 def check_adguard_rewrites():
     log_info("Checking AdGuard Home DNS rewrites consistency...")
-    # This would use the manage_dns tool if called from within the Gemini environment.
-    # From this script, we'll suggest using the Gemini CLI directly.
-    log_info("Use 'manage_dns(action=\"list_rewrites\")' in Gemini CLI to verify rewrites manually.")
+    # This would use the manage_dns tool if called from within the Antigravity environment.
+    # From this script, we'll suggest using the Antigravity CLI directly.
+    log_info("Use 'manage_dns(action=\"list_rewrites\")' in Antigravity CLI to verify rewrites manually.")
     log_success("AdGuard Home rewrites check complete.")
 
 def main():

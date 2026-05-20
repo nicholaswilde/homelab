@@ -31,7 +31,7 @@ My current setup consists of my NUC and AMD64 desktop computer running Proxmox. 
 
 ## :robot: AI Management
 
-I like to use the [Gemini CLI][9] to help manage my homelab. I've created several custom [Gemini commands][10] to automate tasks like updating the dashboard, managing Traefik, and removing defunct services.
+I like to use [Antigravity][9] to help manage my homelab. It provides a suite of [custom commands][10] to automate tasks like updating the dashboard, managing Traefik, and removing defunct services.
 
 ## :hammer_and_wrench: Setup & Maintenance
 
@@ -61,5 +61,5 @@ Check out the [Development](./about/development.md) page.
 [6]: <https://github.com/nicholaswilde/homelab-playbooks>
 [7]: <https://linuxhandbook.com/homelab/>
 [8]: <https://github.com/nicholaswilde/homelab/issues>
-[9]: <./tools/google-gemini-cli.md>
-[10]: <./tools/gemini-commands.md>
+[9]: <./tools/antigravity.md>
+[10]: <./tools/antigravity-commands.md>

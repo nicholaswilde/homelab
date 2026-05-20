@@ -9,7 +9,7 @@ vars:
 
 tasks:
   glist:
-    desc: List the Gemini models
+    desc: List the Antigravity models
     cmds:
       - curl -fsSL "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}" | jq -r '.models[].name'
   build:
@@ -60,19 +60,19 @@ tasks:
     ignore_error: true
 
   gpro:
-    desc: Run gemini with gemini-2.5-pro model
+    desc: Run antigravity with gemini-2.5-pro model
     cmds:
-      - gemini -m gemini-{{ .VER }}-pro
+      - antigravity -m gemini-{{ .VER }}-pro
 
   gflash:
-    desc: Run gemini with flash model
+    desc: Run antigravity with flash model
     cmds:
-      - gemini -m gemini-{{ .VER }}-flash
+      - antigravity -m gemini-{{ .VER }}-flash
 
   glite:
-    desc: Run gemini with lite model
+    desc: Run antigravity with lite model
     cmds:
-      - gemini -m gemini-{{ .VER }}-lite
+      - antigravity -m gemini-{{ .VER }}-lite
 
   generate-docs-nav:
     desc: Generate MkDocs navigation from content
@@ -102,14 +102,14 @@ tasks:
     cmds:
       - >-
         sops -e --input-type json --output-type json
-        .gemini/settings.json > .gemini/settings.json.enc
+        .antigravity/settings.json > .antigravity/settings.json.enc
 
   decrypt:
     desc: Decrypt secrets
     cmds:
       - >-
         sops -d --input-type json --output-type json
-        .gemini/settings.json.enc > .gemini/settings.json
+        .antigravity/settings.json.enc > .antigravity/settings.json
 
   default:
     cmds:

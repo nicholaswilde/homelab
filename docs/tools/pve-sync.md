@@ -15,9 +15,9 @@ The sync script is located in `scripts/pve_sync.py`. It requires `python3`.
 
 ## :pencil: Usage
 
-### :simple-gemini: Gemini CLI
+### :robot: Antigravity CLI
 
-You can trigger the sync process via the Gemini CLI:
+You can trigger the sync process via the Antigravity CLI:
 
 ```shell
 /pve sync

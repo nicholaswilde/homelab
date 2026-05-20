@@ -66,7 +66,7 @@ def deploy(app_name, deploy_type, variables):
                 if missing:
                     log_error(f"Missing variables for {item.name}: {', '.join(missing)}")
                     # In a real CLI, we might prompt here, but the script expects them as arguments.
-                    # The Gemini CLI protocol will handle prompting.
+                    # The Antigravity CLI protocol will handle prompting.
                     sys.exit(1)
 
                 content = template.render(**variables)

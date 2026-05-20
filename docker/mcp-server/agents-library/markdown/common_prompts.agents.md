@@ -58,7 +58,7 @@ As an AI assistant, I will adhere to the following guidelines when creating or m
 - **Troubleshooting:** (Optional) Common issues and solutions.
 - **References:** A list of relevant external links.
 
-# Gemini Scripting Guidelines
+# Antigravity Scripting Guidelines
 
 As an AI assistant, I will adhere to the following guidelines when creating or modifying bash and python scripts. My goal is to produce scripts that are not only effective but also clear, robust, and maintainable.
 

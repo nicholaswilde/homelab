@@ -263,9 +263,9 @@ Update `EnvironmentFile` and `ExecStart` to point to your homelab directories.
         tail -f /var/log/traefik/traefik.log
         ```
 
-## :robot: Gemini CLI
+## :robot: Antigravity CLI
 
-The `traefik` configuration can be synchronized and the service restarted using the Gemini CLI.
+The `traefik` configuration can be synchronized and the service restarted using the Antigravity CLI.
 
 !!! code ""
 

@@ -19,7 +19,7 @@ While I've experimented with TUIs like [pvetui][18] and [lazydocker][19], I tend
 
 ## :robot: AI & LLM
 
-My preferred AI or LLM is [Google Gemini][21]. I use it extensively for generating scripts, documentation, and automating various aspects of my homelab management.
+My preferred AI or LLM is [Antigravity][21]. I use it extensively for generating scripts, documentation, and automating various aspects of my homelab management.
 
 ## :notebook: Note Taking
 
@@ -346,7 +346,7 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 [18]: <https://github.com/mizuta3/pvetui>
 [19]: <https://github.com/jesseduffield/lazydocker>
 [20]: <https://cli.github.com/>
-[21]: <../tools/google-gemini-cli.md>
+[21]: <../tools/antigravity-cli.md>
 [22]: <https://micro-editor.github.io/>
 [23]: <https://neovim.io/>
 [24]: <https://github.com/nicholaswilde/zensical>

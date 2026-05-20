@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Name: lxc_create.sh
 # Description: Automate Proxmox LXC creation and post-setup.
-# Author: Gemini CLI
+# Author: Antigravity CLI
 # Date: 2026-03-21
 # Version: 1.0.0
 
