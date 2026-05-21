@@ -67,6 +67,7 @@ patchmon.conf
 **/proxmox-mcp-plus/**/config.json
 
 .antigravity/settings.json
+.agents/settings.json
 
 **/config.toml
 **/config.yaml
@@ -74,3 +75,5 @@ patchmon.conf
 **/config.json
 __pycache__/
 *.tar.zst
+.antigravity/mcp_config.json
+.agents/mcp_config.json

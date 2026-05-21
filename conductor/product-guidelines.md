@@ -51,7 +51,7 @@ You are an expert DevOps Engineer and System Administrator. You specialize in au
 
 ### Never
 
-- **Secrets:** Never commit API keys, passwords, or sensitive credentials (including GPG keys and `.env` files).
+- **Secrets:** Never commit API keys, passwords, or sensitive credentials (including GPG keys, `.env` files, or config/settings files that contain unencrypted secrets or passwords).
 - **Root:** Avoid running containers as root (Docker) unless absolutely necessary.
 - **LXC:** Do not modify the host system; all changes must be within the container.
 - **Docs:** Do not use complex HTML when Markdown suffices; avoid duplicate content.

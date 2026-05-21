@@ -1,4 +1,7 @@
 *.config.json
+*.config.toml
+*.config.yaml
+*.config.yml
 *.log
 gitea-mcp
-*.config.toml
+!*.enc

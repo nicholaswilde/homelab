@@ -21,17 +21,9 @@ servers.
     
 !!! code ""
 
-    === "npm"
-    
-        ```shell
-        npm install -g @nicholaswilde/antigravity-cli
-        ```
-
-    === "npx"
-
-        ```shell
-        npx https://github.com/nicholaswilde/antigravity-cli
-        ```
+    ```shell
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
+    ```
 
     ```shell
     antigravity

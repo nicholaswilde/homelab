@@ -102,14 +102,20 @@ tasks:
     cmds:
       - >-
         sops -e --input-type json --output-type json
-        .antigravity/settings.json > .antigravity/settings.json.enc
+        .agents/mcp_config.json > .agents/mcp_config.json.enc
+      - >-
+        sops -e --input-type json --output-type json
+        .agents/settings.json > .agents/settings.json.enc
 
   decrypt:
     desc: Decrypt secrets
     cmds:
       - >-
         sops -d --input-type json --output-type json
-        .antigravity/settings.json.enc > .antigravity/settings.json
+        .agents/mcp_config.json.enc > .agents/mcp_config.json
+      - >-
+        sops -d --input-type json --output-type json
+        .agents/settings.json.enc > .agents/settings.json
 
   default:
     cmds:
