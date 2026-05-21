@@ -1,4 +1,6 @@
-# :key: [pass](https://www.passwordstore.org/)
+# :key: pass
+
+[pass](https://www.passwordstore.org/) is the standard unix password manager.
 
 ## :hammer_and_wrench: Installation
 

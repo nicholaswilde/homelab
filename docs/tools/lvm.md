@@ -5,7 +5,7 @@ tags:
   - rpi4
   - rpi5
 ---
-# :floppy_disk: [LVM][9]
+# :floppy_disk: LVM
 
 By default, Raspberry Pi OS does not come with [LVM][13]. However, LVM is useful for taking snapshots in Proxmox.
 
