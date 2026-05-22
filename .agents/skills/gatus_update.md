@@ -13,15 +13,15 @@ Syncs the `gatus` dashboard configuration via SSH, decrypts the `config.yaml` an
 2. **Sync Configuration:**
    - The gatus LXC has the configs symlinked to `/root/git/nicholaswilde/homelab/lxc/gatus/`.
    - **Step:** Execute a `git pull` inside the LXC via SSH.
-   - **Command:** `ssh root@192.168.2.220 "cd /root/git/nicholaswilde/homelab && git pull origin main"`
+   - **Command:** `ssh root@192.168.1.141 "cd /root/git/nicholaswilde/homelab && git pull origin main"`
 
 3. **Decrypt Secrets:**
    - **Step:** Run the `task decrypt` command inside the gatus directory via SSH.
-   - **Command:** `ssh root@192.168.2.220 "cd /root/git/nicholaswilde/homelab/lxc/gatus && task decrypt"`
+   - **Command:** `ssh root@192.168.1.141 "cd /root/git/nicholaswilde/homelab/lxc/gatus && task decrypt"`
 
 4. **Restart Service:**
    - **Step:** Restart the `gatus` service inside the LXC via SSH.
-   - **Command:** `ssh root@192.168.2.220 "systemctl restart gatus"`
+   - **Command:** `ssh root@192.168.1.141 "systemctl restart gatus"`
 
 5. **Verify:**
    - Announce: "Gatus configuration synced, secrets decrypted, and service restarted."
