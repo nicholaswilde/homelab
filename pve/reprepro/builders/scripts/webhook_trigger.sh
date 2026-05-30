@@ -41,6 +41,7 @@ case "$APP" in
     "yazi")   REPO="sxyazi/yazi" ;;
     "cookcli") REPO="cooklang/cookcli" ;;
     "cooklang-import") REPO="cooklang/cooklang-import" ;;
+    "procs")  REPO="dalance/procs" ;;
     *)
         echo "Error: Unknown app '$APP'."
         exit 1

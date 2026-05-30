@@ -11,6 +11,8 @@ includes:
   ubi: ./projects/ubi/Taskfile.yml
   fresh: ./projects/fresh/Taskfile.yml
   yazi: ./projects/yazi/Taskfile.yml
+  system-bridge: ./projects/system-bridge/Taskfile.yml
+  procs: ./projects/procs/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -53,6 +55,8 @@ tasks:
       - task: ubi:build
       - task: fresh:build
       - task: yazi:build
+      - task: system-bridge:build
+      - task: procs:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

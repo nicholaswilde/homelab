@@ -1,0 +1,203 @@
+version: '3'
+
+vars:
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+
+tasks:
+  check:
+    desc: Verify the metadata of .deb files for this app only
+    vars:
+      PROJECT_NAME: procs
+      DIST_DIR: "{{.ROOT}}/dist"
+    cmds:
+      - cmd: |
+          echo "Checking artifacts for {{.PROJECT_NAME}} in {{.DIST_DIR}}..."
+          echo "---------------------------------------------------"
+          files=$(ls {{.DIST_DIR}}/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+
+          if [ -z "$files" ]; then
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            exit 0
+          fi
+
+          for f in $files; do
+            echo "📦 $(basename $f)"
+            dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
+            echo "---------------------------------------------------"
+          done
+    silent: true
+
+  build:
+    desc: Build Procs (Rust)
+    vars:
+      PROJECT_NAME: procs
+      PROJECT_REPO_URL: https://github.com/dalance/procs.git
+      PROJECT_LATEST_VERSION:
+        sh: git ls-remote --tags --refs --sort="v:refname" https://github.com/dalance/procs.git | tail -n1 | sed 's/.*\///'
+      PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+      CACHE_DIR: "{{.ROOT}}/.cache"
+      DIST_DIR: "{{.ROOT}}/dist"
+      BUILD_DIR: "{{.ROOT}}/build"
+    cmds:
+      - echo "Building {{.PROJECT_NAME}}..."
+      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
+      - cmd: |
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+          if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS)" ]; then
+            echo "🗑️ Cache for {{.PROJECT_NAME}} is older than $DAYS days. Cleaning..."
+            rm -rf "$DIR"
+          fi
+          if [ -d "$DIR/.git" ]; then
+            cd "$DIR"
+            git fetch --tags --quiet
+            if ! git rev-parse {{.PROJECT_VERSION_TAG}} >/dev/null 2>&1; then
+              echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found in {{.PROJECT_NAME}}"
+              exit 1
+            fi
+            git reset --hard --quiet
+            git clean -fd --quiet
+            git checkout {{.PROJECT_VERSION_TAG}} --quiet
+          else
+            if ! git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet; then
+              echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}}"
+              exit 1
+            fi
+          fi
+      - task: process-target
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          RUST: "x86_64-unknown-linux-gnu"
+          GO: "amd64"
+          DEB: "amd64"
+          SUFFIX: "amd64"
+      - task: process-target
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          RUST: "aarch64-unknown-linux-gnu"
+          GO: "arm64"
+          DEB: "arm64"
+          SUFFIX: "arm64"
+      - task: process-target
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          RUST: "armv7-unknown-linux-gnueabihf"
+          GO: "arm_7"
+          DEB: "armhf"
+          SUFFIX: "armhf"
+      - task: process-target
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          RUST: "arm-unknown-linux-gnueabihf"
+          GO: "arm_6"
+          DEB: "armhf"
+          SUFFIX: "armhf+armv6"
+      - echo "✅ {{.PROJECT_NAME}} build complete."
+
+  process-target:
+    internal: true
+    cmds:
+      - task: compile
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          RUST_TARGET: "{{.RUST}}"
+          GO_FOLDER: "linux_{{.GO}}"
+      - task: package
+        vars:
+          PROJECT_NAME: '{{.PROJECT_NAME}}'
+          PROJECT_REPO_URL: '{{.PROJECT_REPO_URL}}'
+          PROJECT_VERSION_TAG: '{{.PROJECT_VERSION_TAG}}'
+          CACHE_DIR: '{{.CACHE_DIR}}'
+          DIST_DIR: '{{.DIST_DIR}}'
+          BUILD_DIR: '{{.BUILD_DIR}}'
+          GO_ARCH: "{{.GO}}"
+          ARCH: "{{.DEB}}"
+          SUFFIX: "{{.SUFFIX}}"
+
+  compile:
+    internal: true
+    dir: "{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+    cmds:
+      - echo "Building for {{.RUST_TARGET}}..."
+      - cross build --release --target {{.RUST_TARGET}}
+      - mkdir -p {{.CACHE_DIR}}/{{.GO_FOLDER}}
+      - cp target/{{.RUST_TARGET}}/release/{{.PROJECT_NAME}} {{.CACHE_DIR}}/{{.GO_FOLDER}}/
+
+  package:
+    internal: true
+    dir: "{{.BUILD_DIR}}/stage"
+    cmds:
+      - echo "Packaging {{.ARCH}}..."
+      - cp {{.CACHE_DIR}}/linux_{{.GO_ARCH}}/{{.PROJECT_NAME}} ./binary
+      - cmd: |
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "{{.ARCH}}"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "Homelab Admin <admin@local>"' >> nfpm.yaml
+          echo 'description: "Homelab build of {{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "MIT"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          echo '  - src: "./binary"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_{{.SUFFIX}}.deb
+          rm nfpm.yaml binary
+
+  latest:
+    desc: Compare latest GitHub version with current reprepro version
+    vars:
+      PROJECT_NAME: procs
+      PROJECT_REPO_URL: https://github.com/dalance/procs.git
+      PROJECT_LATEST_VERSION:
+        sh: git ls-remote --tags --refs --sort="v:refname" https://github.com/dalance/procs.git | tail -n1 | sed 's/.*\///'
+      PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+      PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: procs$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
+    cmds:
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
+    silent: true
+
+  default:
+    cmds:
+      - task -l
+    silent: true
