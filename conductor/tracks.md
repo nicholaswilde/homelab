@@ -4,5 +4,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [/verify backups](conductor/tracks/verify-backups/) [ ]
 - [/map network](conductor/tracks/map-network/) [ ]
-- [/consolidate raspi script](conductor/tracks/consolidate-raspi-script/) [x]
 - [/transition webhook service](conductor/tracks/transition-webhook-service/) [ ]
