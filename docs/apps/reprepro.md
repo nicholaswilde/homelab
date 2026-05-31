@@ -12,7 +12,17 @@ Some apps, like SOPS, release deb files, but are not a part of the normal reposi
 
 ## :strawberry: Raspberry Pi Support
 
-The `raspi` repository is used to support ARMv6 devices, such as the Raspberry Pi 1 and Raspberry Pi Zero W.
+The `raspi` repository is used to support ARMv6 devices, such as the Raspberry Pi 1 and Raspberry Pi Zero W. These armv6 raspberry pi computers use the `https://deb.l.nicholaswilde.io/raspi/dists/trixie/` repository.
+
+The `/etc/apt/sources.list.d/reprepro.sources` file for these computers is:
+
+```ini
+Types: deb
+URIs: https://deb.l.nicholaswilde.io/raspi
+Suites: trixie
+Components: main
+Signed-By: /etc/apt/keyrings/reprepro.gpg
+```
 
 ## :hammer_and_wrench: Installation
 
@@ -459,7 +469,7 @@ Add repo and install.
 
             ```ini
             Types: deb
-            URIs: http://deb.l.nicholaswilde.io/raspi
+            URIs: https://deb.l.nicholaswilde.io/raspi
             Suites: trixie
             Components: main
             Signed-By: /etc/apt/keyrings/reprepro.gpg
