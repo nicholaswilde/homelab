@@ -43,6 +43,8 @@ PROJECTS=(
   "neovim:neovim:neovim/neovim"
   "pvetui:pvetui:devnullvoid/pvetui"
   "lastpass-cli:lpass:lastpass/lastpass-cli"
+  "btop:btop:aristocratos/btop"
+  "fzf:fzf:junegunn/fzf"
 )
 
 for entry in "${PROJECTS[@]}"; do

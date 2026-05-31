@@ -17,6 +17,8 @@ includes:
   neovim: ./projects/neovim/Taskfile.yml
   pvetui: ./projects/pvetui/Taskfile.yml
   lastpass-cli: ./projects/lastpass-cli/Taskfile.yml
+  btop: ./projects/btop/Taskfile.yml
+  fzf: ./projects/fzf/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -65,6 +67,8 @@ tasks:
       - task: neovim:build
       - task: pvetui:build
       - task: lastpass-cli:build
+      - task: btop:build
+      - task: fzf:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

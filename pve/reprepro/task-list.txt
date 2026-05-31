@@ -12,7 +12,6 @@ task: Available tasks for this project:
 * list:                  List all packages in all distributions
 * nuke:                  Nuke the packages
 * symlinks:              Create reprepro symlinks
-* update-raspi:          Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
 * update-reprepro:       Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
 * upload-debs:           Upload the deb packages to a remote server
 * verify-secrets:        Checks if the decrypted secret matches the local file
