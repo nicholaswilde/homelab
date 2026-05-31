@@ -1,26 +1,23 @@
 task: Available tasks for this project:
-* bootstrap:                  Bootstrap the reprepro environment
-* clear:                      Remove all packages from all distributions
-* decrypt:                    Decrypt sensitive configuration files using SOPS.
-* deps:                       Install dependencies
-* deps-lnav:                  Install lnav dependencies
-* dirs:                       Create reprepro directories
-* download:                   Download SOPS and Task .deb files
-* encrypt:                    Encrypt sensitive configuration files using SOPS.
-* export:                     Export the task list
-* init:                       Initialize the application's environment and configuration files.
-* list:                       List all packages in all distributions
-* nuke:                       Nuke the packages
-* package-lastpass-cli:       Package the latest lastpass-cli release
-* package-neovim:             Package the latest neovim release
-* package-pvetui:             Package the latest pvetui release
-* symlinks:                   Create reprepro symlinks
-* update-raspi:               Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
-* update-reprepro:            Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
-* upload-debs:                Upload the deb packages to a remote server
-* verify-secrets:             Checks if the decrypted secret matches the local file
-* symlinks:test:              Create reprepro symlinks
-* wh:install:                 Install and start the systemd webhook service
-* wh:logs:                    View the webhook service logs
-* wh:status:                  Check the status of the systemd webhook service
-* wh:test:                    Test the webhook listener locally
+* bootstrap:             Bootstrap the reprepro environment
+* clear:                 Remove all packages from all distributions
+* decrypt:               Decrypt sensitive configuration files using SOPS.
+* deps:                  Install dependencies
+* deps-lnav:             Install lnav dependencies
+* dirs:                  Create reprepro directories
+* download:              Download SOPS and Task .deb files
+* encrypt:               Encrypt sensitive configuration files using SOPS.
+* export:                Export the task list
+* init:                  Initialize the application's environment and configuration files.
+* list:                  List all packages in all distributions
+* nuke:                  Nuke the packages
+* symlinks:              Create reprepro symlinks
+* update-raspi:          Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
+* update-reprepro:       Downloads application tar.gz and .deb files, packages them as needed, and adds them to a reprepro repository.
+* upload-debs:           Upload the deb packages to a remote server
+* verify-secrets:        Checks if the decrypted secret matches the local file
+* symlinks:test:         Create reprepro symlinks
+* wh:install:            Install and start the systemd webhook service
+* wh:logs:               View the webhook service logs
+* wh:status:             Check the status of the systemd webhook service
+* wh:test:               Test the webhook listener locally

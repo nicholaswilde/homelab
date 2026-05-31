@@ -14,6 +14,9 @@ includes:
   system-bridge: ./projects/system-bridge/Taskfile.yml
   procs: ./projects/procs/Taskfile.yml
   lnav: ./projects/lnav/Taskfile.yml
+  neovim: ./projects/neovim/Taskfile.yml
+  pvetui: ./projects/pvetui/Taskfile.yml
+  lastpass-cli: ./projects/lastpass-cli/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -59,6 +62,9 @@ tasks:
       - task: system-bridge:build
       - task: procs:build
       - task: lnav:build
+      - task: neovim:build
+      - task: pvetui:build
+      - task: lastpass-cli:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

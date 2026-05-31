@@ -51,18 +51,6 @@ tasks:
       - "sudo apt install \\\n  jq reprepro cron dpkg-dev ninja-build gettext cmake\
         \ curl \\\n  build-essential git build-essential cmake libcurl4-openssl-dev\
         \ \\\n  libxml2-dev libssl-dev libxml-security-c-dev pkg-config stow"
-  package-lastpass-cli:
-    desc: Package the latest lastpass-cli release
-    cmds:
-      - ./package-lastpass-cli.sh
-  package-neovim:
-    desc: Package the latest neovim release
-    cmds:
-      - ./package-neovim.sh
-  package-pvetui:
-    desc: Package the latest pvetui release
-    cmds:
-      - ./package-pvetui.sh
   upload-debs:
     desc: Upload the deb packages to a remote server
     cmds:

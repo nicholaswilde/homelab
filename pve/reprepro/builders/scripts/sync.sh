@@ -40,6 +40,9 @@ PROJECTS=(
   "system-bridge:system-bridge:timmo001/system-bridge"
   "procs:procs:dalance/procs"
   "lnav:lnav:tstack/lnav"
+  "neovim:neovim:neovim/neovim"
+  "pvetui:pvetui:devnullvoid/pvetui"
+  "lastpass-cli:lpass:lastpass/lastpass-cli"
 )
 
 for entry in "${PROJECTS[@]}"; do
