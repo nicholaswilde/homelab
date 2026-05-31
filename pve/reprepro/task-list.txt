@@ -1,6 +1,5 @@
 task: Available tasks for this project:
 * bootstrap:                  Bootstrap the reprepro environment
-* build-lnav:                 Build lnav
 * clear:                      Remove all packages from all distributions
 * decrypt:                    Decrypt sensitive configuration files using SOPS.
 * deps:                       Install dependencies

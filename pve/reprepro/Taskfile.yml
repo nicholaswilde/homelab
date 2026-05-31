@@ -2,10 +2,6 @@ version: '3'
 dotenv:
   - .env
 tasks:
-  build-lnav:
-    desc: Build lnav
-    cmds:
-      - sudo ./build-lnav.sh
   nuke:
     desc: Nuke the packages
     cmds:

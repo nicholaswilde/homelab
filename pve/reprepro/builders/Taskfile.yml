@@ -13,6 +13,7 @@ includes:
   yazi: ./projects/yazi/Taskfile.yml
   system-bridge: ./projects/system-bridge/Taskfile.yml
   procs: ./projects/procs/Taskfile.yml
+  lnav: ./projects/lnav/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -57,6 +58,7 @@ tasks:
       - task: yazi:build
       - task: system-bridge:build
       - task: procs:build
+      - task: lnav:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

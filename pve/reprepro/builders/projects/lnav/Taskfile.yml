@@ -1,0 +1,238 @@
+version: '3'
+
+vars:
+  ROOT: "{{.TASKFILE_DIR}}/../.."
+  REMOTE_IP: { sh: 'grep REMOTE_IP {{.ROOT}}/../.env | cut -d= -f2' }
+  PROJECT_NAME: lnav
+  PROJECT_REPO_URL: https://github.com/tstack/lnav.git
+  PROJECT_LATEST_VERSION:
+    sh: git ls-remote --tags --refs --sort="v:refname" {{.PROJECT_REPO_URL}} | tail -n1 | sed 's/.*\///'
+  PROJECT_VERSION_TAG: '{{default .PROJECT_LATEST_VERSION .VERSION}}'
+  CACHE_DIR: "{{.ROOT}}/.cache"
+  DIST_DIR: "{{.ROOT}}/dist"
+  BUILD_DIR: "{{.ROOT}}/build"
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
+
+tasks:
+  check:
+    desc: Verify the metadata of .deb files for this app only
+    cmds:
+      - cmd: |
+          echo "Checking artifacts for {{.PROJECT_NAME}} in ../../dist/..."
+          echo "---------------------------------------------------"
+          files=$(ls ../../dist/{{.PROJECT_NAME}}*.deb 2>/dev/null)
+
+          if [ -z "$files" ]; then
+            echo "⚠️  No .deb files found for {{.PROJECT_NAME}}."
+            exit 0
+          fi
+
+          for f in $files; do
+            echo "📦 $(basename $f)"
+            dpkg --info "$f" | grep -E "^ (Package|Version|Architecture):"
+            echo "---------------------------------------------------"
+          done
+    silent: true
+
+  build:
+    desc: "Build {{.PROJECT_NAME}} (C++)"
+    cmds:
+      - echo "Building {{.PROJECT_NAME}}..."
+      - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
+      - |
+        DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+        DAYS={{default "7" .BUILDER_CACHE_MAX_AGE_DAYS}}
+        if [ -d "$DIR" ] && [ -z "$(find "$DIR" -maxdepth 0 -mtime -$DAYS 2>/dev/null)" ]; then
+          echo "🗑️ Cache for {{.PROJECT_NAME}} is stale (older than $DAYS days), cleaning up..."
+          rm -rf "$DIR"
+        fi
+        if [ -d "$DIR/.git" ]; then
+          echo "🔄 Updating existing repository..."
+          cd "$DIR"
+          git fetch --tags --quiet
+          if ! git rev-parse "{{.PROJECT_VERSION_TAG}}" >/dev/null 2>&1; then
+            echo -e "\033[31mX\033[0m Error: Tag {{.PROJECT_VERSION_TAG}} not found for {{.PROJECT_NAME}}."
+            exit 1
+          fi
+          git reset --hard --quiet
+          git clean -fd --quiet
+          git checkout {{.PROJECT_VERSION_TAG}} --quiet
+        else
+          echo "📥 Cloning fresh repository..."
+          git clone --depth 1 --branch {{.PROJECT_VERSION_TAG}} {{.PROJECT_REPO_URL}} "$DIR" --quiet || (echo -e "\033[31mX\033[0m Error: Failed to clone {{.PROJECT_NAME}} at {{.PROJECT_VERSION_TAG}}." && exit 1)
+        fi
+
+      - cmd: |
+          cd {{.BUILD_DIR}}/{{.PROJECT_NAME}}
+          if [ ! -f "configure" ]; then
+            echo "🔧 Running autogen.sh..."
+            ./autogen.sh
+          fi
+
+      # 1. Native Build
+      - task: process-native
+
+      # 2. Cross Compile for ARM if tools available
+      - cmd: |
+          if command -v arm-linux-gnueabihf-g++ >/dev/null 2>&1; then
+            echo "Cross-compiler found. Building for ARM..."
+            task lnav:process-cross-armv6
+            task lnav:process-cross-armv7
+          else
+            echo "Cross-compiler arm-linux-gnueabihf-g++ not found. Skipping ARM builds."
+          fi
+
+      - echo "✅ {{.PROJECT_NAME}} build complete."
+
+  process-native:
+    internal: true
+    cmds:
+      - cmd: |
+          echo "Building native release..."
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          BUILD_SUBDIR="{{.BUILD_DIR}}/build_native"
+          rm -rf "$BUILD_SUBDIR"
+          mkdir -p "$BUILD_SUBDIR"
+          cp -r "$DIR"/* "$BUILD_SUBDIR/"
+          cd "$BUILD_SUBDIR"
+          
+          ./configure
+          make -j$(nproc)
+          
+          # Copy to cache for packaging
+          NATIVE_ARCH=$(dpkg --print-architecture)
+          mkdir -p {{.CACHE_DIR}}/lnav_${NATIVE_ARCH}
+          cp src/lnav {{.CACHE_DIR}}/lnav_${NATIVE_ARCH}/
+          
+          # Package
+          cd {{.BUILD_DIR}}/stage
+          cp {{.CACHE_DIR}}/lnav_${NATIVE_ARCH}/lnav ./binary
+          
+          # Generate NFPM config
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "'$NATIVE_ARCH'"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "nicholaswilde@gmail.com"' >> nfpm.yaml
+          echo 'description: "An advanced log file viewer"' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "BSD-2-Clause"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          echo '  - src: "./binary"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+          
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_$NATIVE_ARCH.deb
+          rm nfpm.yaml binary
+
+  process-cross-armv6:
+    internal: true
+    cmds:
+      - cmd: |
+          echo "Cross-compiling for ARMv6..."
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          BUILD_SUBDIR="{{.BUILD_DIR}}/build_armv6"
+          rm -rf "$BUILD_SUBDIR"
+          mkdir -p "$BUILD_SUBDIR"
+          cp -r "$DIR"/* "$BUILD_SUBDIR/"
+          cd "$BUILD_SUBDIR"
+          
+          export CXXFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard"
+          export CFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard"
+          ./configure --host=arm-linux-gnueabihf
+          make -j$(nproc)
+          
+          mkdir -p {{.CACHE_DIR}}/lnav_armv6
+          cp src/lnav {{.CACHE_DIR}}/lnav_armv6/
+          
+          # Package
+          cd {{.BUILD_DIR}}/stage
+          cp {{.CACHE_DIR}}/lnav_armv6/lnav ./binary
+          
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "armhf"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "nicholaswilde@gmail.com"' >> nfpm.yaml
+          echo 'description: "An advanced log file viewer (ARMv6)"' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "BSD-2-Clause"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          echo '  - src: "./binary"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+          
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_armhf+armv6.deb
+          rm nfpm.yaml binary
+
+  process-cross-armv7:
+    internal: true
+    cmds:
+      - cmd: |
+          echo "Cross-compiling for ARMv7..."
+          DIR="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          BUILD_SUBDIR="{{.BUILD_DIR}}/build_armv7"
+          rm -rf "$BUILD_SUBDIR"
+          mkdir -p "$BUILD_SUBDIR"
+          cp -r "$DIR"/* "$BUILD_SUBDIR/"
+          cd "$BUILD_SUBDIR"
+          
+          export CXXFLAGS="-march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
+          export CFLAGS="-march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
+          ./configure --host=arm-linux-gnueabihf
+          make -j$(nproc)
+          
+          mkdir -p {{.CACHE_DIR}}/lnav_armv7
+          cp src/lnav {{.CACHE_DIR}}/lnav_armv7/
+          
+          # Package
+          cd {{.BUILD_DIR}}/stage
+          cp {{.CACHE_DIR}}/lnav_armv7/lnav ./binary
+          
+          echo 'name: "{{.PROJECT_NAME}}"' > nfpm.yaml
+          echo 'arch: "armhf"' >> nfpm.yaml
+          echo 'platform: "linux"' >> nfpm.yaml
+          echo 'version: "{{.PROJECT_VERSION_TAG | replace "v" ""}}"' >> nfpm.yaml
+          echo 'section: "default"' >> nfpm.yaml
+          echo 'priority: "extra"' >> nfpm.yaml
+          echo 'maintainer: "nicholaswilde@gmail.com"' >> nfpm.yaml
+          echo 'description: "An advanced log file viewer (ARMv7)"' >> nfpm.yaml
+          echo 'vendor: "Homelab"' >> nfpm.yaml
+          echo 'homepage: "{{.PROJECT_REPO_URL}}"' >> nfpm.yaml
+          echo 'license: "BSD-2-Clause"' >> nfpm.yaml
+          echo 'contents:' >> nfpm.yaml
+          echo '  - src: "./binary"' >> nfpm.yaml
+          echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
+          echo '    file_info:' >> nfpm.yaml
+          echo '      mode: 0755' >> nfpm.yaml
+          
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_armhf+armv7.deb
+          rm nfpm.yaml binary
+
+  latest:
+    desc: Compare latest GitHub version with current reprepro version
+    cmds:
+      - echo "GitHub Version {{.PROJECT_VERSION_TAG}}"
+      - echo "Repo Version   {{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+      - |
+        gh_version="{{.PROJECT_VERSION_TAG}}"
+        repo_version="{{.PROJECT_REPO_VERSION | default "0.0.0"}}"
+        if dpkg --compare-versions "${gh_version#v}" gt "$repo_version"; then
+          echo "🚀 Update available!"
+        else
+          echo "✅ Up to date."
+        fi
+    silent: true
+
+  default:
+    cmds:
+      - task -l
+    silent: true

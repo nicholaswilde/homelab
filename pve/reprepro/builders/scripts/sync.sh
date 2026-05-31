@@ -39,6 +39,7 @@ PROJECTS=(
   "yazi:yazi:sxyazi/yazi"
   "system-bridge:system-bridge:timmo001/system-bridge"
   "procs:procs:dalance/procs"
+  "lnav:lnav:tstack/lnav"
 )
 
 for entry in "${PROJECTS[@]}"; do
