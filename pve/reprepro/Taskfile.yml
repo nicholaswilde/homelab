@@ -67,10 +67,6 @@ tasks:
     desc: Package the latest pvetui release
     cmds:
       - ./package-pvetui.sh
-  package-sops:
-    desc: Package the latest sops release
-    cmds:
-      - ./package-sops.sh
   upload-debs:
     desc: Upload the deb packages to a remote server
     cmds:
@@ -108,9 +104,9 @@ tasks:
     desc: Downloads application tar.gz and .deb files, packages them as needed, and
       adds them to a reprepro repository.
     preconditions:
-      - test -f ./update-reprepro.sh
+      - test -f ./update-reprepro-service.sh
     cmds:
-      - sudo ./update-reprepro.sh
+      - sudo ./update-reprepro-service.sh
   update-raspi:
     desc: Downloads and packages applications for Raspberry Pi 1 / Zero (ARMv6).
     preconditions:
