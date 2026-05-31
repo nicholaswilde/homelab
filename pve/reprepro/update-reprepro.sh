@@ -342,11 +342,23 @@ function download_and_add_deb() {
   log "INFO" "Downloading ${package_name}..."
   wget -q "${download_url}" -O "${package_path}" || { log "ERRO" "Failed to download ${package_name}"; return 1; }
 
+  local target_debian_codenames=()
+  local target_ubuntu_codenames=()
+
+  if [[ "${package_name}" == *"armv6"* ]]; then
+    if [[ " ${DEBIAN_CODENAMES[*]} " =~ " raspi " ]]; then
+      target_debian_codenames+=("raspi")
+    fi
+  else
+    target_debian_codenames=("${STANDARD_DEBIAN_CODENAMES[@]}")
+    target_ubuntu_codenames=("${UBUNTU_CODENAMES[@]}")
+  fi
+
   log "INFO" "Adding ${package_name} to reprepro..."
-  for codename in "${UBUNTU_CODENAMES[@]}"; do
+  for codename in "${target_ubuntu_codenames[@]}"; do
     reprepro -b "${BASE_DIR}/ubuntu" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
-  for codename in "${STANDARD_DEBIAN_CODENAMES[@]}"; do
+  for codename in "${target_debian_codenames[@]}"; do
     reprepro -b "${BASE_DIR}/debian" -C main includedeb "${codename}" "${package_path}" 2>&1 | log "DEBU" || true
   done
 }
@@ -444,7 +456,11 @@ function update_app_from_deb() {
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
 
   local linux_debs
-  linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not) and (contains("fips") | not)) | .name')
+  if [[ "${APP_NAME}" == "sysmqttd" ]]; then
+    linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("fips") | not)) | .name')
+  else
+    linux_debs=$(echo "${json_response}" | jq -r '.assets[] | select(.name | endswith(".deb") and (contains("musl") | not) and (contains("fips") | not)) | .name')
+  fi
 
   local app_update_failed="false"
   for deb in ${linux_debs}; do
