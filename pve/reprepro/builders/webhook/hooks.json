@@ -20,5 +20,15 @@
         "name": "app"
       }
     ]
+  },
+  {
+    "id": "sync",
+    "execute-command": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders/scripts/sync.sh",
+    "command-working-directory": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders"
+  },
+  {
+    "id": "update-app",
+    "execute-command": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders/scripts/sync.sh",
+    "command-working-directory": "/home/nicholas/git/nicholaswilde/homelab/pve/reprepro/builders"
   }
 ]
