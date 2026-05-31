@@ -63,13 +63,13 @@ tasks:
             fi
           fi
       - task: process-target
-        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64"}
+        vars: {RUST: "x86_64-unknown-linux-gnu", GO: "amd64", DEB: "amd64", SUFFIX: "amd64"}
       - task: process-target
-        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64"}
+        vars: {RUST: "aarch64-unknown-linux-gnu", GO: "arm64", DEB: "arm64", SUFFIX: "arm64"}
       - task: process-target
-        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf"}
+        vars: {RUST: "armv7-unknown-linux-gnueabihf", GO: "arm_7", DEB: "armhf", SUFFIX: "armhf"}
       - task: process-target
-        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armel"}
+        vars: {RUST: "arm-unknown-linux-gnueabihf", GO: "arm_6", DEB: "armhf", SUFFIX: "armhf+armv6"}
       - echo "✅ {{.PROJECT_NAME}} build complete."
 
   process-target:
@@ -78,7 +78,7 @@ tasks:
       - task: compile
         vars: {RUST_TARGET: "{{.RUST}}", GO_FOLDER: "linux_{{.GO}}"}
       - task: package
-        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}"}
+        vars: {GO_ARCH: "{{.GO}}", ARCH: "{{.DEB}}", SUFFIX: "{{.SUFFIX}}"}
 
   compile:
     internal: true
@@ -112,7 +112,7 @@ tasks:
           echo '    dst: "/usr/bin/{{.PROJECT_NAME}}"' >> nfpm.yaml
           echo '    file_info:' >> nfpm.yaml
           echo '      mode: 0755' >> nfpm.yaml
-          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_{{.ARCH}}.deb
+          nfpm pkg --config nfpm.yaml --packager deb --target {{.DIST_DIR}}/{{.PROJECT_NAME}}_{{.PROJECT_VERSION_TAG}}_{{.SUFFIX}}.deb
           rm nfpm.yaml binary
 
   latest:
