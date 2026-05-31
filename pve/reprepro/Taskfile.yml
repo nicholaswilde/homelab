@@ -131,7 +131,30 @@ tasks:
     desc: Test the webhook listener locally
     cmds:
       - 'curl -X POST -H "Content-Type: application/json" -d "{}" http://localhost:9000/hooks/update-app'
+  remote:list:
+    desc: List all packages on the remote reprepro host
+    cmds:
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/debian list bullseye"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/debian list bookworm"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/debian list trixie"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/debian list raspi"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/ubuntu list questing"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/ubuntu list plucky"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/ubuntu list oracular"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/ubuntu list noble"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/ubuntu list jammy"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/raspi list trixie"
+      - ssh reprepro "reprepro -b {{.BASE_DIR}}/raspi list bookworm"
+  remote:sync:
+    desc: Run update-reprepro-service.sh remotely on the reprepro host
+    cmds:
+      - ssh reprepro "/root/git/nicholaswilde/homelab/pve/reprepro/update-reprepro-service.sh"
+  remote:add-raspi:
+    desc: Run add-raspi-debs.sh remotely on the reprepro host
+    cmds:
+      - ssh reprepro "/root/git/nicholaswilde/homelab/pve/reprepro/add-raspi-debs.sh /root"
   default:
     cmds:
       - task -l
     silent: true
+

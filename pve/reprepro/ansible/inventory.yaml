@@ -17,3 +17,9 @@ all:
           ansible_user: nicholas
       vars:
         reprepro_incoming_dir: "{{ playbook_dir }}/incoming"
+    reprepro_hosts:
+      hosts:
+        reprepro-host:
+          ansible_host: 192.168.1.58
+          ansible_user: root
+

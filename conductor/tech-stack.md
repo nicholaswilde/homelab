@@ -6,6 +6,8 @@
 - **Containerization:** Docker, Docker Compose
 - **Container Orchestration:** Docker Compose (Single node), Proxmox LXC (System containers)
 - **Operating Systems:** Debian Linux (Primary), Ubuntu, Alpine Linux
+- **Reprepro Host:** `192.168.1.58` (SSH enabled for testing and administration)
+
 
 ## Automation & Scripting
 
