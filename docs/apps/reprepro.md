@@ -634,6 +634,43 @@ The `REMOTE_IP`, `REMOTE_USER`, and `REMOTE_PATH` variables in the `.env` file a
     task upload-debs
     ```
 
+### :satellite: Remote SSH Orchestration
+
+To simplify remote management of the reprepro host directly from your local development workstation, we support remote task runners and a preconfigured SSH host alias.
+
+#### SSH Host Configuration
+To enable clean, passwordless, and non-interactive connections, add the following host profile to your local `~/.ssh/config` file:
+
+```text
+Host reprepro
+  HostName 192.168.1.58
+  User root
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  BatchMode yes
+```
+
+This configuration maps the root SSH user and automatically handles strict host verification bypass.
+
+#### Remote Task Commands
+The local `Taskfile.yml` includes dedicated tasks to orchestrate repository operations remotely on the reprepro server:
+
+*   **List Remote Packages**:
+    ```bash
+    task remote:list
+    ```
+    Recursively queries and prints all packages currently registered under all Debian, Ubuntu, and Raspi distributions on the remote server.
+*   **Trigger Remote Sync**:
+    ```bash
+    task remote:sync
+    ```
+    Triggers the master synchronization script (`update-reprepro-service.sh`) remotely to fetch latest versions from upstream and update the reprepro repository.
+*   **Import Remote ARMv6 Packages**:
+    ```bash
+    task remote:add-raspi
+    ```
+    Triggers the `add-raspi-debs.sh` script remotely on the server to scan `/root` and register any newly compiled ARMv6 packages into the `raspi` distribution.
+
 ### :bell: Script Notifications
 
 Some scripts can send notifications via [Mailrise](./mailrise.md).
