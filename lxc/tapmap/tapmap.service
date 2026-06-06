@@ -1,0 +1,21 @@
+[Unit]
+Description=TapMap Network Connection Visualizer Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/tapmap
+EnvironmentFile=/opt/tapmap/.env
+ExecStart=/opt/tapmap/tapmap
+
+# Restart configuration if the daemon crashes
+Restart=on-failure
+RestartSec=5s
+
+# Security hardening and resource constraints
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target
