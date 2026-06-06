@@ -19,6 +19,7 @@ includes:
   lastpass-cli: ./projects/lastpass-cli/Taskfile.yml
   btop: ./projects/btop/Taskfile.yml
   fzf: ./projects/fzf/Taskfile.yml
+  tapmap: ./projects/tapmap/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -69,6 +70,7 @@ tasks:
       - task: lastpass-cli:build
       - task: btop:build
       - task: fzf:build
+      - task: tapmap:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

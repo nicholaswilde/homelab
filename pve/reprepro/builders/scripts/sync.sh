@@ -45,6 +45,7 @@ PROJECTS=(
   "lastpass-cli:lpass:lastpass/lastpass-cli"
   "btop:btop:aristocratos/btop"
   "fzf:fzf:junegunn/fzf"
+  "tapmap:tapmap:olalie/tapmap"
 )
 
 for entry in "${PROJECTS[@]}"; do

@@ -42,6 +42,7 @@ case "$APP" in
     "cookcli") REPO="cooklang/cookcli" ;;
     "cooklang-import") REPO="cooklang/cooklang-import" ;;
     "procs")  REPO="dalance/procs" ;;
+    "tapmap") REPO="olalie/tapmap" ;;
     *)
         echo "Error: Unknown app '$APP'."
         exit 1
