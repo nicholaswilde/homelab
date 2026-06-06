@@ -54,6 +54,7 @@ Apps = [
   { "netboot.xyz" = "apps/netbootxyz.md" },
   { "omni-tools" = "apps/omni-tools.md" },
   { "OpenMediaVault" = "apps/openmediavault.md" },
+  { "Overleaf" = "apps/overleaf.md" },
   { "Pinchflat" = "apps/pinchflat.md" },
   { "Pocket ID" = "apps/pocket-id.md" },
   { "Proxmox" = "apps/proxmox.md" },
