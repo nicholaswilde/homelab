@@ -36,6 +36,9 @@
         icon: sh-z-wave-js-ui.png
         href: https://zwave.l.nicholaswilde.io/
 - Networking:
+    - TapMap:
+        icon: https://github.com/olalie/tapmap/raw/refs/heads/main/docs/images/tapmap-logo.svg
+        href: https://tapmap.l.nicholaswilde.io
     - Apt-Cacher NG:
         icon: mdi-package-variant
         href: http://aptcache.l.nicholaswilde.io:3142/acng-report.html
