@@ -62,6 +62,7 @@ Apps = [
   { "Reactive Resume" = "apps/reactive-resume.md" },
   { "reprepro" = "apps/reprepro.md" },
   { "Stirling PDF" = "apps/stirling-pdf.md" },
+  { "TapMap" = "apps/tapmap.md" },
   { "Traefik" = "apps/traefik.md" },
   { "Unbound" = "apps/unbound.md" },
   { "vaultwarden-backup" = "apps/vaultwarden-backup.md" },
