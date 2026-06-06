@@ -39,10 +39,44 @@ tasks:
       - cp .env.tmpl .env
   mklinks:
     desc: Create symbolic links for configuration files.
-    preconditions:
-      - test -d {{ .CONFIG_DIR }}
     cmds:
-      - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+      - task: stow
+  stow:
+    desc: Symlink .env from homelab repo to /opt/tapmap using stow.
+    preconditions:
+      - sh: test -f {{ .TASKFILE_DIR }}/.env
+        msg: ".env not found. Run: task decrypt"
+      - test -d {{ .INSTALL_DIR }}
+    cmds:
+      - mkdir -p {{ .TASKFILE_DIR }}/opt_tapmap
+      - cp {{ .TASKFILE_DIR }}/.env {{ .TASKFILE_DIR }}/opt_tapmap/.env
+      - rm -f {{ .INSTALL_DIR }}/.env
+      - stow -v -d {{ .TASKFILE_DIR }} -t {{ .INSTALL_DIR }} opt_tapmap
+  geolite2:setup:
+    desc: Configure GeoIP.conf with MaxMind credentials and install systemd override.
+    preconditions:
+      - sh: "[ -n '{{ .MAXMIND_ACCOUNT_ID }}' ]"
+        msg: "MAXMIND_ACCOUNT_ID is not set in .env"
+      - sh: "[ -n '{{ .MAXMIND_LICENSE_KEY }}' ]"
+        msg: "MAXMIND_LICENSE_KEY is not set in .env"
+    cmds:
+      - >-
+        printf '# GeoIP.conf - managed by homelab/lxc/tapmap/Taskfile.yml\nAccountID %s\nLicenseKey %s\nEditionIDs GeoLite2-ASN GeoLite2-City\nDatabaseDirectory /root/.local/share/TapMap\n'
+        '{{.MAXMIND_ACCOUNT_ID}}' '{{.MAXMIND_LICENSE_KEY}}' > /etc/GeoIP.conf
+      - mkdir -p /etc/systemd/system/geoipupdate.service.d/
+      - stow -v -d {{ .TASKFILE_DIR }} -t /etc/systemd/system etc_geoipupdate
+      - systemctl daemon-reload
+      - task: geolite2:update
+  geolite2:update:
+    desc: Download/update GeoLite2 databases for TapMap using geoipupdate.
+    preconditions:
+      - sh: command -v geoipupdate
+        msg: "geoipupdate is not installed. Run: apt-get install -y geoipupdate"
+      - sh: grep -q '^AccountID [0-9]' /etc/GeoIP.conf
+        msg: "/etc/GeoIP.conf is not configured. Run: task geolite2:setup"
+    cmds:
+      - geoipupdate -v
+      - echo "✅ GeoLite2 databases updated at /root/.local/share/TapMap/"
   restart:
     desc: Restart the application's systemd service.
     cmds:
