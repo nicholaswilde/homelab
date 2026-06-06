@@ -117,6 +117,9 @@
         href: https://cd.l.nicholaswilde.io/
 
 - Files & Downloads:
+    - Overleaf:
+        icon: sh-overleaf.svg
+        href: https://overleaf.l.nicholaswilde.io/
     - Aria2:
         icon: mdi-download
         href: https://aria2.l.nicholaswilde.io    
