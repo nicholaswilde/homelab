@@ -29,7 +29,7 @@ tasks:
   new:
     desc: Create a new config file
     cmds:
-      - jinja2 -D APP_NAME={{shellQuote .APP_NAME }} conf.d/.template.yaml.j2
+      - minijinja-cli conf.d/.template.yaml.j2 -D APP_NAME={{shellQuote .APP_NAME }}
   watch:
     desc: Watch the log file
     preconditions:

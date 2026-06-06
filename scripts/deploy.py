@@ -69,16 +69,19 @@ def deploy(app_name, deploy_type, variables):
                     # The Antigravity CLI protocol will handle prompting.
                     sys.exit(1)
 
-                content = template.render(**variables)
-                
                 # Naming logic
                 target_name = item.name.replace(".j2", "")
                 if target_name == ".env.tmpl":
                     target_name = ".env"
                 
                 target_file = target_dir / target_name
+                import subprocess
+                cmd = ["minijinja-cli", str(item)]
+                for k, v in variables.items():
+                    cmd.extend(["-D", f"{k}={v}"])
+                
                 with open(target_file, "w") as f:
-                    f.write(content)
+                    subprocess.run(cmd, stdout=f, check=True)
                 log_info(f"Generated: {target_file}")
             except Exception as e:
                 log_error(f"Failed to process template {item.name}: {e}")

@@ -107,7 +107,7 @@ Update `EnvironmentFile` and `ExecStart` to point to your homelab directories.
         === "Manual"
 
             ```shell
-            jinja2 -D APP_NAME=AppName .template.yaml.j2 > appname.yaml
+            minijinja-cli .template.yaml.j2 -D APP_NAME=AppName > appname.yaml
             ```
 
 2. Edit config file.

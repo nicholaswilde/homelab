@@ -183,10 +183,10 @@ New pages for this site can be created using [jinja2][3] and the `.template.md.j
         APP_NAME="New App" task new > apps/new-app.md
         ```
         
-    === "jinja2-cli"
+    === "minijinja-cli"
     
         ```shell
-        jinja2 .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > apps/new-app.md
+        minijinja-cli .template.md.j2 -D app_name="New App" -D app_port=8080 -D config_path=/opt/new-app > apps/new-app.md
         ```
 
 ## :rocket: Upgrades
@@ -327,7 +327,7 @@ My preferred form of notifications in my Homelab are email via [mailrise][17] be
 
 ## :link: References
 
-[3]: <../tools/jinja2-cli.md>
+[3]: <../tools/minijinja-cli.md>
 [1]: <../apps/adguardhome.md>
 [2]: <../apps/adguardhome-sync.md>
 [4]: <../apps/traefik.md>

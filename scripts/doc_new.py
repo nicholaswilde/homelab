@@ -42,14 +42,16 @@ def generate_doc(name, category, template_name, variables):
     variables['APP_NAME_LOWER'] = name_lower
 
     try:
-        template = env.get_template(template_name)
-        content = template.render(**variables)
-        
         # Ensure directory exists
         target_file.parent.mkdir(parents=True, exist_ok=True)
         
+        import subprocess
+        cmd = ["minijinja-cli", str(template_dir / template_name)]
+        for k, v in variables.items():
+            cmd.extend(["-D", f"{k}={v}"])
+            
         with open(target_file, "w") as f:
-            f.write(content)
+            subprocess.run(cmd, stdout=f, check=True)
         log_success(f"Generated: {target_file}")
     except Exception as e:
         log_error(f"Failed to generate documentation: {e}")

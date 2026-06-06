@@ -22,13 +22,13 @@ are followed.
 
 4. **Variable Substitution:**
    - For each `.j2` file in the target directory:
-     - Parse the file for Jinja2-style variables (`{{ VAR_NAME }}`).
+     - Parse the file for variables (`{{ VAR_NAME }}`).
      - For each unique variable found:
        - If `VAR_NAME` is `APP_NAME`, use the provided `<app_name>`.
        - If `VAR_NAME` is `USER_NAME` and the environment has a default (e.g., from
          `git config`), use it.
        - Otherwise, use the `ask_user` tool to request the value from the user.
-     - Substitute all variables in the file's content.
+     - Substitute all variables in the file's content using `minijinja-cli` (e.g. `minijinja-cli <file> -D <VAR>=<VAL>`).
      - Write the substituted content to a new file without the `.j2` extension.
      - Delete the original `.j2` file.
 

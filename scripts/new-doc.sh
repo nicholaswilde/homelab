@@ -125,8 +125,8 @@ function main() {
 
   log "INFO" "Generating documentation file: $output_file"
 
-  # Execute the task command via uv run jinja2 and redirect output
-  (cd "$docs_dir" && uv run jinja2 "$template_file" -D APP_NAME="$(printf %q "$app_name")" $app_port_arg $config_path_arg > "$output_file")
+  # Execute the task command via uv run minijinja-cli and redirect output
+  (cd "$docs_dir" && minijinja-cli "$template_file" -D APP_NAME="$(printf %q "$app_name")" $app_port_arg $config_path_arg > "$output_file")
 
   log "INFO" "Successfully created '$output_file'."
   log "WARN" "Remember to run 'task generate-docs-nav' to update navigation in 'zensical.toml'."
