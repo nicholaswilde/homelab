@@ -11,7 +11,7 @@ vars:
   CACHE_DIR: "{{.ROOT}}/.cache"
   DIST_DIR: "{{.ROOT}}/dist"
   BUILD_DIR: "{{.ROOT}}/build"
-  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-arm64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
+  PROJECT_REPO_VERSION: { sh: 'curl -s "http://{{.REMOTE_IP}}/debian/dists/bookworm/main/binary-amd64/Packages" | grep -A 10 "^Package: {{.PROJECT_NAME}}$" | grep "^Version: " | cut -d" " -f2 | head -n 1 || echo "0.0.0"' }
 
 tasks:
   check:
@@ -35,11 +35,14 @@ tasks:
     silent: true
 
   build:
-    desc: "Build {{.PROJECT_NAME}} (Python/PyInstaller — Docker arm64 from source)"
+    desc: "Build {{.PROJECT_NAME}} (Python/PyInstaller — Docker amd64 + arm64 from source)"
     cmds:
       - echo "Building {{.PROJECT_NAME}} {{.PROJECT_VERSION_TAG}}..."
       - mkdir -p {{.CACHE_DIR}} {{.DIST_DIR}} {{.BUILD_DIR}}/stage
       - task: clone-repo
+      - task: build-amd64
+      - task: package
+        vars: {ARCH: "amd64", SUFFIX: "amd64"}
       - task: build-arm64
       - task: package
         vars: {ARCH: "arm64", SUFFIX: "arm64"}
@@ -73,6 +76,43 @@ tasks:
               exit 1
             }
           fi
+
+  build-amd64:
+    internal: true
+    cmds:
+      - cmd: |
+          SRC="{{.BUILD_DIR}}/{{.PROJECT_NAME}}"
+          OUT="{{.BUILD_DIR}}/stage"
+          mkdir -p "$OUT"
+
+          # Clean any stale dist/ from a previous build inside the source tree
+          rm -rf "${SRC}/dist" "${SRC}/build"
+
+          echo "🐳 Building amd64 binary via Docker (python:3.12-slim, platform linux/amd64)..."
+          docker run --rm \
+            --platform linux/amd64 \
+            -v "${SRC}:/build" \
+            -w /build \
+            python:3.12-slim \
+            bash -c "
+              set -e
+              apt-get update -qq && apt-get install -y -q binutils
+              python -m venv .clean_venv
+              source .clean_venv/bin/activate
+              pip install --no-cache-dir -q -r requirements.txt pyinstaller
+              pip install --no-cache-dir -q -e .
+              python tools/build.py
+            "
+
+          # Binary is written to <src>/dist/tapmap by tools/build.py (via tapmap.spec)
+          BINARY=$(find "${SRC}/dist" -maxdepth 1 -type f -name "tapmap" | head -n1)
+          if [ -z "$BINARY" ]; then
+            echo "❌ Could not find 'tapmap' binary in ${SRC}/dist/"
+            exit 1
+          fi
+          chmod +x "$BINARY"
+          cp "$BINARY" "$OUT/binary"
+          echo "✅ amd64 binary extracted to $OUT/binary"
 
   build-arm64:
     internal: true
