@@ -1,13 +1,15 @@
 task: Available tasks for this project:
-* backup-config:    Backup the Overleaf config directory
-* doctor:           Run the Overleaf Toolkit doctor to check the setup
-* export:           Export the task list to `task-list.txt`
-* logs:             View the Overleaf application logs
-* restart:          Stop then start the Overleaf Docker services
-* shell:            Open an interactive shell inside the Overleaf container
-* start:            Start the Overleaf Docker services
-* status:           Check the status of the Overleaf Docker services
-* stop:             Stop the Overleaf Docker services
-* up:               Run Docker Compose in the foreground
-* up-d:             Run Docker Compose in the background
-* upgrade:          Upgrade Overleaf to the latest version
+* backup-config:       Backup the Overleaf config directory.
+* default:             List all available tasks.
+* doctor:              Run the Overleaf Toolkit doctor to check the setup.
+* export:              Export the task list to `task-list.txt`.
+* logs:                View the Overleaf application logs.
+* restart:             Stop then start the Overleaf Docker services.
+* shell:               Open an interactive shell inside the Overleaf container.
+* start:               Start the Overleaf Docker services.
+* status:              Check the status of the Overleaf Docker services.
+* stop:                Stop the Overleaf Docker services.
+* up:                  Run Docker Compose in the foreground.
+* up-d:                Run Docker Compose in the background.
+* update:              Update the application or its running containers.
+* upgrade:             Upgrade Overleaf to the latest version.

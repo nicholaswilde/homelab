@@ -61,6 +61,12 @@ tasks:
     dir: /opt/overleaf
     cmds:
       - bin/backup-config ~/overleaf-config-backup
+  update:
+    desc: Update the application or its running containers.
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
   default:
     cmds:
       - task -l
