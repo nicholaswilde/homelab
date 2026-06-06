@@ -22,11 +22,11 @@ The stack consists of three Docker containers managed by the toolkit:
 
     :material-console-network: Default Port: `8080`
 
-    :material-information-outline: Toolkit path: `/root/overleaf-toolkit/`
+    :material-information-outline: Toolkit path: `/opt/overleaf/`
 
-    :material-information-outline: Config path: `/root/overleaf-toolkit/config/`
+    :material-information-outline: Config path: `/opt/overleaf/config/`
 
-    :material-information-outline: Data path: `/root/overleaf-toolkit/data/`
+    :material-information-outline: Data path: `/opt/overleaf/data/`
 
 ### :simple-proxmox: Proxmox LXC
 
@@ -36,8 +36,8 @@ Create a Debian LXC with Docker installed, then install the toolkit:
 
     ```shell
     # Clone the toolkit
-    git clone https://github.com/overleaf/toolkit.git /root/overleaf-toolkit
-    cd /root/overleaf-toolkit
+    git clone https://github.com/overleaf/toolkit.git /opt/overleaf
+    cd /opt/overleaf
 
     # Initialize default config
     bin/init
@@ -45,7 +45,7 @@ Create a Debian LXC with Docker installed, then install the toolkit:
 
 ### :gear: Configure
 
-Edit `/root/overleaf-toolkit/config/overleaf.rc`:
+Edit `/opt/overleaf/config/overleaf.rc`:
 
 !!! abstract "`config/overleaf.rc`"
 
@@ -66,7 +66,7 @@ Edit `/root/overleaf-toolkit/config/overleaf.rc`:
     REDIS_AOF_PERSISTENCE=true
     ```
 
-Edit `/root/overleaf-toolkit/config/variables.env`:
+Edit `/opt/overleaf/config/variables.env`:
 
 !!! abstract "`config/variables.env`"
 
@@ -83,7 +83,7 @@ Edit `/root/overleaf-toolkit/config/variables.env`:
 !!! code ""
 
     ```shell
-    cd /root/overleaf-toolkit
+    cd /opt/overleaf
     bin/up
     ```
 
@@ -98,13 +98,13 @@ After first start, navigate to `http://<ip>:8080/launchpad` to create the first 
 !!! code "Start"
 
     ```shell
-    cd /root/overleaf-toolkit && bin/start
+    cd /opt/overleaf && bin/start
     ```
 
 !!! code "Stop"
 
     ```shell
-    cd /root/overleaf-toolkit && bin/stop
+    cd /opt/overleaf && bin/stop
     ```
 
 ### :arrow_up: Upgrade
@@ -112,7 +112,7 @@ After first start, navigate to `http://<ip>:8080/launchpad` to create the first 
 !!! code ""
 
     ```shell
-    cd /root/overleaf-toolkit && bin/upgrade
+    cd /opt/overleaf && bin/upgrade
     ```
 
 ### :stethoscope: Doctor
@@ -122,7 +122,7 @@ Run the health check tool to verify the setup:
 !!! code ""
 
     ```shell
-    cd /root/overleaf-toolkit && bin/doctor
+    cd /opt/overleaf && bin/doctor
     ```
 
 ### :page_facing_up: Logs
@@ -130,7 +130,7 @@ Run the health check tool to verify the setup:
 !!! code ""
 
     ```shell
-    cd /root/overleaf-toolkit && bin/logs
+    cd /opt/overleaf && bin/logs
     ```
 
 ### :floppy_disk: Backup Config
@@ -138,7 +138,7 @@ Run the health check tool to verify the setup:
 !!! code ""
 
     ```shell
-    cd /root/overleaf-toolkit && bin/backup-config ~/overleaf-config-backup
+    cd /opt/overleaf && bin/backup-config ~/overleaf-config-backup
     ```
 
 ## :simple-task: Task List

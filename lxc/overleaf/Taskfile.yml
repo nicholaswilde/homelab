@@ -2,7 +2,7 @@ version: '3'
 tasks:
   doctor:
     desc: Run the Overleaf Toolkit doctor to check the setup.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/doctor
   export:
@@ -12,53 +12,53 @@ tasks:
       - task --list > task-list.txt
   logs:
     desc: View the Overleaf application logs.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/logs
   restart:
     desc: Stop then start the Overleaf Docker services.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/stop
       - bin/start
   shell:
     desc: Open an interactive shell inside the Overleaf container.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/shell
   start:
     desc: Start the Overleaf Docker services.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/start
   status:
     desc: Check the status of the Overleaf Docker services.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - docker compose -f lib/docker-compose.yml ps
   stop:
     desc: Stop the Overleaf Docker services.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/stop
   up:
     desc: Run Docker Compose in the foreground.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/up
   up-d:
     desc: Run Docker Compose in the background.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/up -d
   upgrade:
     desc: Upgrade Overleaf to the latest version.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/upgrade
   backup-config:
     desc: Backup the Overleaf config directory.
-    dir: /root/overleaf-toolkit
+    dir: /opt/overleaf
     cmds:
       - bin/backup-config ~/overleaf-config-backup
   default:
