@@ -37,7 +37,6 @@ PROJECTS=(
   "ubi:ubi:houseabsolute/ubi"
   "fresh:fresh:sinelaw/fresh"
   "yazi:yazi:sxyazi/yazi"
-  "system-bridge:system-bridge:timmo001/system-bridge"
   "procs:procs:dalance/procs"
   "lnav:lnav:tstack/lnav"
   "neovim:neovim:neovim/neovim"

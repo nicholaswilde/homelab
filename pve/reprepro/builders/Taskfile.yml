@@ -11,7 +11,6 @@ includes:
   ubi: ./projects/ubi/Taskfile.yml
   fresh: ./projects/fresh/Taskfile.yml
   yazi: ./projects/yazi/Taskfile.yml
-  system-bridge: ./projects/system-bridge/Taskfile.yml
   procs: ./projects/procs/Taskfile.yml
   lnav: ./projects/lnav/Taskfile.yml
   neovim: ./projects/neovim/Taskfile.yml
@@ -62,7 +61,6 @@ tasks:
       - task: ubi:build
       - task: fresh:build
       - task: yazi:build
-      - task: system-bridge:build
       - task: procs:build
       - task: lnav:build
       - task: neovim:build
