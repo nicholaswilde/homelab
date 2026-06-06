@@ -1,0 +1,5 @@
+timeout = 5
+max_retries = 2
+max_concurrency = 20
+accept = [200, 201, 202, 204, 206, 403, 405, 429, 520]
+exclude_all_private = true

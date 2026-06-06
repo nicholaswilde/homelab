@@ -30,9 +30,21 @@ tasks:
       - uvx zensical serve --dev-addr 0.0.0.0:{{.PORT}}
 
   linkcheck:
-    desc: Run markdown-link-check
+    desc: Run lychee link checker (online)
     cmds:
-      - ./scripts/linkcheck.sh
+      - lychee .
+    ignore_error: true
+
+  linkcheck-offline:
+    desc: Run lychee link checker (offline)
+    cmds:
+      - lychee --offline .
+    ignore_error: true
+
+  linkcheck-file:
+    desc: Run lychee link checker on a specific file
+    cmds:
+      - lychee {{shellQuote .FILE}}
     ignore_error: true
 
   lint:
@@ -58,6 +70,23 @@ tasks:
         docker run --rm -it -v ${PWD}:${PWD} -w ${PWD}
         programmerassistant/yamllint yamllint .
     ignore_error: true
+
+  spellcheck:
+    desc: Run typos spellcheck globally
+    cmds:
+      - uv run python scripts/generate_typos_config.py
+      - typos
+
+  spellcheck-file:
+    desc: Run typos spellcheck on a specific file
+    cmds:
+      - uv run python scripts/generate_typos_config.py
+      - typos {{shellQuote .FILE}}
+
+  sort:
+    desc: Sort dictionary.txt alphabetically
+    cmds:
+      - sort dictionary.txt -u -o dictionary.txt
 
   gpro:
     desc: Run antigravity with gemini-2.5-pro model
