@@ -29,7 +29,35 @@ http:
         - https-redirectscheme@file
       tls: {}
       service: proxmox04
-  
+
+    wolf01:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`wolf01.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: wolf01
+    wolf03:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`wolf03.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: wolf03
+    wolf04:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`wolf04.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: wolf04
+
 #endregion
 #region services
   services:
@@ -48,6 +76,20 @@ http:
         servers:
           - url: "https://192.168.1.66:8006"
         passHostHeader: true
-
+    wolf01:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.128:8553"
+        passHostHeader: true
+    wolf03:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.141:8553"
+        passHostHeader: true
+    wolf04:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.66:8553"
+        passHostHeader: true
 
 #endregion
