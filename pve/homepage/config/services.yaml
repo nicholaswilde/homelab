@@ -36,6 +36,9 @@
         icon: sh-z-wave-js-ui.png
         href: https://zwave.l.nicholaswilde.io/
 - Networking:
+    - Rackula:
+        icon: sh-rackula.svg
+        href: https://rackula.l.nicholaswilde.io
     - TapMap:
         icon: https://github.com/olalie/tapmap/raw/refs/heads/main/docs/images/tapmap-logo.svg
         href: https://tapmap.l.nicholaswilde.io
