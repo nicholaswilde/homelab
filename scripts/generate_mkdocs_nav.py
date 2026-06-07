@@ -15,7 +15,7 @@ def generate_nav_section_content(docs_base_path, base_path):
     full_path = os.path.join(docs_base_path, base_path)
     for md_file in sorted(glob.glob(os.path.join(full_path, '*.md'))):
         relative_path = os.path.relpath(md_file, docs_base_path).replace('\\', '/')
-        title = get_markdown_title(md_file)
+        title = get_markdown_title(md_file).replace('"', '\\"')
         section_items.append(f'  {{ "{title}" = "{relative_path}" }},')
     return section_items
 

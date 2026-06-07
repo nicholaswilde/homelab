@@ -21,7 +21,7 @@
 - **Dependency Versioning:** `packaging` (for semantic version comparison)
 - **HTTP Client:** `requests` (for registry API interaction)
 - **Configuration Management:** Ansible (via external repo/submodule usage patterns), Cloud-Init
-- **CLI Utilities:** `tabulate` (fancy_grid format for tables), `markitdown` (file to Markdown conversion)
+- **CLI Utilities:** `tabulate` (fancy_grid format for tables), `markitdown-rs` (file to Markdown conversion)
 
 ## Documentation
 

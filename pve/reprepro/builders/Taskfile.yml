@@ -19,6 +19,7 @@ includes:
   btop: ./projects/btop/Taskfile.yml
   fzf: ./projects/fzf/Taskfile.yml
   tapmap: ./projects/tapmap/Taskfile.yml
+  markitdown-rs: ./projects/markitdown-rs/Taskfile.yml
 tasks:
   default:
     desc: List available tasks
@@ -69,6 +70,7 @@ tasks:
       - task: btop:build
       - task: fzf:build
       - task: tapmap:build
+      - task: markitdown-rs:build
       - echo "🚀 All builds complete! Check dist/ folder."
 
   clean-all:

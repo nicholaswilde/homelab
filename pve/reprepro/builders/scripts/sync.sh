@@ -45,6 +45,7 @@ PROJECTS=(
   "btop:btop:aristocratos/btop"
   "fzf:fzf:junegunn/fzf"
   "tapmap:tapmap:olalie/tapmap"
+  "markitdown-rs:markitdown-rs:uhobnil/markitdown-rs"
 )
 
 for entry in "${PROJECTS[@]}"; do
