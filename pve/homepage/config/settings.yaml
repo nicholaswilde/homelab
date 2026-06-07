@@ -11,6 +11,10 @@ layout:
     style: row
     columns: 3
     icon: si-proxmox
+  WolfStack Mesh:
+    style: row
+    columns: 3
+    icon: si-wolframlanguage
   DNS:
     style: row
     columns: 3

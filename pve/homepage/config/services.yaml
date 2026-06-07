@@ -7,8 +7,18 @@
         icon: mdi-server
         href: https://pve03.l.nicholaswilde.io
     - Node 04:
-        icon: mdi-server-network
+        icon: mdi-server
         href: https://pve04.l.nicholaswilde.io
+- WolfStack Mesh:
+    - WS-01:
+        icon: mdi-server-network
+        href: "https://wolf01.l.nicholaswilde.io"
+    - WS-03:
+        icon: mdi-server-network
+        href: "https://wolf03.l.nicholaswilde.io"
+    - WS-04:
+        icon: mdi-server-network
+        href: "https://wolf04.l.nicholaswilde.io"
 - DNS:
     - AdGuardHome 01:
         icon: si-adguard
