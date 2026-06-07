@@ -1,0 +1,15 @@
+[Unit]
+Description=Rackula Layout Designer
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/rackula
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=npx serve -s dist -l 8080
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -3,13 +3,13 @@
 #
 # Script Name: update.sh
 # ----------------
-# Checks for the latest release of {{ APP_NAME }} and compares it to
-# the local version. If out of date, it stops the service, downloads the
-# latest version, and restarts the service.
+# Checks for the latest release of rackula and compares it to
+# the local version. If out of date, it downloads the latest version,
+# builds the frontend static assets, and pushes them to the Nginx web root.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 22 Dec 2025
-# @version 0.1.0
+# @date 07 Jun 2026
+# @version 0.2.0
 #
 ################################################################################
 
@@ -17,12 +17,13 @@
 set -o pipefail
 
 # These are constants
-SERVICE_NAME="{{ APP_NAME | lower }}"
-APP_NAME="{{ APP_NAME }}"
-INSTALL_DIR="/opt/{{ APP_NAME | lower }}"
-GITHUB_REPO="{{ GITHUB_REPO }}"
+SERVICE_NAME="nginx"
+APP_NAME="rackula"
+INSTALL_DIR="/opt/rackula"
+NGINX_DIR="/var/www/rackula"
+GITHUB_REPO="RackulaLives/Rackula"
 DEBUG="false"
-{% raw %}
+
 SERVICE_MODE="false"
 
 # Default variables
@@ -74,6 +75,26 @@ function log() {
       echo -e "${color}${type}${reset}[${timestamp}] ${line}"
     done
   fi
+
+  # LogWard Integration
+  if [[ -n "${LOGWARD_API_KEY}" ]]; then
+    local LOGWARD_API_URL="${LOGWARD_API_URL:-https://logward.l.nicholaswilde.io/api/v1/ingest/single}"
+    local LOGWARD_SERVICE_NAME="${LOGWARD_SERVICE_NAME:-$(basename "$0")}"
+    local json_payload
+    json_payload=$(cat <<EOF
+{
+  "service": "${LOGWARD_SERVICE_NAME}",
+  "level": "${type}",
+  "message": "${message:-$(cat)}",
+  "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+}
+EOF
+)
+    curl -s -X POST "${LOGWARD_API_URL}" \
+      -H "X-API-Key: ${LOGWARD_API_KEY}" \
+      -H "Content-Type: application/json" \
+      -d "${json_payload}" >/dev/null 2>&1 &
+  fi
 }
 
 # Checks if a command exists.
@@ -124,7 +145,7 @@ EOF
 
 function check_dependencies() {
   local missing_deps=()
-  for cmd in curl jq; do
+  for cmd in curl jq npm tar rsync; do
     if ! command_exists "$cmd"; then
       missing_deps+=("$cmd")
     fi
@@ -160,45 +181,84 @@ function get_latest_version() {
 }
 
 function get_current_version() {
-  if [ ! -x "${INSTALL_DIR}/${SERVICE_NAME}" ]; then
-    log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
+  if [ ! -f "${INSTALL_DIR}/package.json" ]; then
+    log "WARN" "package.json not found at ${INSTALL_DIR}/package.json."
     CURRENT_VERSION="0"
     return
   fi
   log "INFO" "Getting current version of ${APP_NAME}..."
-  local current_version_full
-  # Note: Adjust version command and parsing if needed for the specific app
-  current_version_full=$("${INSTALL_DIR}/${SERVICE_NAME}" --version 2>&1)
-  CURRENT_VERSION=$(echo "${current_version_full}" | awk '{print $NF}' | sed 's/v//')
+  CURRENT_VERSION=$(jq -r .version "${INSTALL_DIR}/package.json")
   log "INFO" "Current ${APP_NAME} version: ${CURRENT_VERSION}"
 }
 
 function stop_services(){
+  # Nginx hosting static content doesn't technically require a hard shutdown 
+  # during file copy, but we check/reload it to refresh configurations if needed.
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
-    log "INFO" "Stopping ${SERVICE_NAME}.service..."
-    systemctl stop "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+    log "INFO" "${SERVICE_NAME}.service is running."
   else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+    log "WARN" "Service ${SERVICE_NAME}.service is not running."
   fi
 }
 
 function restart_services(){
   if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
-    log "INFO" "Restarting ${SERVICE_NAME} service..."
-    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+    log "INFO" "Reloading ${SERVICE_NAME} to clear cache..."
+    systemctl reload "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
+    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping reload."
   fi
 }
 
 function download_and_install(){
   log "INFO" "Downloading and installing update..."
-  # Note: Using i.jpillora.com as a generic installer for Go binaries.
-  # Adjust if the app requires a different installation method.
-  if ! ( { curl -fsSL "https://i.jpillora.com/${GITHUB_REPO}" | bash; } 2>&1 | log "INFO"); then
+  
+  local download_url="https://github.com/${GITHUB_REPO}/archive/refs/tags/v${LATEST_VERSION}.tar.gz"
+  local temp_dir
+  temp_dir=$(mktemp -d)
+  
+  log "INFO" "Downloading source from ${download_url}..."
+  if ! curl -fsSL "${download_url}" -o "${temp_dir}/source.tar.gz"; then
     log "ERRO" "Failed to download update. Aborting."
+    rm -rf "${temp_dir}"
     return 1
   fi
+
+  log "INFO" "Cleaning installation directory ${INSTALL_DIR}..."
+  rm -rf "${INSTALL_DIR}"
+  mkdir -p "${INSTALL_DIR}"
+
+  log "INFO" "Extracting..."
+  if ! tar -xzf "${temp_dir}/source.tar.gz" -C "${INSTALL_DIR}" --strip-components=1; then
+     log "ERRO" "Failed to extract update. Aborting."
+     rm -rf "${temp_dir}"
+     return 1
+  fi
+  rm -rf "${temp_dir}"
+
+  log "INFO" "Installing dependencies..."
+  cd "${INSTALL_DIR}"
+  if ! npm install --no-audit --no-fund 2>&1 | log "INFO"; then
+      log "ERRO" "npm install failed."
+      return 1
+  fi
+  
+  log "INFO" "Building application assets..."
+  if ! npm run build 2>&1 | log "INFO"; then
+      log "ERRO" "npm run build failed."
+      return 1
+  fi
+
+  log "INFO" "Syncing static files to Nginx directory ${NGINX_DIR}..."
+  mkdir -p "${NGINX_DIR}"
+  if ! rsync -av --delete dist/ "${NGINX_DIR}/" 2>&1 | log "INFO"; then
+      log "ERRO" "Failed to sync build files to ${NGINX_DIR}."
+      return 1
+  fi
+
+  log "INFO" "Ensuring proper web permissions..."
+  chown -R www-data:www-data "${NGINX_DIR}"
+  chmod -R 755 "${NGINX_DIR}"
 }
 
 function update_script() {
@@ -214,11 +274,11 @@ function update_script() {
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
   UPDATE_MESSAGES+=("Updating ${APP_NAME} from ${CURRENT_VERSION} to ${LATEST_VERSION}.")
   
-  stop_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to stop services."); }
+  stop_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed service check."); }
   
-  download_and_install || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to download or install update."); return 1; }
+  download_and_install || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to download, build, or deploy update."); return 1; }
   
-  restart_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to restart services."); }
+  restart_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to reload Nginx service."); }
   
   get_current_version
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
@@ -256,4 +316,3 @@ function main() {
 
 # Call main to start the script
 main "$@"
-{% endraw %}
