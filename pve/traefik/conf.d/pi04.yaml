@@ -13,14 +13,32 @@ http:
       tls:
         certResolver: "cloudflare"
       service: pi04
+    homeassistant:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`ha.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      # tls: {}
+      tls:
+        certResolver: "cloudflare"
+      service: homeassistant
+
 #endregion
 #region services
   services:
     pi04:
       loadBalancer:
         servers:
-          - url: "http://192.168.2.88:8384"
+          - url: "http://192.168.1.88:8384"
         passHostHeader: true
+    homeassistant:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.88:8123"
+        passHostHeader: true
+
 #endregion
   # middlewares:
     # https-redirectscheme:
