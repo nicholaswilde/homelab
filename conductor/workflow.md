@@ -8,151 +8,151 @@
 
 ## Project Structure
 
-- **`docker/`**: Docker applications. Use `.template` for new apps.
-- **`docs/`**: Markdown documentation (Applications, Tools, Hardware).
-- **`lxc/`**: Proxmox LXC application configurations.
-- **`pve/`**: Proxmox VE cluster management and specific node configs.
-- **`scripts/`**: Bash and Python automation scripts.
-- **`vm/`**: Virtual Machine configurations.
+- **`docker/`**: Docker apps. Use `.template` for new.
+- **`docs/`**: Markdown docs (Apps, Tools, Hardware).
+- **`lxc/`**: Proxmox LXC app configs.
+- **`pve/`**: Proxmox VE cluster + node configs.
+- **`scripts/`**: Bash + Python automation.
+- **`vm/`**: VM configs.
 
 ## Scaffolding & New Applications
 
 ### Docker Applications
 
-1. **Copy Template:** Copy `docker/.template` to a new directory.
-2. **Update Environment:** Fill in `.env.tmpl` (CONTAINER_NAME, database credentials).
+1. **Copy Template:** Copy `docker/.template` to new dir.
+2. **Update Environment:** Fill `.env.tmpl` (CONTAINER_NAME, DB creds).
 3. **Configure Compose:** Update `compose.yaml` (service name, image version).
-4. **Finalize:** Remove `.j2` extensions after substitution.
+4. **Finalize:** Remove `.j2` after substitution.
 
 ### Proxmox LXC Applications
 
 1. **Research & Reference:**
-    - Before creating a new LXC, search [community-scripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install) for a corresponding installation script.
-    - If found, use the script as the primary reference for installation, configuration, and dependencies.
-    - If no community script exists, search for the application's official documentation or community installation guides.
+    - Search [community-scripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install) for install script.
+    - Found = use as main reference for install, config, deps.
+    - Not found = search official docs or community guides.
 2. **Scaffolding:** Copy `lxc/.template` to `lxc/<app_name>`.
 3. **Environment:** Update `Taskfile.yml` (SERVICE_NAME, INSTALL_DIR, CONFIG_DIR).
 4. **Provisioning:**
-    - Use `list_templates` to select `debian-trixie`.
-    - Use `pct create` with `--unprivileged 0`, `--net0 name=eth0,bridge=vmbr0,ip=dhcp,ip6=slaac`, and `--features nesting=1`.
-    - Use `--password $(pass show default-lxc-password)`.
+    - Use `list_templates` for `debian-trixie`.
+    - Run `pct create` with `--unprivileged 0`, `--net0 name=eth0,bridge=vmbr0,ip=dhcp,ip6=slaac`, `--features nesting=1`.
+    - Set `--password $(pass show default-lxc-password)`.
 5. **Post-Setup:**
-    - Install `openssh-server` and `syncthing`.
+    - Install `openssh-server` + `syncthing`.
     - Purge `cloud-init`.
     - Update `/etc/ssh/sshd_config`:
         - Set `PermitRootLogin yes`.
         - Ensure `PubkeyAuthentication yes`.
-    - Enable and start `syncthing@root` service.
-    - Restart SSH service.
-    - **Note:** Do not create a default user; use root with the password from `pass`.
+    - Enable/start `syncthing@root`.
+    - Restart SSH.
+    - **Note:** No default user. Use root + `pass` password.
 6. **Network & Routing:**
-    - **Traefik:** Create Traefik config in `pve/traefik/conf.d/`.
+    - **Traefik:** Create config in `pve/traefik/conf.d/`.
     - **DNS:** Add AdGuard Home DNS rewrite.
     - **Syncthing:**
-        - Retrieve Device ID: `pct exec <vmid> -- syncthing --device-id`.
-        - Add device to host: Use `syncthing_manage_devices` with `action: "add"`, `device_id`, and `name`.
+        - Get Device ID: `pct exec <vmid> -- syncthing --device-id`.
+        - Add to host: Use `syncthing_manage_devices` (args: `action: "add"`, `device_id`, `name`).
     - **Dashboards:**
-        - Add to Homepage dashboard in `pve/homepage/config/services.yaml`.
-        - Add to Gatus dashboard in `lxc/gatus/config.yaml.enc` (decrypt/edit/encrypt).
-    - **Finalize:** Execute `/homepage update`, `/traefik update`, and `/gatus update` to sync and refresh services.
+        - Add to `pve/homepage/config/services.yaml`.
+        - Add to `lxc/gatus/config.yaml.enc` (decrypt/edit/encrypt).
+    - **Finalize:** Run `/homepage update`, `/traefik update`, `/gatus update`.
 
 ## Common Commands
 
-Use `task` to run common operations defined in `Taskfile.yml`.
+Run `Taskfile.yml` ops via `task`.
 
-- `task build`: Build the documentation site using Zensical.
-- `task serve`: Start the documentation development server (default port 8000).
-- `task lint`: Run all linters (Yamllint, Markdownlint, Linkcheck).
-- `task markdownlint`: Run only Markdownlint.
-- `task yamllint`: Run only Yamllint.
-- `task linkcheck`: Check for broken links in documentation.
+- `task build`: Build docs via Zensical.
+- `task serve`: Start doc dev server (port 8000).
+- `task lint`: Run Yamllint, Markdownlint, Linkcheck.
+- `task markdownlint`: Run Markdownlint.
+- `task yamllint`: Run Yamllint.
+- `task linkcheck`: Check broken doc links.
 - `task generate-docs-nav`: Regenerate the MkDocs navigation.
-- `markitdown-rs`: Use this CLI command (compiled from Rust) to convert any file to Markdown.
+- `markitdown-rs`: CLI convert file to Markdown.
 
 ## Guiding Principles
 
-1. **The Plan is the Source of Truth:** All work must be tracked in `plan.md`.
-2. **The Tech Stack is Deliberate:** Changes to the tech stack must be documented in `tech-stack.md` *before* implementation.
-3. **Test-Driven Development:** Write unit tests before implementing functionality.
-4. **High Code Coverage:** Aim for >80% code coverage for all modules.
-5. **User Experience First:** Every decision should prioritize user experience and documentation clarity.
-6. **Non-Interactive & CI-Aware:** Prefer non-interactive commands. Use `CI=true` for watch-mode tools.
+1. **Plan = Source of Truth:** Track all work in `plan.md`.
+2. **Tech Stack Deliberate:** Document changes in `tech-stack.md` before implementation.
+3. **TDD:** Write unit tests before code.
+4. **Coverage:** >80% code coverage.
+5. **UX First:** Prioritize UX + doc clarity.
+6. **Non-Interactive & CI-Aware:** Prefer non-interactive. Use `CI=true` for watch-mode.
 7. **Scripting Excellence:**
-    - **Bash:** Use ShellCheck, 2-space indentation, `function` keyword, and Upper Case constants. Scripts must handle errors (`set -e`, `set -o pipefail`) and use a standard logging function with Catppuccin Mocha colors.
-    - **Python:** Strict PEP 8 compliance, 4-space indentation, type hints, and modularity. Use `f-strings` and comprehensive docstrings.
-8. **Documentation Standards:** Adhere strictly to the Zensical/MkDocs style guide (headings with emojis, relative links, standard sections, and Material design principles).
+    - **Bash:** Use ShellCheck, 2-space indent, `function` keyword, UPPERCASE constants. Handle errors (`set -e`, `set -o pipefail`). Standard log function with Catppuccin Mocha colors.
+    - **Python:** Strict PEP 8, 4-space indent, type hints, modular. Use `f-strings` + docstrings.
+8. **Doc Standards:** Strict Zensical/MkDocs style (emoji headings, relative links, standard sections, Material design).
 
 ## Task Workflow
 
-All tasks follow a strict lifecycle:
+Strict task lifecycle:
 
 ### Standard Task Workflow
 
-1. **Select Task:** Choose the next available task from `plan.md` in sequential order.
+1. **Select Task:** Pick next task in `plan.md`.
 
-2. **Mark In Progress:** Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`.
+2. **Mark In Progress:** Set `plan.md` task `[ ]` -> `[~]`.
 
 3. **Write Failing Tests (Red Phase):**
-   - Create a new test file for the feature or bug fix.
-   - Write one or more unit tests that clearly define the expected behavior and acceptance criteria for the task.
-   - **CRITICAL:** Run the tests and confirm that they fail as expected. This is the "Red" phase of TDD. Do not proceed until you have failing tests.
+   - Create test file.
+   - Write unit tests defining expected behavior.
+   - **CRITICAL:** Run tests. Must fail (Red phase). Do not proceed until fail.
 
 4. **Implement to Pass Tests (Green Phase):**
-   - Write the minimum amount of application code necessary to make the failing tests pass.
-   - Run the test suite again and confirm that all tests now pass. This is the "Green" phase.
+   - Write minimum code to pass tests.
+   - Run tests. Must pass (Green phase).
 
 5. **Refactor (Optional but Recommended):**
-   - With the safety of passing tests, refactor the implementation code and the test code to improve clarity, remove duplication, and enhance performance without changing the external behavior.
-   - Rerun tests to ensure they still pass after refactoring.
+   - Refactor for clarity, dedup, perf. Keep external behavior.
+   - Rerun tests. Must pass.
 
-6. **Verify Coverage:** Run coverage reports using the project's chosen tools.
-   Target: >80% coverage for new code. The specific tools and commands will vary by language and framework.
+6. **Verify Coverage:** Run coverage tools.
+   Target: >80% coverage new code.
 
-7. **Document Deviations:** If implementation differs from tech stack:
-   - **STOP** implementation.
-   - Update `tech-stack.md` with new design.
-   - Add dated note explaining the change.
-   - Resume implementation.
+7. **Document Deviations:** If code differs from tech stack:
+   - **STOP**.
+   - Update `tech-stack.md`.
+   - Add dated note explaining change.
+   - Resume.
 
 8. **Stage Code Changes:**
-   - Stage all code changes related to the task.
-   - Do not commit yet; changes will be committed at the end of the phase.
+   - Stage task code changes.
+   - Do not commit. Commit happens end of phase.
 
 9. **Draft Task Summary:**
-   - **Step 9.1: Draft Note Content:** Create a detailed summary for the completed task. This should include the task name, a summary of changes, a list of all created/modified files, and the core "why" for the change.
-   - **Step 9.2: Save Summary:** Save this summary locally (e.g., in a temporary file or internal state) to be attached as a Git Note once the phase commit is created.
+   - **Step 9.1: Draft Note:** Summarize task (name, changes, files, core reason).
+   - **Step 9.2: Save Summary:** Save locally. Will attach as Git Note to phase commit.
 
 10. **Record Task Status:**
-    - **Step 10.1: Update Plan:** Read `plan.md`, find the line for the completed task, and update its status from `[~]` to `[x]`.
-    - **Step 10.2: Write Plan:** Write the updated content back to `plan.md`.
+    - **Step 10.1: Update Plan:** Read `plan.md`. Set task `[~]` -> `[x]`.
+    - **Step 10.2: Write Plan:** Write `plan.md`.
 
 11. **Stage Plan Update:**
-    - **Action:** Stage the modified `plan.md` file.
+    - **Action:** Stage `plan.md`.
 
 ### Phase Completion Verification and Checkpointing Protocol
 
-**Trigger:** This protocol is executed immediately after a task is completed that also concludes a phase in `plan.md`.
+**Trigger:** Execute after completing task that ends phase in `plan.md`.
 
-1. **Announce Protocol Start:** Inform the user that the phase is complete and the verification and checkpointing protocol has begun.
+1. **Announce Start:** Tell user phase complete. Protocol start.
 
 2. **Ensure Test Coverage for Phase Changes:**
-    - **Step 2.1: Determine Phase Scope:** To identify the files changed in this phase, you must first find the starting point. Read `plan.md` to find the Git commit SHA of the *previous* phase's checkpoint. If no previous checkpoint exists, the scope is all changes since the first commit.
-    - **Step 2.2: List Changed Files:** Execute `git diff --name-only <previous_checkpoint_sha> HEAD` to get a precise list of all files modified during this phase.
-    - **Step 2.3: Verify and Create Tests:** For each file in the list:
-        - **CRITICAL:** First, check its extension. Exclude non-code files (e.g., `.json`, `.md`, `.yaml`).
-        - For each remaining code file, verify a corresponding test file exists.
-        - If a test file is missing, you **must** create one. Before writing the test, **first, analyze other test files in the repository to determine the correct naming convention and testing style.** The new tests **must** validate the functionality described in this phase's tasks (`plan.md`).
+    - **Step 2.1: Scope:** Find previous phase SHA in `plan.md`. No previous = all changes.
+    - **Step 2.2: List Files:** Run `git diff --name-only <previous_checkpoint_sha> HEAD`.
+    - **Step 2.3: Verify Tests:** For each file:
+        - **CRITICAL:** Exclude non-code (`.json`, `.md`, `.yaml`).
+        - Verify code files have test files.
+        - Missing test? Create it. Analyze existing tests for style/naming first. Test must validate `plan.md` phase tasks.
 
 3. **Execute Automated Tests with Proactive Debugging:**
-    - Before execution, you **must** announce the exact shell command you will use to run the tests.
-    - **Example Announcement:** "I will now run the automated test suite to verify the phase. **Command:** `CI=true npm test`"
-    - Execute the announced command.
-    - If tests fail, you **must** inform the user and begin debugging. You may attempt to propose a fix a **maximum of two times**. If the tests still fail after your second proposed fix, you **must stop**, report the persistent failure, and ask the user for guidance.
+    - Announce exact test shell command before run.
+    - **Example:** "Running automated tests. **Command:** `CI=true npm test`"
+    - Run command.
+    - Tests fail = tell user, debug. Max 2 fix attempts. Still fail = STOP, report, ask user.
 
 4. **Propose a Detailed, Actionable Manual Verification Plan:**
-    - **CRITICAL:** To generate the plan, first analyze `product.md`, `product-guidelines.md`, and `plan.md` to determine the user-facing goals of the completed phase.
-    - You **must** generate a step-by-step plan that walks the user through the verification process, including any necessary commands and specific, expected outcomes.
-    - The plan you present to the user **must** follow this format:
+    - **CRITICAL:** Analyze `product.md`, `product-guidelines.md`, `plan.md` for phase goals.
+    - Generate step-by-step manual verification plan (commands, expected outcomes).
+    - Format:
 
         **For a Frontend Change:**
         ```
@@ -383,50 +383,50 @@ A task is complete when:
 
 ### Critical Bug in Production
 
-1. Create hotfix branch from main.
-2. Write failing test for bug.
-3. Implement minimal fix.
-4. Test thoroughly including mobile.
+1. Hotfix branch from main.
+2. Failing test for bug.
+3. Minimal fix.
+4. Test thoroughly (inc mobile).
 5. Deploy immediately.
-6. Document in plan.md.
+6. Document in `plan.md`.
 
 ### Data Loss
 
-1. Stop all write operations.
-2. Restore from latest backup.
+1. Stop writes.
+2. Restore latest backup.
 3. Verify data integrity.
 4. Document incident.
 5. Update backup procedures.
 
 ### Security Breach
 
-1. Rotate all secrets immediately.
+1. Rotate secrets immediately.
 2. Review access logs.
-3. Patch vulnerability.
-4. Notify affected users (if any).
-5. Document and update security procedures.
+3. Patch vuln.
+4. Notify affected users.
+5. Document + update security procedures.
 
 ## Deployment Workflow
 
 ### Pre-Deployment Checklist
 
-- [ ] All tests passing.
+- [ ] Tests passing.
 - [ ] Coverage >80%.
-- [ ] No linting errors.
+- [ ] No lint errors.
 - [ ] Mobile testing complete.
-- [ ] Environment variables configured.
-- [ ] Database migrations ready.
+- [ ] Env vars configured.
+- [ ] DB migrations ready.
 - [ ] Backup created.
 
 ### Deployment Steps
 
-1. Merge feature branch to main.
-2. Tag release with version.
-3. Push to deployment service.
-4. Run database migrations.
+1. Merge branch to main.
+2. Tag release version.
+3. Push to deploy service.
+4. Run DB migrations.
 5. Verify deployment.
 6. Test critical paths.
-7. Monitor for errors.
+7. Monitor errors.
 
 ### Post-Deployment
 
@@ -441,4 +441,4 @@ A task is complete when:
 - Update based on pain points.
 - Document lessons learned.
 - Optimize for user happiness.
-- Keep things simple and maintainable.
+- Keep simple + maintainable.
