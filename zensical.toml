@@ -31,6 +31,7 @@ Apps = [
   { "BentoPDF" = "apps/bentopdf.md" },
   { "![beszel](https://github.com/henrygd/beszel/raw/refs/heads/main/beszel/site/public/static/favicon.svg){ width=\"24\" } Beszel" = "apps/beszel.md" },
   { "![title](https://raw.githubusercontent.com/selfhst/icons/400886b4f5cd552ef373e4550cb0be7344402cce/svg/changedetection.svg){ width=\"32\" } Change Detection" = "apps/changedetection.md" },
+  { "Chrony" = "apps/chrony.md" },
   { "![ConvertX](https://raw.githubusercontent.com/C4illin/ConvertX/refs/heads/main/public/android-chrome-192x192.png){ width=\"32\" } ConvertX" = "apps/convertx.md" },
   { "![cyberkeygen](https://raw.githubusercontent.com/karthik558/CyberKeyGen/refs/heads/main/public/favicon.png){ width=\"32\" } CyberKeyGen" = "apps/cyberkeygen.md" },
   { "DNS Speed Test" = "apps/dnsspeedtest.md" },
