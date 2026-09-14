@@ -21,7 +21,7 @@ DietPi is selected for this device due to its lightweight footprint, which is id
 
 ## :satellite: Pi Zero W NTP Node
 
-This document details the physical build, bill of materials, and hardware-level kernel configurations for the Stratum 1 NTP server node. For the software configuration (including `chrony` and thermal compensation), see `../services/chrony.md`.
+This document details the physical build, bill of materials, and hardware-level kernel configurations for the [Stratum 1 NTP server](https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_strata?wprov=sfla1) node. For the software configuration (including `chrony` and thermal compensation), see `../services/chrony.md`.
 
 ### :package: Bill of Materials (BOM)
 
