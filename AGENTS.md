@@ -167,8 +167,11 @@ rtk uv run <cmd>        # Compact uv project command output
 rtk ls <path>           # Tree format, compact (65%)
 rtk read <file>         # Code reading with filtering (60%)
 rtk grep <pattern>      # Search grouped by file (75%). Format flags (-c, -l, -L, -o, -Z) run raw.
+rtk rg <pattern>        # Preferred: ripgrep search for optimal token efficiency
 rtk find <pattern>      # Find grouped by directory (70%)
 ```
+
+**Search Preference:** Always prefer `rg` over `grep` for terminal searches. It respects `.gitignore` by default and yields cleaner, token-efficient output.
 
 ### Analysis & Debug (70-90% savings)
 ```bash
