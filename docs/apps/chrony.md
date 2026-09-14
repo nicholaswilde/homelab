@@ -31,91 +31,91 @@ Save as calc_tempcomp.py:
 
 ??? abstract "calc_tempcomp.py"
 
-```python
-#!/usr/bin/env python3
-import csv
-import sys
-import numpy as np
+    ```python
+    #!/usr/bin/env python3
+    import csv
+    import sys
+    import numpy as np
 
-try:
-  import matplotlib.pyplot as plt
-  HAS_MATPLOTLIB = True
-except ImportError:
-  HAS_MATPLOTLIB = False
+    try:
+      import matplotlib.pyplot as plt
+      HAS_MATPLOTLIB = True
+    except ImportError:
+      HAS_MATPLOTLIB = False
 
-def main():
-  if len(sys.argv) < 2:
-    print("Usage: calc_tempcomp.py <log_file>")
-    sys.exit(1)
+    def main():
+      if len(sys.argv) < 2:
+        print("Usage: calc_tempcomp.py <log_file>")
+        sys.exit(1)
 
-  log_file = sys.argv[1]
-  temps = []
-  skews = []
+      log_file = sys.argv[1]
+      temps = []
+      skews = []
 
-  with open(log_file, 'r') as f:
-    reader = csv.reader(f)
-    for row in reader:
-      try:
-        temps.append(float(row[1]))
-        skews.append(float(row[2]))
-      except (ValueError, IndexError):
-        continue
+      with open(log_file, 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+          try:
+            temps.append(float(row[1]))
+            skews.append(float(row[2]))
+          except (ValueError, IndexError):
+            continue
 
-  if not temps:
-    print("Error: No valid data found.")
-    sys.exit(1)
+      if not temps:
+        print("Error: No valid data found.")
+        sys.exit(1)
 
-  t_array = np.array(temps)
-  skew_array = np.array(skews)
-  t0 = np.round(np.mean(t_array), 2)
-  delta_t = t_array - t0
+      t_array = np.array(temps)
+      skew_array = np.array(skews)
+      t0 = np.round(np.mean(t_array), 2)
+      delta_t = t_array - t0
 
-  coeffs = np.polyfit(delta_t, skew_array, 2)
-  k2, k1, k0 = coeffs
+      coeffs = np.polyfit(delta_t, skew_array, 2)
+      k2, k1, k0 = coeffs
 
-  print("--- Chrony Tempcomp Calculator ---")
-  print(f"Data points analyzed: {len(t_array)}")
-  print(f"Reference Temp (T0):  {t0}°C")
-  print(f"k0 (Constant):        {k0:.6f}")
-  print(f"k1 (Linear):          {k1:.6f}")
-  print(f"k2 (Squared):         {k2:.6f}\n")
-  print("Add this line to your chrony.conf:")
-  print(f"tempcomp /usr/local/bin/get_cpu_temp.sh 1 {t0} {k0:.6f} {k1:.6f} {k2:.6f}")
+      print("--- Chrony Tempcomp Calculator ---")
+      print(f"Data points analyzed: {len(t_array)}")
+      print(f"Reference Temp (T0):  {t0}°C")
+      print(f"k0 (Constant):        {k0:.6f}")
+      print(f"k1 (Linear):          {k1:.6f}")
+      print(f"k2 (Squared):         {k2:.6f}\n")
+      print("Add this line to your chrony.conf:")
+      print(f"tempcomp /usr/local/bin/get_cpu_temp.sh 1 {t0} {k0:.6f} {k1:.6f} {k2:.6f}")
 
-  if HAS_MATPLOTLIB:
-    # Catppuccin Mocha styling
-    crust = "#11111b"
-    text = "#cdd6f4"
-    blue = "#89b4fa"
-    flamingo = "#f2cdcd"
+      if HAS_MATPLOTLIB:
+        # Catppuccin Mocha styling
+        crust = "#11111b"
+        text = "#cdd6f4"
+        blue = "#89b4fa"
+        flamingo = "#f2cdcd"
 
-    plt.figure(facecolor=crust)
-    ax = plt.axes()
-    ax.set_facecolor(crust)
+        plt.figure(facecolor=crust)
+        ax = plt.axes()
+        ax.set_facecolor(crust)
     
-    for spine in ['bottom', 'top', 'right', 'left']:
-      ax.spines[spine].set_color(text)
+        for spine in ['bottom', 'top', 'right', 'left']:
+          ax.spines[spine].set_color(text)
       
-    ax.tick_params(axis='x', colors=text)
-    ax.tick_params(axis='y', colors=text)
-    ax.yaxis.label.set_color(text)
-    ax.xaxis.label.set_color(text)
-    ax.title.set_color(text)
+        ax.tick_params(axis='x', colors=text)
+        ax.tick_params(axis='y', colors=text)
+        ax.yaxis.label.set_color(text)
+        ax.xaxis.label.set_color(text)
+        ax.title.set_color(text)
 
-    plt.scatter(t_array, skew_array, color=blue, alpha=0.5, label="Raw Skew Data")
-    t_line = np.linspace(min(t_array), max(t_array), 100)
-    skew_line = k2 * ((t_line - t0)**2) + k1 * (t_line - t0) + k0
-    plt.plot(t_line, skew_line, color=flamingo, linewidth=2, label="Quadratic Fit")
+        plt.scatter(t_array, skew_array, color=blue, alpha=0.5, label="Raw Skew Data")
+        t_line = np.linspace(min(t_array), max(t_array), 100)
+        skew_line = k2 * ((t_line - t0)**2) + k1 * (t_line - t0) + k0
+        plt.plot(t_line, skew_line, color=flamingo, linewidth=2, label="Quadratic Fit")
     
-    plt.xlabel("Temperature (°C)")
-    plt.ylabel("Frequency Skew (ppm)")
-    plt.title("Pi Zero W Quartz Thermal Drift")
-    plt.legend(facecolor=crust, edgecolor=text, labelcolor=text)
-    plt.show()
+        plt.xlabel("Temperature (°C)")
+        plt.ylabel("Frequency Skew (ppm)")
+        plt.title("Pi Zero W Quartz Thermal Drift")
+        plt.legend(facecolor=crust, edgecolor=text, labelcolor=text)
+        plt.show()
 
-if __name__ == "__main__":
-  main()
-```
+    if __name__ == "__main__":
+      main()
+    ```
 
 ### :page_facing_up: `chrony.conf`
 
