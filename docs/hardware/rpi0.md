@@ -74,7 +74,8 @@ Edit `/boot/config.txt` to enable the serial port, disable Bluetooth (which shar
 #### :mute: 2. Disable Serial Console
 
 By default, the Pi tries to spawn a login console on the serial port. This conflicts with the NMEA data stream.
-Edit /boot/cmdline.txt and carefully remove the console=serial0,115200 parameter. Leave the rest of the line intact.
+
+Edit `/boot/cmdline.txt` and carefully remove the `console=serial0,115200` parameter. Leave the rest of the line intact.
 
 #### :white_check_mark: 3. Verify Hardware Detection
 
