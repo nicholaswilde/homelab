@@ -27,7 +27,7 @@ This document details the physical build, bill of materials, and hardware-level 
 
 * **SBC:** Raspberry Pi Zero W (v1)
 * **Network:** USB-to-Ethernet Adapter (Micro-USB OTG)
-* **Time Receiver:** Waveshare MAX-M8Q GNSS HAT
+* **Time Receiver:** [Waveshare MAX-M8Q GNSS HAT][4]
 * **Antenna:** Active GPS Antenna with SMA connector
 * **Storage:** High-endurance microSD card (for constant log writes)
 * **Power:** 5V 2.5A Micro-USB Power Supply
@@ -105,3 +105,4 @@ If `ppstest` outputs an assert timestamp exactly once per second, the hardware i
 
 [2]: <https://www.raspberrypi.com/software/>
 [3]: <https://www.raspberrypi.com/products/raspberry-pi-zero-w/>
+[4]: <https://www.amazon.com/dp/B08DKKNN2W>
