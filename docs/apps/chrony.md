@@ -129,7 +129,7 @@ This configuration prioritizes the PPS hardware interrupt, uses SHM to interface
     refclock PPS /dev/pps0 refid PPS lock NMEA
 
     # The NMEA serial data stream (via gpsd SHM)
-refclock SHM 0 offset 0.135 delay 0.2 refid NMEA
+    refclock SHM 0 offset 0.135 delay 0.2 refid NMEA
 
     # 2. Network Fallbacks (Stratum 2)
     pool 2.debian.pool.ntp.org iburst
