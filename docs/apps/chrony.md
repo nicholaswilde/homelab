@@ -158,16 +158,20 @@ sudo systemctl restart chrony
 
 Check PPS source selection:
 
-```bash
-chronyc sources -v
-```
+!!! code
+
+    ```bash
+    chronyc sources -v
+    ```
 
 Ensure the `*` symbol appears next to the PPS reference, indicating it is the actively selected master source.
 
 Monitor hardware offset and drift:
 
-```bash
-chronyc tracking
-```
+!!! code
+
+    ```bash
+    chronyc tracking
+    ```
 
 The System time value dictates the current microsecond error margin.
