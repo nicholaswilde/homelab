@@ -4,10 +4,11 @@
 .md-typeset .admonition.code,
 .md-typeset details.code {
   border-color: rgb(158, 158, 158);  
+  background-color: var(--md-code-bg-color);
 }
 .md-typeset .code > .admonition-title,
 .md-typeset .code > summary {
-  background-color: rgba(158, 158, 158, 0.1);
+  background-color: var(--md-code-bg-color);
 }
 .md-typeset .code > .admonition-title::before,
 .md-typeset .code > summary::before {
