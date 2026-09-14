@@ -38,7 +38,7 @@ Because the Pi Zero W lacks an onboard ethernet port, the USB-to-Ethernet adapte
 
 The active GPS antenna requires a clear view of the sky. Route the SMA cable from the MAX-M8Q HAT to a window sill. Avoid placing the antenna near heavy electromagnetic interference (e.g., directly on top of the UniFi Cloud Gateway or Proxmox nodes).
 
-### : electric_plug: GPIO Pinout Mapping
+### :electric_plug: GPIO Pinout Mapping
 
 The MAX-M8Q HAT interfaces with the Pi Zero W via the 40-pin GPIO header using two distinct communication channels:
 
