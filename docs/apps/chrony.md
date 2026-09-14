@@ -18,20 +18,18 @@ Create the temperature wrapper script:
     awk "BEGIN {print $raw_temp/1000}"
     ```
 
-Make it executable:
-
-!!! code
+!!! code "Make it executable"
 
     ```bash
     chmod +x /usr/local/bin/get_cpu_temp.sh
     ```
 
-:snake: Tempcomp Coefficient Calculator
+### :snake: Tempcomp Coefficient Calculator
 
 To generate the quadratic curve coefficients (k0, k1, k2) required by chrony, use this Python script. It parses a drift log and outputs the exact tempcomp directive, while generating a visual graph using the Catppuccin Mocha palette.
 Save as calc_tempcomp.py:
 
-!!! abstract "calc_tempcomp.py"
+??? abstract "calc_tempcomp.py"
 
 ```python
 #!/usr/bin/env python3
@@ -119,42 +117,42 @@ if __name__ == "__main__":
   main()
 ```
 
-:page_facing_up: `chrony.conf`
+### :page_facing_up: `chrony.conf`
 
 This configuration prioritizes the PPS hardware interrupt, uses SHM to interface with gpsd for NMEA data, and enables leap smearing to protect infrastructure databases from sudden time jumps.
 
-```ini
-# /etc/chrony/chrony.conf
+??? abstract "/etc/chrony/chrony.conf"
 
-# 1. Primary Time Sources
-# The physical PPS interrupt (Stratum 0) - Highly precise
+    ```ini
+    # 1. Primary Time Sources
+    # The physical PPS interrupt (Stratum 0) - Highly precise
 refclock PPS /dev/pps0 refid PPS lock NMEA
 
-# The NMEA serial data stream (via gpsd SHM)
+    # The NMEA serial data stream (via gpsd SHM)
 refclock SHM 0 offset 0.135 delay 0.2 refid NMEA
 
-# 2. Network Fallbacks (Stratum 2)
-pool 2.debian.pool.ntp.org iburst
+    # 2. Network Fallbacks (Stratum 2)
+    pool 2.debian.pool.ntp.org iburst
 
-# 3. Time Adjustments & Leap Seconds
-# Smear leap seconds over 24 hours to prevent sudden jumps
-leapsecmode slew
-maxslewrate 1000
-makestep 1 3
+    # 3. Time Adjustments & Leap Seconds
+    # Smear leap seconds over 24 hours to prevent sudden jumps
+    leapsecmode slew
+    maxslewrate 1000
+    makestep 1 3
 
-# 4. Thermal Compensation
-# (Replace coefficients after running calc_tempcomp.py)
-tempcomp /usr/local/bin/get_cpu_temp.sh 1 45.0 0.0 0.25 0.005
+    # 4. Thermal Compensation
+    # (Replace coefficients after running calc_tempcomp.py)
+    tempcomp /usr/local/bin/get_cpu_temp.sh 1 45.0 0.0 0.25 0.005
 
-# 5. Access Control
-allow 10.0.0.0/8
-allow 192.168.0.0/16
+    # 5. Access Control
+    allow 10.0.0.0/8
+    allow 192.168.0.0/16
 
-# 6. Logging & Directories
-driftfile /var/lib/chrony/chrony.drift
-logdir /var/log/chrony
-log measurements statistics tracking
-```
+    # 6. Logging & Directories
+    driftfile /var/lib/chrony/chrony.drift
+    logdir /var/log/chrony
+    log measurements statistics tracking
+    ```
 
 :mag: Verification & Monitoring
 Restart the daemon to apply the configuration:
