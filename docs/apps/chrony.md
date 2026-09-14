@@ -1,6 +1,6 @@
 # :stopwatch: Chrony Service Configuration
 
-This document covers the software configuration for the Stratum 1 NTP server detailed in `../nodes/pi-zero-ntp.md`. It utilizes `chrony` and `gpsd` to process the hardware signals, applies thermal drift compensation, and distributes time across the homelab.
+This document covers the software configuration for the [Stratum 1 NTP server](https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_strata?wprov=sfla1) detailed in `../nodes/pi-zero-ntp.md`. It utilizes `chrony` and `gpsd` to process the hardware signals, applies thermal drift compensation, and distributes time across the homelab.
 
 ## :thermometer: Thermal Compensation Setup
 
