@@ -156,9 +156,7 @@ log measurements statistics tracking
 Restart the daemon to apply the configuration:
 sudo systemctl restart chrony
 
-Check PPS source selection:
-
-!!! code
+!!! code "Check PPS source selection"
 
     ```bash
     chronyc sources -v
@@ -166,9 +164,8 @@ Check PPS source selection:
 
 Ensure the `*` symbol appears next to the PPS reference, indicating it is the actively selected master source.
 
-Monitor hardware offset and drift:
 
-!!! code
+!!! code "Monitor hardware offset and drift"
 
     ```bash
     chronyc tracking
