@@ -8,13 +8,15 @@ The Pi Zero W's quartz oscillator drifts based on CPU temperature. To maintain m
 
 Create the temperature wrapper script at `/usr/local/bin/get_cpu_temp.sh`:
 
-```bash
-#!/bin/bash
-# Outputs the Pi's SoC temperature in standard Celsius
+!!! code
 
-raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
-awk "BEGIN {print $raw_temp/1000}"
-```
+    ```bash
+    #!/bin/bash
+    # Outputs the Pi's SoC temperature in standard Celsius
+
+    raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+    awk "BEGIN {print $raw_temp/1000}"
+    ```
 
 Make it executable:
 
