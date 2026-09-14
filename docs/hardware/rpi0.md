@@ -58,18 +58,18 @@ Before `chrony` can read the hardware signals, the base OS must be configured to
 
 Edit `/boot/config.txt` to enable the serial port, disable Bluetooth (which shares the primary UART on Pi Zero W), and load the PPS device tree overlay.
 
-```ini
-# /boot/config.txt
+!!! abstract "/boot/config.txt"
 
-# Disable Bluetooth to free up the primary UART for the GPS HAT
-dtoverlay=disable-bt
+    ```ini
+    # Disable Bluetooth to free up the primary UART for the GPS HAT
+    dtoverlay=disable-bt
 
-# Enable the primary serial port
-enable_uart=1
+    # Enable the primary serial port
+    enable_uart=1
 
-# Register GPIO 4 for the PPS hardware interrupt
-dtoverlay=pps-gpio,gpiopin=4
-```
+    # Register GPIO 4 for the PPS hardware interrupt
+    dtoverlay=pps-gpio,gpiopin=4
+    ```
 
 #### :mute: 2. Disable Serial Console
 
