@@ -6,9 +6,9 @@ This document covers the software configuration for the Stratum 1 NTP server det
 
 The Pi Zero W's quartz oscillator drifts based on CPU temperature. To maintain microsecond accuracy during a GPS lock loss, `chrony` needs a real-time feed of the SoC temperature.
 
-Create the temperature wrapper script at `/usr/local/bin/get_cpu_temp.sh`:
+Create the temperature wrapper script:
 
-!!! code
+!!! abstract "/usr/local/bin/get_cpu_temp.sh"
 
     ```bash
     #!/bin/bash
@@ -20,14 +20,18 @@ Create the temperature wrapper script at `/usr/local/bin/get_cpu_temp.sh`:
 
 Make it executable:
 
-```bash
-chmod +x /usr/local/bin/get_cpu_temp.sh
-```
+!!! code
+
+    ```bash
+    chmod +x /usr/local/bin/get_cpu_temp.sh
+    ```
 
 :snake: Tempcomp Coefficient Calculator
 
 To generate the quadratic curve coefficients (k0, k1, k2) required by chrony, use this Python script. It parses a drift log and outputs the exact tempcomp directive, while generating a visual graph using the Catppuccin Mocha palette.
 Save as calc_tempcomp.py:
+
+!!! abstract "calc_tempcomp.py"
 
 ```python
 #!/usr/bin/env python3
