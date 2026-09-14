@@ -21,7 +21,7 @@ DietPi is selected for this device due to its lightweight footprint, which is id
 
 ## :satellite: Pi Zero W NTP Node
 
-This document details the physical build, bill of materials, and hardware-level kernel configurations for the [Stratum 1 NTP server](https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_strata?wprov=sfla1) node. For the software configuration (including `chrony` and thermal compensation), see `../services/chrony.md`.
+This document details the physical build, bill of materials, and hardware-level kernel configurations for the [Stratum 1 NTP server](https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_strata?wprov=sfla1) node. For the software configuration (including `chrony` and thermal compensation), see [chrony](../apps/chrony.md).
 
 ### :package: Bill of Materials (BOM)
 
@@ -81,10 +81,14 @@ Edit `/boot/cmdline.txt` and carefully remove the `console=serial0,115200` param
 
 After rebooting the node, verify that the kernel recognizes the PPS device and the serial port is receiving data.
 
+!!! note
+
+    The PPS device is commonly registered at `/dev/pps0`, but depending on kernel initialization order and loaded overlays, it can be assigned to a different path such as `/dev/pps1`. Use `ls -l /dev/pps*` to identify the correct device path on your system.
+
 !!! code "Verify PPS device creation"
 
     ```bash
-    ls -l /dev/pps0
+    ls -l /dev/pps*
     ```
 
 !!! code "Test for the raw electrical pulse (Press Ctrl+C to stop)"
@@ -92,6 +96,8 @@ After rebooting the node, verify that the kernel recognizes the PPS device and t
     ```bash
     sudo ppstest /dev/pps0
     ```
+
+    Replace `/dev/pps0` with `/dev/pps1` (or your detected path) if assigned differently.
 
 !!! code "Verify NMEA serial data stream"
 
