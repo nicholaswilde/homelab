@@ -63,3 +63,4 @@ site/
 *.tar.zst
 **/url-watches.json
 **/wg1.conf
+.codegraph
