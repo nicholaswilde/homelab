@@ -77,24 +77,28 @@ By default, the Pi tries to spawn a login console on the serial port. This confl
 Edit /boot/cmdline.txt and carefully remove the console=serial0,115200 parameter. Leave the rest of the line intact.
 
 #### :white_check_mark: 3. Verify Hardware Detection
+
 After rebooting the node, verify that the kernel recognizes the PPS device and the serial port is receiving data.
 
-```bash
-# Verify PPS device creation
-ls -l /dev/pps0
-```
+!!! code "Verify PPS device creation"
 
-```bash
-# Test for the raw electrical pulse (Press Ctrl+C to stop)
-sudo ppstest /dev/pps0
-```
+    ```bash
+    ls -l /dev/pps0
+    ```
 
-```bash
-# Verify NMEA serial data stream
-cat /dev/serial0
-```
+!!! code "Test for the raw electrical pulse (Press Ctrl+C to stop)"
 
-If ppstest outputs an assert timestamp exactly once per second, the hardware is successfully locked and ready for the chrony service configuration.
+    ```bash
+    sudo ppstest /dev/pps0
+    ```
+
+!!! code "Verify NMEA serial data stream"
+
+    ```bash
+    cat /dev/serial0
+    ```
+
+If `ppstest` outputs an assert timestamp exactly once per second, the hardware is successfully locked and ready for the chrony service configuration.
 
 ## :link: References
 
