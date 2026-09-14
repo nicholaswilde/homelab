@@ -123,10 +123,10 @@ This configuration prioritizes the PPS hardware interrupt, uses SHM to interface
 
 ??? abstract "/etc/chrony/chrony.conf"
 
-    ```ini
+    ```bash
     # 1. Primary Time Sources
     # The physical PPS interrupt (Stratum 0) - Highly precise
-refclock PPS /dev/pps0 refid PPS lock NMEA
+    refclock PPS /dev/pps0 refid PPS lock NMEA
 
     # The NMEA serial data stream (via gpsd SHM)
 refclock SHM 0 offset 0.135 delay 0.2 refid NMEA
