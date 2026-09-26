@@ -30,6 +30,10 @@ layout:
   Development Tools:
     style: row
     columns: 2
+    icon: mdi-tools
+  AI:
+    style: row
+    columns: 3
     icon: mdi-robot
   Files & Downloads:
     style: row
