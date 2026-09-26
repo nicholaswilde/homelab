@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    recipes-rag:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`recipes-rag.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: recipes-rag
+#endregion
+#region services
+  services:
+    recipes-rag:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.122:8080"
+        passHostHeader: true
+#endregion
