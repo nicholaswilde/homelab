@@ -5,7 +5,7 @@ import sys
 from unittest.mock import patch, MagicMock
 
 # Add the scripts directory to the path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import placeholders for TDD
 try:

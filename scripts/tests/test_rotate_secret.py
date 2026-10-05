@@ -4,7 +4,7 @@ import tempfile
 import sys
 
 # Add the scripts directory to the path so we can import the module we're about to create
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     from rotate_secret import generate_secret, update_env

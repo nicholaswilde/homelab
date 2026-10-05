@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Add scripts directory to sys.path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from lxc_update import (
     build_pct_exec_cmd,

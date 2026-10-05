@@ -9,22 +9,24 @@ PVESH_NODES_MOCK = """[
   {"node":"pve04","status":"online"}
 ]"""
 
+SCRIPT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "lxc_create.sh"))
+
 def test_node_selection():
     # This is a placeholder for a test that will fail until implemented
     # We want to verify that the script can list nodes and allow selection
-    script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
+    script_path = SCRIPT_PATH
     
     # We expect the script to prompt for a node if none is provided
     # For TDD, we'll implement a simple check for node listing first
 def test_arch_detection():
-    script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
+    script_path = SCRIPT_PATH
     
     # Check for x86_64 node
     result_x86 = subprocess.run([script_path, "--detect-arch", "pve01"], capture_output=True, text=True)
     assert "x86_64" in result_x86.stdout
     
 def test_command_generation():
-    script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
+    script_path = SCRIPT_PATH
     
     # Test for standard x86_64 LXC creation command
     # Arguments: --generate-command <vmid> <hostname> <template> <bridge> <ip> <gw>
@@ -42,7 +44,7 @@ def test_command_generation():
     assert "ip6=slaac" in result.stdout
     assert "--features nesting=1" in result.stdout
 def test_post_setup_commands():
-    script_path = os.path.join(os.getcwd(), "scripts/lxc_create.sh")
+    script_path = SCRIPT_PATH
     
     # Test for post-setup command generation
     # Argument: --generate-setup <vmid>
