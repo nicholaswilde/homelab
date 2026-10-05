@@ -195,6 +195,19 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["docker", "inspect", "convertx", "--format", "{{.Config.Image}}"],
         "regex": r":v?([0-9.]+)",
     },
+    "reactive-resume": {
+        "upstream_repo": "reactive-resume/reactive-resume",
+        "default_node": "pve04",
+        "default_vmid": 134,
+        "cmd": [
+            "docker",
+            "inspect",
+            "reactive_resume-reactive_resume-1",
+            "--format",
+            "{{.Config.Image}}",
+        ],
+        "regex": r":v?([0-9.]+)",
+    },
 }
 
 

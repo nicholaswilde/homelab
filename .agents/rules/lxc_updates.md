@@ -15,6 +15,7 @@ When asked to update applications deployed on Proxmox LXC containers:
   - `stirling-pdf`: `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]` (Node: `pve04`, VMID: `133`, IP: `192.168.1.219`).
   - `homepage`: `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]` (Node: `pve04`, VMID: `110`, IP: `192.168.1.47`).
   - `convertx`: `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]` (Node: `pve04`, VMID: `105`, IP: `192.168.1.23`).
+  - `reactive-resume`: `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]` (Node: `pve04`, VMID: `134`, IP: `192.168.1.201`).
 - The script automatically handles node discovery, git pulling on the container, executing container-native `update.sh`, and restarting the service.
 
 ## Unsaved Web App Protocol

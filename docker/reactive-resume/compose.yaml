@@ -70,8 +70,8 @@ services:
         condition: service_healthy
 
   reactive_resume:
-    # image: amruthpillai/reactive-resume:latest
-    image: ghcr.io/amruthpillai/reactive-resume:v5.1.4
+    image: ghcr.io/reactive-resume/reactive-resume:v6.0.0
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -82,10 +82,6 @@ services:
       - APP_URL=https://resume.l.nicholaswilde.io
       # - STORAGE_URL: http://192.168.2.147:9000/default
 
-      - PRINTER_APP_URL=http://reactive_resume:3000
-      # Printer
-      - PRINTER_ENDPOINT=ws://browserless:3000?token=1234567890
-      # - PRINTER_ENDPOINT=http://chrome:9222 # Or, if you're using chromedp/headless-shell
       # Database
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
       # Authentication
@@ -103,12 +99,16 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      browserless:
-        condition: service_healthy
       seaweedfs_create_bucket:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then((r) => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1));",
+        ]
       start_period: 10s
       interval: 30s
       timeout: 10s

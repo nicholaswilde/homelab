@@ -26,6 +26,7 @@
   - `stirling-pdf`: Directly run `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]`.
   - `homepage`: Directly run `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]`.
   - `convertx`: Directly run `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]`.
+  - `reactive-resume`: Directly run `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:
