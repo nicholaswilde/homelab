@@ -6,6 +6,8 @@ acme*
 .agents/settings.json
 .antigravity/mcp_config.json
 .antigravity/settings.json
+.gemini/mcp_config.json
+.gemini/settings.json
 **/aria2.daemon
 backup.conf
 .codegraph/
@@ -52,7 +54,8 @@ pve/frame-fi/pictures/*.wmv
 __pycache__/
 **/registry/config.yml
 **/rpc.secret
-.rtk/
+.rtk/*
+!.rtk/filters.toml
 scan.db
 **/secret.txt
 **/secure-shell-preferences-backup.json
