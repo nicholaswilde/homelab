@@ -1,0 +1,30 @@
+version: '3'
+vars:
+  SERVICE_NAME: recipes-rag
+  HOST: recipes-rag
+tasks:
+  sync:
+    desc: Sync recipes repository and reindex embeddings
+    cmds:
+      - ssh {{ .HOST }} "recipes-rag sync"
+
+  search:
+    desc: Semantic search over recipes
+    cmds:
+      - ssh {{ .HOST }} "recipes-rag search '{{ .CLI_ARGS }}'"
+
+  query:
+    desc: Query the LLM about recipes using RAG
+    cmds:
+      - ssh {{ .HOST }} "recipes-rag query '{{ .CLI_ARGS }}'"
+
+  status:
+    desc: Check systemd services status on recipes-rag container
+    cmds:
+      - ssh {{ .HOST }} "systemctl status ollama open-webui recipes-rag-sync.timer --no-pager"
+
+  default:
+    cmds:
+      - task -l
+    silent: true
+    desc: List all available tasks.

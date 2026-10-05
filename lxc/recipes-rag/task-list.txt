@@ -1,0 +1,6 @@
+task: Available tasks for this project:
+* default:       List all available tasks.
+* query:         Query the LLM about recipes using RAG
+* search:        Semantic search over recipes
+* status:        Check systemd services status on recipes-rag container
+* sync:          Sync recipes repository and reindex embeddings
