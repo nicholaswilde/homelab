@@ -18,6 +18,12 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 import urllib.error
 import urllib.request
 
+try:
+    from packaging.version import parse as parse_version, InvalidVersion
+except ImportError:
+    parse_version = None
+    InvalidVersion = Exception
+
 # Ensure scripts dir in sys.path
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
@@ -207,6 +213,13 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
             "{{.Config.Image}}",
         ],
         "regex": r":v?([0-9.]+)",
+    },
+    "withoutbg": {
+        "upstream_repo": "withoutbg/withoutbg",
+        "default_node": "pve03",
+        "default_vmid": 103,
+        "cmd": ["jq", "-r", ".version", "/opt/withoutbg/apps/web/frontend/package.json"],
+        "regex": r"([0-9.]+)",
     },
 }
 
@@ -448,7 +461,16 @@ def check_app_version(
 
     # 3. Compare
     if result["installed"] != "unknown" and result["latest"] != "unknown":
-        if result["installed"] == result["latest"]:
+        is_up_to_date = False
+        if parse_version:
+            try:
+                is_up_to_date = parse_version(result["installed"]) >= parse_version(result["latest"])
+            except InvalidVersion:
+                is_up_to_date = (result["installed"] == result["latest"])
+        else:
+            is_up_to_date = (result["installed"] == result["latest"])
+
+        if is_up_to_date:
             result["status"] = "up-to-date"
             result["up_to_date"] = True
         else:

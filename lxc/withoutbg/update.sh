@@ -27,6 +27,7 @@ DEBUG="false"
 SERVICE_MODE="false"
 
 # Default variables
+TARGET_VERSION=""
 ENABLE_NOTIFICATIONS="false"
 UPDATE_SUCCESS="true"
 UPDATE_MESSAGES=()
@@ -140,6 +141,12 @@ function check_dependencies() {
 }
 
 function get_latest_version() {
+  if [[ -n "${TARGET_VERSION}" ]]; then
+    LATEST_VERSION="${TARGET_VERSION#v}"
+    log "INFO" "Target ${APP_NAME} version specified: ${LATEST_VERSION}"
+    return 0
+  fi
+
   log "INFO" "Getting latest version of ${APP_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local curl_args=()
@@ -291,7 +298,19 @@ function update_script() {
   
   log "INFO" "New version available for ${APP_NAME}: ${LATEST_VERSION}"
   UPDATE_MESSAGES+=("Updating ${APP_NAME} from ${CURRENT_VERSION} to ${LATEST_VERSION}.")
-  
+
+  # Guard: upstream restructured repository into Python SDK only. Verify release contains web application
+  local tarball_url
+  tarball_url=$(echo "${json_response:-}" | jq -r '.tarball_url // empty')
+  if [[ -n "${tarball_url}" ]]; then
+    log "INFO" "Checking release structure..."
+    if ! curl -LsSf "${tarball_url}" | tar -ztf - | grep -q "apps/web/frontend"; then
+      log "WARN" "Latest upstream release (${LATEST_VERSION}) is Python SDK only and lacks web application (apps/web/frontend). Installed version ${CURRENT_VERSION} is the final available web monorepo release."
+      UPDATE_MESSAGES+=("${APP_NAME} is on final web release ${CURRENT_VERSION}. Upstream ${LATEST_VERSION} lacks web components.")
+      return 0
+    fi
+  fi
+
   backup_settings || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to backup settings."); }
   stop_services || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to stop services."); }
   remove_old_install || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to remove old installation."); return 1; }
@@ -319,6 +338,7 @@ function main() {
     case $1 in
       -s|--service) SERVICE_MODE="true"; shift;;
       -d|--debug) DEBUG="true"; shift;;
+      -v|--version) TARGET_VERSION="$2"; shift 2;;
       *) shift;;
     esac
   done
