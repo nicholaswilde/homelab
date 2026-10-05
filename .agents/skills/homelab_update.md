@@ -15,9 +15,9 @@ Pull updates and restart services for Docker and LXC applications.
    - If in `pve/`, check for `compose.yaml` (docker) or `update.sh` (lxc).
 
 3. **Execute Update:**
-   - Use `scripts/homelab_update.py` to:
+   - Use `scripts/homelab_update.py <app_name> [-v <version>]` or `scripts/lxc_update.py <app_name> [-v <version>]`:
      - For `docker`: Run `docker compose pull` and `docker compose up -d`.
-     - For `lxc`: Run `./update.sh`.
+     - For `lxc`: Remotely auto-discovers container across Proxmox nodes, pulls git repo, and executes `update.sh` inside container via `pct exec`.
      - Log all output.
 
 4. **Update All (Optional):**

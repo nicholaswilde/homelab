@@ -76,11 +76,35 @@ In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the re
 If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
 <!-- CODEGRAPH_END -->
 
+## Serena MCP (Semantic Coding & Memories)
+
+Serena provides LSP-backed semantic tools, AST symbol navigation, reference-aware refactoring, and durable project memories:
+
+- **Project Memories:** Consult `mem:core` as the root entry point. Use `read_memory`, `write_memory`, and `list_memories`.
+- **AST Exploration:** Use `get_symbols_overview` and `find_symbol` for token-efficient symbol inspection.
+- **Diagnostics:** Run `get_diagnostics_for_file` for language server diagnostics and linter warnings.
+- **Semantic Edits:** Use `rename_symbol`, `safe_delete_symbol`, and `replace_symbol_body` for precise code modifications.
+
 ## OpenMediaVault (OMV) Networking
 When configuring or modifying network settings on an OpenMediaVault (OMV) system, never edit `/etc/netplan` or `/etc/systemd/network` files directly, as they will be overwritten. Instead, read and update the OMV database using `omv-confdbadm` (e.g., `omv-confdbadm read conf.system.network.interface`). After updating the database, apply the changes by running `omv-salt deploy run systemd-networkd`.
 
 ## Python Execution (uv)
 When executing Python scripts in this workspace, always use `uv run python <script>` instead of just `python` to ensure the correct virtual environment and dependencies are used. Do not use pip; use `uv add` for managing dependencies.
+
+## LXC Application Updates
+When asked to update LXC web applications, run `scripts/lxc_update.py` directly with `rtk` without probing nodes or manual container inspection:
+- `drawio`: `rtk uv run python scripts/lxc_update.py drawio [-v <version>]`
+- `localsend`: `rtk uv run python scripts/lxc_update.py localsend`
+- `wallos`: `rtk uv run python scripts/lxc_update.py wallos --node pve03`
+- `changedetection`: `rtk uv run python scripts/lxc_update.py changedetection --node pve04`
+- `stirling-pdf`: `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]`
+- `homepage`: `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]`
+When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
+
+## Security & Sensitive Data Invariants
+- **NEVER commit sensitive data**: Never stage or commit passwords, secrets, API tokens, access keys, private keys, authentication credentials, unencrypted `.env` files, or configuration/settings files containing plain-text secrets.
+- **Use SOPS for Secret Storage**: All secrets must be encrypted with SOPS (`.env.enc`, `secret.txt.enc`). Commit only `.enc` encrypted files and templates (`.env.tmpl`), never unencrypted secrets.
+- **Pre-Commit Verification**: Run `rtk git diff --staged` or `uv run python scripts/check_secrets.py` before committing to verify no plain-text secrets or passwords leak into git.
 
 <!-- rtk-instructions v2 -->
 # RTK (Rust Token Killer) - Token-Optimized Commands

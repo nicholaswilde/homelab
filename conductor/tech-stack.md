@@ -48,3 +48,6 @@
   - **Gitea MCP:** Binary; interacts with Gitea instances.
   - **AdGuard Home MCP:** Manages DNS rewrites, filtering rules, and system status. No prefix.
   - **Syncthing MCP:** Manages Syncthing instances, devices, and folder synchronization. Prefix `syncthing_`.
+  - **Serena MCP:** Semantic coding server providing LSP diagnostics, AST symbol inspection, and persistent project memories (`mem:*`).
+  - **CodeGraph MCP:** Prebuilt AST/graph code index for code exploration, call flows, and dependency discovery.
+  - **Context-Mode MCP:** In-sandbox execution tools (`ctx_*`) to minimize context window token consumption.
