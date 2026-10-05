@@ -188,6 +188,13 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["cat", "/opt/homepage_version.txt"],
         "regex": r"([0-9.]+)",
     },
+    "convertx": {
+        "upstream_repo": "C4illin/ConvertX",
+        "default_node": "pve04",
+        "default_vmid": 105,
+        "cmd": ["docker", "inspect", "convertx", "--format", "{{.Config.Image}}"],
+        "regex": r":v?([0-9.]+)",
+    },
 }
 
 
@@ -346,6 +353,7 @@ def resolve_app_target(
     script_candidates = [
         root_dir / "lxc" / clean_name / "update.sh",
         root_dir / "pve" / clean_name / "update.sh",
+        root_dir / "docker" / clean_name / "update.sh",
     ]
     discovered_repo = None
     for cand in script_candidates:

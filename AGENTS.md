@@ -99,6 +99,7 @@ When asked to update LXC web applications, run `scripts/lxc_update.py` directly 
 - `changedetection`: `rtk uv run python scripts/lxc_update.py changedetection --node pve04`
 - `stirling-pdf`: `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]`
 - `homepage`: `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]`
+- `convertx`: `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]`
 When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
 
 ## Security & Sensitive Data Invariants

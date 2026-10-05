@@ -25,6 +25,7 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
   - When asked to update `changedetection`, immediately run `rtk uv run python scripts/lxc_update.py changedetection --node pve04` directly without probing.
   - When asked to update `stirling-pdf`, immediately run `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]` directly without probing.
   - When asked to update `homepage`, immediately run `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]` directly without probing.
+  - When asked to update `convertx`, immediately run `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]` directly without probing.
   - When updating any unsaved web app, set up its `update.sh` and immediately persist across 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`).
 
 ## Domain References

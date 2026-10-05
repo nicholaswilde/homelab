@@ -25,6 +25,7 @@
   - `changedetection`: Directly run `rtk uv run python scripts/lxc_update.py changedetection --node pve04`.
   - `stirling-pdf`: Directly run `rtk uv run python scripts/lxc_update.py stirling-pdf --node pve04 [-v <version>]`.
   - `homepage`: Directly run `rtk uv run python scripts/lxc_update.py homepage --node pve04 [-v <version>]`.
+  - `convertx`: Directly run `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:

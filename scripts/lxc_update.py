@@ -134,6 +134,8 @@ def get_update_script_path(app_name: str) -> str:
     root_dir = Path.cwd()
     if (root_dir / "pve" / clean_name / "update.sh").exists():
         return f"{REMOTE_REPO_PATH}/pve/{clean_name}/update.sh"
+    if (root_dir / "docker" / clean_name / "update.sh").exists():
+        return f"{REMOTE_REPO_PATH}/docker/{clean_name}/update.sh"
     return f"{REMOTE_REPO_PATH}/lxc/{clean_name}/update.sh"
 
 
@@ -237,9 +239,10 @@ def list_all_lxc_apps() -> None:
             name = ct["name"]
             has_lxc_script = (root_dir / "lxc" / name / "update.sh").exists()
             has_pve_script = (root_dir / "pve" / name / "update.sh").exists()
+            has_docker_script = (root_dir / "docker" / name / "update.sh").exists()
             script_status = (
                 f"{GREEN}Available{RESET}"
-                if (has_lxc_script or has_pve_script)
+                if (has_lxc_script or has_pve_script or has_docker_script)
                 else f"{YELLOW}None{RESET}"
             )
             print(f"{ct['vmid']:<8} {ct['status']:<10} {name:<20} {script_status}")

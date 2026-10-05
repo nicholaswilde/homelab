@@ -40,9 +40,10 @@ def test_parse_pct_list_empty():
 
 
 def test_get_update_script_path():
-    """Verify update script path resolution for lxc and pve apps."""
+    """Verify update script path resolution for lxc, pve, and docker apps."""
     assert get_update_script_path("drawio") == "/root/git/nicholaswilde/homelab/lxc/drawio/update.sh"
     assert get_update_script_path("traefik") == "/root/git/nicholaswilde/homelab/pve/traefik/update.sh"
+    assert get_update_script_path("convertx") == "/root/git/nicholaswilde/homelab/docker/convertx/update.sh"
     assert get_update_script_path("custom") == "/root/git/nicholaswilde/homelab/lxc/custom/update.sh"
 
 
