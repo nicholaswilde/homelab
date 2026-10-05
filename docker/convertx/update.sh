@@ -185,6 +185,17 @@ function get_latest_version() {
 }
 
 function get_current_version() {
+  local running_image
+  if command_exists docker && running_image=$(docker inspect convertx --format '{{.Config.Image}}' 2>/dev/null) && [[ -n "${running_image}" ]]; then
+    local parsed_ver
+    parsed_ver=$(echo "${running_image}" | grep -oP 'convertx:v?\K[0-9.]+' || true)
+    if [[ -n "${parsed_ver}" ]]; then
+      CURRENT_VERSION="${parsed_ver}"
+      log "INFO" "Current ${APP_NAME} version (running container): ${CURRENT_VERSION}"
+      return 0
+    fi
+  fi
+
   if [ ! -f "${COMPOSE_FILE}" ]; then
     log "ERRO" "${COMPOSE_FILE} not found."
     return 1
@@ -192,15 +203,18 @@ function get_current_version() {
   local raw_version
   raw_version=$(grep -oP 'image:\s*"?ghcr.io/c4illin/convertx:\K[^"]+' "${COMPOSE_FILE}")
   CURRENT_VERSION="${raw_version#v}"
-  log "INFO" "Current ${APP_NAME} version: ${CURRENT_VERSION}"
+  log "INFO" "Current ${APP_NAME} version (compose): ${CURRENT_VERSION}"
 }
 
 function update_script() {
   get_latest_version || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to get latest version from GitHub."); return 1; }
   get_current_version || { UPDATE_SUCCESS="false"; UPDATE_MESSAGES+=("Failed to get current version."); return 1; }
 
-  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
-    log "INFO" "${APP_NAME} is already up-to-date: ${CURRENT_VERSION}"
+  local running_image
+  running_image=$(docker inspect convertx --format '{{.Config.Image}}' 2>/dev/null || true)
+
+  if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]] && [[ "${running_image}" =~ :v?${LATEST_VERSION}$ ]]; then
+    log "INFO" "${APP_NAME} is already up-to-date and running: ${CURRENT_VERSION}"
     UPDATE_MESSAGES+=("${APP_NAME} is already up-to-date: ${CURRENT_VERSION}")
     return 0
   fi
