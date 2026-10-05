@@ -159,7 +159,7 @@ function get_latest_version() {
   if [ -n "${GITHUB_TOKEN}" ]; then
     curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
-  export json_response=$(curl -s "${curl_args[@]}" "${api_url}")
+  export json_response=$(curl -sL "${curl_args[@]}" "${api_url}")
   if ! echo "${json_response}" | jq -e '.tag_name' >/dev/null 2>&1; then
     log "ERRO" "Failed to get latest version for ${APP_NAME} from GitHub API."
     echo "${json_response}" | while IFS= read -r line; do log "ERRO" "$line"; done
