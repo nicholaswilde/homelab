@@ -38,6 +38,12 @@ if [ -f "$(dirname "$0")/.env" ]; then
   source "$(dirname "$0")/.env"
 fi
 
+# Set PATH and load fnm if available
+export PATH="/root/.cargo/bin:/root/.local/bin:${HOME}/.local/share/fnm:/usr/local/bin:/usr/local/sbin:${PATH}"
+if [ -d "${HOME}/.local/share/fnm" ] && command -v fnm &>/dev/null; then
+  eval "$(fnm env)"
+fi
+
 # Logging function
 function log() {
   local type="$1"
