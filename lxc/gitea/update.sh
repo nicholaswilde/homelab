@@ -133,11 +133,12 @@ function download_and_install() {
     cp -p "${db_file}" "${db_file}.bak-$(date +%Y%m%d%H%M%S)" || log "WARN" "Failed to backup database"
   fi
 
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+  if systemctl is-active --quiet "${SERVICE_NAME}.service"; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
     systemctl stop "${SERVICE_NAME}.service"
-  else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping stop."
+    while systemctl is-active --quiet "${SERVICE_NAME}.service"; do
+      sleep 1
+    done
   fi
 
   local installer_url="${INSTALLER_URL}"
@@ -155,20 +156,25 @@ function download_and_install() {
   fi
 
   log "INFO" "Downloading and installing update (${installer_url})..."
-  if ! ({ curl -fsSL "${installer_url}" | bash; } 2>&1 | log "INFO"); then
+  if ! curl -fsSL "${installer_url}" | bash; then
     log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
-    if ! ({ curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
+    if ! curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; then
       log "ERRO" "Failed to download from fallback URL. Aborting update."
       exit 1
     fi
   fi
 
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null || systemctl is-enabled "${SERVICE_NAME}.service" &> /dev/null; then
-    log "INFO" "Restarting ${SERVICE_NAME} service..."
-    systemctl restart "${SERVICE_NAME}.service"
-  else
-    log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
-  fi
+  log "INFO" "Restarting ${SERVICE_NAME} service..."
+  systemctl restart "${SERVICE_NAME}.service"
+  local attempts=0
+  while ! systemctl is-active --quiet "${SERVICE_NAME}.service"; do
+    sleep 1
+    attempts=$((attempts + 1))
+    if [ $attempts -ge 15 ]; then
+      log "WARN" "Service did not become active within 15 seconds."
+      break
+    fi
+  done
 }
 
 # Main function to orchestrate the script execution
