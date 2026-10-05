@@ -31,6 +31,12 @@ tasks:
     desc: Resart service
     cmds:
       - systemctl restart {{ .SERVICE_NAME }}.service
+  update:
+    desc: Update Stirling-PDF
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
   upgrade:
     desc: upgrade
     cmds:

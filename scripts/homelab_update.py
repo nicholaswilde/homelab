@@ -5,6 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Add scripts directory to sys.path
+sys.path.append(str(Path(__file__).resolve().parent))
+
 # Catppuccin Mocha Colors
 BLUE = "\033[38;2;137;180;250m"
 RED = "\033[38;2;243;139;168m"
@@ -66,7 +69,7 @@ def get_app_info(app_name):
             
     return app_dir, app_type
 
-def update_app(app_dir, app_type):
+def update_app(app_dir, app_type, version=None):
     log_info(f"Updating {app_dir.name} ({app_type}) in {app_dir}...")
     
     if app_type == "docker":
@@ -76,14 +79,18 @@ def update_app(app_dir, app_type):
                 log_success(f"Successfully updated Docker app: {app_dir.name}")
                 return True
     elif app_type == "lxc":
-        # LXC update logic
-        update_script = app_dir / "update.sh"
-        if update_script.exists():
-            if run_command(["bash", str(update_script)], cwd=app_dir):
-                log_success(f"Successfully updated LXC app: {app_dir.name}")
-                return True
-        else:
-            log_error(f"update.sh not found in {app_dir}")
+        # Remote LXC update logic
+        try:
+            from lxc_update import update_lxc
+            return update_lxc(app_dir.name, version=version)
+        except ImportError:
+            update_script = app_dir / "update.sh"
+            if update_script.exists():
+                if run_command(["bash", str(update_script)], cwd=app_dir):
+                    log_success(f"Successfully updated LXC app: {app_dir.name}")
+                    return True
+            else:
+                log_error(f"update.sh not found in {app_dir}")
     else:
         log_error(f"Unknown app type for {app_dir.name}")
         
@@ -92,6 +99,7 @@ def update_app(app_dir, app_type):
 def main():
     parser = argparse.ArgumentParser(description="Update homelab applications.")
     parser.add_argument("name", nargs="?", help="Name of the application to update")
+    parser.add_argument("-v", "--version", help="Specific target version to install")
     parser.add_argument("--all", action="store_true", help="Update all applications")
 
     args = parser.parse_args()
@@ -118,7 +126,7 @@ def main():
         log_error(f"Could not find or identify app: {args.name}")
         sys.exit(1)
 
-    if update_app(app_dir, app_type):
+    if update_app(app_dir, app_type, version=args.version):
         sys.exit(0)
     else:
         sys.exit(1)

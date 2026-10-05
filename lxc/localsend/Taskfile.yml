@@ -59,12 +59,10 @@ tasks:
       - sudo systemctl stop {{ .SERVICE_NAME }}.service
   update:
     desc: Update the application or its running containers.
+    preconditions:
+      - test -f update.sh
     cmds:
-      - task: stop
-      - git -C {{ .INSTALL_DIR }} pull origin
-      - pnpm -C {{ .INSTALL_DIR }} run generate
-      - task: start
-      - task: status
+      - ./update.sh
   upgrade:
     desc: Upgrade the application by pulling the latest changes and updating.
     cmds:

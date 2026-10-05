@@ -25,6 +25,7 @@ DEBUG="false"
 SERVICE_MODE="false"
 
 # Default variables
+TARGET_VERSION=""
 ENABLE_NOTIFICATIONS="false"
 UPDATE_SUCCESS="true"
 UPDATE_MESSAGES=()
@@ -158,6 +159,12 @@ function check_dependencies() {
 }
 
 function get_latest_version() {
+  if [[ -n "${TARGET_VERSION}" ]]; then
+    LATEST_VERSION="${TARGET_VERSION#v}"
+    log "INFO" "Target ${APP_NAME} version specified: ${LATEST_VERSION}"
+    return 0
+  fi
+
   log "INFO" "Getting latest version of ${APP_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases/latest"
   local curl_args=()
@@ -269,6 +276,7 @@ function main() {
     case $1 in
       -s|--service) SERVICE_MODE="true"; shift;;
       -d|--debug) DEBUG="true"; shift;;
+      -v|--version) TARGET_VERSION="$2"; shift 2;;
       *) shift;;
     esac
   done

@@ -93,14 +93,22 @@ function update_script() {
     }
   fi
   LOCAL_IP=$(hostname -I | awk '{print $1}')
-  RELEASE=$(curl -fsSL https://api.github.com/repos/gethomepage/homepage/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-  if [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]] || [[ ! -f /opt/${APP}_version.txt ]]; then
+  if [[ -n "${TARGET_VERSION}" ]]; then
+    RELEASE="${TARGET_VERSION#v}"
+    print_text "Target Homepage version specified: v${RELEASE}"
+  else
+    RELEASE=$(curl -fsSL https://api.github.com/repos/gethomepage/homepage/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+  fi
+  local current_ver
+  current_ver=$(cat /opt/${APP}_version.txt 2>/dev/null || echo "0")
+  if [[ "${RELEASE}" != "${current_ver}" ]] || [[ ! -f /opt/${APP}_version.txt ]]; then
     print_text "Updating Homepage to v${RELEASE} (Patience)"
     sudo systemctl stop homepage
-    sudo curl -fsSL "https://github.com/gethomepage/homepage/archive/refs/tags/v${RELEASE}.tar.gz" -o $(basename "https://github.com/gethomepage/homepage/archive/refs/tags/v${RELEASE}.tar.gz")
-    sudo tar -xzf "v${RELEASE}.tar.gz"
-    sudo rm -rf "v${RELEASE}.tar.gz"
-    sudo cp -r "homepage-${RELEASE}/*" "/opt/homepage/"
+    local archive_name="v${RELEASE}.tar.gz"
+    sudo curl -fsSL "https://github.com/gethomepage/homepage/archive/refs/tags/v${RELEASE}.tar.gz" -o "${archive_name}"
+    sudo tar -xzf "${archive_name}"
+    sudo rm -rf "${archive_name}"
+    sudo cp -r "homepage-${RELEASE}"/. "/opt/homepage/"
     sudo rm -rf "homepage-${RELEASE}"
     cd /opt/homepage
     sudo pnpm install
@@ -122,8 +130,15 @@ function update_script() {
 }
 
 function main(){
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -v|--version) TARGET_VERSION="$2"; shift 2;;
+      *) shift;;
+    esac
+  done
+
   check_curl
   update_script
 }
 
-main "@"
+main "$@"
