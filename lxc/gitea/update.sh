@@ -8,7 +8,7 @@
 #
 # @author Nicholas Wilde, 0xb299a622
 # @date 09 Nov 2025
-# @version 1.0.0
+# @version 1.1.0
 #
 ################################################################################
 
@@ -16,50 +16,54 @@
 set -e
 set -o pipefail
 
+# Ensure /usr/local/bin is in PATH
+export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"
+
 # These are constants
-readonly BLUE=$(tput setaf 4)
-readonly RED=$(tput setaf 1)
-readonly YELLOW=$(tput setaf 3)
-readonly PURPLE=$(tput setaf 5)
-readonly RESET=$(tput sgr0)
+BLUE_COL="\033[38;2;137;180;250m"
+RED_COL="\033[38;2;243;139;168m"
+YELLOW_COL="\033[38;2;249;226;175m"
+PURPLE_COL="\033[38;2;203;166;247m"
+RESET_COL="\033[0m"
+
 SERVICE_NAME="gitea"
 BINARY_NAME="gitea"
 INSTALL_DIR="/usr/local/bin"
 GITHUB_REPO="go-gitea/gitea"
 DEBUG="false"
 
+# Default variables
+TARGET_VERSION=""
+
 # Source .env file if it exists
 if [ -f "$(dirname "$0")/.env" ]; then
+  # shellcheck source=/dev/null
   source "$(dirname "$0")/.env"
 fi
 
 # Logging function
 function log() {
   local type="$1"
-  local color="$RESET"
+  local color="$RESET_COL"
 
   if [ "${type}" = "DEBU" ] && [ "${DEBUG}" != "true" ]; then
     return 0
   fi
 
   case "$type" in
-    INFO)
-      color="$BLUE";;
-    WARN)
-      color="$YELLOW";;
-    ERRO)
-      color="$RED";;
-    DEBU)
-      color="$PURPLE";;
-    *)
-      type="LOGS";;
+    INFO) color="$BLUE_COL";;
+    WARN) color="$YELLOW_COL";;
+    ERRO) color="$RED_COL";;
+    DEBU) color="$PURPLE_COL";;
+    *)    type="LOGS";;
   esac
+
   if [[ -t 0 ]]; then
     local message="$2"
-    echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
+    echo -e "${color}${type}${RESET_COL}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
   else
     while IFS= read -r line; do
-      echo -e "${color}${type}${RESET}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
+      echo -e "${color}${type}${RESET_COL}[$(date +'%Y-%m-%d %H:%M:%S')] ${line}"
     done
   fi
 }
@@ -77,15 +81,22 @@ function check_dependencies() {
 }
 
 function get_latest_version() {
+  if [[ -n "${TARGET_VERSION}" ]]; then
+    LATEST_VERSION="${TARGET_VERSION#v}"
+    log "INFO" "Target ${BINARY_NAME} version specified: ${LATEST_VERSION}"
+    return 0
+  fi
+
   log "INFO" "Getting latest version of ${BINARY_NAME} from GitHub..."
   local api_url="https://api.github.com/repos/${GITHUB_REPO}/releases"
+  local curl_args=()
   if [ -n "${GITHUB_TOKEN}" ]; then
-    local curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
+    curl_args+=('-H' "Authorization: Bearer ${GITHUB_TOKEN}")
   fi
   local all_releases_json
-  all_releases_json=$(curl -s "${curl_args[@]}" "${api_url}")
+  all_releases_json=$(curl -sL "${curl_args[@]}" "${api_url}")
 
-  LATEST_RELEASE_JSON=$(echo "${all_releases_json}" | jq '[.[] | select(.prerelease == false)] | .[0]')
+  LATEST_RELEASE_JSON=$(echo "${all_releases_json}" | jq '[.[] | select(.prerelease == false and .draft == false)] | .[0]')
 
   if [ -z "${LATEST_RELEASE_JSON}" ] || [ "${LATEST_RELEASE_JSON}" == "null" ]; then
     log "ERRO" "Failed to find a matching stable release for ${BINARY_NAME} from GitHub API."
@@ -116,8 +127,11 @@ function get_current_version() {
 }
 
 function download_and_install() {
-  local temp_file
-  temp_file=$(mktemp)
+  local db_file="/mnt/storage/gitea/data/gitea.db"
+  if [ -f "${db_file}" ]; then
+    log "INFO" "Backing up database ${db_file}..."
+    cp -p "${db_file}" "${db_file}.bak-$(date +%Y%m%d%H%M%S)" || log "WARN" "Failed to backup database"
+  fi
 
   if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Stopping ${SERVICE_NAME} service..."
@@ -128,19 +142,28 @@ function download_and_install() {
 
   local installer_url="${INSTALLER_URL}"
   local fallback_repo="${GITHUB_REPO}"
-  if [[ "${installer_url}" == *! ]]; then
-    fallback_repo="${GITHUB_REPO}!"
+  if [[ -n "${LATEST_VERSION}" ]]; then
+    if [[ "${installer_url}" == *! ]]; then
+      installer_url="${installer_url%!*}@v${LATEST_VERSION}!"
+    elif [[ -n "${installer_url}" ]]; then
+      installer_url="${installer_url}@v${LATEST_VERSION}"
+    fi
+    fallback_repo="${GITHUB_REPO}@v${LATEST_VERSION}"
   fi
-  log "INFO" "Downloading and installing update..."
-  if ! ({ curl -fsSL "${installer_url}" | bash;} 2>&1 | log "INFO"); then
+  if [[ "${installer_url}" == *! ]]; then
+    fallback_repo="${fallback_repo}!"
+  fi
+
+  log "INFO" "Downloading and installing update (${installer_url})..."
+  if ! ({ curl -fsSL "${installer_url}" | bash; } 2>&1 | log "INFO"); then
     log "WARN" "Failed to download from ${installer_url}. Trying fallback installer..."
-    if ! ( { curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
+    if ! ({ curl -fsSL "https://i.jpillora.com/${fallback_repo}" | bash; } | log "INFO"); then
       log "ERRO" "Failed to download from fallback URL. Aborting update."
       exit 1
     fi
   fi
-  
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null; then
+
+  if systemctl status "${SERVICE_NAME}.service" &> /dev/null || systemctl is-enabled "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
     systemctl restart "${SERVICE_NAME}.service"
   else
@@ -150,6 +173,14 @@ function download_and_install() {
 
 # Main function to orchestrate the script execution
 function main() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -d|--debug) DEBUG="true"; shift;;
+      -v|--version) TARGET_VERSION="$2"; shift 2;;
+      *) shift;;
+    esac
+  done
+
   log "INFO" "Starting ${BINARY_NAME} update script..."
   check_dependencies
 
@@ -171,6 +202,7 @@ function main() {
     log "INFO" "Successfully updated ${BINARY_NAME} to ${LATEST_VERSION}."
   else
     log "ERRO" "Failed to update ${BINARY_NAME}. Still on ${CURRENT_VERSION}."
+    exit 1
   fi
 
   log "INFO" "Script finished."

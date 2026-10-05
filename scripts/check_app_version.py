@@ -221,6 +221,13 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["jq", "-r", ".version", "/opt/withoutbg/apps/web/frontend/package.json"],
         "regex": r"([0-9.]+)",
     },
+    "gitea": {
+        "upstream_repo": "go-gitea/gitea",
+        "default_node": "pve03",
+        "default_vmid": 108,
+        "cmd": ["/usr/local/bin/gitea", "--version"],
+        "regex": r"gitea version ([0-9.]+)",
+    },
 }
 
 

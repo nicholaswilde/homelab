@@ -102,6 +102,7 @@ When asked to update LXC web applications, run `scripts/lxc_update.py` directly 
 - `convertx`: `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]`
 - `reactive-resume`: `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]`
 - `withoutbg`: `rtk uv run python scripts/lxc_update.py withoutbg --node pve03 [-v <version>]`
+- `gitea`: `rtk uv run python scripts/lxc_update.py gitea --node pve03 [-v <version>]`
 When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
 
 ## Security & Sensitive Data Invariants

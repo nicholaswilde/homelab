@@ -28,6 +28,7 @@
   - `convertx`: Directly run `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]`.
   - `reactive-resume`: Directly run `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]`.
   - `withoutbg`: Directly run `rtk uv run python scripts/lxc_update.py withoutbg --node pve03 [-v <version>]`.
+  - `gitea`: Directly run `rtk uv run python scripts/lxc_update.py gitea --node pve03 [-v <version>]`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:

@@ -46,6 +46,7 @@ def test_get_update_script_path():
     assert get_update_script_path("convertx") == "/root/git/nicholaswilde/homelab/docker/convertx/update.sh"
     assert get_update_script_path("reactive-resume") == "/root/git/nicholaswilde/homelab/docker/reactive-resume/update.sh"
     assert get_update_script_path("withoutbg") == "/root/git/nicholaswilde/homelab/lxc/withoutbg/update.sh"
+    assert get_update_script_path("gitea") == "/root/git/nicholaswilde/homelab/lxc/gitea/update.sh"
     assert get_update_script_path("custom") == "/root/git/nicholaswilde/homelab/lxc/custom/update.sh"
 
 

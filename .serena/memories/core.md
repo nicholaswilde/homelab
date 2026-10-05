@@ -28,6 +28,7 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
   - When asked to update `convertx`, immediately run `rtk uv run python scripts/lxc_update.py convertx --node pve04 [-v <version>]` directly without probing.
   - When asked to update `reactive-resume`, immediately run `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]` directly without probing.
   - When asked to update `withoutbg`, immediately run `rtk uv run python scripts/lxc_update.py withoutbg --node pve03 [-v <version>]` directly without probing.
+  - When asked to update `gitea`, immediately run `rtk uv run python scripts/lxc_update.py gitea --node pve03 [-v <version>]` directly without probing.
   - When updating any unsaved web app, set up its `update.sh` and immediately persist across 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`).
 
 ## Domain References
