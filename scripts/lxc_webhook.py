@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import subprocess
 import sys
 from typing import Any, Dict, List, Optional, Tuple
@@ -63,6 +64,7 @@ def run_ssh_command(
     node: str, cmd_args: List[str], timeout: int = 15
 ) -> Tuple[int, str, str]:
     """Execute command on remote node over SSH and return (exit_code, stdout, stderr)."""
+    quoted_cmd = " ".join(shlex.quote(arg) for arg in cmd_args)
     full_cmd = [
         "ssh",
         "-o",
@@ -70,7 +72,7 @@ def run_ssh_command(
         "-o",
         f"ConnectTimeout={timeout}",
         node,
-        *cmd_args,
+        quoted_cmd,
     ]
     try:
         proc = subprocess.run(
@@ -345,9 +347,7 @@ def deploy_webhook_service(
     remote_service_file = f"{remote_repo_dir}/{service_filename}"
 
     setup_cmd = (
-        f"if [ -f {remote_service_file} ]; then "
-        f"  cp {remote_service_file} /etc/systemd/system/; "
-        f"fi && "
+        f"cp {remote_service_file} /etc/systemd/system/ && "
         f"systemctl daemon-reload && "
         f"systemctl enable --now {app_name}-webhook && "
         f"systemctl is-active {app_name}-webhook"
