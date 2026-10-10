@@ -23,6 +23,7 @@ When asked to update applications deployed on Proxmox LXC containers:
   - `homebox`: `rtk uv run python scripts/lxc_update.py homebox --node pve03` (Node: `pve03`, VMID: `106`).
   - `omni-tools`: `rtk uv run python scripts/lxc_update.py omni-tools --node pve04` (Node: `pve04`, VMID: `104`).
   - `gatus`: `rtk uv run python scripts/lxc_update.py gatus --node pve04` (Node: `pve04`, VMID: `102`).
+  - `vaultwarden`: `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03 [-v <version>]` (Node: `pve03`, VMID: `112`; cargo source build, slow).
 - The script automatically handles node discovery, git pulling on the container, executing container-native `update.sh`, and restarting the service.
 
 ## Unsaved Web App Protocol

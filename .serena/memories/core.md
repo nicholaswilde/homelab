@@ -34,6 +34,7 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
   - When asked to update `homebox`, immediately run `rtk uv run python scripts/lxc_update.py homebox --node pve03` directly without probing.
   - When asked to update `omni-tools`, immediately run `rtk uv run python scripts/lxc_update.py omni-tools --node pve04` directly without probing.
   - When asked to update `gatus`, immediately run `rtk uv run python scripts/lxc_update.py gatus --node pve04` directly without probing.
+  - When asked to update `vaultwarden`, immediately run `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03` directly without probing.
   - When updating any unsaved web app, set up its `update.sh` and immediately persist across 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`).
 
 ## Domain References

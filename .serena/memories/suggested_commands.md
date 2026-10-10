@@ -50,6 +50,7 @@
   - `homebox`: Directly run `rtk uv run python scripts/lxc_update.py homebox --node pve03`.
   - `omni-tools`: Directly run `rtk uv run python scripts/lxc_update.py omni-tools --node pve04`.
   - `gatus`: Directly run `rtk uv run python scripts/lxc_update.py gatus --node pve04`.
+  - `vaultwarden`: Directly run `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:

@@ -108,6 +108,7 @@ When asked to update LXC web applications, run `scripts/lxc_update.py` directly 
 - `homebox`: `rtk uv run python scripts/lxc_update.py homebox --node pve03`
 - `omni-tools`: `rtk uv run python scripts/lxc_update.py omni-tools --node pve04`
 - `gatus`: `rtk uv run python scripts/lxc_update.py gatus --node pve04`
+- `vaultwarden`: `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03 [-v <version>]`
 When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
 
 ## LXC Webhook & Auto-Update Hooks
