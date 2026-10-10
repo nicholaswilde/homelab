@@ -47,6 +47,11 @@ tasks:
       - lychee {{shellQuote .FILE}}
     ignore_error: true
 
+  test:
+    desc: Run python unit tests using pytest via uv
+    cmds:
+      - uv run pytest scripts/tests/
+
   lint:
     desc: Lint the project
     deps:

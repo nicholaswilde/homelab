@@ -14,3 +14,8 @@ dependencies = [
     "toml>=0.10.2",
     "zensical>=0.0.14",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

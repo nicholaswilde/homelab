@@ -54,6 +54,6 @@ def test_post_setup_commands():
     # Check for core commands we expect in the post-setup
     assert "pct exec 100 -- apt update" in result.stdout
     assert "pct exec 100 -- apt upgrade -y" in result.stdout
-    assert "pct exec 100 -- apt install -y curl vim git htop sudo" in result.stdout
-    assert "pct exec 100 -- useradd" in result.stdout
-    assert "pct exec 100 -- tee /etc/sudoers.d/" in result.stdout
+    assert "pct exec 100 -- apt install -y curl vim git htop sudo openssh-server syncthing" in result.stdout
+    assert "pct exec 100 -- systemctl enable syncthing@root" in result.stdout
+    assert "pct exec 100 -- systemctl restart ssh" in result.stdout

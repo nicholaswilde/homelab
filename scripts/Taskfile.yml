@@ -12,3 +12,8 @@ tasks:
       - uv pip install -r {{.TASKFILE_DIR}}/requirements.txt --python {{.TASKFILE_DIR}}/.venv/bin/python
     deps:
       - venv-create
+  test:
+    desc: Run python unit tests using pytest via uv
+    cmds:
+      - uv run pytest {{.TASKFILE_DIR}}/tests/
+

@@ -1,6 +1,7 @@
 # Suggested Commands
 
 ## Task Automation (`go-task`)
+- `task test`: Run full unit test suite via pytest and uv (`scripts/tests/`).
 - `task lint`: Run full lint suite (Yamllint, Markdownlint, Linkcheck).
 - `task markdownlint`: Lint markdown documentation.
 - `task yamllint`: Lint YAML files.
