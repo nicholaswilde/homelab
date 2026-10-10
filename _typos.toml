@@ -10,4 +10,5 @@ extend-exclude = [
 ]
 
 [default.extend-words]
+"exportfs" = "exportfs"
 "zensical" = "zensical"
