@@ -35,6 +35,7 @@ Apps = [
   { "ConvertX" = "apps/convertx.md" },
   { "CyberKeyGen" = "apps/cyberkeygen.md" },
   { "DNS Speed Test" = "apps/dnsspeedtest.md" },
+  { "Draw.io" = "apps/drawio.md" },
   { "Excalidraw" = "apps/excalidraw.md" },
   { "File Browser" = "apps/filebrowser.md" },
   { "FrameFi" = "apps/frame-fi.md" },
