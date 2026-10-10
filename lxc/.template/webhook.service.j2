@@ -5,8 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin
 WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/{{ APP_NAME | lower }}
-ExecStart=/usr/local/bin/webhook -hooks hooks.json -verbose -port 9000
+ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always
 RestartSec=5
 

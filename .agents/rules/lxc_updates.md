@@ -32,3 +32,10 @@ When asked to update a web app not yet saved:
    - **Layer 1 (Rules):** Add app to Known Apps in [AGENTS.md](file:///home/nicholas/git/nicholaswilde/homelab/AGENTS.md) and [.agents/rules/lxc_updates.md](file:///home/nicholas/git/nicholaswilde/homelab/.agents/rules/lxc_updates.md).
    - **Layer 2 (Serena Memories):** Record node, VMID, and update command in `mem:core` and `mem:suggested_commands`.
    - **Layer 3 (RTK Filters):** Ensure any verbose build noise patterns are filtered in [.rtk/filters.toml](file:///home/nicholas/git/nicholaswilde/homelab/.rtk/filters.toml).
+
+## Webhook & Auto-Update Provisioning
+When setting up automated updates triggered by upstream releases:
+- Run `rtk uv run python scripts/lxc_webhook.py scaffold <app>` to generate `hooks.json`, `<app>-webhook.service`, and `wh:*` tasks.
+- Run `rtk uv run python scripts/lxc_webhook.py deploy <app>` to configure and start the webhook listener inside the LXC container.
+- Run `rtk uv run python scripts/lxc_webhook.py cd-watch <app> --repo <owner/repo>` to connect ChangeDetection.io on `pve04`.
+- Alternatively invoke the `/webhook add <app> <owner/repo>` skill.

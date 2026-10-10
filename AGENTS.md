@@ -110,6 +110,11 @@ When asked to update LXC web applications, run `scripts/lxc_update.py` directly 
 - `gatus`: `rtk uv run python scripts/lxc_update.py gatus --node pve04`
 When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
 
+## LXC Webhook & Auto-Update Hooks
+To configure automated updates for an LXC application via ChangeDetection and Webhook:
+- Scaffold, deploy, and register: `rtk uv run python scripts/lxc_webhook.py scaffold <app> && rtk uv run python scripts/lxc_webhook.py deploy <app> && rtk uv run python scripts/lxc_webhook.py cd-watch <app> --repo <owner/repo>`
+- Skill: `.agents/skills/webhook-add/SKILL.md` (`/webhook add <app> <repo>`).
+
 ## Security & Sensitive Data Invariants
 - **NEVER commit sensitive data**: Never stage or commit passwords, secrets, API tokens, access keys, private keys, authentication credentials, unencrypted `.env` files, or configuration/settings files containing plain-text secrets.
 - **Use SOPS for Secret Storage**: All secrets must be encrypted with SOPS (`.env.enc`, `secret.txt.enc`). Commit only `.enc` encrypted files and templates (`.env.tmpl`), never unencrypted secrets.

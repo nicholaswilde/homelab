@@ -75,6 +75,10 @@ To run webhook as a background service, create a systemd unit file.
     systemctl enable --now webhook
     ```
 
+## :robot: LXC Auto-Update Integration
+
+For practical usage and end-to-end integration with ChangeDetection.io to automate LXC web application upgrades, see [Automated LXC Update Hooks](update-hooks.md).
+
 ## :link: References
 
 - <https://github.com/adnanh/webhook>

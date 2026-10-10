@@ -59,3 +59,10 @@
 
 ## Application Sync & Deployment
 - App sync skill: `.agents/skills/app-sync/SKILL.md` (`/app sync <app_name>`).
+
+## Webhook & Auto-Update Hooks (`scripts/lxc_webhook.py`)
+- Scaffold webhook files locally: `rtk uv run python scripts/lxc_webhook.py scaffold <app_name>`.
+- Deploy listener to container: `rtk uv run python scripts/lxc_webhook.py deploy <app_name> [--node <node>]`.
+- Test webhook execution: `rtk uv run python scripts/lxc_webhook.py test <app_name>`.
+- Register ChangeDetection watch: `rtk uv run python scripts/lxc_webhook.py cd-watch <app_name> --repo <owner/repo>`.
+- Skill: `.agents/skills/webhook-add/SKILL.md` (`/webhook add <app_name> <github_repo>`).

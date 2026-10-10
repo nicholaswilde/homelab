@@ -141,6 +141,7 @@ Tools = [
   { "Task" = "tools/task.md" },
   { "tmux" = "tools/tmux.md" },
   { "typos" = "tools/typos.md" },
+  { "Update Hooks" = "tools/update-hooks.md" },
   { "uv" = "tools/uv.md" },
   { "Webhook" = "tools/webhook.md" },
   { "yamllint-rs" = "tools/yamllint-rs.md" },
