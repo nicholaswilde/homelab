@@ -1,11 +1,17 @@
 task: Available tasks for this project:
-* decrypt:       Decrypt .env using SOPS
-* encrypt:       Encrypt .env using SOPS
-* export:        Export the task list
-* init:          Init
-* mklinks:       Make client symlinks
-* restart:       Restart service
-* status:        Status
-* stop:          Stop service
-* update:        Update running containers
-* upgrade:       Upgrade app
+* check-config:         Checks if app.ini.enc needs to be updated by comparing it with the live configuration.
+* decrypt:              Decrypt .env using SOPS
+* encrypt:              Encrypt .env using SOPS
+* export:               Export the task list
+* init:                 Init
+* own:                  Have gitea own the config file.
+* restart:              Restart service
+* status:               Status
+* stop:                 Stop service
+* update:               Update running containers
+* upgrade:              Upgrade app
+* verify-secrets:       Checks if the decrypted secrets match the local files
+* wh:install:           Install and start the systemd webhook service
+* wh:logs:              View the webhook service logs
+* wh:status:            Check the status of the systemd webhook service
+* wh:test:              Test the webhook listener locally

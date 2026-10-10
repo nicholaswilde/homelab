@@ -78,6 +78,25 @@ tasks:
     desc: Restart service
     cmds:
       - systemctl restart {{ .SERVICE_NAME }}.service
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp gitea-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now gitea-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u gitea-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status gitea-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
