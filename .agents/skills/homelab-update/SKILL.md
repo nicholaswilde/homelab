@@ -1,3 +1,8 @@
+---
+name: homelab-update
+description: Pull updates and restart services for Docker and Proxmox LXC web applications.
+---
+
 # /homelab update `<app_name>`
 
 Pull updates and restart services for Docker and LXC applications.

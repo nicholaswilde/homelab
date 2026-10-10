@@ -18,6 +18,11 @@ When asked to update applications deployed on Proxmox LXC containers:
   - `reactive-resume`: `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]` (Node: `pve04`, VMID: `134`, IP: `192.168.1.201`).
   - `withoutbg`: `rtk uv run python scripts/lxc_update.py withoutbg --node pve03 [-v <version>]` (Node: `pve03`, VMID: `103`, IP: `192.168.1.118`).
   - `gitea`: `rtk uv run python scripts/lxc_update.py gitea --node pve03 [-v <version>]` (Node: `pve03`, VMID: `108`, IP: `192.168.1.29`).
+  - `bentopdf`: `rtk uv run python scripts/lxc_update.py bentopdf --node pve03` (Node: `pve03`, VMID: `104`).
+  - `pocket-id`: `rtk uv run python scripts/lxc_update.py pocket-id --node pve03` (Node: `pve03`, VMID: `113`).
+  - `homebox`: `rtk uv run python scripts/lxc_update.py homebox --node pve03` (Node: `pve03`, VMID: `106`).
+  - `omni-tools`: `rtk uv run python scripts/lxc_update.py omni-tools --node pve04` (Node: `pve04`, VMID: `104`).
+  - `gatus`: `rtk uv run python scripts/lxc_update.py gatus --node pve04` (Node: `pve04`, VMID: `102`).
 - The script automatically handles node discovery, git pulling on the container, executing container-native `update.sh`, and restarting the service.
 
 ## Unsaved Web App Protocol

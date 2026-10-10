@@ -120,6 +120,13 @@ def find_lxc_container(
             if ct["name"] == target:
                 return n, ct["vmid"], ct["name"], ct["status"]
 
+        # Normalized match (ignore hyphens/underscores)
+        target_norm = target.replace("-", "").replace("_", "")
+        for ct in containers:
+            ct_norm = ct["name"].replace("-", "").replace("_", "")
+            if ct_norm == target_norm:
+                return n, ct["vmid"], ct["name"], ct["status"]
+
         # Substring / partial match fallback
         for ct in containers:
             if target in ct["name"] or ct["name"] in target:

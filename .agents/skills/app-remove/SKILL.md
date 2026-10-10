@@ -1,3 +1,8 @@
+---
+name: app-remove
+description: Automate the removal of a service from the homelab, including Traefik configs, DNS rewrites, and Homepage dashboard entries.
+---
+
 # /app remove `<name>`
 
 Automate the removal of a service from the homelab, including Traefik, DNS, and Homepage.

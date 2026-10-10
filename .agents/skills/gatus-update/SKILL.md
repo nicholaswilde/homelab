@@ -1,3 +1,8 @@
+---
+name: gatus-update
+description: Update the Gatus dashboard by syncing configuration changes, decrypting secrets, and restarting the service.
+---
+
 # /gatus update
 
 Update the `gatus` dashboard by syncing configuration changes, decrypting secrets, and restarting the service.

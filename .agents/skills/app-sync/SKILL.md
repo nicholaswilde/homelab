@@ -1,3 +1,8 @@
+---
+name: app-sync
+description: Sync local configuration changes to a remote Proxmox LXC container via git pull and restart the service.
+---
+
 # /app sync `<app_name>`
 
 Sync local configuration changes to a remote Proxmox LXC and restart the service.

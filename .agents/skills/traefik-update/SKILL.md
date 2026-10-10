@@ -1,3 +1,8 @@
+---
+name: traefik-update
+description: Update the Traefik edge router by syncing configuration changes via SSH and restarting the service.
+---
+
 # /traefik update
 
 Update the `traefik` edge router by syncing configuration changes and restarting the service.

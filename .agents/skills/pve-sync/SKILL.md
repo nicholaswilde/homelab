@@ -1,3 +1,8 @@
+---
+name: pve-sync
+description: Trigger synchronization tasks and verify consistency across Proxmox nodes, AdGuard Home DNS rewrites, Traefik configs, and Syncthing.
+---
+
 # /pve sync
 
 Trigger synchronization tasks and verify that DNS rewrites and configurations are consistent across multiple Proxmox nodes and Syncthing instances.

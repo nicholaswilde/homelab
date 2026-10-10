@@ -52,6 +52,17 @@ tasks:
     cmds:
       - uv run pytest scripts/tests/
 
+  check-secrets:
+    desc: Verify staged files for sensitive data and secrets
+    cmds:
+      - uv run python scripts/check_secrets.py --staged
+
+  hooks:install:
+    desc: Install repository git hooks
+    cmds:
+      - git config core.hooksPath .githooks
+      - chmod +x .githooks/pre-commit
+
   lint:
     desc: Lint the project
     deps:

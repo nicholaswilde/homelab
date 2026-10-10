@@ -1,3 +1,8 @@
+---
+name: deploy-app
+description: Automate the creation and templating of a new application directory in docker/ or lxc/ and register a Conductor track.
+---
+
 # /deploy `<app_name>` `<type>`
 
 Automate the creation of a new application directory in `docker/` or `lxc/`

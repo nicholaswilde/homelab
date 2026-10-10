@@ -1,3 +1,8 @@
+---
+name: audit-deps
+description: Audit Docker image dependencies across all compose.yaml files and report outdated or vulnerable versions.
+---
+
 # /audit deps
 
 Audit Docker image dependencies across all `compose.yaml` files and report outdated or vulnerable versions.

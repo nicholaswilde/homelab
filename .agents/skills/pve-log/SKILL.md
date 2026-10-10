@@ -1,3 +1,8 @@
+---
+name: pve-log
+description: Fetch and summarize recent system and cluster logs from a specific Proxmox node or service.
+---
+
 # /pve log `<node>` `[service]`
 
 Fetch and summarize recent logs from a specific Proxmox node or service.

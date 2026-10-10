@@ -1,3 +1,8 @@
+---
+name: homelab-status
+description: Provide a bird's eye view of the homelab, checking Proxmox node health, Docker containers, AdGuard Home, Syncthing, and Conductor tracks.
+---
+
 # /homelab status
 
 Provide a "bird's eye view" of the lab, checking Proxmox node health, listing active Docker containers, and reporting on AdGuard Home, Syncthing, and active Conductor tracks.

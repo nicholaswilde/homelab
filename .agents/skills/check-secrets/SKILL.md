@@ -1,3 +1,8 @@
+---
+name: check-secrets
+description: Verify encryption status of all sensitive and .env files project-wide using SOPS to prevent accidental leaks.
+---
+
 # /check secrets
 
 Verify the encryption status of all sensitive files project-wide to prevent accidental leaks.

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+import argparse
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -10,6 +12,13 @@ RED = "\033[38;2;243;139;168m"
 GREEN = "\033[38;2;166;227;161m"
 YELLOW = "\033[38;2;249;226;175m"
 RESET = "\033[0m"
+
+SECRET_PATTERNS = [
+    (re.compile(r"-----BEGIN (?:RSA |OPENSSH |EC |DSA |PGP )?PRIVATE KEY-----"), "Private key header"),
+    (re.compile(r"\bAKIA[0-9A-Z]{16}\b"), "AWS Access Key ID"),
+    (re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,}\b"), "GitHub personal token"),
+    (re.compile(r"\bgithub_pat_[A-Za-z0-9_]{82}\b"), "GitHub fine-grained PAT"),
+]
 
 def log_info(msg):
     print(f"{BLUE}INFO{RESET}: {msg}")
@@ -141,6 +150,112 @@ def check_secrets():
         log_warn("Issues found in secrets protection.")
         return False
 
+
+def check_staged_secrets() -> bool:
+    """Inspect staged files in git index to prevent committing plaintext secrets."""
+    log_info("Running pre-commit check on staged files...")
+    res = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+        capture_output=True,
+        text=True,
+    )
+    if res.returncode != 0:
+        log_error("Failed to inspect git staging area.")
+        return False
+
+    staged_files = [f.strip() for f in res.stdout.splitlines() if f.strip()]
+    if not staged_files:
+        log_success("No staged files found in git index.")
+        return True
+
+    violations = []
+
+    for path_str in staged_files:
+        p = Path(path_str)
+        name_lower = p.name.lower()
+
+        # 1. Plaintext .env files
+        if name_lower.startswith(".env") or name_lower.endswith(".env"):
+            if not any(
+                name_lower.endswith(ext)
+                for ext in [".enc", ".tmpl", ".sample", ".example", ".default"]
+            ):
+                violations.append(f"Forbidden plaintext .env file staged: {path_str}")
+
+        # 2. Private key / credential extensions
+        if any(name_lower.endswith(ext) for ext in [".pem", ".key", ".pkcs12", ".pfx"]):
+            if not name_lower.endswith(".enc"):
+                violations.append(f"Forbidden private key file staged: {path_str}")
+        if name_lower in ["id_rsa", "id_ed25519", "id_ecdsa", "id_dsa"]:
+            violations.append(f"Forbidden SSH private key file staged: {path_str}")
+
+        # 3. .enc files must contain SOPS encryption markers
+        if name_lower.endswith(".enc"):
+            try:
+                show_proc = subprocess.run(
+                    ["git", "show", f":{path_str}"],
+                    capture_output=True,
+                    text=True,
+                )
+                if show_proc.returncode == 0:
+                    content = show_proc.stdout
+                    if "sops" not in content and "ENC[" not in content:
+                        violations.append(
+                            f"File has .enc extension but lacks SOPS encryption metadata: {path_str}"
+                        )
+            except Exception:
+                pass
+
+        # 4. Content patterns in staged diff additions (exclude test suites)
+        if not name_lower.endswith(".enc") and not ("/tests/" in path_str or p.name.startswith("test_")):
+            diff_proc = subprocess.run(
+                ["git", "diff", "--cached", "-U0", "--", path_str],
+                capture_output=True,
+                text=True,
+            )
+            if diff_proc.returncode == 0:
+                for line in diff_proc.stdout.splitlines():
+                    if line.startswith("+") and not line.startswith("+++"):
+                        added_text = line[1:]
+                        for pattern, label in SECRET_PATTERNS:
+                            if pattern.search(added_text):
+                                violations.append(
+                                    f"Detected {label} in staged diff: {path_str}"
+                                )
+
+    if violations:
+        print("\n" + "=" * 40)
+        print(f"{RED}❌ PRE-COMMIT SECRET VERIFICATION FAILED{RESET}")
+        print("=" * 40)
+        for v in violations:
+            log_error(v)
+        print("=" * 40)
+        log_error("Commit aborted. Staging contains plaintext secrets or unencrypted credential files.")
+        return False
+
+    log_success(f"Verified {len(staged_files)} staged file(s) - zero plaintext secrets detected.")
+    return True
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Verify secret encryption and prevent committing plaintext secrets."
+    )
+    parser.add_argument(
+        "--staged",
+        action="store_true",
+        help="Check only git staged files (fast pre-commit hook mode)",
+    )
+    args = parser.parse_args()
+
+    if args.staged:
+        if not check_staged_secrets():
+            sys.exit(1)
+    else:
+        if not check_secrets():
+            sys.exit(1)
+
+
 if __name__ == "__main__":
-    if not check_secrets():
-        sys.exit(1)
+    main()
+

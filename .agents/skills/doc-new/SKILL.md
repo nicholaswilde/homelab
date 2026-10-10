@@ -1,3 +1,8 @@
+---
+name: doc-new
+description: Automate the creation of new documentation files using existing templates consistent with Zensical style guide.
+---
+
 # /doc new `<name>` `<category>`
 
 Automate the creation of new documentation files using existing templates, ensuring consistency with the Zensical style guide.

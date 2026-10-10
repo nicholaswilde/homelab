@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+################################################################################
+#
+# Git Pre-Commit Hook: Zero-Secret Leakage Guard
+# ---------------------------------------------
+# Scans staged files and diffs before every commit to ensure no plaintext .env
+# files, private keys, tokens, or unencrypted secrets leak into git.
+#
+################################################################################
+
+set -o pipefail
+
+# Execute fast staged secret scan via uv
+uv run python scripts/check_secrets.py --staged

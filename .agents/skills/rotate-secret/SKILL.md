@@ -1,3 +1,8 @@
+---
+name: rotate-secret
+description: Securely rotate sensitive credentials by generating new high-entropy values and updating SOPS encrypted files.
+---
+
 # /rotate secret <service> <key>
 
 Securely rotate sensitive credentials by generating new high-entropy values and updating encrypted files.

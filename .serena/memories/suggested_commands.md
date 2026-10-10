@@ -2,6 +2,8 @@
 
 ## Task Automation (`go-task`)
 - `task test`: Run full unit test suite via pytest and uv (`scripts/tests/`).
+- `task check-secrets`: Verify staged files for plaintext sensitive data and secrets.
+- `task hooks:install`: Install repository git pre-commit hooks (`.githooks/`).
 - `task lint`: Run full lint suite (Yamllint, Markdownlint, Linkcheck).
 - `task markdownlint`: Lint markdown documentation.
 - `task yamllint`: Lint YAML files.
@@ -21,12 +23,12 @@
 ## OpenMediaVault (OMV) External Storage & NFS Automation
 - Health check (read-only): `rtk uv run python scripts/omv_nfs.py` (or with `--json`).
 - Automated fix (USB passthrough, mount -a, restart nfs-server): `rtk uv run python scripts/omv_nfs.py --fix`.
-- Skill: `.agents/skills/omv-nfs/SKILL.md` / `.agents/skills/omv_nfs.md`.
+- Skill: `.agents/skills/omv-nfs/SKILL.md`.
 
 ## Proxmox Node Wake & Health Check (WOL)
 - Wake/verify node: `rtk uv run python scripts/pve_wake.py [--node pve03]`.
 - Check status only: `rtk uv run python scripts/pve_wake.py --check-only`.
-- Skill: `.agents/skills/pve-wake/SKILL.md` / `.agents/skills/pve_wake.md`.
+- Skill: `.agents/skills/pve-wake/SKILL.md`.
 
 ## LXC Application Version Check & Updates
 - Version Comparison (read-only):
@@ -43,6 +45,11 @@
   - `reactive-resume`: Directly run `rtk uv run python scripts/lxc_update.py reactive-resume --node pve04 [-v <version>]`.
   - `withoutbg`: Directly run `rtk uv run python scripts/lxc_update.py withoutbg --node pve03 [-v <version>]`.
   - `gitea`: Directly run `rtk uv run python scripts/lxc_update.py gitea --node pve03 [-v <version>]`.
+  - `bentopdf`: Directly run `rtk uv run python scripts/lxc_update.py bentopdf --node pve03`.
+  - `pocket-id`: Directly run `rtk uv run python scripts/lxc_update.py pocket-id --node pve03`.
+  - `homebox`: Directly run `rtk uv run python scripts/lxc_update.py homebox --node pve03`.
+  - `omni-tools`: Directly run `rtk uv run python scripts/lxc_update.py omni-tools --node pve04`.
+  - `gatus`: Directly run `rtk uv run python scripts/lxc_update.py gatus --node pve04`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:
@@ -51,4 +58,4 @@
   - `rtk docker ps`, `rtk docker logs <container>`
 
 ## Application Sync & Deployment
-- App sync helper: `.gemini/commands/app_sync.md` (`/app sync <app_name>`).
+- App sync skill: `.agents/skills/app-sync/SKILL.md` (`/app sync <app_name>`).

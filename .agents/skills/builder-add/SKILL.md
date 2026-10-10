@@ -1,3 +1,8 @@
+---
+name: builder-add
+description: Automate adding a new application builder to the reprepro modular builders system, supporting standard and Raspberry Pi architectures (armv6, armv7).
+---
+
 # /builder add `<project_name>` `<github_repo_url>`
 
 Automate adding a new application builder to the reprepro modular builders system, ensuring targets for standard and Raspberry Pi architectures (`armv6`, `armv7`) are fully supported.

@@ -228,6 +228,41 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["/usr/local/bin/gitea", "--version"],
         "regex": r"gitea version ([0-9.]+)",
     },
+    "bentopdf": {
+        "upstream_repo": "alam00000/bentopdf",
+        "default_node": "pve03",
+        "default_vmid": 104,
+        "cmd": ["jq", "-r", ".version", "/opt/bentopdf/package.json"],
+        "regex": r"([0-9.]+)",
+    },
+    "pocket-id": {
+        "upstream_repo": "pocket-id/pocket-id",
+        "default_node": "pve03",
+        "default_vmid": 113,
+        "cmd": ["/opt/pocket-id/pocket-id", "version"],
+        "regex": r"([0-9.]+)",
+    },
+    "homebox": {
+        "upstream_repo": "sysadminsmedia/homebox",
+        "default_node": "pve03",
+        "default_vmid": 106,
+        "cmd": ["curl", "-s", "http://127.0.0.1:7745/"],
+        "regex": r'otelServiceVersion:"([0-9.]+)"',
+    },
+    "omni-tools": {
+        "upstream_repo": "iib0011/omni-tools",
+        "default_node": "pve04",
+        "default_vmid": 104,
+        "cmd": ["cat", "/opt/omni-tools_version.txt"],
+        "regex": r"([0-9.]+)",
+    },
+    "gatus": {
+        "upstream_repo": "TwiN/gatus",
+        "default_node": "pve04",
+        "default_vmid": 102,
+        "cmd": ["cat", "/opt/gatus_version.txt"],
+        "regex": r"([0-9.]+)",
+    },
 }
 
 
@@ -360,6 +395,8 @@ def resolve_app_target(
 ]:
     """Determine (node, vmid, upstream_repo, cmd, regex, version_type, web_parser, web_url) for an app."""
     clean_name = app_name.lower().strip()
+    alias_map = {"pocketid": "pocket-id"}
+    clean_name = alias_map.get(clean_name, clean_name)
 
     # 1. Registered app
     if clean_name in APP_REGISTRY:

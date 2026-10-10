@@ -1,3 +1,8 @@
+---
+name: dashboard-add
+description: Automate the addition of a new service with verified icons and URLs to the Homepage dashboard.
+---
+
 # /dashboard add `<name>` `<group>`
 
 Automate the addition of a new service to the `homepage` dashboard.

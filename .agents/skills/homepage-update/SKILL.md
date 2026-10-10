@@ -1,3 +1,8 @@
+---
+name: homepage-update
+description: Update the Homepage dashboard by syncing configuration changes via SSH and restarting the service.
+---
+
 # /homepage update
 
 Update the `homepage` dashboard by syncing configuration changes and restarting the service.

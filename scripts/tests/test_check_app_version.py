@@ -56,6 +56,20 @@ def test_resolve_app_target_homepage():
     assert callable(web_parser)
     assert web_url == "http://192.168.1.47:3000"
 
+def test_resolve_app_target_new_apps():
+    """Verify target resolution for newly registered apps."""
+    for app, expected_repo in [
+        ("bentopdf", "alam00000/bentopdf"),
+        ("pocket-id", "pocket-id/pocket-id"),
+        ("pocketid", "pocket-id/pocket-id"),
+        ("homebox", "sysadminsmedia/homebox"),
+        ("omni-tools", "iib0011/omni-tools"),
+        ("gatus", "TwiN/gatus"),
+    ]:
+        _, _, repo, cmd, _, _, *rest = resolve_app_target(app)
+        assert repo == expected_repo
+        assert cmd is not None
+
 
 def test_check_app_version_up_to_date():
     """Verify comparison when installed equals latest."""

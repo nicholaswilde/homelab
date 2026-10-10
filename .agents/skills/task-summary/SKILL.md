@@ -1,3 +1,8 @@
+---
+name: task-summary
+description: Automatically summarize work done in the current task, draft Git Notes, and update Conductor track plan.md.
+---
+
 # /task summary
 
 Automatically summarize the work done in the current task, draft the required Git Note content, and update the track's `plan.md` following the `conductor/workflow.md`.

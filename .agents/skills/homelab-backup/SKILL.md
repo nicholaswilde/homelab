@@ -1,3 +1,8 @@
+---
+name: homelab-backup
+description: Trigger manual backups for specific homelab applications or configurations and verify SOPS encryption.
+---
+
 # /homelab backup `<target>`
 
 Trigger manual backups for specific applications or configurations.
