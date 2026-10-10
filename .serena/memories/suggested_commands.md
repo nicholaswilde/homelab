@@ -9,10 +9,23 @@
 - `task serve`: Serve documentation locally on port 8000.
 - `task generate-docs-nav`: Regenerate MkDocs navigation tree.
 - `task spellcheck-file FILE=<path>`: Run focused spellcheck on a specific file.
+- `task omv:check`: Check OpenMediaVault external drive and NFS status.
+- `task omv:fix`: Remediate OpenMediaVault external drive mounts and restart NFS.
+- `task pve:wake`: Check Proxmox node (pve03) reachability and wake via WOL if offline.
 
 ## Python via `uv`
 - `uv run python <script>`: Execute Python scripts inside virtual environment.
 - `uv add <dependency>`: Add dependency to project.
+
+## OpenMediaVault (OMV) External Storage & NFS Automation
+- Health check (read-only): `rtk uv run python scripts/omv_nfs.py` (or with `--json`).
+- Automated fix (USB passthrough, mount -a, restart nfs-server): `rtk uv run python scripts/omv_nfs.py --fix`.
+- Skill: `.agents/skills/omv-nfs/SKILL.md` / `.agents/skills/omv_nfs.md`.
+
+## Proxmox Node Wake & Health Check (WOL)
+- Wake/verify node: `rtk uv run python scripts/pve_wake.py [--node pve03]`.
+- Check status only: `rtk uv run python scripts/pve_wake.py --check-only`.
+- Skill: `.agents/skills/pve-wake/SKILL.md` / `.agents/skills/pve_wake.md`.
 
 ## LXC Application Version Check & Updates
 - Version Comparison (read-only):

@@ -146,6 +146,21 @@ tasks:
         sops -d --input-type json --output-type json
         .agents/settings.json.enc > .agents/settings.json
 
+  omv:check:
+    desc: Check OpenMediaVault (OMV) external drive and NFS status
+    cmds:
+      - uv run python scripts/omv_nfs.py
+
+  omv:fix:
+    desc: Remediate OpenMediaVault (OMV) external drive mounts and NFS service
+    cmds:
+      - uv run python scripts/omv_nfs.py --fix
+
+  pve:wake:
+    desc: Ensure Proxmox node (pve03) is online and send Wake-on-LAN if offline
+    cmds:
+      - uv run python scripts/pve_wake.py
+
   default:
     cmds:
       - task -l
