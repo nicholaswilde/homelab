@@ -46,11 +46,13 @@ RESET = "\033[0m"
 
 
 def clean_version(version_str: Optional[str]) -> str:
-    """Normalize version string by stripping 'v', spaces, and newlines."""
+    """Normalize version string by stripping 'v', 'release-', spaces, and newlines."""
     if not version_str:
         return "unknown"
     cleaned = version_str.strip()
-    if cleaned.lower().startswith("v") and len(cleaned) > 1 and (cleaned[1].isdigit() or cleaned[1] == "."):
+    if cleaned.lower().startswith("release-"):
+        cleaned = cleaned[8:]
+    elif cleaned.lower().startswith("v") and len(cleaned) > 1 and (cleaned[1].isdigit() or cleaned[1] == "."):
         cleaned = cleaned[1:]
     return cleaned.strip()
 
@@ -270,7 +272,72 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["jq", "-r", ".version", "/opt/rackula/package.json"],
         "regex": r"([0-9.]+)",
     },
+    "vaultwarden": {
+        "upstream_repo": "dani-garcia/vaultwarden",
+        "default_node": "pve03",
+        "default_vmid": 112,
+        "cmd": ["/opt/vaultwarden/bin/vaultwarden", "--version"],
+        "regex": r"Vaultwarden\s+([0-9.]+)",
+    },
+    "myspeed": {
+        "upstream_repo": "gnmyt/myspeed",
+        "default_node": "pve03",
+        "default_vmid": 105,
+        "cmd": ["jq", "-r", ".version", "/opt/myspeed/package.json"],
+        "regex": r"([0-9.]+)",
+    },
+    "freshrss": {
+        "upstream_repo": "FreshRSS/FreshRSS",
+        "default_node": "pve03",
+        "default_vmid": 110,
+        "cmd": ["grep", "-m1", "FRESHRSS_VERSION", "/opt/freshrss/constants.php"],
+        "regex": r"FRESHRSS_VERSION\s*=\s*'([^']+)'",
+    },
+    "beszel": {
+        "upstream_repo": "henrygd/beszel",
+        "default_node": "pve04",
+        "default_vmid": 112,
+        "cmd": ["/opt/beszel/beszel", "-v"],
+        "regex": r"beszel version\s+([0-9.]+)",
+    },
+    "aria2": {
+        "upstream_repo": "aria2/aria2",
+        "default_node": "pve03",
+        "default_vmid": 109,
+        "cmd": ["aria2c", "-v"],
+        "regex": r"aria2 version\s+([0-9.]+)",
+    },
+    "yamtrack": {
+        "upstream_repo": "FuzzyGrim/Yamtrack",
+        "default_node": "pve03",
+        "default_vmid": 125,
+        "cmd": ["git", "-C", "/opt/yamtrack", "describe", "--tags", "--abbrev=0"],
+        "regex": r"v?([0-9.]+)",
+    },
 }
+
+
+def _resolve_github_token(token: Optional[str] = None) -> Optional[str]:
+    """Resolve GitHub token from parameter, env var, or gh CLI."""
+    if token:
+        return token
+    env_token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if env_token:
+        return env_token
+    try:
+        proc = subprocess.run(
+            ["gh", "auth", "token"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+        if proc.returncode == 0 and proc.stdout.strip():
+            return proc.stdout.strip()
+    except Exception:
+        pass
+    return None
 
 
 def get_latest_github_release(repo: str, token: Optional[str] = None) -> Optional[str]:
@@ -280,7 +347,7 @@ def get_latest_github_release(repo: str, token: Optional[str] = None) -> Optiona
         "User-Agent": "homelab-version-checker",
         "Accept": "application/vnd.github.v3+json",
     }
-    github_token = token or os.environ.get("GITHUB_TOKEN")
+    github_token = _resolve_github_token(token)
     if github_token:
         headers["Authorization"] = f"Bearer {github_token}"
 
@@ -305,7 +372,7 @@ def get_latest_github_tag(repo: str, token: Optional[str] = None) -> Optional[st
         "User-Agent": "homelab-version-checker",
         "Accept": "application/vnd.github.v3+json",
     }
-    github_token = token or os.environ.get("GITHUB_TOKEN")
+    github_token = _resolve_github_token(token)
     if github_token:
         headers["Authorization"] = f"Bearer {github_token}"
 
@@ -329,7 +396,7 @@ def get_latest_github_commit(
         "User-Agent": "homelab-version-checker",
         "Accept": "application/vnd.github.v3+json",
     }
-    github_token = token or os.environ.get("GITHUB_TOKEN")
+    github_token = _resolve_github_token(token)
     if github_token:
         headers["Authorization"] = f"Bearer {github_token}"
 
