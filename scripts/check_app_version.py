@@ -246,8 +246,8 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "upstream_repo": "sysadminsmedia/homebox",
         "default_node": "pve03",
         "default_vmid": 106,
-        "cmd": ["curl", "-s", "http://127.0.0.1:7745/"],
-        "regex": r'otelServiceVersion:"([0-9.]+)"',
+        "cmd": ["cat", "/root/.homebox"],
+        "regex": r"([0-9.]+)",
     },
     "omni-tools": {
         "upstream_repo": "iib0011/omni-tools",

@@ -1,0 +1,16 @@
+[Unit]
+Description=homebox Webhook Listener
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin
+Environment=TERM=xterm-25color
+WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/homebox
+ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
