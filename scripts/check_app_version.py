@@ -263,6 +263,13 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["cat", "/opt/gatus_version.txt"],
         "regex": r"([0-9.]+)",
     },
+    "rackula": {
+        "upstream_repo": "RackulaLives/Rackula",
+        "default_node": "pve04",
+        "default_vmid": 137,
+        "cmd": ["jq", "-r", ".version", "/opt/rackula/package.json"],
+        "regex": r"([0-9.]+)",
+    },
 }
 
 
