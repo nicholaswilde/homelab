@@ -80,6 +80,25 @@ tasks:
     desc: Show caddy logs
     cmds:
       - sudo journalctl -xeu {{ .SERVICE_NAME }}
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp localsend-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now localsend-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u localsend-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status localsend-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l

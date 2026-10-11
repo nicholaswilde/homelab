@@ -471,10 +471,11 @@ def register_cd_watch(
     node: Optional[str] = None,
     cd_host: str = DEFAULT_CD_HOST,
     token: Optional[str] = None,
+    feed_url: Optional[str] = None,
 ) -> bool:
-    """Register or update release watch in ChangeDetection.io pointing to webhook."""
+    """Register or update release/commit watch in ChangeDetection.io pointing to webhook."""
     watch_title = title or f"release-{app_name}"
-    atom_url = f"https://github.com/{repo.strip()}/releases.atom"
+    atom_url = feed_url or f"https://github.com/{repo.strip()}/releases.atom"
 
     found = find_lxc_container(app_name, node)
     if not found:
@@ -591,6 +592,7 @@ def main() -> int:
     cd_p.add_argument(
         "--repo", required=True, help="GitHub repository (owner/repo), e.g. wallosapp/wallos"
     )
+    cd_p.add_argument("--feed-url", help="Custom feed URL override (e.g. commits/main.atom)")
     cd_p.add_argument("--title", help="Watch title (defaults to release-<app>)")
     cd_p.add_argument("--node", help="Specific Proxmox node for target app")
     cd_p.add_argument("--cd-host", default=DEFAULT_CD_HOST, help="ChangeDetection base URL")
@@ -618,6 +620,7 @@ def main() -> int:
             node=args.node,
             cd_host=args.cd_host,
             token=args.token,
+            feed_url=args.feed_url,
         )
         return 0 if ok else 1
 
