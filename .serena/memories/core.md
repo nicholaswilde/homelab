@@ -9,13 +9,12 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
 - `vm/`: Virtual machine definitions.
 - `scripts/`: Shell and Python automation utilities.
 - `docs/`: Knowledge base documentation (Apps, Tools, Hardware) built with MkDocs/Zensical.
-- `conductor/`: Project governance, tracks, workflow specs, and tech stack definitions.
 
 ## Key Invariants
 - Never commit sensitive data, secrets, passwords, tokens, API keys, private keys, `.env` files, or unencrypted credential/config files containing secrets. Always use SOPS encryption (`*.enc`).
 - Python execution must use `uv run python <script>` with `uv` for dependency management.
 - For OMV networking changes, update the database via `omv-confdbadm` and deploy via `omv-salt deploy run systemd-networkd`; never edit `/etc/netplan` directly.
-- Conductor tracks completion: completed tracks must be archived automatically (`conductor/archive/`) without prompting.
+- Task workflow: Use remote GitHub issues via `gh` (always pipe to `cat`) instead of Conductor tracks.
 - LXC provisioning defaults: unprivileged (`--unprivileged 0`), template `debian-trixie`, `ip6=slaac`, nesting enabled (`nesting=1`).
 - RTK optimization: prefix shell commands with `rtk` where applicable.
 - LXC App Updates:
@@ -35,6 +34,8 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
   - When asked to update `omni-tools`, immediately run `rtk uv run python scripts/lxc_update.py omni-tools --node pve04` directly without probing.
   - When asked to update `gatus`, immediately run `rtk uv run python scripts/lxc_update.py gatus --node pve04` directly without probing.
   - When asked to update `vaultwarden`, immediately run `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03` directly without probing.
+  - When asked to update `freshrss`, immediately run `rtk uv run python scripts/lxc_update.py freshrss --node pve03` directly without probing.
+  - When asked to update `yamtrack`, immediately run `rtk uv run python scripts/lxc_update.py yamtrack --node pve03` directly without probing.
   - When updating any unsaved web app, set up its `update.sh` and immediately persist across 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`).
 
 ## Domain References
