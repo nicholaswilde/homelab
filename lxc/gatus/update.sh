@@ -5,17 +5,29 @@
 # ----------------
 # Checks for the latest release of gatus and compares it to
 # the local version. If out of date, it stops the service, downloads the
-# latest version, and restarts the service.
+# latest version, builds it, and restarts the service.
 #
 # @author Nicholas Wilde, 0xb299a622
-# @date 22 Dec 2025
-# @version 0.1.0
+# @date 10 Oct 2026
+# @version 0.2.0
 #
 ################################################################################
 
 # Options
-set -e
 set -o pipefail
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin:${PATH}"
+
+# Source GVM if available to ensure Go is in PATH (temporarily disable set -e as gvm internal functions return non-zero)
+set +e
+if [[ -s "/root/.gvm/scripts/gvm" ]]; then
+  # shellcheck source=/dev/null
+  source "/root/.gvm/scripts/gvm"
+elif [[ -s "${HOME}/.gvm/scripts/gvm" ]]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.gvm/scripts/gvm"
+fi
+unset -f cd 2>/dev/null || true
+set -e
 
 # These are constants
 # Catppuccin Mocha Colors
@@ -25,10 +37,11 @@ readonly YELLOW="\033[38;2;249;226;175m"
 readonly PURPLE="\033[38;2;203;166;247m"
 readonly RESET="\033[0m"
 SERVICE_NAME="gatus"
+APP_NAME="gatus"
 INSTALL_DIR="/opt/gatus"
-CONFIG_DIR="/etc/gatus"
 GITHUB_REPO="TwiN/gatus"
 DEBUG="false"
+SERVICE_MODE="false"
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 # Source .env file if it exists
@@ -109,13 +122,12 @@ function get_latest_version() {
 
 function get_current_version() {
   if [ ! -f "/opt/${SERVICE_NAME}_version.txt" ]; then
-    log "WARN" "${SERVICE_NAME} is not installed or not executable at ${INSTALL_DIR}/${SERVICE_NAME}."
+    log "WARN" "${SERVICE_NAME} is not installed or version file not found at /opt/${SERVICE_NAME}_version.txt."
     CURRENT_VERSION="0"
     return
   fi
   log "INFO" "Getting current version of ${SERVICE_NAME}..."
   local current_version_full
-  # Note: Adjust version command and parsing if needed for the specific app
   current_version_full=$(cat "/opt/${SERVICE_NAME}_version.txt")
   CURRENT_VERSION=$(echo "${current_version_full}" | awk '{print $NF}' | sed 's/v//')
   log "INFO" "Current ${SERVICE_NAME} version: ${CURRENT_VERSION}"
@@ -123,6 +135,14 @@ function get_current_version() {
 
 # Main function to orchestrate the script execution
 function main() {
+  while [[ "$#" -gt 0 ]]; do
+    case $1 in
+      -s|--service) SERVICE_MODE="true"; shift;;
+      -d|--debug) DEBUG="true"; shift;;
+      *) shift;;
+    esac
+  done
+
   log "INFO" "Starting ${SERVICE_NAME} update script..."
   check_dependencies
   
@@ -145,18 +165,11 @@ function main() {
     log "WARN" "Service ${SERVICE_NAME} is not running, skipping stop."
   fi
 
-  if [ -L "${CONFIG_DIR}/config.yaml" ]; then
-    log "INFO" "Removing previous config symlink"
-    unlink "${CONFIG_DIR}/config.yaml"
-  fi
-
-  log "INFO" "Removing previous version..."
-  rm -rf "${INSTALL_DIR:?}"/*
-
   log "INFO" "Downloading update..."
   curl -fsSL "${TARBALL_URL}" -o "${tmp_dir}/gatus.tar.gz"
 
   log "INFO" "Extracting to ${INSTALL_DIR}..." 
+  mkdir -p "${INSTALL_DIR}"
   tar -xf "${tmp_dir}/gatus.tar.gz" -C "${INSTALL_DIR}/" --strip-components=1
 
   log "INFO" "Building ${SERVICE_NAME}..."
@@ -167,19 +180,20 @@ function main() {
     setcap CAP_NET_RAW+ep gatus
   fi
   
+  # Ensure config file exists in /opt/gatus/config/config.yaml
+  mkdir -p "${INSTALL_DIR}/config"
   if [ -f "${SCRIPT_DIR}/config.yaml" ]; then
-    log "INFO" "Making link to config"
-    mkdir -p "${CONFIG_DIR}"
-    ln -sf "${SCRIPT_DIR}/config.yaml" "${CONFIG_DIR}/config.yaml"
-  else
-    log "WARN" "config.yaml not found in ${SCRIPT_DIR}. Skipping symlink creation."
+    log "INFO" "Linking config from ${SCRIPT_DIR}/config.yaml..."
+    ln -sf "${SCRIPT_DIR}/config.yaml" "${INSTALL_DIR}/config/config.yaml"
+  elif [ ! -f "${INSTALL_DIR}/config/config.yaml" ]; then
+    log "WARN" "No config.yaml found in ${SCRIPT_DIR} or ${INSTALL_DIR}/config."
   fi
 
   echo "${LATEST_VERSION}" > "/opt/${SERVICE_NAME}_version.txt"
   
   if systemctl list-unit-files "${SERVICE_NAME}.service" &> /dev/null; then
     log "INFO" "Restarting ${SERVICE_NAME} service..."
-    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
+    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO" || systemctl start "${SERVICE_NAME}.service" 2>&1 | log "INFO"
   else
     log "WARN" "Service ${SERVICE_NAME}.service not found, skipping restart."
   fi

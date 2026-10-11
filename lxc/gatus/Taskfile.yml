@@ -80,6 +80,25 @@ tasks:
       - sh: diff -q .env <(sops -d --input-type dotenv --output-type dotenv .env.enc)
         msg: The encrypted file and unencrypted file do not match! Please re-encrypt
           your changes.
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp gatus-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now gatus-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u gatus-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status gatus-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
