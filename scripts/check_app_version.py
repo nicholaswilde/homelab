@@ -311,8 +311,8 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "upstream_repo": "FuzzyGrim/Yamtrack",
         "default_node": "pve03",
         "default_vmid": 125,
-        "cmd": ["git", "-C", "/opt/yamtrack", "describe", "--tags", "--abbrev=0"],
-        "regex": r"v?([0-9.]+)",
+        "cmd": ["grep", "-m1", "version", "/opt/yamtrack/pyproject.toml"],
+        "regex": r'version\s*=\s*"([^"]+)"',
     },
 }
 
