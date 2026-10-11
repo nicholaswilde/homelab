@@ -69,6 +69,25 @@ tasks:
       - test -f {{ .TASKFILE_DIR }}/.env
     cmds:
       - ln -sf {{ .TASKFILE_DIR }}/.env  {{ .CONFIG_DIR }}/.env
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp homepage-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now homepage-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u homepage-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status homepage-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l

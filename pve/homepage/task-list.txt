@@ -1,13 +1,18 @@
 task: Available tasks for this project:
-* decrypt:       Decrypt .env using SOPS
-* enable:        Enable service
-* encrypt:       Encrypt .env using SOPS
-* export:        Export the task list
-* init:          Init
-* mklinks:       Make client symlinks
-* restart:       Resart service
-* start:         Start service
-* status:        Service status
-* stop:          Stop service
-* update:        Update running containers
-* upgrade:       Upgrade app
+* decrypt:              Decrypt .env using SOPS
+* enable:               Enable service
+* encrypt:              Encrypt .env using SOPS
+* export:               Export the task list
+* init:                 Init
+* mklinks:              Make client symlinks
+* restart:              Resart service
+* start:                Start service
+* status:               Service status
+* stop:                 Stop service
+* update:               Update running containers
+* upgrade:              Upgrade app
+* verify-secrets:       Checks if the decrypted secret matches the local file
+* wh:install:           Install and start the systemd webhook service
+* wh:logs:              View the webhook service logs
+* wh:status:            Check the status of the systemd webhook service
+* wh:test:              Test the webhook listener locally

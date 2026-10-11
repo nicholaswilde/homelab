@@ -173,13 +173,22 @@ def get_container_ip(node: str, vmid: int) -> Optional[str]:
     return None
 
 
+def resolve_app_rel_dir(app_name: str) -> str:
+    """Find relative path of application directory (lxc/app or pve/app)."""
+    clean_name = app_name.lower().strip()
+    if (REPO_ROOT / "pve" / clean_name).is_dir():
+        return f"pve/{clean_name}"
+    return f"lxc/{clean_name}"
+
+
 def generate_hooks_json(app_name: str) -> str:
     """Generate hooks.json content for an application."""
+    rel_path = resolve_app_rel_dir(app_name)
     hook_data = [
         {
             "id": "update-app",
-            "execute-command": f"/root/git/nicholaswilde/homelab/lxc/{app_name}/update.sh",
-            "command-working-directory": f"/root/git/nicholaswilde/homelab/lxc/{app_name}",
+            "execute-command": f"/root/git/nicholaswilde/homelab/{rel_path}/update.sh",
+            "command-working-directory": f"/root/git/nicholaswilde/homelab/{rel_path}",
             "pass-arguments-to-command": [
                 {
                     "source": "string",
@@ -194,6 +203,7 @@ def generate_hooks_json(app_name: str) -> str:
 
 def generate_service_unit(app_name: str) -> str:
     """Generate systemd service unit content for webhook listener."""
+    rel_path = resolve_app_rel_dir(app_name)
     return f"""[Unit]
 Description={app_name} Webhook Listener
 After=network.target
@@ -203,7 +213,7 @@ Type=simple
 User=root
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin
 Environment=TERM=xterm-25color
-WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/{app_name}
+WorkingDirectory=/root/git/nicholaswilde/homelab/{rel_path}
 ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always
 RestartSec=5
@@ -253,7 +263,7 @@ def scaffold_webhook_files(
     app_name: str, app_dir: Optional[Path] = None, force: bool = False
 ) -> bool:
     """Scaffold hooks.json, <app>-webhook.service, and Taskfile targets."""
-    target_dir = app_dir or (REPO_ROOT / "lxc" / app_name)
+    target_dir = app_dir or (REPO_ROOT / resolve_app_rel_dir(app_name))
     if not target_dir.exists():
         log_error(f"Target directory {target_dir} does not exist.")
         return False
@@ -344,12 +354,13 @@ def deploy_webhook_service(
         log_info(f"webhook binary found at: {stdout.strip()}")
 
     # 2. Install and enable systemd service unit
+    rel_path = resolve_app_rel_dir(app_name)
     service_filename = f"{app_name}-webhook.service"
-    remote_repo_dir = f"/root/git/nicholaswilde/homelab/lxc/{app_name}"
+    remote_repo_dir = f"/root/git/nicholaswilde/homelab/{rel_path}"
     remote_service_file = f"{remote_repo_dir}/{service_filename}"
 
     # Sync local scaffolded files into container if present
-    local_app_dir = REPO_ROOT / "lxc" / app_name
+    local_app_dir = REPO_ROOT / rel_path
     run_ssh_command(
         pve_node, ["pct", "exec", str(vmid), "--", "mkdir", "-p", remote_repo_dir]
     )

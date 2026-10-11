@@ -14,13 +14,23 @@
 # set -e
 # set -o pipefail
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
-blue=$(tput setaf 4)
-default=$(tput setaf 9)
-white=$(tput setaf 7)
-yellow=$(tput setaf 3)
+if [ -t 1 ] && command -v tput >/dev/null 2>&1; then
+  bold=$(tput bold)
+  normal=$(tput sgr0)
+  red=$(tput setaf 1)
+  blue=$(tput setaf 4)
+  default=$(tput setaf 9)
+  white=$(tput setaf 7)
+  yellow=$(tput setaf 3)
+else
+  bold=""
+  normal=""
+  red=""
+  blue=""
+  default=""
+  white=""
+  yellow=""
+fi
 
 readonly bold
 readonly normal
@@ -133,6 +143,7 @@ function main(){
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -v|--version) TARGET_VERSION="$2"; shift 2;;
+      -s|--service) SERVICE_MODE="true"; shift;;
       *) shift;;
     esac
   done
