@@ -22,6 +22,7 @@ Homelab is a centralized, automated repository managing home infrastructure acro
   - **Python:** Always execute via `uv run python <script>`. Strict PEP 8, type hints, docstrings.
 - **Documentation:** MkDocs / Zensical with emoji headings (`# :emoji: Title`), relative `.md` links, Mermaid diagrams.
 - **Idempotency & Safety:** All automation must be safe to rerun. Always ask before introducing new programming languages or performing destructive changes.
+- **Task & Issue Management:** Track all new features and bug fixes using remote GitHub Issues via `gh` instead of Conductor tracks. Always pipe `gh` commands to `cat` (e.g., `rtk gh issue list | cat`, `gh issue view 123 | cat`) to avoid interactive prompts.
 
 
 <!-- caveman-begin -->
