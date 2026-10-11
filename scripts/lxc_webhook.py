@@ -202,6 +202,7 @@ After=network.target
 Type=simple
 User=root
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin
+Environment=TERM=xterm-25color
 WorkingDirectory=/root/git/nicholaswilde/homelab/lxc/{app_name}
 ExecStart=/usr/bin/webhook -hooks hooks.json -verbose -port 9000
 Restart=always
@@ -352,7 +353,7 @@ def deploy_webhook_service(
     run_ssh_command(
         pve_node, ["pct", "exec", str(vmid), "--", "mkdir", "-p", remote_repo_dir]
     )
-    for fname in ["hooks.json", service_filename]:
+    for fname in ["hooks.json", "update.sh", service_filename]:
         local_file = local_app_dir / fname
         if local_file.is_file():
             content = local_file.read_text(encoding="utf-8")
@@ -362,11 +363,17 @@ def deploy_webhook_service(
                 ["pct", "exec", str(vmid), "--", "tee", remote_target],
                 input_data=content,
             )
+            if fname == "update.sh":
+                run_ssh_command(
+                    pve_node,
+                    ["pct", "exec", str(vmid), "--", "chmod", "+x", remote_target],
+                )
 
     setup_cmd = (
         f"cp {remote_service_file} /etc/systemd/system/ && "
         f"systemctl daemon-reload && "
-        f"systemctl enable --now {app_name}-webhook && "
+        f"systemctl enable {app_name}-webhook && "
+        f"systemctl restart {app_name}-webhook && "
         f"systemctl is-active {app_name}-webhook"
     )
 

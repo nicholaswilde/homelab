@@ -15,6 +15,13 @@
 
 # Options
 set -o pipefail
+export TERM="${TERM:-xterm-25color}"
+
+# Headless terminal compatibility for community updater scripts
+clear() {
+  return 0
+}
+export -f clear
 
 # Constants
 SERVICE_NAME="apache2"

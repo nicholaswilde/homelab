@@ -8,3 +8,7 @@ task: Available tasks for this project:
 * update:               Update Wallos
 * upgrade:              Upgrade Wallos
 * verify-secrets:       Checks if the decrypted secret matches the local file
+* wh:install:           Install and start the systemd webhook service
+* wh:logs:              View the webhook service logs
+* wh:status:            Check the status of the systemd webhook service
+* wh:test:              Test the webhook listener locally
