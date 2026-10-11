@@ -72,6 +72,25 @@ tasks:
     desc: Watch the application's Docker container logs.
     cmds:
       - docker compose logs -f
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp convertx-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now convertx-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u convertx-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status convertx-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l

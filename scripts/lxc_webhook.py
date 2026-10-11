@@ -174,10 +174,12 @@ def get_container_ip(node: str, vmid: int) -> Optional[str]:
 
 
 def resolve_app_rel_dir(app_name: str) -> str:
-    """Find relative path of application directory (lxc/app or pve/app)."""
+    """Find relative path of application directory (lxc/app, pve/app, or docker/app)."""
     clean_name = app_name.lower().strip()
     if (REPO_ROOT / "pve" / clean_name).is_dir():
         return f"pve/{clean_name}"
+    if (REPO_ROOT / "docker" / clean_name).is_dir():
+        return f"docker/{clean_name}"
     return f"lxc/{clean_name}"
 
 
