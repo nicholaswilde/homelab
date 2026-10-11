@@ -1,0 +1,47 @@
+version: '3'
+dotenv:
+  - .env
+tasks:
+  export:
+    silent: true
+    desc: Export the task list
+    cmds:
+      - task --list > task-list.txt
+  status:
+    desc: Status
+    cmds:
+      - systemctl status apache2.service
+  update:
+    desc: Update FreshRSS
+    preconditions:
+      - test -f update.sh
+    cmds:
+      - ./update.sh
+  upgrade:
+    desc: Upgrade FreshRSS
+    cmds:
+      - git pull origin
+      - task: update
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp freshrss-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now freshrss-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u freshrss-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status freshrss-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
+  default:
+    cmds:
+      - task -l
+    silent: true
