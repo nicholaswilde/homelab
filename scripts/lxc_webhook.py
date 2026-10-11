@@ -61,7 +61,7 @@ def log_success(msg: str) -> None:
 
 
 def run_ssh_command(
-    node: str, cmd_args: List[str], timeout: int = 15
+    node: str, cmd_args: List[str], timeout: int = 15, input_data: Optional[str] = None
 ) -> Tuple[int, str, str]:
     """Execute command on remote node over SSH and return (exit_code, stdout, stderr)."""
     quoted_cmd = " ".join(shlex.quote(arg) for arg in cmd_args)
@@ -77,6 +77,7 @@ def run_ssh_command(
     try:
         proc = subprocess.run(
             full_cmd,
+            input=input_data,
             capture_output=True,
             text=True,
             timeout=timeout + 5,
@@ -345,6 +346,22 @@ def deploy_webhook_service(
     service_filename = f"{app_name}-webhook.service"
     remote_repo_dir = f"/root/git/nicholaswilde/homelab/lxc/{app_name}"
     remote_service_file = f"{remote_repo_dir}/{service_filename}"
+
+    # Sync local scaffolded files into container if present
+    local_app_dir = REPO_ROOT / "lxc" / app_name
+    run_ssh_command(
+        pve_node, ["pct", "exec", str(vmid), "--", "mkdir", "-p", remote_repo_dir]
+    )
+    for fname in ["hooks.json", service_filename]:
+        local_file = local_app_dir / fname
+        if local_file.is_file():
+            content = local_file.read_text(encoding="utf-8")
+            remote_target = f"{remote_repo_dir}/{fname}"
+            run_ssh_command(
+                pve_node,
+                ["pct", "exec", str(vmid), "--", "tee", remote_target],
+                input_data=content,
+            )
 
     setup_cmd = (
         f"cp {remote_service_file} /etc/systemd/system/ && "

@@ -62,6 +62,25 @@ tasks:
     desc: Make client symlinks
     cmds:
       - ln -sf {{ .TASKFILE_DIR }}/daemon.json  {{ .CONFIG_DIR }}/daemon.json
+  wh:install:
+    desc: Install and start the systemd webhook service
+    cmds:
+      - cp stirling-pdf-webhook.service /etc/systemd/system/
+      - systemctl daemon-reload
+      - systemctl enable --now stirling-pdf-webhook
+      - echo "🚀 Webhook service installed and started!"
+  wh:logs:
+    desc: View the webhook service logs
+    cmds:
+      - journalctl -u stirling-pdf-webhook -f
+  wh:status:
+    desc: Check the status of the systemd webhook service
+    cmds:
+      - systemctl status stirling-pdf-webhook
+  wh:test:
+    desc: Test the webhook listener locally
+    cmds:
+      - 'curl -X POST -H "Content-Type: application/json" http://localhost:9000/hooks/update-app'
   default:
     cmds:
       - task -l
