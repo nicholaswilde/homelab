@@ -2,23 +2,27 @@
 
 This file serves as the primary entry point for AI agents interacting with this repository.
 
-## Project Context & Guidelines
+## Project Context & Architecture
 
-The comprehensive project context, technology stack, and operational workflows have been migrated to the **Conductor** documentation structure. AI agents MUST refer to these files for all development and maintenance tasks:
+Homelab is a centralized, automated repository managing home infrastructure across Proxmox VE, LXC containers, and Docker applications.
 
-- **[Product Definition](conductor/product.md)**: Vision, goals, and target users.
-- **[Product Guidelines](conductor/product-guidelines.md)**: Agent persona, boundaries, and style guides.
-- **[Technology Stack](conductor/tech-stack.md)**: Detailed core infrastructure, automation tools, and MCP server configurations.
-- **[Project Workflow](conductor/workflow.md)**: Task lifecycle, project structure, and common commands.
+### Directory Layout
+- `docker/`: Docker applications with `compose.yaml`, `.env.tmpl`, and `Taskfile.yml`.
+- `lxc/`: Proxmox LXC system container configurations, update scripts, and service definitions.
+- `pve/`: Proxmox VE node configurations (AdGuard Home, Traefik, Reprepro).
+- `docs/`: Technical documentation built with Material for MkDocs / Zensical.
+- `scripts/`: Python (`uv`) and Bash automation tooling.
+- `vm/`: Virtual machine definitions.
 
-## Tracks and Management
+### Infrastructure & Engineering Standards
+- **Proxmox LXC Defaults:** Unprivileged (`--unprivileged 0`), Debian Trixie template, DHCP with SLAAC IPv6, nesting enabled (`--features nesting=1`), root SSH key access.
+- **Docker Conventions:** Explicit pinned versions (no floating `latest`), `.env.tmpl` templates with SOPS-encrypted `.env.enc`, non-root execution where possible.
+- **Scripting:**
+  - **Bash:** `#!/usr/bin/env bash`, `set -o pipefail`, ShellCheck compliant, 2-space indent, `main "$@"` entrypoint, Catppuccin Mocha logging with terminal detection.
+  - **Python:** Always execute via `uv run python <script>`. Strict PEP 8, type hints, docstrings.
+- **Documentation:** MkDocs / Zensical with emoji headings (`# :emoji: Title`), relative `.md` links, Mermaid diagrams.
+- **Idempotency & Safety:** All automation must be safe to rerun. Always ask before introducing new programming languages or performing destructive changes.
 
-- **[Tracks Registry](conductor/tracks.md)**: Overview of all major tracks and their status.
-- **[Tracks Directory](conductor/tracks/)**: Detailed specifications and implementation plans for each track.
-
----
-
-*Note: This file is now a redirecting index. All substantial instructions should be maintained within the `conductor/` directory.*
 
 <!-- caveman-begin -->
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
