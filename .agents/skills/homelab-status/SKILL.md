@@ -1,11 +1,11 @@
 ---
 name: homelab-status
-description: Provide a bird's eye view of the homelab, checking Proxmox node health, Docker containers, AdGuard Home, Syncthing, and Conductor tracks.
+description: Provide a bird's eye view of the homelab, checking Proxmox node health, Docker containers, AdGuard Home, Syncthing, and GitHub issues.
 ---
 
 # /homelab status
 
-Provide a "bird's eye view" of the lab, checking Proxmox node health, listing active Docker containers, and reporting on AdGuard Home, Syncthing, and active Conductor tracks.
+Provide a "bird's eye view" of the lab, checking Proxmox node health, listing active Docker containers, and reporting on AdGuard Home, Syncthing, and open GitHub issues.
 
 ## Protocol
 
@@ -23,11 +23,10 @@ Provide a "bird's eye view" of the lab, checking Proxmox node health, listing ac
    - **AdGuard Home:** Execute `mcp_adguardhome_manage_system` with `action: "get_status"` to verify version and protection state.
    - **Syncthing:** Execute `syncthing_get_global_dashboard` to check instance connectivity and aggregated bandwidth.
 
-4. **Check Conductor Track Status:**
-   - Read `conductor/tracks.md`.
-   - Parse the list of tracks and their statuses (`[ ]`, `[~]`, `[x]`).
-   - Identify any track currently "In Progress" (`[~]`).
+4. **Check Open Issues Status:**
+   - Run `rtk gh issue list -L 10 | cat`.
+   - Summarize top active open issues or feature requests.
 
 5. **Present Unified Status Report:**
-   - Output a combined report with sections for Proxmox, Docker, Core Services (AdGuard, Syncthing), and Conductor.
-   - Highlight any offline nodes, stopped containers, or active tasks.
+   - Output a combined report with sections for Proxmox, Docker, Core Services (AdGuard, Syncthing), and GitHub Issues.
+   - Highlight any offline nodes, stopped containers, or urgent issues.

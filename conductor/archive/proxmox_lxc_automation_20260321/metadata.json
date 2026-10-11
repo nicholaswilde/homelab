@@ -1,8 +1,0 @@
-{
-  "track_id": "proxmox_lxc_automation_20260321",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-21T12:00:00Z",
-  "updated_at": "2026-03-21T12:05:00Z",
-  "description": "Automate Proxmox LXC creation for x86_64 and aarch64 nodes."
-}
