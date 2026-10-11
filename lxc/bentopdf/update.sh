@@ -16,6 +16,7 @@
 # Options
 set -e
 set -o pipefail
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
 
 # These are constants
 # Catppuccin Mocha Colors
@@ -194,12 +195,8 @@ function main() {
       exit 1
   fi
 
-  if systemctl status "${SERVICE_NAME}.service" &> /dev/null || systemctl is-enabled "${SERVICE_NAME}.service" &> /dev/null; then
-    log "INFO" "Restarting ${SERVICE_NAME} service..."
-    systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO"
-  else
-    log "WARN" "Service ${SERVICE_NAME}.service not found or not enabled, skipping restart."
-  fi
+  log "INFO" "Restarting ${SERVICE_NAME} service..."
+  systemctl restart "${SERVICE_NAME}.service" 2>&1 | log "INFO" || systemctl start "${SERVICE_NAME}.service" 2>&1 | log "INFO"
 
   get_current_version
   if [[ "${LATEST_VERSION}" == "${CURRENT_VERSION}" ]]; then
