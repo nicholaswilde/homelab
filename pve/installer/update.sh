@@ -36,6 +36,9 @@ readonly default
 readonly white
 readonly yellow
 
+# Ensure standard binary paths are in PATH
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
+
 DEBUG="false"
 
 # Define the output target based on the DEBUG variable
