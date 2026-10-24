@@ -58,7 +58,7 @@ function log() {
     *)    type="LOGS";;
   esac
 
-  if [[ -t 0 ]]; then
+  if [[ -n "$2" ]]; then
     local message="$2"
     echo -e "${color}${type}${RESET_COL}[$(date +'%Y-%m-%d %H:%M:%S')] ${message}"
   else

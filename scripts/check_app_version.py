@@ -314,6 +314,20 @@ APP_REGISTRY: Dict[str, Dict[str, Any]] = {
         "cmd": ["grep", "-m1", "version", "/opt/yamtrack/pyproject.toml"],
         "regex": r'version\s*=\s*"([^"]+)"',
     },
+    "solidcraft": {
+        "upstream_repo": "tangency-labs/solidcraft",
+        "default_node": "pve03",
+        "default_vmid": 138,
+        "cmd": ["cat", "/srv/solidcraft/version.txt"],
+        "regex": r"([0-9.]+)",
+    },
+    "installer": {
+        "upstream_repo": "jpillora/installer",
+        "default_node": "pve04",
+        "default_vmid": 107,
+        "cmd": ["/usr/local/bin/installer", "--version"],
+        "regex": r"([0-9.]+)",
+    },
 }
 
 
@@ -481,6 +495,9 @@ def resolve_app_target(
             found = find_lxc_container(clean_name, node=target_node)
             if found:
                 target_node, vmid, _, _ = found
+        web_parser = reg.get("web_parser")
+        if web_parser and hasattr(web_parser, "__name__"):
+            web_parser = globals().get(web_parser.__name__, web_parser)
         return (
             target_node,
             vmid,
@@ -488,7 +505,7 @@ def resolve_app_target(
             reg.get("cmd"),
             reg.get("regex"),
             reg.get("version_type", "release"),
-            reg.get("web_parser"),
+            web_parser,
             reg.get("web_url"),
         )
 

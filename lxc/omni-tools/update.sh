@@ -237,6 +237,15 @@ function setup_frontend(){
   log "INFO" "Setting up frontend..."
   cd "${INSTALL_DIR}"
   
+  if [ ! -d ".git" ]; then
+    git init -q
+    git config user.name "build"
+    git config user.email "build@local"
+    git commit -q --no-gpg-sign --allow-empty -m "${LATEST_VERSION:-build}"
+  fi
+
+  export NODE_OPTIONS="--max-old-space-size=3072"
+
   log "INFO" "  -> Running npm install..."
   if npm install --no-audit --no-fund &> /dev/null; then
     log "INFO" "  -> npm install successful"

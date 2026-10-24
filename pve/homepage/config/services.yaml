@@ -99,6 +99,10 @@
       - Draw.io:
             icon: sh-draw-io.svg
             href: https://drawio.l.nicholaswilde.io/
+      - SolidCraft:
+            icon: https://solidcraft.l.nicholaswilde.io/icons/256x256/ai.storyteller.solidcraft.png
+            href: https://solidcraft.l.nicholaswilde.io/
+            description: Parametric 3D CAD application in pure Rust
       - Yamtrack:
             icon: 
                 https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/yamtrack.svg

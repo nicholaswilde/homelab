@@ -31,6 +31,9 @@
 - Skill: `.agents/skills/pve-wake/SKILL.md`.
 
 ## LXC Application Version Check & Updates
+- Notification Comparisons:
+  - `rtk uv run python scripts/check_notify_apps.py`: Compare GitHub release notifications with homelab web apps.
+  - `rtk uv run python scripts/check_notify_tools.py`: Compare GitHub release notifications with locally installed CLI tools (e.g. zensical, task).
 - Version Comparison (read-only):
   - `rtk uv run python scripts/check_app_version.py <app_name>`: Compare installed vs upstream release version.
   - `rtk uv run python scripts/check_app_version.py --all`: Compare all registered homelab apps.
@@ -51,6 +54,9 @@
   - `omni-tools`: Directly run `rtk uv run python scripts/lxc_update.py omni-tools --node pve04`.
   - `gatus`: Directly run `rtk uv run python scripts/lxc_update.py gatus --node pve04`.
   - `vaultwarden`: Directly run `rtk uv run python scripts/lxc_update.py vaultwarden --node pve03`.
+  - `yamtrack`: Directly run `rtk uv run python scripts/lxc_update.py yamtrack --node pve03`.
+  - `solidcraft`: Directly run `rtk uv run python scripts/lxc_update.py solidcraft --node pve03 [-v <version>]`.
+  - `installer`: Directly run `rtk uv run python scripts/lxc_update.py installer --node pve04`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:

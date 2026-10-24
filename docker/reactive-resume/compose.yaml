@@ -70,7 +70,7 @@ services:
         condition: service_healthy
 
   reactive_resume:
-    image: ghcr.io/reactive-resume/reactive-resume:v6.0.0
+    image: ghcr.io/reactive-resume/reactive-resume:v6.0.5
     restart: unless-stopped
     env_file:
       - .env
@@ -84,8 +84,6 @@ services:
 
       # Database
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
-      # Authentication
-      - AUTH_SECRET=change-me-to-a-secure-secret-key-in-production
       # Storage
       - S3_ACCESS_KEY_ID=seaweedfs
       - S3_SECRET_ACCESS_KEY=seaweedfs

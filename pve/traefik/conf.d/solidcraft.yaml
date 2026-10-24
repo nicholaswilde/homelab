@@ -1,0 +1,22 @@
+---
+http:
+ #region routers 
+  routers:
+    solidcraft:
+      entryPoints:
+        - "websecure"
+      rule: "Host(`solidcraft.l.nicholaswilde.io`)"
+      middlewares:
+        - default-headers@file
+        - https-redirectscheme@file
+      tls: {}
+      service: solidcraft
+#endregion
+#region services
+  services:
+    solidcraft:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.123:80"
+        passHostHeader: true
+#endregion

@@ -131,12 +131,8 @@ def test_get_container_ip(mock_ssh):
 def test_deploy_webhook_service(mock_find, mock_ssh):
     """Test deploying webhook service to running container."""
     mock_find.return_value = ("pve04", 136, "drawio", "running")
-    # First call: which webhook (returns 0)
-    # Second call: setup_cmd (returns active)
-    mock_ssh.side_effect = [
-        (0, "/usr/bin/webhook\n", ""),
-        (0, "active\n", ""),
-    ]
+    # Default all ssh calls (which webhook, file syncing, systemctl) to succeed with active
+    mock_ssh.return_value = (0, "active\n", "")
     ok = deploy_webhook_service("drawio", node="pve04")
     assert ok is True
 
