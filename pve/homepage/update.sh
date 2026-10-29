@@ -118,16 +118,18 @@ function update_script() {
     sudo curl -fsSL "https://github.com/gethomepage/homepage/archive/refs/tags/v${RELEASE}.tar.gz" -o "${archive_name}"
     sudo tar -xzf "${archive_name}"
     sudo rm -rf "${archive_name}"
+    sudo rm -rf /opt/homepage/src
     sudo cp -r "homepage-${RELEASE}"/. "/opt/homepage/"
     sudo rm -rf "homepage-${RELEASE}"
     cd /opt/homepage
     sudo pnpm install
+    sudo pnpm store prune
     sudo npx --yes update-browserslist-db@latest
     export NEXT_PUBLIC_VERSION="v$RELEASE"
     export NEXT_PUBLIC_REVISION="source"
     export NEXT_PUBLIC_BUILDTIME=$(curl -fsSL https://api.github.com/repos/gethomepage/homepage/releases/latest | jq -r '.published_at')
     export NEXT_TELEMETRY_DISABLED=1
-    pnpm build
+    pnpm build || raise_error "Homepage build failed"
     if [[ ! -f /opt/homepage/.env ]]; then
       echo "HOMEPAGE_ALLOWED_HOSTS=localhost:3000,${LOCAL_IP}:3000" | sudo tee /opt/homepage/.env
     fi
