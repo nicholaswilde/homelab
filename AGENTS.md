@@ -42,6 +42,7 @@ Auto-Clarity: drop caveman for security warnings, irreversible actions, user con
 
 Boundaries: code/commits/PRs written normal.
 <!-- caveman-end -->
+<!-- ponytail-begin -->
 # Ponytail
 
 You are a lazy senior developer. The best code is the code never written.
@@ -60,15 +61,20 @@ Rules:
 - Deletion over addition. Boring over clever.
 - Fewest files possible.
 - Output: `[code] → skipped: [X], add when [Y].`
-# Context Tools (context-mode)
+<!-- ponytail-end -->
 
-Keep raw bytes out. Use ctx tools to derive answers from large data in-sandbox, print only needed results, and re-query later.
-- ctx_batch_execute: Run N commands parallel, auto-index, return matched sections
-- ctx_execute: Run code over data, print only derived answer
-- ctx_execute_file: Analyze big file in-sandbox via FILE_CONTENT
-- ctx_fetch_and_index: Fetch web pages, index for re-query
-- ctx_index: Chunk markdown/docs into FTS5 for re-query
-- ctx_search: Query indexed content + session memory
+<!-- context-mode-begin -->
+## Context-Mode Routing Guidelines
+- **Derive, Do Not Dump**: Do NOT use `ctx_execute_file` or `ctx_execute` to dump whole file or full config. Print only specific value, matches, count, or known line range needed.
+- **Tool Call Surface**: When using MCP wrappers, call `call_mcp_tool` with `ServerName: "context-mode_context-mode"` (or `"context-mode"`) and `ToolName: "ctx_execute"`, `"ctx_execute_file"`, `"ctx_batch_execute"`, `"ctx_fetch_and_index"`, `"ctx_search"`, or `"ctx_index"`.
+- **Mandatory Routing**:
+  - For analyze/count/filter/compare/search/parse/transform tasks, write code with `ctx_execute` and print only final answer.
+  - For analyzing/exploring inside file, use `ctx_execute_file`. Use native `read_file` only when editing requires exact bytes or small known range.
+  - Use `ctx_batch_execute` for multi-command repository reconnaissance.
+  - Use `ctx_execute` for shell commands whose output may exceed short fixed answer.
+  - Use `ctx_fetch_and_index` for web content, then `ctx_search` to query it.
+  - Return only derived answers, concise summaries, selected snippets, or file paths.
+<!-- context-mode-end -->
 
 <!-- CODEGRAPH_START -->
 ## CodeGraph
@@ -130,12 +136,15 @@ To configure automated updates for an LXC application via ChangeDetection and We
 - **Use SOPS for Secret Storage**: All secrets must be encrypted with SOPS (`.env.enc`, `secret.txt.enc`). Commit only `.enc` encrypted files and templates (`.env.tmpl`), never unencrypted secrets.
 - **Pre-Commit Verification**: Run `rtk git diff --staged` or `uv run python scripts/check_secrets.py` before committing to verify no plain-text secrets or passwords leak into git.
 
+<!-- rtk-begin -->
 <!-- rtk-instructions v2 -->
 # RTK (Rust Token Killer) - Token-Optimized Commands
 
 ## Golden Rule
 
 **Always prefix with `rtk`**. If filter exists, uses it. Else, pass through. RTK always safe.
+
+- **Exceptions**: Inside `ctx_execute` / `ctx_batch_execute` sandbox code, skip `rtk` (only printed output enters context). Drop `rtk` when exact raw bytes or patch required (`git diff` patch).
 
 **Important**: Use `rtk` in `&&` chains:
 ```bash
@@ -272,3 +281,4 @@ rtk init --global       # Add RTK to ~/.claude/CLAUDE.md
 
 Overall average: **60-90% token reduction** on dev ops.
 <!-- /rtk-instructions -->
+<!-- rtk-end -->
