@@ -2,8 +2,11 @@
 acme*
 **/adguardhome-sync.yaml
 **/AdGuardHome.yaml
-.agents/mcp_config.json
-.agents/settings.json
+.agents/*
+!.agents/skills/
+!.agents/rules/
+!.agents/skills_catalog.md
+!.agents/*.enc
 .antigravity/mcp_config.json
 .antigravity/settings.json
 .gemini/mcp_config.json
@@ -11,6 +14,7 @@ acme*
 **/aria2.daemon
 backup.conf
 .codegraph/
+.serena/
 **/config.json
 **/config.toml
 **/config.yaml
@@ -66,4 +70,3 @@ site/
 *.tar.zst
 **/url-watches.json
 **/wg1.conf
-.codegraph

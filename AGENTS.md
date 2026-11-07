@@ -22,14 +22,14 @@ Homelab is a centralized, automated repository managing home infrastructure acro
   - **Python:** Always execute via `uv run python <script>`. Strict PEP 8, type hints, docstrings.
 - **Documentation:** MkDocs / Zensical with emoji headings (`# :emoji: Title`), relative `.md` links, Mermaid diagrams.
 - **Idempotency & Safety:** All automation must be safe to rerun. Always ask before introducing new programming languages or performing destructive changes.
-- **Task & Issue Management:** Track all new features and bug fixes using remote GitHub Issues via `gh` instead of Conductor tracks. Always pipe `gh` commands to `cat` (e.g., `rtk gh issue list | cat`, `gh issue view 123 | cat`) to avoid interactive prompts.
-
+- **Task & Issue Management:** Track all new features and bug fixes using remote GitHub Issues via `gh` instead of Conductor tracks. Always pipe `gh` commands to `cat` (e.g., `rtk gh issue list | cat`, `gh issue view 123 | cat`) to avoid interactive prompts. Commits must contain `Fixes #<number>` to automatically close issues.
 
 <!-- caveman-begin -->
+## Caveman Mode
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
 
 Rules:
-- Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging
+- Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging.
 - Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
 - Pattern: [thing] [action] [reason]. [next step].
 - Not: "Sure! I'd be happy to help you with that."
@@ -42,25 +42,24 @@ Auto-Clarity: drop caveman for security warnings, irreversible actions, user con
 
 Boundaries: code/commits/PRs written normal.
 <!-- caveman-end -->
+
 <!-- ponytail-begin -->
-# Ponytail
-
-You are a lazy senior developer. The best code is the code never written.
-
-The ladder:
-1. Does this need to exist at all?
-2. Already in this codebase? Reuse it.
-3. Stdlib does it? Use it.
-4. Native platform feature covers it? Use it.
-5. Already-installed dependency solves it? Use it.
-6. Can it be one line? One line.
-7. Only then: minimum code that works.
-
-Rules:
-- No unrequested abstractions.
-- Deletion over addition. Boring over clever.
-- Fewest files possible.
-- Output: `[code] → skipped: [X], add when [Y].`
+## Ponytail (Lazy Senior Dev Mode) Guidelines
+- **Stop at first rung that holds**:
+  1. Need to build at all? (YAGNI)
+  2. Already in codebase? Reuse existing helpers/utils/patterns.
+  3. Stdlib does it? Use it.
+  4. Native platform feature covers it? Use it.
+  5. Installed dependency solves it? Use it.
+  6. Can be one line? One line.
+  7. Only then: write minimum working code.
+- **Bug fix = root cause, not symptom**: Fix shared function/path rather than individual callers.
+- **Rules**:
+  - No unrequested abstractions, boilerplate, or avoidable dependencies.
+  - Deletion over addition. Boring over clever. Fewest files possible.
+  - Shortest working diff wins once problem understood.
+  - Mark deliberate simplifications cutting real corner with `ponytail:` comment naming ceiling and upgrade path.
+  - Output: `[code] → skipped: [X], add when [Y].`
 <!-- ponytail-end -->
 
 <!-- context-mode-begin -->
@@ -76,7 +75,7 @@ Rules:
   - Return only derived answers, concise summaries, selected snippets, or file paths.
 <!-- context-mode-end -->
 
-<!-- CODEGRAPH_START -->
+<!-- codegraph-begin -->
 ## CodeGraph
 
 In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
@@ -85,22 +84,63 @@ In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the re
 - **Shell** (always works): `codegraph explore "<symbol names or question>"` prints the same output.
 
 If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
-<!-- CODEGRAPH_END -->
+<!-- codegraph-end -->
 
-## Serena MCP (Semantic Coding & Memories)
+<!-- serena-begin -->
+## Serena Semantic Code Tools
 
-Serena provides LSP-backed semantic tools, AST symbol navigation, reference-aware refactoring, and durable project memories:
+Serena MCP provides Language Server Protocol (LSP) backed semantic coding tools, token-efficient AST symbol search, reference-aware refactoring, and persistent project memories:
 
-- **Project Memories:** Consult `mem:core` as the root entry point. Use `read_memory`, `write_memory`, and `list_memories`.
-- **AST Exploration:** Use `get_symbols_overview` and `find_symbol` for token-efficient symbol inspection.
-- **Diagnostics:** Run `get_diagnostics_for_file` for language server diagnostics and linter warnings.
-- **Semantic Edits:** Use `rename_symbol`, `safe_delete_symbol`, and `replace_symbol_body` for precise code modifications.
+- **Project Activation**: When Serena is available, ensure the workspace is active before querying code. If Serena returns `No active project`, call `activate_project` with the project root directory.
+- **Symbol Inspection Over File Dumps**: Do not dump entire source code files into context. Use `get_symbols_overview` for a high-level view of symbols in a file, or `find_symbol` to retrieve specific classes, functions, or methods with their bodies.
+- **Pattern & Reference Search**: Use `search_for_pattern` to locate symbols when the exact path is unknown, and `find_referencing_symbols` to analyze blast radius and callers.
+- **Atomic Refactoring**: Prefer Serena's reference-aware editing tools (`rename_symbol`, `safe_delete_symbol`, `replace_symbol_body`) over manual regex or line-based text edits when refactoring existing symbols.
+- **Persistent Memory**: Use `read_memory`, `write_memory`, and `list_memories` to retrieve or store durable project facts and conventions across agent sessions (`mem:core`).
+- **Diagnostics**: Use `get_diagnostics_for_file` to inspect LSP compiler/linter warnings and errors on modified files.
+<!-- serena-end -->
+
+<!-- headroom-begin -->
+## Headroom MCP (Context Window Compression)
+Use Headroom (`headroom`) MCP tools to manage context window consumption on large payloads:
+- `headroom_compress`: Shrink large tool outputs or raw data.
+- `headroom_retrieve`: Retrieve original content by hash if specific details needed.
+- `headroom_stats`: Monitor headroom cache usage.
+<!-- headroom-end -->
+
+<!-- ripwire-begin -->
+## Ripwire CLI Guidelines
+
+Use `ripwire` CLI (prefixed with `rtk ripwire`) for AST codebase mapping, call graphs, blast radius, and structural queries:
+
+- **CLI First**: Always invoke `rtk ripwire <dir> [flags]` via CLI; do NOT use MCP server.
+- **Task Orientation**: `rtk ripwire <dir> --for="<task>"` for ranked signatures and bodies.
+- **Task Bundle**: `rtk ripwire <dir> --pack-task="<task>" --legend=compact`.
+- **Stack Trace / Error**: `rtk ripwire <dir> --from-trace=FILE --legend=compact` (`-` for stdin).
+- **Call Graph**: `rtk ripwire <dir> --callers=SYM`, `--callees=SYM`, `--uses=SYM`.
+- **Blast Radius**: `rtk ripwire <dir> --impact=SYM --legend=compact` before changing shared code.
+- **Quality Delta & Gate**: `rtk ripwire <dir> --quality-delta --legend=compact` and `--test-gate --legend=compact`.
+- **Atomic Edits**: `rtk ripwire <dir> --replace-symbol-body=SYM --edit-payload=FILE` without whole-file re-reading.
+<!-- ripwire-end -->
+
+<!-- ripgrep-guidelines-begin -->
+## Ripgrep Guidelines
+- **Pattern Searching**: Always use `rg` (ripgrep) or `rtk rg` instead of standard `grep` to search text inside files quickly and save token output.
+- **Scope**: Use `-t py` for Python files, `-l` for file listing, keep context small (`-C 1`).
+<!-- ripgrep-guidelines-end -->
+
+<!-- taplo-rules-begin -->
+## Taplo TOML Rules
+- **Format**: Run `rtk taplo fmt` to format TOML files in-place.
+- **Validation**: Run `rtk taplo lint` to validate TOML syntax and schema.
+<!-- taplo-rules-end -->
+
+<!-- uv-rules-begin -->
+## Python Tooling & Execution with `uv`
+When executing Python scripts in this workspace, always use `rtk uv run python <script>` instead of just `python` to ensure the correct virtual environment and dependencies are used. Do not use pip; use `rtk uv add` for managing dependencies. Keep `uv.lock` and `pyproject.toml` synchronized and committed.
+<!-- uv-rules-end -->
 
 ## OpenMediaVault (OMV) Networking
 When configuring or modifying network settings on an OpenMediaVault (OMV) system, never edit `/etc/netplan` or `/etc/systemd/network` files directly, as they will be overwritten. Instead, read and update the OMV database using `omv-confdbadm` (e.g., `omv-confdbadm read conf.system.network.interface`). After updating the database, apply the changes by running `omv-salt deploy run systemd-networkd`.
-
-## Python Execution (uv)
-When executing Python scripts in this workspace, always use `uv run python <script>` instead of just `python` to ensure the correct virtual environment and dependencies are used. Do not use pip; use `uv add` for managing dependencies.
 
 ## LXC Application Updates
 When asked to update LXC web applications, run `scripts/lxc_update.py` directly with `rtk` without probing nodes or manual container inspection:
@@ -131,154 +171,23 @@ To configure automated updates for an LXC application via ChangeDetection and We
 - Scaffold, deploy, and register: `rtk uv run python scripts/lxc_webhook.py scaffold <app> && rtk uv run python scripts/lxc_webhook.py deploy <app> && rtk uv run python scripts/lxc_webhook.py cd-watch <app> --repo <owner/repo>`
 - Skill: `.agents/skills/webhook-add/SKILL.md` (`/webhook add <app> <repo>`).
 
+<!-- sensitive-information-protection-begin -->
 ## Security & Sensitive Data Invariants
 - **NEVER commit sensitive data**: Never stage or commit passwords, secrets, API tokens, access keys, private keys, authentication credentials, unencrypted `.env` files, or configuration/settings files containing plain-text secrets.
 - **Use SOPS for Secret Storage**: All secrets must be encrypted with SOPS (`.env.enc`, `secret.txt.enc`). Commit only `.enc` encrypted files and templates (`.env.tmpl`), never unencrypted secrets.
-- **Pre-Commit Verification**: Run `rtk git diff --staged` or `uv run python scripts/check_secrets.py` before committing to verify no plain-text secrets or passwords leak into git.
+- **Pre-Commit Verification**: Run `rtk git diff --staged` or `rtk uv run python scripts/check_secrets.py` before committing to verify no plain-text secrets or passwords leak into git.
+- **Explicit Staging**: Never use `git add .` when untracked secret files exist; stage explicitly by name.
+<!-- sensitive-information-protection-end -->
 
 <!-- rtk-begin -->
-<!-- rtk-instructions v2 -->
-# RTK (Rust Token Killer) - Token-Optimized Commands
+## RTK Command Guidelines
 
-## Golden Rule
-
-**Always prefix with `rtk`**. If filter exists, uses it. Else, pass through. RTK always safe.
-
-- **Exceptions**: Inside `ctx_execute` / `ctx_batch_execute` sandbox code, skip `rtk` (only printed output enters context). Drop `rtk` when exact raw bytes or patch required (`git diff` patch).
-
-**Important**: Use `rtk` in `&&` chains:
-```bash
-# ❌ Wrong
-git add . && git commit -m "msg" && git push
-
-# ✅ Correct
-rtk git add . && rtk git commit -m "msg" && rtk git push
-```
-
-## RTK Commands by Workflow
-
-### Build & Compile (80-90% savings)
-```bash
-rtk cargo build         # Cargo build output
-rtk cargo check         # Cargo check output
-rtk cargo clippy        # Clippy warnings grouped by file (80%)
-rtk tsc                 # TypeScript errors grouped by file/code (83%)
-rtk lint                # ESLint/Biome violations grouped (84%)
-rtk prettier --check    # Files needing format only (70%)
-rtk next build          # Next.js build with route metrics (87%)
-```
-
-### Test (60-99% savings)
-```bash
-rtk cargo test          # Cargo test failures only (90%)
-rtk go test             # Go test failures only (90%)
-rtk jest                # Jest failures only (99.5%)
-rtk vitest              # Vitest failures only (99.5%)
-rtk playwright test     # Playwright failures only (94%)
-rtk pytest              # Python test failures only (90%)
-rtk rake test           # Ruby test failures only (90%)
-rtk rspec               # RSpec test failures only (60%)
-rtk test <cmd>          # Generic test wrapper - failures only
-```
-
-### Git (59-80% savings)
-```bash
-rtk git status          # Compact status
-rtk git log             # Compact log (works with all git flags)
-rtk git diff            # Compact diff (80%)
-rtk git show            # Compact show (80%)
-rtk git add             # Ultra-compact confirmations (59%)
-rtk git commit          # Ultra-compact confirmations (59%)
-rtk git push            # Ultra-compact confirmations
-rtk git pull            # Ultra-compact confirmations
-rtk git branch          # Compact branch list
-rtk git fetch           # Compact fetch
-rtk git stash           # Compact stash
-rtk git worktree        # Compact worktree
-```
-
-Note: Git passthrough works for ALL subcommands, even unlisted.
-
-### GitHub (26-87% savings)
-```bash
-rtk gh pr view <num>    # Compact PR view (87%)
-rtk gh pr checks        # Compact PR checks (79%)
-rtk gh run list         # Compact workflow runs (82%)
-rtk gh issue list       # Compact issue list (80%)
-rtk gh api              # Compact API responses (26%)
-```
-
-### JavaScript/TypeScript Tooling (70-90% savings)
-```bash
-rtk pnpm list           # Compact dependency tree (70%)
-rtk pnpm outdated       # Compact outdated packages (80%)
-rtk pnpm install        # Compact install output (90%)
-rtk npm run <script>    # Compact npm script output
-rtk npx <cmd>           # Compact npx command output
-rtk prisma              # Prisma without ASCII art (88%)
-rtk uv run <cmd>        # Compact uv project command output
-```
-
-### Files & Search (60-75% savings)
-```bash
-rtk ls <path>           # Tree format, compact (65%)
-rtk read <file>         # Code reading with filtering (60%)
-rtk grep <pattern>      # Search grouped by file (75%). Format flags (-c, -l, -L, -o, -Z) run raw.
-rtk rg <pattern>        # Preferred: ripgrep search for optimal token efficiency
-rtk find <pattern>      # Find grouped by directory (70%)
-```
-
-**Search Preference:** Always prefer `rg` over `grep` for terminal searches. It respects `.gitignore` by default and yields cleaner, token-efficient output.
-
-### Analysis & Debug (70-90% savings)
-```bash
-rtk err <cmd>           # Filter errors only from any command
-rtk log <file>          # Deduplicated logs with counts
-rtk json <file>         # JSON structure without values
-rtk deps                # Dependency overview
-rtk env                 # Environment variables compact
-rtk summary <cmd>       # Smart summary of command output
-rtk diff                # Ultra-compact diffs
-```
-
-### Infrastructure (85% savings)
-```bash
-rtk docker ps           # Compact container list
-rtk docker images       # Compact image list
-rtk docker logs <c>     # Deduplicated logs
-rtk kubectl get         # Compact resource list
-rtk kubectl logs        # Deduplicated pod logs
-```
-
-### Network (65-70% savings)
-```bash
-rtk curl <url>          # Compact HTTP responses (70%)
-rtk wget <url>          # Compact download output (65%)
-```
-
-### Meta Commands
-```bash
-rtk gain                # View token savings statistics
-rtk gain --history      # View command history with savings
-rtk discover            # Analyze Claude Code sessions for missed RTK usage
-rtk proxy <cmd>         # Run command without filtering (for debugging)
-rtk init                # Add RTK instructions to CLAUDE.md
-rtk init --global       # Add RTK to ~/.claude/CLAUDE.md
-```
-
-## Token Savings Overview
-
-| Category | Commands | Typical Savings |
-|----------|----------|-----------------|
-| Tests | vitest, playwright, cargo test | 90-99% |
-| Build | next, tsc, lint, prettier | 70-87% |
-| Git | status, log, diff, add, commit | 59-80% |
-| GitHub | gh pr, gh run, gh issue | 26-87% |
-| Package Managers | pnpm, npm, npx | 70-90% |
-| Files | ls, read, grep, find | 60-75% |
-| Infrastructure | docker, kubectl | 85% |
-| Network | curl, wget | 65-70% |
-
-Overall average: **60-90% token reduction** on dev ops.
-<!-- /rtk-instructions -->
+Prefix shell commands with `rtk` whenever a filter exists to save context tokens:
+- **Git Operations**: `rtk git status`, `rtk git diff`, `rtk git log`, `rtk git commit`, `rtk git push`.
+- **GitHub CLI**: `rtk gh issue list | cat`, `rtk gh pr status | cat` (always pipe to `cat` to bypass interactive pagers).
+- **File Inspection**: `rtk ls`, `rtk read`, `rtk tree`, `rtk find`.
+- **Search**: `rtk rg <pattern>` (preferred over grep).
+- **Build & Tests**: `rtk test <cmd>`, `rtk err <cmd>`.
+- **Tooling**: `rtk uv run <script>`, `rtk npx <cmd>`.
+- **Sandbox Exception**: Inside `ctx_execute` / `ctx_batch_execute` sandbox code, skip `rtk` (only printed output enters context). Drop `rtk` when exact raw bytes or patch required (`git diff` patch).
 <!-- rtk-end -->
