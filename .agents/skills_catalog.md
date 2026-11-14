@@ -8,13 +8,16 @@ Catalog of custom Antigravity agent skills available in `homelab`.
 | [`app-sync`](skills/app-sync/SKILL.md) | Sync local configuration changes to a remote Proxmox LXC container via git pull and restart the service. | `/app sync <app_name>` |
 | [`audit-deps`](skills/audit-deps/SKILL.md) | Audit Docker image dependencies across all compose.yaml files and report outdated or vulnerable versions. | `/audit deps` |
 | [`builder-add`](skills/builder-add/SKILL.md) | Automate adding a new application builder to the reprepro modular builders system, supporting standard and Raspberry Pi architectures (armv6, armv7). | `/builder add <project> <url>` |
+| [`changedetection-update`](skills/changedetection-update/SKILL.md) | Update ChangeDetection.io, Playwright, and Browserless on Proxmox LXC container 116 (pve04) and verify service health. | `/changedetection update` |
 | [`check-app-version`](skills/check-app-version/SKILL.md) | Compare installed version of a homelab LXC web app against its latest upstream release without modifying containers or updating. | `rtk uv run python scripts/check_app_version.py <app>` |
 | [`check-notify-apps`](skills/check-notify-apps/SKILL.md) | Compare GitHub release notifications with homelab web application versions across Proxmox LXC containers and Docker apps. | `rtk uv run python scripts/check_notify_apps.py` |
 | [`check-notify-tools`](skills/check-notify-tools/SKILL.md) | Compare GitHub release notifications with locally installed developer tools (e.g. zensical, task, shuck, uv, lnav). | `rtk uv run python scripts/check_notify_tools.py` |
 | [`check-secrets`](skills/check-secrets/SKILL.md) | Verify encryption status of all sensitive and .env files project-wide using SOPS to prevent accidental leaks. | `/check secrets` |
+| [`cyberkeygen-update`](skills/cyberkeygen-update/SKILL.md) | Update CyberKeyGen on Proxmox LXC container 132 (pve04), rebuild the Vite static bundle, recreate the nginx container, and verify HTTP health. | `/cyberkeygen update` |
 | [`dashboard-add`](skills/dashboard-add/SKILL.md) | Automate the addition of a new service with verified icons and URLs to the Homepage dashboard. | `/dashboard add <app_name> <group>` |
 | [`deploy-app`](skills/deploy-app/SKILL.md) | Automate the creation and templating of a new application directory in docker/ or lxc/ and optionally open a tracking GitHub issue. | `/deploy <app_name> <type>` |
 | [`doc-new`](skills/doc-new/SKILL.md) | Automate the creation of new documentation files using existing templates consistent with Zensical style guide. | `/doc new <name> <category>` |
+| [`drawio-update`](skills/drawio-update/SKILL.md) | Update Draw.io on Proxmox LXC container 136 (pve04) via WAR release download and verify Tomcat service health. | `/drawio update` |
 | [`gatus-update`](skills/gatus-update/SKILL.md) | Update the Gatus dashboard by syncing configuration changes, decrypting secrets, and restarting the service. | `/gatus update` |
 | [`homelab-backup`](skills/homelab-backup/SKILL.md) | Trigger manual backups for specific homelab applications or configurations and verify SOPS encryption. | `/homelab backup <target>` |
 | [`homelab-status`](skills/homelab-status/SKILL.md) | Provide a bird's eye view of the homelab, checking Proxmox node health, Docker containers, AdGuard Home, Syncthing, and GitHub issues. | `/homelab status` |
@@ -27,4 +30,6 @@ Catalog of custom Antigravity agent skills available in `homelab`.
 | [`rotate-secret`](skills/rotate-secret/SKILL.md) | Securely rotate sensitive credentials by generating new high-entropy values and updating SOPS encrypted files. | `/rotate secret <service> <key>` |
 | [`task-summary`](skills/task-summary/SKILL.md) | Automatically summarize work done in the current task and draft Git commit/note content. | `/task summary` |
 | [`traefik-update`](skills/traefik-update/SKILL.md) | Update the Traefik edge router by syncing configuration changes via SSH and restarting the service. | `/traefik update` |
+| [`vaultwarden-update`](skills/vaultwarden-update/SKILL.md) | Update Vaultwarden server (cargo source build) and web-vault on Proxmox LXC container 112 (pve03) and verify /alive health. | `/vaultwarden update` |
 | [`webhook-add`](skills/webhook-add/SKILL.md) | Scaffold, deploy, and connect automated webhook update listeners and ChangeDetection watches for homelab LXC web applications. | `/webhook add <app_name> <repo>` |
+| [`withoutbg-update`](skills/withoutbg-update/SKILL.md) | Update withoutbg on Proxmox LXC container 103 (pve03), handling upstream web-monorepo release guards and verifying backend/frontend services. | `/withoutbg update` |

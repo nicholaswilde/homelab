@@ -28,6 +28,7 @@ When asked to update applications deployed on Proxmox LXC containers:
   - `yamtrack`: `rtk uv run python scripts/lxc_update.py yamtrack --node pve03` (Node: `pve03`, VMID: `125`, IP: `192.168.1.159`).
   - `solidcraft`: `rtk uv run python scripts/lxc_update.py solidcraft --node pve03 [-v <version>]` (Node: `pve03`, VMID: `138`, IP: `192.168.1.123`).
   - `installer`: `rtk uv run python scripts/lxc_update.py installer --node pve04` (Node: `pve04`, VMID: `107`).
+  - `cyberkeygen`: `rtk uv run python scripts/lxc_update.py cyberkeygen --node pve04 [-v <version>]` (Node: `pve04`, VMID: `132`, IP: `192.168.1.202`).
 - The script automatically handles node discovery, git pulling on the container, executing container-native `update.sh`, and restarting the service.
 
 ## Unsaved Web App Protocol

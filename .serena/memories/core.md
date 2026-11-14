@@ -38,6 +38,7 @@ Centralized homelab configuration, IaC provisioning, automation, and documentati
   - When asked to update `yamtrack`, immediately run `rtk uv run python scripts/lxc_update.py yamtrack --node pve03` directly without probing.
   - When asked to update `solidcraft`, immediately run `rtk uv run python scripts/lxc_update.py solidcraft --node pve03 [-v <version>]` directly without probing.
   - When asked to update `installer`, immediately run `rtk uv run python scripts/lxc_update.py installer --node pve04` directly without probing.
+  - When asked to update `cyberkeygen`, immediately run `rtk uv run python scripts/lxc_update.py cyberkeygen --node pve04 [-v <version>]` directly without probing.
   - When updating any unsaved web app, set up its `update.sh` and immediately persist across 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`).
 
 ## Domain References

@@ -164,6 +164,7 @@ When asked to update LXC web applications, run `scripts/lxc_update.py` directly 
 - `yamtrack`: `rtk uv run python scripts/lxc_update.py yamtrack --node pve03`
 - `solidcraft`: `rtk uv run python scripts/lxc_update.py solidcraft --node pve03 [-v <version>]`
 - `installer`: `rtk uv run python scripts/lxc_update.py installer --node pve04`
+- `cyberkeygen`: `rtk uv run python scripts/lxc_update.py cyberkeygen --node pve04 [-v <version>]`
 When updating any web app not yet saved, set up its `update.sh` and persist its details across the 3 layers (Rules in `AGENTS.md` / `.agents/rules/`, Serena memories in `mem:core` / `mem:suggested_commands`, and RTK filters in `.rtk/filters.toml`) to streamline future runs.
 
 ## LXC Webhook & Auto-Update Hooks

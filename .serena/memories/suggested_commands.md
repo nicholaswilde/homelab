@@ -57,6 +57,7 @@
   - `yamtrack`: Directly run `rtk uv run python scripts/lxc_update.py yamtrack --node pve03`.
   - `solidcraft`: Directly run `rtk uv run python scripts/lxc_update.py solidcraft --node pve03 [-v <version>]`.
   - `installer`: Directly run `rtk uv run python scripts/lxc_update.py installer --node pve04`.
+  - `cyberkeygen`: Directly run `rtk uv run python scripts/lxc_update.py cyberkeygen --node pve04 [-v <version>]`.
 
 ## Token-Optimized CLI Commands (`rtk`)
 - Always prefix bash shell commands with `rtk` where available:
